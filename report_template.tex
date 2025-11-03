@@ -1,0 +1,166 @@
+\documentclass[12pt]{article}
+\usepackage[utf-8]{inputenc}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+
+\title{SSIE-500: Homework 5\\
+Measuring Complexity of Languages}
+\author{Your Name}
+\date{November 10, 2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+This report analyzes the complexity of three human languages (English, French, and Arabic) by calculating their information entropy and mutual information between consecutive symbols.
+
+\section{Methodology}
+
+\subsection{Data Sources}
+The following copyright-free texts were used for analysis:
+\begin{itemize}
+    \item \textbf{English}: \textit{Pride and Prejudice} by Jane Austen (386,927 characters)
+    \item \textbf{French}: \textit{Vingt mille lieues sous les mers} by Jules Verne (381,746 characters)
+    \item \textbf{Arabic}: Classic Arabic tale (63,800 characters)
+\end{itemize}
+
+All texts were obtained from Project Gutenberg, a public domain repository.
+
+\subsection{Formulas}
+
+\subsubsection{Information Entropy}
+Information entropy measures the average unpredictability of symbols in a text:
+
+\begin{equation}
+H(X) = -\sum_{x \in \mathcal{X}} p(x) \log_2 p(x)
+\end{equation}
+
+where $p(x)$ is the probability of symbol $x$ occurring in the text.
+
+\subsubsection{Mutual Information}
+Mutual information quantifies the dependency between consecutive symbols:
+
+\begin{equation}
+MI(X;Y) = \sum_{x,y} p(x,y) \log_2 \frac{p(x,y)}{p(x)p(y)}
+\end{equation}
+
+where $p(x,y)$ is the joint probability of symbols $x$ and $y$ appearing consecutively.
+
+\subsection{Implementation}
+The analysis was implemented in Python. The program:
+\begin{enumerate}
+    \item Reads text files in UTF-8 encoding
+    \item Calculates symbol frequencies
+    \item Computes information entropy
+    \item Analyzes consecutive symbol pairs for mutual information
+\end{enumerate}
+
+\section{Results}
+
+\subsection{Summary Table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Language} & \textbf{Total Chars} & \textbf{Unique Symbols} & \textbf{Entropy (bits)} & \textbf{MI (bits)} \\
+\midrule
+English & 386,927 & 90 & 4.477589 & 0.954475 \\
+French  & 381,746 & 95 & 4.516678 & 1.002627 \\
+Arabic  & 63,800  & 40 & 4.470629 & 1.400194 \\
+\bottomrule
+\end{tabular}
+\caption{Complexity metrics for three languages}
+\label{tab:results}
+\end{table}
+
+\subsection{Entropy Comparison}
+The entropy values indicate:
+\begin{itemize}
+    \item \textbf{French} (4.517 bits): Highest entropy, most diverse symbol distribution
+    \item \textbf{English} (4.478 bits): Middle entropy
+    \item \textbf{Arabic} (4.471 bits): Lowest entropy, most predictable symbol distribution
+\end{itemize}
+
+\subsection{Mutual Information Comparison}
+The mutual information values show:
+\begin{itemize}
+    \item \textbf{Arabic} (1.400 bits): Highest MI, strongest sequential dependencies
+    \item \textbf{French} (1.003 bits): Moderate MI
+    \item \textbf{English} (0.955 bits): Lowest MI, weakest sequential dependencies
+\end{itemize}
+
+\section{Discussion}
+
+\subsection{Observations}
+
+\textbf{1. Similar Entropy Values:} All three languages have remarkably similar entropy values (4.47-4.52 bits), suggesting that natural languages tend to maintain similar levels of symbol complexity regardless of alphabet system.
+
+\textbf{2. Arabic's High Mutual Information:} Arabic shows significantly higher mutual information (1.40 bits) compared to English and French. This may be due to:
+\begin{itemize}
+    \item Arabic script's connected writing system where letters change form based on position
+    \item Root-based morphology where consonants carry semantic meaning
+    \item Diacritical marks that create dependencies between symbols
+\end{itemize}
+
+\textbf{3. Latin Alphabet Languages:} English and French, both using Latin alphabets, show similar MI values (0.95-1.00 bits), suggesting comparable sequential structure.
+
+\textbf{4. Alphabet Size Effect:} Arabic has fewer unique symbols (40) compared to English (90) and French (95), yet maintains similar entropy by having stronger sequential dependencies.
+
+\subsection{Linguistic Implications}
+
+The results demonstrate that languages achieve similar information density through different mechanisms:
+\begin{itemize}
+    \item \textbf{Alphabet diversity} (more symbols) vs. \textbf{Sequential structure} (stronger dependencies)
+    \item This suggests an underlying optimization in human language for efficient communication
+\end{itemize}
+
+\section{Conclusion}
+
+This analysis revealed that while English, French, and Arabic have similar information entropy (~4.5 bits), they differ significantly in mutual information. Arabic exhibits the strongest sequential dependencies, while English shows the weakest. This highlights how different writing systems and linguistic structures can achieve similar overall complexity through different organizational principles.
+
+\section{Appendix: Python Code}
+
+\begin{lstlisting}[language=Python, basicstyle=\small\ttfamily, breaklines=true]
+import math
+from collections import Counter, defaultdict
+
+def calculate_entropy(text):
+    """Calculate information entropy H(X) = -sum p(x) * log2(p(x))"""
+    if not text:
+        return 0.0
+    symbol_counts = Counter(text)
+    total_symbols = len(text)
+    entropy = 0.0
+    for count in symbol_counts.values():
+        probability = count / total_symbols
+        entropy -= probability * math.log2(probability)
+    return entropy
+
+def calculate_mutual_information(text):
+    """Calculate mutual information MI(X;Y)"""
+    if len(text) < 2:
+        return 0.0
+    single_counts = Counter(text)
+    total_symbols = len(text)
+    pair_counts = defaultdict(int)
+    for i in range(len(text) - 1):
+        pair = (text[i], text[i + 1])
+        pair_counts[pair] += 1
+    total_pairs = len(text) - 1
+    mutual_info = 0.0
+    for pair, pair_count in pair_counts.items():
+        p_xy = pair_count / total_pairs
+        p_x = single_counts[pair[0]] / total_symbols
+        p_y = single_counts[pair[1]] / total_symbols
+        mutual_info += p_xy * math.log2(p_xy / (p_x * p_y))
+    return mutual_info
+\end{lstlisting}
+
+\end{document}
