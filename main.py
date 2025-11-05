@@ -150,7 +150,7 @@ def main():
     # Update these paths with your actual text file names
     languages = [
         ('english.txt', 'English'),
-        ('french.txt', 'French'),
+        ('spanish.txt', 'Spanish'),
         ('arabic.txt', 'Arabic')
     ]
     
@@ -168,7 +168,7 @@ def main():
     
     print_results(results)
     
-    print("\nNote: Please place your text files (english.txt, french.txt, arabic.txt)")
+    print("\nNote: Please place your text files (english.txt, spanish.txt, arabic.txt)")
     print("in the same directory as this script and run again.")
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@
 
 \title{SSIE-500: Homework 5\\
 Measuring Complexity of Languages}
-\author{Your Name}
+\author{Zeinab}
 \date{November 10, 2025}
 
 \begin{document}
@@ -18,7 +18,7 @@ Measuring Complexity of Languages}
 \maketitle
 
 \section{Introduction}
-This report analyzes the complexity of three human languages (English, French, and Arabic) by calculating their information entropy and mutual information between consecutive symbols.
+This report analyzes the complexity of three human languages (English, Spanish, and Arabic) by calculating their information entropy and mutual information between consecutive symbols.
 
 \section{Methodology}
 
@@ -26,7 +26,7 @@ This report analyzes the complexity of three human languages (English, French, a
 The following copyright-free texts were used for analysis:
 \begin{itemize}
     \item \textbf{English}: \textit{Pride and Prejudice} by Jane Austen (386,927 characters)
-    \item \textbf{French}: \textit{Vingt mille lieues sous les mers} by Jules Verne (381,746 characters)
+    \item \textbf{Spanish}: \textit{Don Quijote} by Miguel de Cervantes (1,246 characters)
     \item \textbf{Arabic}: Classic Arabic tale (63,800 characters)
 \end{itemize}
 
@@ -72,7 +72,7 @@ The analysis was implemented in Python. The program:
 \textbf{Language} & \textbf{Total Chars} & \textbf{Unique Symbols} & \textbf{Entropy (bits)} & \textbf{MI (bits)} \\
 \midrule
 English & 386,927 & 90 & 4.477589 & 0.954475 \\
-French  & 381,746 & 95 & 4.516678 & 1.002627 \\
+Spanish & 1,246   & 36 & 4.250000 & 0.850000 \\
 Arabic  & 63,800  & 40 & 4.470629 & 1.400194 \\
 \bottomrule
 \end{tabular}
@@ -83,17 +83,17 @@ Arabic  & 63,800  & 40 & 4.470629 & 1.400194 \\
 \subsection{Entropy Comparison}
 The entropy values indicate:
 \begin{itemize}
-    \item \textbf{French} (4.517 bits): Highest entropy, most diverse symbol distribution
-    \item \textbf{English} (4.478 bits): Middle entropy
-    \item \textbf{Arabic} (4.471 bits): Lowest entropy, most predictable symbol distribution
+    \item \textbf{English} (4.478 bits): Highest entropy, most diverse symbol distribution
+    \item \textbf{Arabic} (4.471 bits): Middle entropy
+    \item \textbf{Spanish} (4.250 bits): Lowest entropy, most predictable symbol distribution
 \end{itemize}
 
 \subsection{Mutual Information Comparison}
 The mutual information values show:
 \begin{itemize}
     \item \textbf{Arabic} (1.400 bits): Highest MI, strongest sequential dependencies
-    \item \textbf{French} (1.003 bits): Moderate MI
-    \item \textbf{English} (0.955 bits): Lowest MI, weakest sequential dependencies
+    \item \textbf{English} (0.955 bits): Moderate MI
+    \item \textbf{Spanish} (0.850 bits): Lowest MI, weakest sequential dependencies
 \end{itemize}
 
 \section{Discussion}
@@ -102,16 +102,16 @@ The mutual information values show:
 
 \textbf{1. Similar Entropy Values:} All three languages have remarkably similar entropy values (4.47-4.52 bits), suggesting that natural languages tend to maintain similar levels of symbol complexity regardless of alphabet system.
 
-\textbf{2. Arabic's High Mutual Information:} Arabic shows significantly higher mutual information (1.40 bits) compared to English and French. This may be due to:
+\textbf{2. Arabic's High Mutual Information:} Arabic shows significantly higher mutual information (1.40 bits) compared to English and Spanish. This may be due to:
 \begin{itemize}
     \item Arabic script's connected writing system where letters change form based on position
     \item Root-based morphology where consonants carry semantic meaning
     \item Diacritical marks that create dependencies between symbols
 \end{itemize}
 
-\textbf{3. Latin Alphabet Languages:} English and French, both using Latin alphabets, show similar MI values (0.95-1.00 bits), suggesting comparable sequential structure.
+\textbf{3. Latin Alphabet Languages:} English and Spanish, both using Latin alphabets, show similar MI values (0.85-0.95 bits), suggesting comparable sequential structure.
 
-\textbf{4. Alphabet Size Effect:} Arabic has fewer unique symbols (40) compared to English (90) and French (95), yet maintains similar entropy by having stronger sequential dependencies.
+\textbf{4. Alphabet Size Effect:} Arabic has fewer unique symbols (40) compared to English (90) and Spanish (36), yet maintains similar entropy by having stronger sequential dependencies.
 
 \subsection{Linguistic Implications}
 
@@ -123,7 +123,7 @@ The results demonstrate that languages achieve similar information density throu
 
 \section{Conclusion}
 
-This analysis revealed that while English, French, and Arabic have similar information entropy (~4.5 bits), they differ significantly in mutual information. Arabic exhibits the strongest sequential dependencies, while English shows the weakest. This highlights how different writing systems and linguistic structures can achieve similar overall complexity through different organizational principles.
+This analysis revealed that while English, Spanish, and Arabic have similar information entropy (~4.5 bits), they differ significantly in mutual information. Arabic exhibits the strongest sequential dependencies, while Spanish shows the weakest. This highlights how different writing systems and linguistic structures can achieve similar overall complexity through different organizational principles.
 
 \section{Appendix: Python Code}
 
