@@ -80,9 +80,9 @@ This is a self-contained local analysis tool with no:
 
 ### Input Files
 Text corpus files present in the repository root:
-- `english.txt` - Pride and Prejudice by Jane Austen (3,483 characters)
+- `english.txt` - Alice's Adventures in Wonderland by Lewis Carroll (5,658 characters)
 - `spanish.txt` - Don Quijote by Miguel de Cervantes (1,386 characters)
-- `arabic.txt` - Kalila wa-Dimna classical Arabic text (5,634 characters)
+- `arabic.txt` - Alf Layla wa-Layla (Arabian Nights - Sindbad the Sailor) (4,643 characters)
 
 ### Output Files
 - `report_template.tex` - LaTeX template for academic report (includes Zeinab's name as author)
