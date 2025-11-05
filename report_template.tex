@@ -25,12 +25,12 @@ This report analyzes the complexity of three human languages (English, Spanish, 
 \subsection{Data Sources}
 The following copyright-free texts were used for analysis:
 \begin{itemize}
-    \item \textbf{English}: \textit{Pride and Prejudice} by Jane Austen (386,927 characters)
-    \item \textbf{Spanish}: \textit{Don Quijote} by Miguel de Cervantes (1,246 characters)
-    \item \textbf{Arabic}: Classic Arabic tale (63,800 characters)
+    \item \textbf{English}: \textit{Alice's Adventures in Wonderland} by Lewis Carroll (5,658 characters)
+    \item \textbf{Spanish}: \textit{Don Quijote} by Miguel de Cervantes (1,386 characters)
+    \item \textbf{Arabic}: \textit{Alf Layla wa-Layla} (Arabian Nights - Sindbad the Sailor) (4,643 characters)
 \end{itemize}
 
-All texts were obtained from Project Gutenberg, a public domain repository.
+All texts were obtained from Project Gutenberg and public domain classical literature sources.
 
 \subsection{Formulas}
 
@@ -71,9 +71,9 @@ The analysis was implemented in Python. The program:
 \toprule
 \textbf{Language} & \textbf{Total Chars} & \textbf{Unique Symbols} & \textbf{Entropy (bits)} & \textbf{MI (bits)} \\
 \midrule
-English & 386,927 & 90 & 4.477589 & 0.954475 \\
-Spanish & 1,246   & 36 & 4.250000 & 0.850000 \\
-Arabic  & 63,800  & 40 & 4.470629 & 1.400194 \\
+English & 5,658 & 58 & 4.393104 & 1.120734 \\
+Spanish & 1,386 & 44 & 4.275240 & 1.320222 \\
+Arabic  & 4,643 & 45 & 4.505785 & 0.969090 \\
 \bottomrule
 \end{tabular}
 \caption{Complexity metrics for three languages}
@@ -83,35 +83,35 @@ Arabic  & 63,800  & 40 & 4.470629 & 1.400194 \\
 \subsection{Entropy Comparison}
 The entropy values indicate:
 \begin{itemize}
-    \item \textbf{English} (4.478 bits): Highest entropy, most diverse symbol distribution
-    \item \textbf{Arabic} (4.471 bits): Middle entropy
-    \item \textbf{Spanish} (4.250 bits): Lowest entropy, most predictable symbol distribution
+    \item \textbf{Arabic} (4.506 bits): Highest entropy, most diverse symbol distribution
+    \item \textbf{English} (4.393 bits): Middle entropy
+    \item \textbf{Spanish} (4.275 bits): Lowest entropy, most predictable symbol distribution
 \end{itemize}
 
 \subsection{Mutual Information Comparison}
 The mutual information values show:
 \begin{itemize}
-    \item \textbf{Arabic} (1.400 bits): Highest MI, strongest sequential dependencies
-    \item \textbf{English} (0.955 bits): Moderate MI
-    \item \textbf{Spanish} (0.850 bits): Lowest MI, weakest sequential dependencies
+    \item \textbf{Spanish} (1.320 bits): Highest MI, strongest sequential dependencies
+    \item \textbf{English} (1.121 bits): Moderate MI
+    \item \textbf{Arabic} (0.969 bits): Lowest MI, weakest sequential dependencies
 \end{itemize}
 
 \section{Discussion}
 
 \subsection{Observations}
 
-\textbf{1. Similar Entropy Values:} All three languages have remarkably similar entropy values (4.47-4.52 bits), suggesting that natural languages tend to maintain similar levels of symbol complexity regardless of alphabet system.
+\textbf{1. Similar Entropy Values:} All three languages have remarkably similar entropy values (4.28-4.51 bits), suggesting that natural languages tend to maintain similar levels of symbol complexity regardless of alphabet system.
 
-\textbf{2. Arabic's High Mutual Information:} Arabic shows significantly higher mutual information (1.40 bits) compared to English and Spanish. This may be due to:
+\textbf{2. Spanish's High Mutual Information:} Spanish shows the highest mutual information (1.32 bits) compared to English and Arabic. This suggests strong sequential dependencies in Spanish text, where knowing one character provides significant information about the next.
+
+\textbf{3. Arabic's High Entropy:} Despite having a moderate number of unique symbols (45), Arabic achieves the highest entropy (4.51 bits), indicating a very diverse and relatively unpredictable symbol distribution. This may be due to:
 \begin{itemize}
     \item Arabic script's connected writing system where letters change form based on position
-    \item Root-based morphology where consonants carry semantic meaning
-    \item Diacritical marks that create dependencies between symbols
+    \item Root-based morphology creating diverse symbol combinations
+    \item The specific classical text source (Arabian Nights) with rich vocabulary
 \end{itemize}
 
-\textbf{3. Latin Alphabet Languages:} English and Spanish, both using Latin alphabets, show similar MI values (0.85-0.95 bits), suggesting comparable sequential structure.
-
-\textbf{4. Alphabet Size Effect:} Arabic has fewer unique symbols (40) compared to English (90) and Spanish (36), yet maintains similar entropy by having stronger sequential dependencies.
+\textbf{4. English Middle Ground:} English (Alice in Wonderland) shows moderate values for both entropy (4.39 bits) and mutual information (1.12 bits), positioning it between Arabic and Spanish in the complexity spectrum.
 
 \subsection{Linguistic Implications}
 
@@ -123,7 +123,7 @@ The results demonstrate that languages achieve similar information density throu
 
 \section{Conclusion}
 
-This analysis revealed that while English, Spanish, and Arabic have similar information entropy (~4.5 bits), they differ significantly in mutual information. Arabic exhibits the strongest sequential dependencies, while Spanish shows the weakest. This highlights how different writing systems and linguistic structures can achieve similar overall complexity through different organizational principles.
+This analysis revealed that while English, Spanish, and Arabic have similar information entropy (ranging from 4.28 to 4.51 bits), they differ in their mutual information characteristics. Spanish exhibits the strongest sequential dependencies (1.32 bits), followed by English (1.12 bits), while Arabic shows the weakest (0.97 bits). Interestingly, Arabic achieves the highest entropy despite having moderate mutual information, suggesting that different writing systems and linguistic structures can achieve similar overall complexity through different organizational principles—some relying more on symbol diversity and others on sequential structure.
 
 \section{Appendix: Python Code}
 
