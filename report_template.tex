@@ -9,6 +9,26 @@
 \geometry{margin=1in}
 \usepackage{hyperref}
 
+% Configure listings package for Python
+\lstset{
+    language=Python,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!60!black}\itshape,
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    frame=single,
+    tabsize=4,
+    captionpos=b,
+    keepspaces=true,
+    columns=flexible,
+    basicstyle=\small\ttfamily,
+    upquote=true
+}
+
 \title{SSIE-500: Homework 5\\
 Measuring Complexity of Languages}
 \author{Zeinab}
@@ -124,25 +144,13 @@ The results demonstrate that languages achieve similar information density throu
 
 \section{Conclusion}
 
-This analysis revealed that while English, Spanish, and Arabic have similar information entropy (ranging from 4.28 to 4.51 bits), they differ in their mutual information characteristics. Spanish exhibits the strongest sequential dependencies (1.32 bits), followed by English (1.12 bits), while Arabic shows the weakest (0.97 bits). Interestingly, Arabic achieves the highest entropy despite having moderate mutual information, suggesting that different writing systems and linguistic structures can achieve similar overall complexity through different organizational principles—some relying more on symbol diversity and others on sequential structure.
+This analysis revealed that while English, Spanish, and Arabic have similar information entropy (ranging from 4.28 to 4.51 bits), they differ in their mutual information characteristics. Spanish exhibits the strongest sequential dependencies (1.32 bits), followed by English (1.12 bits), while Arabic shows the weakest (0.97 bits). Interestingly, Arabic achieves the highest entropy despite having moderate mutual information, suggesting that different writing systems and linguistic structures can achieve similar overall complexity through different organizational principles---some relying more on symbol diversity and others on sequential structure.
+
+\clearpage
 
 \section{Appendix: Complete Python Code}
 
 The complete Python implementation used for this analysis is provided below:
-
-\lstset{
-    language=Python,
-    basicstyle=\footnotesize\ttfamily,
-    keywordstyle=\color{blue},
-    commentstyle=\color{green!60!black},
-    stringstyle=\color{red},
-    showstringspaces=false,
-    breaklines=true,
-    numbers=left,
-    numberstyle=\tiny\color{gray},
-    frame=single,
-    captionpos=b
-}
 
 \begin{lstlisting}[caption={main.py - Language Complexity Analysis Tool}]
 import math
@@ -151,7 +159,7 @@ import os
 
 def calculate_entropy(text):
     """
-    Calculate information entropy of the frequency distribution of symbols.
+    Calculate information entropy of the frequency distribution.
     H(X) = -sum p(x) * log2(p(x))
     """
     if not text:
@@ -171,7 +179,7 @@ def calculate_entropy(text):
 
 def calculate_mutual_information(text):
     """
-    Calculate mutual information between two consecutive symbols.
+    Calculate mutual information between consecutive symbols.
     MI(X;Y) = sum p(x,y) * log2(p(x,y) / (p(x) * p(y)))
     """
     if len(text) < 2:
@@ -195,18 +203,17 @@ def calculate_mutual_information(text):
         p_xy = pair_count / total_pairs
         p_x = single_counts[pair[0]] / total_symbols
         p_y = single_counts[pair[1]] / total_symbols
-        
         mutual_info += p_xy * math.log2(p_xy / (p_x * p_y))
     
     return mutual_info
 
 def analyze_language(file_path, language_name):
     """
-    Analyze a text file and calculate entropy and mutual information.
+    Analyze a text file and calculate entropy and MI.
     """
     try:
         # Try different encodings
-        encodings = ['utf-8', 'latin-1', 'cp1252', 'iso-8859-1']
+        encodings = ['utf-8', 'latin-1', 'cp1252']
         text = None
         
         for encoding in encodings:
@@ -218,7 +225,6 @@ def analyze_language(file_path, language_name):
                 continue
         
         if text is None:
-            print(f"Error: Could not read {file_path} with any encoding")
             return None
         
         # Calculate metrics
@@ -241,54 +247,53 @@ def analyze_language(file_path, language_name):
         return result
         
     except FileNotFoundError:
-        print(f"Error: File '{file_path}' not found")
         return None
     except Exception as e:
-        print(f"Error processing {file_path}: {str(e)}")
         return None
 
 def print_results(results):
     """
     Print analysis results in a formatted way.
     """
-    print("\n" + "="*80)
-    print("LANGUAGE COMPLEXITY ANALYSIS RESULTS")
-    print("="*80 + "\n")
+    print("=" * 80)
+    print("LANGUAGE COMPLEXITY ANALYSIS")
+    print("=" * 80)
     
     for result in results:
         if result:
             print(f"Language: {result['language']}")
-            print(f"File: {result['file']}")
-            print(f"Total Characters: {result['total_characters']:,}")
+            print(f"Total Characters: {result['total_characters']}")
             print(f"Unique Symbols: {result['unique_symbols']}")
-            print(f"Information Entropy: {result['entropy']:.6f} bits")
-            print(f"Mutual Information: {result['mutual_information']:.6f} bits")
-            print("-" * 80 + "\n")
+            print(f"Entropy: {result['entropy']:.6f} bits")
+            print(f"MI: {result['mutual_information']:.6f} bits")
+            print("-" * 80)
     
     # Comparison section
     if len(results) >= 2:
-        print("\n" + "="*80)
         print("COMPARISON")
-        print("="*80 + "\n")
+        print("=" * 80)
         
         # Sort by entropy
-        sorted_by_entropy = sorted([r for r in results if r], 
-                                   key=lambda x: x['entropy'], reverse=True)
-        print("Languages ranked by Entropy (highest to lowest):")
-        for i, result in enumerate(sorted_by_entropy, 1):
-            print(f"{i}. {result['language']}: {result['entropy']:.6f} bits")
+        sorted_entropy = sorted([r for r in results if r], 
+                               key=lambda x: x['entropy'], 
+                               reverse=True)
+        print("Languages by Entropy (highest to lowest):")
+        for i, result in enumerate(sorted_entropy, 1):
+            print(f"{i}. {result['language']}: "
+                  f"{result['entropy']:.6f} bits")
         
-        print("\nLanguages ranked by Mutual Information (highest to lowest):")
-        sorted_by_mi = sorted([r for r in results if r], 
-                             key=lambda x: x['mutual_information'], reverse=True)
-        for i, result in enumerate(sorted_by_mi, 1):
-            print(f"{i}. {result['language']}: {result['mutual_information']:.6f} bits")
-        
-        print("\n" + "="*80)
+        # Sort by MI
+        sorted_mi = sorted([r for r in results if r], 
+                          key=lambda x: x['mutual_information'], 
+                          reverse=True)
+        print("\nLanguages by Mutual Information:")
+        for i, result in enumerate(sorted_mi, 1):
+            print(f"{i}. {result['language']}: "
+                  f"{result['mutual_information']:.6f} bits")
 
 def main():
     """
-    Main function to analyze text files for different languages.
+    Main function to analyze text files.
     """
     print("Language Complexity Analysis")
     print("SSIE-500: Homework 5\n")
