@@ -1,0 +1,3252 @@
+[
+  {
+    "entity_name": "Store 1",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 2",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 3",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 4",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 5",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 6",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 7",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 8",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 9",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 10",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 11",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 12",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 13",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 14",
+    "zip_code": "10001",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 15",
+    "zip_code": "10002",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 16",
+    "zip_code": "10002",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 17",
+    "zip_code": "10002",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 18",
+    "zip_code": "10002",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 19",
+    "zip_code": "10002",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 20",
+    "zip_code": "10002",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 21",
+    "zip_code": "10002",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 22",
+    "zip_code": "10002",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 23",
+    "zip_code": "10002",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 24",
+    "zip_code": "10002",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 25",
+    "zip_code": "10002",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 26",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 27",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 28",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 29",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 30",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 31",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 32",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 33",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 34",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 35",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 36",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 37",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 38",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 39",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 40",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 41",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 42",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 43",
+    "zip_code": "10003",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 44",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 45",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 46",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 47",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 48",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 49",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 50",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 51",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 52",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 53",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 54",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 55",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 56",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 57",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 58",
+    "zip_code": "10004",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 59",
+    "zip_code": "10005",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 60",
+    "zip_code": "10005",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 61",
+    "zip_code": "10005",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 62",
+    "zip_code": "10005",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 63",
+    "zip_code": "10005",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 64",
+    "zip_code": "10005",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 65",
+    "zip_code": "10005",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 66",
+    "zip_code": "10005",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 67",
+    "zip_code": "10005",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 68",
+    "zip_code": "10005",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 69",
+    "zip_code": "10005",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 70",
+    "zip_code": "10005",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 71",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 72",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 73",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 74",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 75",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 76",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 77",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 78",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 79",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 80",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 81",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 82",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 83",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 84",
+    "zip_code": "10006",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 85",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 86",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 87",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 88",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 89",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 90",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 91",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 92",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 93",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 94",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 95",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 96",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 97",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 98",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 99",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 100",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 101",
+    "zip_code": "10007",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 102",
+    "zip_code": "10009",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 103",
+    "zip_code": "10009",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 104",
+    "zip_code": "10009",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 105",
+    "zip_code": "10009",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 106",
+    "zip_code": "10009",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 107",
+    "zip_code": "10009",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 108",
+    "zip_code": "10009",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 109",
+    "zip_code": "10009",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 110",
+    "zip_code": "10009",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 111",
+    "zip_code": "10009",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 112",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 113",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 114",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 115",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 116",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 117",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 118",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 119",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 120",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 121",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 122",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 123",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 124",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 125",
+    "zip_code": "10010",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 126",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 127",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 128",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 129",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 130",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 131",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 132",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 133",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 134",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 135",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 136",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 137",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 138",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 139",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 140",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 141",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 142",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 143",
+    "zip_code": "10011",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 144",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 145",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 146",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 147",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 148",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 149",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 150",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 151",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 152",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 153",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 154",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 155",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 156",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 157",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 158",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 159",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 160",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 161",
+    "zip_code": "10012",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 162",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 163",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 164",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 165",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 166",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 167",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 168",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 169",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 170",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 171",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 172",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 173",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 174",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 175",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 176",
+    "zip_code": "10013",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 177",
+    "zip_code": "10014",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 178",
+    "zip_code": "10014",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 179",
+    "zip_code": "10014",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 180",
+    "zip_code": "10014",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 181",
+    "zip_code": "10014",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 182",
+    "zip_code": "10014",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 183",
+    "zip_code": "10014",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 184",
+    "zip_code": "10014",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 185",
+    "zip_code": "10014",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 186",
+    "zip_code": "10014",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 187",
+    "zip_code": "10014",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 188",
+    "zip_code": "10014",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 189",
+    "zip_code": "10016",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 190",
+    "zip_code": "10016",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 191",
+    "zip_code": "10016",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 192",
+    "zip_code": "10016",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 193",
+    "zip_code": "10016",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 194",
+    "zip_code": "10016",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 195",
+    "zip_code": "10016",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 196",
+    "zip_code": "10016",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 197",
+    "zip_code": "10016",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 198",
+    "zip_code": "10016",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 199",
+    "zip_code": "10016",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 200",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 201",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 202",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 203",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 204",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 205",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 206",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 207",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 208",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 209",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 210",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 211",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 212",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 213",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 214",
+    "zip_code": "10017",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 215",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 216",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 217",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 218",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 219",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 220",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 221",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 222",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 223",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 224",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 225",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 226",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 227",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 228",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 229",
+    "zip_code": "10018",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 230",
+    "zip_code": "10019",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 231",
+    "zip_code": "10019",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 232",
+    "zip_code": "10019",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 233",
+    "zip_code": "10019",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 234",
+    "zip_code": "10019",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 235",
+    "zip_code": "10019",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 236",
+    "zip_code": "10019",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 237",
+    "zip_code": "10019",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 238",
+    "zip_code": "10019",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 239",
+    "zip_code": "10019",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 240",
+    "zip_code": "10020",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 241",
+    "zip_code": "10020",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 242",
+    "zip_code": "10020",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 243",
+    "zip_code": "10020",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 244",
+    "zip_code": "10020",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 245",
+    "zip_code": "10020",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 246",
+    "zip_code": "10020",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 247",
+    "zip_code": "10020",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 248",
+    "zip_code": "10020",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 249",
+    "zip_code": "10020",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 250",
+    "zip_code": "10020",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 251",
+    "zip_code": "10020",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 252",
+    "zip_code": "10020",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 253",
+    "zip_code": "10021",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 254",
+    "zip_code": "10021",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 255",
+    "zip_code": "10021",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 256",
+    "zip_code": "10021",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 257",
+    "zip_code": "10021",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 258",
+    "zip_code": "10021",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 259",
+    "zip_code": "10021",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 260",
+    "zip_code": "10021",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 261",
+    "zip_code": "10021",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 262",
+    "zip_code": "10021",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 263",
+    "zip_code": "10021",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 264",
+    "zip_code": "10021",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 265",
+    "zip_code": "10022",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 266",
+    "zip_code": "10022",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 267",
+    "zip_code": "10022",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 268",
+    "zip_code": "10022",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 269",
+    "zip_code": "10022",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 270",
+    "zip_code": "10022",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 271",
+    "zip_code": "10022",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 272",
+    "zip_code": "10022",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 273",
+    "zip_code": "10022",
+    "county": "Manhattan"
+  },
+  {
+    "entity_name": "Store 274",
+    "zip_code": "10451",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 275",
+    "zip_code": "10451",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 276",
+    "zip_code": "10451",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 277",
+    "zip_code": "10451",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 278",
+    "zip_code": "10452",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 279",
+    "zip_code": "10452",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 280",
+    "zip_code": "10452",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 281",
+    "zip_code": "10452",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 282",
+    "zip_code": "10452",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 283",
+    "zip_code": "10452",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 284",
+    "zip_code": "10453",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 285",
+    "zip_code": "10453",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 286",
+    "zip_code": "10453",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 287",
+    "zip_code": "10453",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 288",
+    "zip_code": "10453",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 289",
+    "zip_code": "10453",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 290",
+    "zip_code": "10454",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 291",
+    "zip_code": "10454",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 292",
+    "zip_code": "10455",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 293",
+    "zip_code": "10455",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 294",
+    "zip_code": "10455",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 295",
+    "zip_code": "10455",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 296",
+    "zip_code": "10456",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 297",
+    "zip_code": "10456",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 298",
+    "zip_code": "10456",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 299",
+    "zip_code": "10456",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 300",
+    "zip_code": "10456",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 301",
+    "zip_code": "10457",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 302",
+    "zip_code": "10458",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 303",
+    "zip_code": "10458",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 304",
+    "zip_code": "10458",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 305",
+    "zip_code": "10458",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 306",
+    "zip_code": "10459",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 307",
+    "zip_code": "10459",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 308",
+    "zip_code": "10460",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 309",
+    "zip_code": "10460",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 310",
+    "zip_code": "10460",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 311",
+    "zip_code": "10460",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 312",
+    "zip_code": "10460",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 313",
+    "zip_code": "10460",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 314",
+    "zip_code": "10461",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 315",
+    "zip_code": "10461",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 316",
+    "zip_code": "10461",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 317",
+    "zip_code": "10461",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 318",
+    "zip_code": "10461",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 319",
+    "zip_code": "10462",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 320",
+    "zip_code": "10462",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 321",
+    "zip_code": "10462",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 322",
+    "zip_code": "10462",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 323",
+    "zip_code": "10463",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 324",
+    "zip_code": "10464",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 325",
+    "zip_code": "10465",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 326",
+    "zip_code": "10465",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 327",
+    "zip_code": "10465",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 328",
+    "zip_code": "10466",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 329",
+    "zip_code": "10466",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 330",
+    "zip_code": "10466",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 331",
+    "zip_code": "10467",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 332",
+    "zip_code": "10467",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 333",
+    "zip_code": "10467",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 334",
+    "zip_code": "10467",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 335",
+    "zip_code": "10467",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 336",
+    "zip_code": "10467",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 337",
+    "zip_code": "10467",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 338",
+    "zip_code": "10468",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 339",
+    "zip_code": "10468",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 340",
+    "zip_code": "10469",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 341",
+    "zip_code": "10469",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 342",
+    "zip_code": "10469",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 343",
+    "zip_code": "10469",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 344",
+    "zip_code": "10470",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 345",
+    "zip_code": "10470",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 346",
+    "zip_code": "10470",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 347",
+    "zip_code": "10470",
+    "county": "Bronx"
+  },
+  {
+    "entity_name": "Store 348",
+    "zip_code": "11201",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 349",
+    "zip_code": "11201",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 350",
+    "zip_code": "11201",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 351",
+    "zip_code": "11201",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 352",
+    "zip_code": "11201",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 353",
+    "zip_code": "11202",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 354",
+    "zip_code": "11202",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 355",
+    "zip_code": "11202",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 356",
+    "zip_code": "11202",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 357",
+    "zip_code": "11202",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 358",
+    "zip_code": "11202",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 359",
+    "zip_code": "11202",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 360",
+    "zip_code": "11202",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 361",
+    "zip_code": "11202",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 362",
+    "zip_code": "11203",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 363",
+    "zip_code": "11203",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 364",
+    "zip_code": "11203",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 365",
+    "zip_code": "11203",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 366",
+    "zip_code": "11203",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 367",
+    "zip_code": "11203",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 368",
+    "zip_code": "11204",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 369",
+    "zip_code": "11204",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 370",
+    "zip_code": "11204",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 371",
+    "zip_code": "11204",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 372",
+    "zip_code": "11204",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 373",
+    "zip_code": "11204",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 374",
+    "zip_code": "11204",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 375",
+    "zip_code": "11204",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 376",
+    "zip_code": "11204",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 377",
+    "zip_code": "11204",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 378",
+    "zip_code": "11204",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 379",
+    "zip_code": "11205",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 380",
+    "zip_code": "11205",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 381",
+    "zip_code": "11205",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 382",
+    "zip_code": "11205",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 383",
+    "zip_code": "11205",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 384",
+    "zip_code": "11206",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 385",
+    "zip_code": "11206",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 386",
+    "zip_code": "11206",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 387",
+    "zip_code": "11206",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 388",
+    "zip_code": "11206",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 389",
+    "zip_code": "11206",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 390",
+    "zip_code": "11206",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 391",
+    "zip_code": "11207",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 392",
+    "zip_code": "11207",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 393",
+    "zip_code": "11207",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 394",
+    "zip_code": "11207",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 395",
+    "zip_code": "11207",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 396",
+    "zip_code": "11208",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 397",
+    "zip_code": "11208",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 398",
+    "zip_code": "11208",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 399",
+    "zip_code": "11208",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 400",
+    "zip_code": "11208",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 401",
+    "zip_code": "11208",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 402",
+    "zip_code": "11208",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 403",
+    "zip_code": "11208",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 404",
+    "zip_code": "11208",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 405",
+    "zip_code": "11209",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 406",
+    "zip_code": "11209",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 407",
+    "zip_code": "11209",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 408",
+    "zip_code": "11209",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 409",
+    "zip_code": "11209",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 410",
+    "zip_code": "11209",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 411",
+    "zip_code": "11209",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 412",
+    "zip_code": "11210",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 413",
+    "zip_code": "11210",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 414",
+    "zip_code": "11210",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 415",
+    "zip_code": "11210",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 416",
+    "zip_code": "11210",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 417",
+    "zip_code": "11210",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 418",
+    "zip_code": "11210",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 419",
+    "zip_code": "11210",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 420",
+    "zip_code": "11210",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 421",
+    "zip_code": "11210",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 422",
+    "zip_code": "11210",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 423",
+    "zip_code": "11211",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 424",
+    "zip_code": "11211",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 425",
+    "zip_code": "11211",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 426",
+    "zip_code": "11211",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 427",
+    "zip_code": "11211",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 428",
+    "zip_code": "11211",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 429",
+    "zip_code": "11211",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 430",
+    "zip_code": "11211",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 431",
+    "zip_code": "11211",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 432",
+    "zip_code": "11212",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 433",
+    "zip_code": "11212",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 434",
+    "zip_code": "11212",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 435",
+    "zip_code": "11212",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 436",
+    "zip_code": "11213",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 437",
+    "zip_code": "11213",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 438",
+    "zip_code": "11213",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 439",
+    "zip_code": "11213",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 440",
+    "zip_code": "11213",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 441",
+    "zip_code": "11213",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 442",
+    "zip_code": "11214",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 443",
+    "zip_code": "11214",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 444",
+    "zip_code": "11214",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 445",
+    "zip_code": "11214",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 446",
+    "zip_code": "11214",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 447",
+    "zip_code": "11214",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 448",
+    "zip_code": "11214",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 449",
+    "zip_code": "11214",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 450",
+    "zip_code": "11214",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 451",
+    "zip_code": "11214",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 452",
+    "zip_code": "11214",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 453",
+    "zip_code": "11215",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 454",
+    "zip_code": "11215",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 455",
+    "zip_code": "11215",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 456",
+    "zip_code": "11215",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 457",
+    "zip_code": "11216",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 458",
+    "zip_code": "11216",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 459",
+    "zip_code": "11216",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 460",
+    "zip_code": "11216",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 461",
+    "zip_code": "11216",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 462",
+    "zip_code": "11216",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 463",
+    "zip_code": "11216",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 464",
+    "zip_code": "11216",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 465",
+    "zip_code": "11216",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 466",
+    "zip_code": "11216",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 467",
+    "zip_code": "11216",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 468",
+    "zip_code": "11217",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 469",
+    "zip_code": "11217",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 470",
+    "zip_code": "11217",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 471",
+    "zip_code": "11217",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 472",
+    "zip_code": "11217",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 473",
+    "zip_code": "11217",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 474",
+    "zip_code": "11217",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 475",
+    "zip_code": "11218",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 476",
+    "zip_code": "11218",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 477",
+    "zip_code": "11218",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 478",
+    "zip_code": "11218",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 479",
+    "zip_code": "11219",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 480",
+    "zip_code": "11219",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 481",
+    "zip_code": "11219",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 482",
+    "zip_code": "11219",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 483",
+    "zip_code": "11219",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 484",
+    "zip_code": "11219",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 485",
+    "zip_code": "11220",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 486",
+    "zip_code": "11220",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 487",
+    "zip_code": "11220",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 488",
+    "zip_code": "11220",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 489",
+    "zip_code": "11220",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 490",
+    "zip_code": "11220",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 491",
+    "zip_code": "11220",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 492",
+    "zip_code": "11220",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 493",
+    "zip_code": "11220",
+    "county": "Brooklyn"
+  },
+  {
+    "entity_name": "Store 494",
+    "zip_code": "11101",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 495",
+    "zip_code": "11101",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 496",
+    "zip_code": "11101",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 497",
+    "zip_code": "11101",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 498",
+    "zip_code": "11101",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 499",
+    "zip_code": "11102",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 500",
+    "zip_code": "11102",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 501",
+    "zip_code": "11102",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 502",
+    "zip_code": "11102",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 503",
+    "zip_code": "11102",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 504",
+    "zip_code": "11102",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 505",
+    "zip_code": "11103",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 506",
+    "zip_code": "11103",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 507",
+    "zip_code": "11103",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 508",
+    "zip_code": "11103",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 509",
+    "zip_code": "11103",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 510",
+    "zip_code": "11103",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 511",
+    "zip_code": "11103",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 512",
+    "zip_code": "11103",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 513",
+    "zip_code": "11103",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 514",
+    "zip_code": "11104",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 515",
+    "zip_code": "11104",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 516",
+    "zip_code": "11104",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 517",
+    "zip_code": "11104",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 518",
+    "zip_code": "11104",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 519",
+    "zip_code": "11104",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 520",
+    "zip_code": "11104",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 521",
+    "zip_code": "11104",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 522",
+    "zip_code": "11105",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 523",
+    "zip_code": "11105",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 524",
+    "zip_code": "11105",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 525",
+    "zip_code": "11105",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 526",
+    "zip_code": "11106",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 527",
+    "zip_code": "11106",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 528",
+    "zip_code": "11106",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 529",
+    "zip_code": "11106",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 530",
+    "zip_code": "11106",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 531",
+    "zip_code": "11106",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 532",
+    "zip_code": "11106",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 533",
+    "zip_code": "11354",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 534",
+    "zip_code": "11354",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 535",
+    "zip_code": "11355",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 536",
+    "zip_code": "11355",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 537",
+    "zip_code": "11355",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 538",
+    "zip_code": "11355",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 539",
+    "zip_code": "11355",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 540",
+    "zip_code": "11356",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 541",
+    "zip_code": "11356",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 542",
+    "zip_code": "11356",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 543",
+    "zip_code": "11357",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 544",
+    "zip_code": "11357",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 545",
+    "zip_code": "11357",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 546",
+    "zip_code": "11357",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 547",
+    "zip_code": "11357",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 548",
+    "zip_code": "11357",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 549",
+    "zip_code": "11357",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 550",
+    "zip_code": "11357",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 551",
+    "zip_code": "11357",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 552",
+    "zip_code": "11358",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 553",
+    "zip_code": "11358",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 554",
+    "zip_code": "11358",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 555",
+    "zip_code": "11358",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 556",
+    "zip_code": "11358",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 557",
+    "zip_code": "11359",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 558",
+    "zip_code": "11359",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 559",
+    "zip_code": "11359",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 560",
+    "zip_code": "11360",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 561",
+    "zip_code": "11360",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 562",
+    "zip_code": "11360",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 563",
+    "zip_code": "11360",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 564",
+    "zip_code": "11360",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 565",
+    "zip_code": "11360",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 566",
+    "zip_code": "11360",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 567",
+    "zip_code": "11361",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 568",
+    "zip_code": "11361",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 569",
+    "zip_code": "11361",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 570",
+    "zip_code": "11361",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 571",
+    "zip_code": "11361",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 572",
+    "zip_code": "11361",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 573",
+    "zip_code": "11361",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 574",
+    "zip_code": "11362",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 575",
+    "zip_code": "11362",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 576",
+    "zip_code": "11362",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 577",
+    "zip_code": "11362",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 578",
+    "zip_code": "11362",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 579",
+    "zip_code": "11362",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 580",
+    "zip_code": "11362",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 581",
+    "zip_code": "11363",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 582",
+    "zip_code": "11363",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 583",
+    "zip_code": "11363",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 584",
+    "zip_code": "11364",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 585",
+    "zip_code": "11364",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 586",
+    "zip_code": "11364",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 587",
+    "zip_code": "11364",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 588",
+    "zip_code": "11364",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 589",
+    "zip_code": "11365",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 590",
+    "zip_code": "11365",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 591",
+    "zip_code": "11365",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 592",
+    "zip_code": "11365",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 593",
+    "zip_code": "11365",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 594",
+    "zip_code": "11365",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 595",
+    "zip_code": "11365",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 596",
+    "zip_code": "11366",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 597",
+    "zip_code": "11366",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 598",
+    "zip_code": "11366",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 599",
+    "zip_code": "11366",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 600",
+    "zip_code": "11366",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 601",
+    "zip_code": "11366",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 602",
+    "zip_code": "11367",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 603",
+    "zip_code": "11367",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 604",
+    "zip_code": "11367",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 605",
+    "zip_code": "11367",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 606",
+    "zip_code": "11367",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 607",
+    "zip_code": "11367",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 608",
+    "zip_code": "11367",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 609",
+    "zip_code": "11367",
+    "county": "Queens"
+  },
+  {
+    "entity_name": "Store 610",
+    "zip_code": "10301",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 611",
+    "zip_code": "10301",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 612",
+    "zip_code": "10301",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 613",
+    "zip_code": "10302",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 614",
+    "zip_code": "10302",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 615",
+    "zip_code": "10302",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 616",
+    "zip_code": "10303",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 617",
+    "zip_code": "10303",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 618",
+    "zip_code": "10303",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 619",
+    "zip_code": "10303",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 620",
+    "zip_code": "10303",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 621",
+    "zip_code": "10304",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 622",
+    "zip_code": "10304",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 623",
+    "zip_code": "10304",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 624",
+    "zip_code": "10305",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 625",
+    "zip_code": "10305",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 626",
+    "zip_code": "10305",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 627",
+    "zip_code": "10306",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 628",
+    "zip_code": "10306",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 629",
+    "zip_code": "10306",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 630",
+    "zip_code": "10306",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 631",
+    "zip_code": "10306",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 632",
+    "zip_code": "10307",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 633",
+    "zip_code": "10307",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 634",
+    "zip_code": "10307",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 635",
+    "zip_code": "10307",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 636",
+    "zip_code": "10307",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 637",
+    "zip_code": "10308",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 638",
+    "zip_code": "10308",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 639",
+    "zip_code": "10309",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 640",
+    "zip_code": "10309",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 641",
+    "zip_code": "10309",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 642",
+    "zip_code": "10309",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 643",
+    "zip_code": "10309",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 644",
+    "zip_code": "10309",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 645",
+    "zip_code": "10310",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 646",
+    "zip_code": "10310",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 647",
+    "zip_code": "10310",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 648",
+    "zip_code": "10310",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 649",
+    "zip_code": "10310",
+    "county": "Staten Island"
+  },
+  {
+    "entity_name": "Store 650",
+    "zip_code": "10310",
+    "county": "Staten Island"
+  }
+]
