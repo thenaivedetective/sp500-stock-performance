@@ -161,57 +161,82 @@ print(f"  Non-Desert Zips  → Positive: {(df_tweets[df_tweets['is_food_desert_z
 print()
 
 # ===================================================================
-# STEP 4: TRANSFER ENTROPY (Discussion → Voting Over Time)
+# STEP 4: MUTUAL INFORMATION (Borough ↔ Sentiment)
 # ===================================================================
 
-print("\nStep 2.4: Transfer Entropy (Food Discussion → Voting Intention)")
+print("\nStep 2.4: Mutual Information (Borough ↔ Sentiment)")
 print("-"*100)
 
-# Aggregate by week
-df_tweets['date'] = pd.to_datetime(df_tweets['date'])
-df_tweets['week'] = df_tweets['date'].dt.isocalendar().week
+# Contingency table: borough x sentiment
+ct_borough = pd.crosstab(df_tweets['borough'], df_tweets['sentiment'], normalize='all')
+p_borough = df_tweets['borough'].value_counts(normalize=True)
+p_sentiment = df_tweets['sentiment'].value_counts(normalize=True)
 
-weekly = df_tweets.groupby('week').agg({
-    'tweet_id': 'count',
-    'sentiment': lambda x: (x == 'positive').mean()
-}).rename(columns={'tweet_id': 'tweet_volume', 'sentiment': 'positive_pct'})
+MI_borough_sentiment = 0
+for borough in ct_borough.index:
+    for sentiment in ct_borough.columns:
+        p_xy = ct_borough.loc[borough, sentiment]
+        p_x = p_borough[borough]
+        p_y = p_sentiment[sentiment]
+        if p_xy > 0:
+            MI_borough_sentiment += p_xy * np.log2(p_xy / (p_x * p_y))
 
-weekly['positive_pct_shifted'] = weekly['positive_pct'].shift(1)
+print(f"MI(Borough; Sentiment) = {MI_borough_sentiment:.4f} bits")
+print(f"Interpretation: {'Weak' if MI_borough_sentiment < 0.01 else 'Moderate' if MI_borough_sentiment < 0.05 else 'Strong'} relationship")
 
-# Simple transfer entropy approximation
-# TE ≈ correlation between food discussion volume at t and support at t+1
-from scipy.stats import pearsonr
-
-if len(weekly) > 2:
-    # Correlation: volume(t) with support(t+1)
-    valid_weeks = weekly.dropna()
-    if len(valid_weeks) > 2:
-        corr_forward, p_val = pearsonr(
-            valid_weeks['tweet_volume'].iloc[:-1],
-            valid_weeks['positive_pct'].iloc[1:]
-        )
-        
-        # Rough TE approximation (not exact but illustrative)
-        TE_approx = max(0, -0.5 * np.log2(1 - corr_forward**2) if abs(corr_forward) < 0.99 else 1.0)
-        
-        print(f"Transfer Entropy (approximate): TE ≈ {TE_approx:.4f} bits")
-        print(f"Forward correlation: {corr_forward:.3f} (p = {p_val:.3f})")
-        print(f"Interpretation: Food policy discussion {'does' if TE_approx > 0.1 else 'does not'} predict future support")
-    else:
-        print("Insufficient data for TE calculation")
-        TE_approx = 0
-else:
-    print("Insufficient weekly data")
-    TE_approx = 0
+# Show most positive/negative boroughs
+print("\nSentiment by Borough:")
+for borough in ['Manhattan', 'Brooklyn', 'Bronx', 'Queens', 'Staten Island']:
+    if borough in df_tweets['borough'].values:
+        b_data = df_tweets[df_tweets['borough'] == borough]
+        pct_pos = (b_data['sentiment'] == 'positive').mean() * 100
+        print(f"  {borough:15} {pct_pos:5.1f}% positive")
 
 print()
 
 # ===================================================================
-# STEP 5: CREATE COMPREHENSIVE VISUALIZATIONS
+# STEP 5: MUTUAL INFORMATION (Topic ↔ Sentiment)
 # ===================================================================
 
-print("\nStep 2.5: Creating Comprehensive Visualizations")
+print("\nStep 2.5: Mutual Information (Topic ↔ Sentiment)")
 print("-"*100)
+
+# Contingency table: topic x sentiment
+ct_topic = pd.crosstab(df_tweets['topic'], df_tweets['sentiment'], normalize='all')
+p_topic = df_tweets['topic'].value_counts(normalize=True)
+
+MI_topic_sentiment = 0
+for topic in ct_topic.index:
+    for sentiment in ct_topic.columns:
+        p_xy = ct_topic.loc[topic, sentiment]
+        p_x = p_topic[topic]
+        p_y = p_sentiment[sentiment]
+        if p_xy > 0:
+            MI_topic_sentiment += p_xy * np.log2(p_xy / (p_x * p_y))
+
+print(f"MI(Topic; Sentiment) = {MI_topic_sentiment:.4f} bits")
+print(f"Interpretation: {'Weak' if MI_topic_sentiment < 0.01 else 'Moderate' if MI_topic_sentiment < 0.05 else 'Strong'} relationship")
+
+# Show sentiment by topic
+print("\nSentiment by Topic:")
+for topic in ['city_groceries', 'food_deserts', 'affordability', 'economics', 'other']:
+    if topic in df_tweets['topic'].values:
+        t_data = df_tweets[df_tweets['topic'] == topic]
+        pct_pos = (t_data['sentiment'] == 'positive').mean() * 100
+        print(f"  {topic:20} {pct_pos:5.1f}% positive")
+
+print()
+
+# ===================================================================
+# STEP 6: CREATE COMPREHENSIVE VISUALIZATIONS
+# ===================================================================
+
+print("\nStep 2.6: Creating Comprehensive Visualizations")
+print("-"*100)
+
+# Prepare week column for time series visualization
+df_tweets['date'] = pd.to_datetime(df_tweets['date'])
+df_tweets['week'] = df_tweets['date'].dt.isocalendar().week
 
 sns.set_style("whitegrid")
 fig = plt.figure(figsize=(20, 12))
@@ -307,12 +332,16 @@ REAL DATA ANALYSIS (Store & Census Data):
 
 SIMULATED TWITTER ANALYSIS (Methodology Demonstration):
 • Twitter Sentiment Entropy: H = {H_sentiment:.3f} bits ({H_norm_sent:.1f}% of max)
+  → High entropy = divided public opinion on Mamdani's food policy
   
 • Mutual Information (Food Desert ↔ Support): MI = {MI_desert_support:.3f} bits
-  → Shows {('weak' if MI_desert_support < 0.1 else 'moderate' if MI_desert_support < 0.5 else 'strong')} correlation between living in food desert and Mamdani support
+  → {('Weak' if MI_desert_support < 0.1 else 'Moderate' if MI_desert_support < 0.5 else 'Strong')} relationship between desert status and support
   
-• Transfer Entropy (Discussion → Voting): TE ≈ {TE_approx:.3f} bits
-  → Food policy discussion {'does' if TE_approx > 0.1 else 'does not significantly'} predict future voting shifts
+• Mutual Information (Borough ↔ Sentiment): MI = {MI_borough_sentiment:.3f} bits
+  → {('Weak' if MI_borough_sentiment < 0.01 else 'Moderate' if MI_borough_sentiment < 0.05 else 'Strong')} geographic variation in sentiment
+  
+• Mutual Information (Topic ↔ Sentiment): MI = {MI_topic_sentiment:.3f} bits
+  → {('Weak' if MI_topic_sentiment < 0.01 else 'Moderate' if MI_topic_sentiment < 0.05 else 'Strong')} relationship between discussion topic and opinion
 
 ⚠️ LIMITATION: Twitter data is SIMULATED for methodology demonstration
    Real Twitter Academic API discontinued 2023; current cost $5,000/month
@@ -334,7 +363,8 @@ twitter_results = {
     'sentiment_entropy_bits': float(H_sentiment),
     'sentiment_entropy_normalized_pct': float(H_norm_sent),
     'mutual_information_desert_support': float(MI_desert_support),
-    'transfer_entropy_approx': float(TE_approx),
+    'mutual_information_borough_sentiment': float(MI_borough_sentiment),
+    'mutual_information_topic_sentiment': float(MI_topic_sentiment),
     'data_limitation': 'SIMULATED - Twitter Academic API unavailable, costs $5000/month'
 }
 

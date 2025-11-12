@@ -10,7 +10,7 @@
 
 ## 📊 Project Overview
 
-This project applies advanced information theory methods (Shannon Entropy, Mutual Information, KL Divergence, Conditional Entropy, Transfer Entropy) to analyze:
+This project applies advanced information theory methods (Shannon Entropy, Mutual Information, KL Divergence, Conditional Entropy) to analyze:
 
 1. **Food access inequality** across 190 NYC zip codes using **REAL data**
 2. **Electoral behavior** related to food policy using simulated Twitter data
@@ -134,11 +134,11 @@ requests
 **Impact:**
 - Section 4.6 of the report demonstrates methodology ONLY
 - Results cannot make causal claims about the real 2025 mayoral election
-- All information-theoretic methods (Transfer Entropy, MI, Sentiment Entropy) are mathematically sound and can be applied to real data
+- All information-theoretic methods (Mutual Information, Sentiment Entropy) are mathematically sound and can be applied to real data
 
 **What's Valid:**
 - The methodology demonstrated is academically rigorous
-- Shannon Entropy, MI, TE calculations are correct
+- Shannon Entropy and Mutual Information calculations are correct
 - Can be directly applied to real Twitter data if API access is obtained
 - Simulation parameters are realistic (based on research literature)
 
@@ -204,19 +204,6 @@ requests
 - High reduction: First variable is very informative
 - Low reduction: First variable doesn't help much
 
-### 5. Transfer Entropy
-
-**What it measures:** Information flow from X to Y over time (causation)
-
-**Formula:** `TE(X→Y) ≈ -0.5 × log₂(1 - r²)` where r = correlation(X_t, Y_t+1)
-
-**Example:**
-- **TE(Discussion → Voting) = 0.023 bits:** Weak causal flow (*simulated data*)
-
-**Interpretation:**
-- TE > 0.1: Significant information transfer (X causes Y)
-- TE < 0.1: Weak or no causal relationship
-
 ---
 
 ## 📈 Key Visualizations
@@ -279,7 +266,7 @@ Bell System Technical Journal, 27(3), 379–423.
 3. ✅ Calculated Shannon Entropy (uncertainty measure)
 4. ✅ Computed Mutual Information (income-access relationship)
 5. ✅ Applied KL Divergence (borough comparisons)
-6. ✅ Demonstrated Transfer Entropy methodology (*simulated Twitter data*)
+6. ✅ Calculated multiple Mutual Information measures for Twitter (*simulated data*)
 7. ✅ Created comprehensive visualizations
 
 **Key finding:**
@@ -310,11 +297,11 @@ Traditional food desert research uses:
 
 **Information theory adds:**
 - **Bits-based quantification** of uncertainty (Shannon Entropy)
-- **Directionality** in relationships (Transfer Entropy shows X → Y)
+- **Relationship quantification** in bits (Mutual Information)
 - **Distribution comparisons** without parametric assumptions (KL Divergence)
 - **Uncertainty decomposition** (Conditional Entropy)
 
-**Novel application:** First known use of Transfer Entropy for food policy electoral analysis.
+**Novel application:** First known use of Mutual Information to analyze food policy electoral sentiment patterns.
 
 ### Data Processing Pipeline
 
@@ -387,9 +374,6 @@ for x in ct.index:
 - Walker et al. (2010). Disparities and access to healthy food (review)
 - USDA Food Access Research Atlas (2023) - official definitions
 
-### Transfer Entropy Applications
-- Schreiber (2000). Measuring Information Transfer (original paper)
-- Bossomaier et al. (2016). Transfer Entropy (comprehensive guide)
 
 ---
 
@@ -465,7 +449,7 @@ This project was created as a final project for SSIE-500 (Industrial Engineering
 - [x] Created simulated Twitter data (*with clear limitations note*)
 - [x] Calculated Twitter sentiment entropy
 - [x] Calculated MI (food desert ↔ support)
-- [x] Calculated Transfer Entropy (approximate)
+- [x] Calculated Mutual Information (Borough ↔ Sentiment, Topic ↔ Sentiment)
 - [x] Generated comprehensive visualizations
 - [x] Wrote complete academic report
 - [x] Compiled APA references

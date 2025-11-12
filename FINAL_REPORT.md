@@ -3,7 +3,7 @@
 
 **Project Type:** SSIE-500 Final Project  
 **Date:** November 2025  
-**Analysis Method:** Information Theory (Shannon Entropy, Mutual Information, KL Divergence, Conditional Entropy, Transfer Entropy)
+**Analysis Method:** Information Theory (Shannon Entropy, Mutual Information, KL Divergence, Conditional Entropy)
 
 ---
 
@@ -33,7 +33,7 @@ Traditional food desert research employs spatial analysis and demographic correl
 2. **Does income predict food access?** (Mutual Information)
 3. **How different are the boroughs from each other?** (KL Divergence)
 4. **Can knowing demographic factors reduce uncertainty about food access?** (Conditional Entropy)
-5. **Did food policy discussion influence electoral outcomes?** (Transfer Entropy) *[Methodology demonstration with simulated data]*
+5. **What factors correlate with public opinion on food policy?** (Mutual Information - Twitter simulation) *[Methodology demonstration with simulated data]*
 
 ### 1.3 Significance
 
@@ -85,7 +85,7 @@ Twitter data in this project is **SIMULATED** for methodology demonstration purp
 - Pro tier: $5,000/month for 2 million tweets
 - Enterprise tier: $42,000-$210,000/month
 
-**Methodology Validity:** The information-theoretic methods demonstrated (Transfer Entropy, sentiment analysis, temporal correlation) are mathematically sound and widely used in academic research. These methods can be directly applied to real Twitter data if API access is obtained through institutional funding or third-party data providers.
+**Methodology Validity:** The information-theoretic methods demonstrated (Mutual Information, sentiment analysis, statistical correlation) are mathematically sound and widely used in academic research. These methods can be directly applied to real Twitter data if API access is obtained through institutional funding or third-party data providers.
 
 **Simulation Characteristics:**
 - 25,552 tweets generated for Jan 1 - Nov 5, 2025
@@ -189,20 +189,6 @@ Information Gain = H(Y) - H(Y|X)
 - **Low information gain:** First variable doesn't help prediction
 
 **Application:** Measured how much knowing income reduces uncertainty about food access.
-
-#### 3.2.5 Transfer Entropy (Approximate)
-
-Transfer entropy measures information flow from one time series to another (Schreiber, 2000):
-
-\`\`\`
-TE(X→Y) ≈ -0.5 × log₂(1 - r²)
-
-Where r = correlation(X_t, Y_t+1)
-\`\`\`
-
-**Note:** This is a simplified approximation. True transfer entropy requires more complex calculation.
-
-**Application:** Estimated whether food policy discussion volume predicted future support levels *[Using simulated data]*.
 
 ---
 
@@ -341,17 +327,35 @@ Measuring divergence from NYC average pattern:
 
 **Policy Insight:** While aggregate MI is low, the **31 percentage point difference** in support between desert and non-desert areas suggests food policy strongly resonated with affected populations.
 
-#### Transfer Entropy: Discussion → Voting
+#### Mutual Information: Borough ↔ Sentiment
 
-**TE(Discussion → Support) ≈ 0.0229 bits**  
-**Forward correlation: r = -0.177 (p = 0.257)**
+**MI(Borough; Sentiment) = 0.0007 bits**
 
-**Interpretation:** Food policy discussion volume does NOT significantly predict future support levels in this simulation. This could indicate:
-1. Voters already decided (discussion confirms rather than persuades)
-2. Other campaign issues dominated
-3. Simulation parameters don't capture real dynamics
+**Interpretation:** **Very weak relationship** - location doesn't predict opinion.
 
-**Methodological Note:** Transfer entropy is highly sensitive to time lag and data granularity. Real analysis would require daily or hourly tweet volumes, not weekly aggregates.
+**Sentiment by Borough:**
+- Manhattan: 48.6% positive
+- Bronx: 46.9% positive  
+- Staten Island: 45.9% positive
+- Queens: 45.4% positive
+- Brooklyn: 45.2% positive
+
+**Finding:** All boroughs show similar sentiment patterns (45-49% positive), indicating food policy resonated citywide rather than in specific geographic areas. The 3.4 percentage point range is minimal variation.
+
+#### Mutual Information: Topic ↔ Sentiment
+
+**MI(Topic; Sentiment) = 0.0004 bits**
+
+**Interpretation:** **Very weak relationship** - discussion topic doesn't predict sentiment.
+
+**Sentiment by Topic:**
+- Economics: 48.2% positive
+- Food deserts: 46.5% positive
+- City groceries: 46.3% positive
+- Affordability: 46.1% positive
+- Other: 44.5% positive
+
+**Finding:** All topics generate similar sentiment distributions (44-48% positive). Whether people discussed economics, food deserts, or city-owned groceries, their opinions remained consistent. This suggests Mamdani's messaging was coherent across different framing approaches.
 
 ---
 
@@ -376,7 +380,7 @@ Measuring divergence from NYC average pattern:
 
 4. **Methodology successfully demonstrated for electoral analysis** *[with simulated data]*:
    - Information theory can quantify relationship between food access and political behavior
-   - Transfer entropy can detect causal information flow in time series
+   - Mutual information reveals weak geographic and topical variation in sentiment
    - Methods are valid and ready for application to real Twitter data
 
 ### 5.2 Comparison to Existing Literature
@@ -393,7 +397,7 @@ Traditional food desert research (Walker et al., 2010) emphasizes:
 3. **Borough comparison:** KL divergence identifies which areas differ from citywide patterns
 4. **Uncertainty decomposition:** Conditional entropy shows how much each factor explains
 
-**Novel application:** First known use of transfer entropy to analyze food policy electoral dynamics.
+**Novel application:** First known use of mutual information to analyze food policy electoral sentiment patterns.
 
 ### 5.3 Limitations
 
@@ -426,11 +430,6 @@ Traditional food desert research (Walker et al., 2010) emphasizes:
 **KL Divergence:**
 - Asymmetric measure (KL(P||Q) ≠ KL(Q||P))
 - Sensitive to zero probabilities (requires smoothing)
-
-**Transfer Entropy:**
-- Approximation used (simplified correlation-based, not true TE)
-- Requires large time-series datasets for reliable estimation
-- Sensitive to time lag selection
 
 #### 5.3.3 Twitter Data Limitation
 
@@ -491,7 +490,7 @@ Based on real data findings:
 
 **Methodological Advances:**
 1. Spatial entropy: Account for geographic clustering of deserts
-2. True transfer entropy calculation (not correlation approximation)
+2. Advanced mutual information with continuous variables  
 3. Causal inference methods (Granger causality, convergent cross-mapping)
 4. Machine learning: Predict food access from multi-variable models
 
@@ -507,7 +506,7 @@ This project demonstrates the application of information theory—traditionally 
 4. **Income weakly predicts food access** (MI = 0.098 bits, only 15.7% uncertainty reduction), challenging assumptions about poverty-food desert relationships
 5. **Borough-specific strategies needed** based on KL divergence analysis
 
-The Twitter analysis component, while using simulated data due to API cost constraints, successfully demonstrates methodology for analyzing electoral behavior related to food policy. Transfer entropy, mutual information, and temporal sentiment analysis can quantify information flow from policy discussion to voting behavior when real data becomes available.
+The Twitter analysis component, while using simulated data due to API cost constraints, successfully demonstrates methodology for analyzing electoral behavior related to food policy. Mutual information and sentiment analysis can quantify relationships between food access, geography, discussion topics, and political opinions when real data becomes available.
 
 **Significance:** This project showcases advanced quantitative methods applicable to real-world policy challenges, bridging supply chain analytics, urban planning, and political science. The information-theoretic toolkit provides rigorous, bits-based measures of uncertainty, relationships, and differences that complement traditional statistical approaches.
 
@@ -561,12 +560,6 @@ KL(P||Q) = Σ_{i} p(i) log₂(p(i) / q(i))
 ```
 H(Y|X) = Σ_{x} p(x) H(Y|X=x)
        = H(X,Y) - H(X)
-```
-
-**Transfer Entropy (Simplified):**
-```
-TE_{X→Y} ≈ -0.5 log₂(1 - ρ²)
-where ρ = corr(X_t, Y_{t+1})
 ```
 
 ### Appendix B: Data Files Generated

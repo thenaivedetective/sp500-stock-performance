@@ -2,6 +2,7 @@
   "sentiment_entropy_bits": 1.5062936491546084,
   "sentiment_entropy_normalized_pct": 95.03654808673684,
   "mutual_information_desert_support": 0.009467823997584226,
-  "transfer_entropy_approx": 0.022854627518651763,
+  "mutual_information_borough_sentiment": 0.0006915893728537897,
+  "mutual_information_topic_sentiment": 0.0004378090668534847,
   "data_limitation": "SIMULATED - Twitter Academic API unavailable, costs $5000/month"
 }
