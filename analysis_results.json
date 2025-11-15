@@ -1,8 +1,0 @@
-{
-  "overall_entropy_bits": 0.6247387897822516,
-  "overall_entropy_normalized_pct": 31.23693948911258,
-  "mutual_information_income_access": 0.09801588054588553,
-  "conditional_entropy": 0.5267229092363661,
-  "information_gain": 0.0980158805458855,
-  "uncertainty_reduction_pct": 15.68909793164088
-}
