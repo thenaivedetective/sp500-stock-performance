@@ -12,23 +12,23 @@ Academic project repository for SSIE500 course.
 - Author attribution: "Group 2" (not individual name)
 - Institution: Binghamton University
 
-## Current Project: Daily Routine Regularity and Health Outcomes
+## Current Project: Routine Regularity and Health Outcomes
 
 ### Research Question
-Does the Shannon entropy of daily activity patterns predict health outcomes?
+Does the average Shannon entropy of activity patterns across time slots predict health outcomes (sleep quality, mood stability) in individuals monitored via wearable devices?
 
 ### Methodology
 - **Data Source**: Fitbit minute-by-minute METs data from two participants (FS1987, FS2116)
-- **Approach**: Calculate Shannon entropy for each day's activity distribution
+- **Approach**: Temporal entropy analysis - for each minute of the day (0-1439), calculate Shannon entropy across all days
 - **Activity Levels**: 4 discrete levels (Resting ≤10, Light 10-15, Moderate 15-30, Vigorous >30 METs)
-- **Entropy Formula**: H(X) = -Σ p(x)log₂(p(x))
-- **Interpretation**: Lower entropy = less varied activities (sedentary); Higher entropy = more varied (balanced)
+- **Entropy Formula**: H(t) = -Σ p_t(x)log₂(p_t(x)) for each time slot t, then average across all 1440 minutes
+- **Interpretation**: Lower temporal entropy = regular routine (same activity at same time daily); Higher temporal entropy = chaotic schedule (unpredictable patterns)
 
 ### Key Findings (Last Updated: Nov 18, 2025)
-- **FS1987**: Average entropy = 0.786 bits (low variety, potentially sedentary lifestyle)
-- **FS2116**: Average entropy = 0.991 bits (moderate variety, more balanced)
-- **Difference**: 26% higher entropy in FS2116
-- **Health Implication**: FS2116 shows healthier activity patterns with more varied daily activities
+- **FS1987**: Average temporal entropy = 0.9985 bits (Moderately Regular Routine, Good health prediction)
+- **FS2116**: Average temporal entropy = 1.1741 bits (Somewhat Irregular Routine, Fair health prediction)
+- **Difference**: 15% lower entropy in FS1987
+- **Health Implication**: FS1987 maintains more regular daily routine, associated with better sleep quality, mood stability, and metabolic health
 
 ## System Architecture
 - **Language**: Python 3
@@ -42,33 +42,33 @@ Does the Shannon entropy of daily activity patterns predict health outcomes?
 ## Project Files
 
 ### Code
-- `daily_routine_entropy_analysis.py` - Main analysis script
+- `temporal_entropy_analysis.py` - Main temporal entropy analysis script
 
 ### Data Files (Generated)
-- `FS1987_daily_entropy.csv` - Daily entropy values for participant FS1987
-- `FS2116_daily_entropy.csv` - Daily entropy values for participant FS2116
-- `entropy_summary.csv` - Summary statistics for both participants
+- `FS1987_temporal_entropy.csv` - Entropy for all 1440 time slots (FS1987)
+- `FS2116_temporal_entropy.csv` - Entropy for all 1440 time slots (FS2116)
+- `temporal_entropy_summary.csv` - Summary statistics for both participants
 
 ### Visualizations
-- `daily_entropy_timeseries.png` - Daily entropy over time for both participants
-- `entropy_comparison.png` - Bar chart comparing average entropy
-- `entropy_distribution.png` - Histogram distribution of daily entropy values
+- `temporal_entropy_profile.png` - 24-hour entropy profile for both participants
+- `temporal_entropy_comparison.png` - Bar chart comparing average temporal entropy
+- `temporal_entropy_by_hour.png` - Hourly average temporal entropy
 
 ### Report
 - `Final_Project_Report.tex` - LaTeX source
-- `Final_Project_Report.pdf` - Complete 9-page PDF report (584KB)
+- `Final_Project_Report.pdf` - Complete 9-page PDF report (1.3MB)
 
 ### Raw Data (Input)
 - `FS1987-intraday.csv` - Fitbit data for participant FS1987
 - `FS2116-intraday.csv` - Fitbit data for participant FS2116
 
 ## Next Steps
-- Research Question #1: ✅ COMPLETE
+- Research Question #1: ✅ COMPLETE (Temporal Entropy - Routine Regularity)
 - Research Question #2: Available for development
 - Research Question #3: Available for development
 
 ## Technical Notes
-- Data has significant null values (~92% missing in FS1987)
-- METs values heavily skewed (77% at baseline METs=10)
-- Discretization adjusted to actual Fitbit data range
-- Final implementation passed architect review
+- Temporal entropy measures routine regularity across days, not daily activity variety
+- Single-observation time slots treated as 0 entropy (perfect regularity)
+- All 1440 minutes of day included in average calculation
+- Final implementation passed architect review after critical fix
