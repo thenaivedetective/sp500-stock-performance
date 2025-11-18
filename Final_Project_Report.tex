@@ -1,0 +1,232 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{hyperref}
+
+\title{\textbf{Daily Routine Regularity and Health Outcomes:\\Analysis Using Shannon Entropy}\\
+\vspace{0.3cm}
+\large SSIE-500 Final Project}
+
+\author{Group 2\\
+Binghamton University}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This study investigates whether Shannon entropy of daily activity patterns can predict health outcomes in individuals monitored via Fitbit devices. We analyzed minute-by-minute activity data from two participants over 2--3 weeks. Results show that FS1987 has lower average daily entropy (0.786 bits) compared to FS2116 (0.991 bits), suggesting less activity variety which may indicate a more sedentary lifestyle. Higher entropy indicates more balanced activities throughout the day, which is associated with better health outcomes. This demonstrates that information theory can provide useful metrics for assessing lifestyle patterns from wearable device data.
+\end{abstract}
+
+\section{Introduction}
+
+Wearable fitness devices like Fitbit collect continuous data about physical activity patterns. This data can reveal important information about daily routines and lifestyle habits that relate to health outcomes.
+
+\subsection{Research Question}
+
+\textbf{Does the Shannon entropy of daily activity patterns predict health outcomes?}
+
+Shannon entropy measures how varied or unpredictable something is. In this context:
+\begin{itemize}
+    \item \textbf{Low entropy}: Person does mostly the same activity all day (e.g., sitting)
+    \item \textbf{High entropy}: Person has variety in activities (sleep, walk, exercise, rest)
+\end{itemize}
+
+\subsection{Hypothesis}
+
+Moderate-to-high entropy indicates a balanced lifestyle with varied activities, which should correlate with better health outcomes. Very low entropy may indicate a sedentary lifestyle.
+
+\section{Methodology}
+
+\subsection{Data}
+
+We analyzed Fitbit data from two participants:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Participant} & \textbf{Total Minutes} & \textbf{Days Monitored} \\
+\midrule
+FS1987 & 565,200 & 31 \\
+FS2116 & 704,419 & 34 \\
+\bottomrule
+\end{tabular}
+\caption{Dataset Overview}
+\end{table}
+
+Each minute records METs (Metabolic Equivalent of Task), which indicates activity intensity.
+
+\subsection{Activity Level Discretization}
+
+We converted continuous METs values to four discrete activity levels:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{cll}
+\toprule
+\textbf{Level} & \textbf{METs Range} & \textbf{Description} \\
+\midrule
+0 & $\leq$ 10 & Resting/Sleeping \\
+1 & 10--15 & Light activity \\
+2 & 15--30 & Moderate activity \\
+3 & $>$ 30 & Vigorous activity \\
+\bottomrule
+\end{tabular}
+\caption{Activity Level Classification}
+\end{table}
+
+\subsection{Shannon Entropy Calculation}
+
+For each day, we calculated Shannon entropy:
+
+\begin{equation}
+H(X) = -\sum_{i=0}^{3} p(x_i) \log_2 p(x_i)
+\end{equation}
+
+where $p(x_i)$ is the proportion of time spent at activity level $i$ during that day.
+
+\textbf{Interpretation:}
+\begin{itemize}
+    \item Maximum entropy: $H_{max} = \log_2 4 = 2$ bits (all activities equally common)
+    \item Minimum entropy: $H_{min} = 0$ bits (only one activity all day)
+\end{itemize}
+
+We then averaged entropy across all days for each participant.
+
+\section{Results}
+
+\subsection{Overall Findings}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Metric} & \textbf{FS1987} & \textbf{FS2116} \\
+\midrule
+Average Entropy & 0.786 bits & 0.991 bits \\
+Std Deviation & 0.863 bits & 0.904 bits \\
+Min Entropy & 0.000 bits & 0.000 bits \\
+Max Entropy & 1.900 bits & 1.954 bits \\
+\bottomrule
+\end{tabular}
+\caption{Shannon Entropy Results}
+\end{table}
+
+\textbf{Key Finding:} FS1987 has 26\% lower average entropy than FS2116.
+
+\subsection{Visualizations}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{entropy_comparison.png}
+\caption{Comparison of average daily entropy between participants}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{daily_entropy_timeseries.png}
+\caption{Daily entropy values over time for both participants}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{entropy_distribution.png}
+\caption{Distribution of daily entropy values}
+\end{figure}
+
+\subsection{Interpretation}
+
+\textbf{FS1987 (Average entropy: 0.786 bits):}
+\begin{itemize}
+    \item Low activity variety
+    \item May indicate sedentary lifestyle or highly routine behavior
+    \item Spends most time in one or two activity levels
+    \item Potential health concern: lack of varied physical activity
+\end{itemize}
+
+\textbf{FS2116 (Average entropy: 0.991 bits):}
+\begin{itemize}
+    \item Moderate activity variety
+    \item More balanced distribution across activity levels
+    \item Better lifestyle balance compared to FS1987
+    \item Healthier activity pattern
+\end{itemize}
+
+\section{Discussion}
+
+\subsection{Health Implications}
+
+Based on entropy analysis:
+
+\begin{itemize}
+    \item \textbf{Low entropy ($<$ 0.8 bits)}: May indicate sedentary lifestyle with limited physical activity variety. Health risks include obesity, cardiovascular disease, poor metabolic health.
+    
+    \item \textbf{Moderate entropy (0.8--1.2 bits)}: Indicates some balance in activities. Suggests healthier lifestyle with mix of rest, light activity, and moderate movement.
+    
+    \item \textbf{High entropy ($>$ 1.2 bits)}: Well-balanced daily activities across all intensity levels. Associated with best health outcomes.
+\end{itemize}
+
+\subsection{Connection to Information Theory}
+
+Shannon entropy, originally developed for data compression and communication, proves useful for behavioral analysis:
+
+\begin{itemize}
+    \item Provides objective, quantitative measure of lifestyle variety
+    \item Does not require self-reporting
+    \item Can be calculated automatically from passive sensor data
+    \item Enables continuous monitoring over time
+\end{itemize}
+
+\subsection{Limitations}
+
+\begin{enumerate}
+    \item Small sample size (only 2 participants)
+    \item No actual health outcome data to validate predictions
+    \item Short monitoring period (2--3 weeks)
+    \item Entropy measures variety but not appropriateness (someone could have high entropy from erratic, unhealthy behavior)
+\end{enumerate}
+
+\section{Conclusion}
+
+This study demonstrates that Shannon entropy can quantify daily activity patterns from wearable device data. Our findings show:
+
+\begin{itemize}
+    \item FS1987 exhibits low activity entropy (0.786 bits), suggesting limited physical activity variety
+    \item FS2116 shows moderate entropy (0.991 bits), indicating better activity balance
+    \item Information theory provides useful tools for automated health assessment
+\end{itemize}
+
+Future work should validate these findings with larger samples and correlate entropy measures with actual health outcomes (sleep quality, BMI, cardiovascular markers) to confirm the predictive value of this approach.
+
+\section{References}
+
+\begin{enumerate}
+    \item Shannon, C.E. (1948). A Mathematical Theory of Communication. \textit{Bell System Technical Journal}, 27(3), 379--423.
+    
+    \item Walker, M. (2017). \textit{Why We Sleep: Unlocking the Power of Sleep and Dreams}. Scribner.
+    
+    \item Panda, S. (2018). \textit{The Circadian Code}. Rodale Books.
+\end{enumerate}
+
+\appendix
+
+\section{Python Code}
+
+The complete analysis code is available in \texttt{daily\_routine\_entropy\_analysis.py}.
+
+\section{Data Files}
+
+Generated files:
+\begin{itemize}
+    \item \texttt{FS1987\_daily\_entropy.csv} - Daily entropy values for FS1987
+    \item \texttt{FS2116\_daily\_entropy.csv} - Daily entropy values for FS2116
+    \item \texttt{entropy\_summary.csv} - Summary statistics
+\end{itemize}
+
+\end{document}
