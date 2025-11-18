@@ -24,7 +24,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from collections import Counter
 import math
-from datetime import datetime, time
 
 # Set plotting style
 plt.style.use('seaborn-v0_8-whitegrid')
@@ -81,16 +80,12 @@ print("  3 = Vigorous  (METs > 30)")
 print("\nSTEP 3: Extracting Time of Day from Timestamps")
 print("-"*80)
 
-def extract_minute_of_day(timestamp):
-    """Extract minute of day (0-1439) from timestamp"""
-    try:
-        dt = pd.to_datetime(timestamp)
-        return dt.hour * 60 + dt.minute
-    except:
-        return np.nan
+# Extract minute of day (0-1439)
+df1['timestamp'] = pd.to_datetime(df1['activity_date'])
+df1['minute_of_day'] = df1['timestamp'].dt.hour * 60 + df1['timestamp'].dt.minute
 
-df1['minute_of_day'] = df1['activity_date'].apply(extract_minute_of_day)
-df2['minute_of_day'] = df2['activity_date'].apply(extract_minute_of_day)
+df2['timestamp'] = pd.to_datetime(df2['activity_date'])
+df2['minute_of_day'] = df2['timestamp'].dt.hour * 60 + df2['timestamp'].dt.minute
 
 print(f"FS1987: Successfully extracted time for {df1['minute_of_day'].notna().sum():,} records")
 print(f"FS2116: Successfully extracted time for {df2['minute_of_day'].notna().sum():,} records")
@@ -101,55 +96,45 @@ print(f"FS2116: Successfully extracted time for {df2['minute_of_day'].notna().su
 print("\nSTEP 4: Calculating Temporal Entropy for Each Minute of Day")
 print("-"*80)
 
-def shannon_entropy(activities):
-    """Calculate Shannon entropy H(X) = -Σ p(x)log₂(p(x))"""
-    activities = [a for a in activities if not pd.isna(a)]
-    if len(activities) < 2:  # Need at least 2 observations
+def calculate_entropy(activity_series):
+    """Calculate Shannon entropy for a series of activities"""
+    # Remove NaN values
+    activities = activity_series.dropna()
+    if len(activities) < 2:
         return np.nan
     
-    counts = Counter(activities)
+    # Count occurrences
+    counts = activities.value_counts()
     total = len(activities)
     
+    # Calculate entropy
     entropy = 0
-    for count in counts.values():
+    for count in counts:
         if count > 0:
             p = count / total
-            entropy -= p * math.log2(p)
+            entropy -= p * np.log2(p)
     
     return entropy
 
-print("\nCalculating entropy for each of 1440 minutes...")
+print("Processing FS1987...")
+# Group by minute_of_day and calculate entropy for each
+df_temporal_1987 = df1.groupby('minute_of_day')['activity_level'].apply(
+    calculate_entropy
+).reset_index()
+df_temporal_1987.columns = ['minute_of_day', 'entropy']
+df_temporal_1987['hour'] = df_temporal_1987['minute_of_day'] // 60
+df_temporal_1987['minute'] = df_temporal_1987['minute_of_day'] % 60
 
-# For FS1987
-temporal_entropy_1987 = []
-for minute in range(1440):
-    # Get all activity levels that occurred at this minute across all days
-    activities_at_this_time = df1[df1['minute_of_day'] == minute]['activity_level']
-    entropy = shannon_entropy(activities_at_this_time)
-    temporal_entropy_1987.append({
-        'minute_of_day': minute,
-        'hour': minute // 60,
-        'minute': minute % 60,
-        'entropy': entropy
-    })
+print("Processing FS2116...")
+df_temporal_2116 = df2.groupby('minute_of_day')['activity_level'].apply(
+    calculate_entropy
+).reset_index()
+df_temporal_2116.columns = ['minute_of_day', 'entropy']
+df_temporal_2116['hour'] = df_temporal_2116['minute_of_day'] // 60
+df_temporal_2116['minute'] = df_temporal_2116['minute_of_day'] % 60
 
-df_temporal_1987 = pd.DataFrame(temporal_entropy_1987)
-
-# For FS2116
-temporal_entropy_2116 = []
-for minute in range(1440):
-    activities_at_this_time = df2[df2['minute_of_day'] == minute]['activity_level']
-    entropy = shannon_entropy(activities_at_this_time)
-    temporal_entropy_2116.append({
-        'minute_of_day': minute,
-        'hour': minute // 60,
-        'minute': minute % 60,
-        'entropy': entropy
-    })
-
-df_temporal_2116 = pd.DataFrame(temporal_entropy_2116)
-
-print(f"✓ Calculated entropy for 1440 time slots per participant")
+print(f"✓ Calculated entropy for {len(df_temporal_1987)} time slots (FS1987)")
+print(f"✓ Calculated entropy for {len(df_temporal_2116)} time slots (FS2116)")
 
 # ============================================================================
 # STEP 5: CALCULATE AVERAGE TEMPORAL ENTROPY
@@ -168,15 +153,17 @@ valid_2116 = df_temporal_2116['entropy'].notna().sum()
 print(f"\nParticipant FS1987:")
 print(f"  Average Temporal Entropy: {avg_1987:.4f} bits")
 print(f"  Std Deviation:            {std_1987:.4f} bits")
-print(f"  Valid time slots:         {valid_1987}/1440")
+print(f"  Valid time slots:         {valid_1987}")
 
 print(f"\nParticipant FS2116:")
 print(f"  Average Temporal Entropy: {avg_2116:.4f} bits")
 print(f"  Std Deviation:            {std_2116:.4f} bits")
-print(f"  Valid time slots:         {valid_2116}/1440")
+print(f"  Valid time slots:         {valid_2116}")
 
 difference = abs(avg_1987 - avg_2116)
-print(f"\nDifference: {difference:.4f} bits ({difference/max(avg_1987, avg_2116)*100:.1f}%)")
+pct_diff = difference / max(avg_1987, avg_2116) * 100
+
+print(f"\nDifference: {difference:.4f} bits ({pct_diff:.1f}%)")
 
 if avg_1987 < avg_2116:
     print("→ FS1987 has LOWER entropy = MORE REGULAR routine")
@@ -235,8 +222,8 @@ summary = pd.DataFrame({
 })
 summary.to_csv('temporal_entropy_summary.csv', index=False)
 
-print("✓ FS1987_temporal_entropy.csv (1440 time slots)")
-print("✓ FS2116_temporal_entropy.csv (1440 time slots)")
+print(f"✓ FS1987_temporal_entropy.csv ({len(df_temporal_1987)} time slots)")
+print(f"✓ FS2116_temporal_entropy.csv ({len(df_temporal_2116)} time slots)")
 print("✓ temporal_entropy_summary.csv")
 
 # ============================================================================
