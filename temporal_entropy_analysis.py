@@ -100,8 +100,14 @@ def calculate_entropy(activity_series):
     """Calculate Shannon entropy for a series of activities"""
     # Remove NaN values
     activities = activity_series.dropna()
-    if len(activities) < 2:
+    
+    # No data for this time slot
+    if len(activities) == 0:
         return np.nan
+    
+    # Only one observation = always the same activity = perfect regularity = 0 entropy
+    if len(activities) == 1:
+        return 0.0
     
     # Count occurrences
     counts = activities.value_counts()
