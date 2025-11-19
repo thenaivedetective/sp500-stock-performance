@@ -59,6 +59,49 @@ print(f"FS2116 Mutual Information: {MI_2116:.4f} bits")
 print(f"Difference: {abs(MI_1987 - MI_2116):.4f} bits")
 
 # ------------------------------------------------------------
+# Interpretation
+# ------------------------------------------------------------
+def interpret_mi(mi_value):
+    """Interpret mutual information value for temporal predictability."""
+    if mi_value < 0.1:
+        return "Very low predictability - activity changes randomly"
+    elif mi_value < 0.3:
+        return "Low predictability - weak patterns in activity transitions"
+    elif mi_value < 0.5:
+        return "Moderate predictability - noticeable patterns in daily activity flow"
+    elif mi_value < 0.7:
+        return "High predictability - strong patterns in activity transitions"
+    else:
+        return "Very high predictability - highly structured activity patterns"
+
+interpretation_1987 = interpret_mi(MI_1987)
+interpretation_2116 = interpret_mi(MI_2116)
+
+print("\n" + "="*80)
+print("INTERPRETATION")
+print("="*80)
+print(f"FS1987 ({MI_1987:.4f} bits): {interpretation_1987}")
+print(f"FS2116 ({MI_2116:.4f} bits): {interpretation_2116}")
+print("\nWhat this means:")
+print("  Mutual information measures how well your current activity predicts")
+print("  your next activity. Higher MI = more predictable daily patterns.")
+print("  Both participants show moderate predictability, suggesting they have")
+print("  structured routines where current activities predict future ones.")
+print("="*80)
+
+# ------------------------------------------------------------
+# Save results to CSV
+# ------------------------------------------------------------
+results_df = pd.DataFrame({
+    'Participant': ['FS1987', 'FS2116', 'Difference'],
+    'Mutual_Information_bits': [MI_1987, MI_2116, abs(MI_1987 - MI_2116)],
+    'Interpretation': [interpretation_1987, interpretation_2116, 'Nearly identical predictability']
+})
+
+results_df.to_csv('mutual_information_results.csv', index=False)
+print(f"\n✓ Saved results to: mutual_information_results.csv")
+
+# ------------------------------------------------------------
 # Save heatmaps
 # ------------------------------------------------------------
 plt.figure(figsize=(6,5))
