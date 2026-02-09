@@ -444,7 +444,7 @@ p.font.bold = True
 p.font.color.rgb = WHITE
 p.alignment = PP_ALIGN.CENTER
 p2 = tf.add_paragraph()
-p2.text = "Brand Equity Analysis: Disney & Media Companies"
+p2.text = "Brand Equity Analysis: The Walt Disney Company"
 p2.font.size = Pt(22)
 p2.font.color.rgb = ACCENT_GOLD
 p2.alignment = PP_ALIGN.CENTER
@@ -532,7 +532,7 @@ add_title_bar(slide, "Problem Statement")
 items = [
     ("Why Factor Analysis in Entertainment?", 18, True, DARK_BLUE),
     "",
-    "The entertainment industry (Disney, NBCUniversal, Warner Bros.) manages complex brand portfolios across multiple business segments",
+    "The Walt Disney Company manages a complex brand portfolio across multiple business segments",
     "",
     "Understanding which brand dimensions drive brand equity is critical for strategic decision-making",
     "",
@@ -698,14 +698,13 @@ items_left = [
     ("Four Business Segments:", 14, True, MEDIUM_BLUE),
     "Media Networks (ABC, ESPN, Disney Channel)",
     "Parks, Experiences & Products",
-    "Studio Entertainment (Pixar, Marvel, Lucasfilm)",
-    "Direct-to-Consumer (Disney+, Hulu)",
+    "Studio Entertainment",
+    "Direct-to-Consumer (Disney+)",
     "",
-    ("Competitors:", 14, True, MEDIUM_BLUE),
-    "NBCUniversal (Comcast) - Peacock, Universal Studios",
-    "Warner Bros. Discovery - HBO, DC Comics",
-    "Netflix, Amazon Prime Video",
-    "Paramount Global - CBS, MTV",
+    ("Why Disney?", 14, True, MEDIUM_BLUE),
+    "Brand value: $57.0 billion (Brand Finance, 2022)",
+    "Global presence across 6 continents",
+    "Nearly 100 years of brand heritage",
 ]
 add_content_box(slide, Inches(0.3), Inches(1.4), Inches(5.0), Inches(5.5), items_left, font_size=13, bullet=False)
 
@@ -1090,21 +1089,17 @@ items_left = [
 add_content_box(slide, Inches(0.3), Inches(1.4), Inches(4.8), Inches(5.5), items_left, font_size=12, bullet=False)
 
 items_right = [
-    ("Implications for Media Companies:", 16, True, DARK_BLUE),
+    ("Implications for Disney:", 16, True, DARK_BLUE),
     "",
     ("For Disney:", 14, True, MEDIUM_BLUE),
     "Invest in brand image (content quality, emotional storytelling)",
     "Build loyalty programs (Disney+, annual passes)",
     "",
-    ("For NBCUniversal:", 14, True, MEDIUM_BLUE),
-    "Strengthen brand image through franchise experiences",
-    "Develop Peacock loyalty features",
-    "Universal Studios immersive attractions",
-    "",
-    ("For All Media Companies:", 14, True, MEDIUM_BLUE),
-    "Brand awareness alone is insufficient",
-    "Focus on emotional engagement > awareness",
+    ("Strategic Recommendations:", 14, True, MEDIUM_BLUE),
+    "Brand awareness alone is insufficient for Disney",
+    "Focus on emotional engagement over awareness",
     "Loyalty drives long-term brand equity",
+    "Theme park experiences reinforce brand image",
 ]
 add_content_box(slide, Inches(5.3), Inches(1.4), Inches(4.5), Inches(5.5), items_right, font_size=12, bullet=False)
 
@@ -1186,7 +1181,7 @@ items = [
     "",
     "Self-reported data may contain response bias",
     "Factor analysis assumes linear relationships between variables",
-    "Results are context-specific and may not generalize to other entertainment companies like NBCUniversal",
+    "Results are context-specific to Disney and may not generalize to other industries",
 ]
 add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.2), Inches(5.8), items, font_size=13, bullet=False)
 
@@ -1205,7 +1200,7 @@ items = [
     "Compare EFA and CFA approaches on the same dataset for robustness",
     "",
     ("Extended Scope:", 16, True, MEDIUM_BLUE),
-    "Include competitor comparison: Disney vs. NBCUniversal vs. Warner Bros.",
+    "Include comparison across different Disney business segments",
     "Add digital brand equity dimensions: social media engagement, streaming metrics",
     "Include Net Promoter Score (NPS) and Customer Lifetime Value (CLV)",
     "Study the impact of Disney+ streaming launch on brand equity",
@@ -1239,7 +1234,7 @@ items = [
     "Media advertising operates in two distinct stages (Pre-Purchase and Purchase), as confirmed by EFA in Sama (2019)",
     "",
     ("Key Takeaway:", 16, True, RGBColor(0, 128, 0)),
-    "For entertainment companies like Disney and NBCUniversal, investing in brand image and customer loyalty yields stronger brand equity than increasing awareness alone",
+    "For Disney, investing in brand image and customer loyalty yields stronger brand equity than increasing awareness alone",
 ]
 add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.2), Inches(5.5), items, font_size=14, bullet=False)
 
