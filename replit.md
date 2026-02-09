@@ -3,7 +3,7 @@
 ## Overview
 Academic project repository for SSIE-605 (Applied Multivariate Data Analysis) at Binghamton University.
 
-**Current Status:** Two Factor Analysis presentations completed
+**Current Status:** Three Factor Analysis presentations completed
 
 ## Presentation 1: Toothpaste Consumer Preferences
 - **Topic:** Factor Analysis in Marketing / Consumer Analytics
@@ -49,6 +49,32 @@ Academic project repository for SSIE-605 (Applied Multivariate Data Analysis) at
 - **Cronbach's Alpha (Table 8):** Overall = 0.81, range by factor: 0.60–0.81
 - **CFA Model Fit:** SRMR = 0.050, RMSEA = 0.055, IFI = 0.906, CFI = 0.906
 - **JSS 9-dimension reliability (Table 1):** Range 0.41–0.81 in present study vs. 0.60–0.82 in Spector (1985)
+
+## Presentation 3: Financial Performance Evaluation of Real Estate Companies
+- **Topic:** Factor Analysis in Financial Performance Evaluation
+- **Application Area:** Financial performance of 100 listed Chinese real estate companies
+- **Primary Study:** Wang, Y. & Song, X. (2025) — Academic Journal of Business & Management
+- **Format:** PowerPoint presentation (27 slides, 10 visualizations)
+- **Output File:** Factor_Analysis_Financial_Performance_Presentation.pptx
+- **Script:** create_presentation3.py
+- **Figures Directory:** figures3/ (10 PNG visualization files)
+- **Status:** Complete
+
+### Research Papers Referenced (Presentation 3)
+1. Wang, Y. & Song, X. (2025). "Research on the Financial Performance Evaluation of Listed Companies in the Real Estate Industry Based on Factor Analysis Method." AJBM, 7(5), 78-84. DOI: 10.25236/AJBM.2025.070510
+2. Kaiser, H.F. (1974). "An Index of Factorial Simplicity." Psychometrika, 39, 31-36.
+3. Shrestha, N. (2021). "Factor Analysis as a Tool for Survey Analysis." DOI: 10.12691/ajams-9-1-2
+
+### Key Results (Presentation 3) — All from published tables
+- **Sample:** 100 listed real estate companies, 2023 financial data
+- **KMO = 0.706** (Meritorious), Bartlett's Chi-sq = 573.599, df = 36, p = 0.000
+- **3 factors extracted** from 9 financial indicators:
+  - F1: Solvency Factor, F2: Profitability Factor, F3: Operational Development Capability
+- **Eigenvalues (Table 3, before rotation):** 3.262, 2.057, 1.300 — Total variance: 73.55%
+- **Eigenvalues (Table 3, after rotation):** 2.733, 2.522, 1.364
+- **Factor Loadings (Table 4):** 9 variables x 3 factors, range 0.732–0.956 for primary loadings
+- **Score Coefficients (Table 5):** Used to build comprehensive scoring equations
+- **Score Ranges (Table 6):** Solvency: -24.85 to 46.09, Profitability: -0.32 to 66.24, Oper. Dev.: -156.91 to 947.95
 
 ## User Preferences
 - Preferred communication style: Simple, everyday language
