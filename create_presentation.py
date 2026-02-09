@@ -572,6 +572,8 @@ add_title_bar(slide, "Step 1: Correlation Matrix")
 slide.shapes.add_picture('figures/correlation_matrix.png', Inches(0.3), Inches(1.4), Inches(5.0), Inches(4.5))
 
 items = [
+    ("Source: Malhotra (2010)", 11, True, LIGHT_BLUE),
+    "",
     ("Key Observations:", 15, True, DARK_BLUE),
     "V1 & V3 highly correlated (r = 0.873) \u2192 both relate to dental health",
     "V2, V4, V6 correlated with each other \u2192 cosmetic/aesthetic concerns",
@@ -602,7 +604,7 @@ tf.word_wrap = True
 tf.margin_left = Inches(0.3)
 tf.margin_top = Inches(0.2)
 p = tf.paragraphs[0]
-p.text = "Results from Shrestha (2021):"
+p.text = "Results (Shrestha, 2021; DOI: 10.12691/ajams-9-1-2):"
 p.font.size = Pt(16)
 p.font.bold = True
 p.font.color.rgb = DARK_BLUE
@@ -610,7 +612,7 @@ p.font.color.rgb = DARK_BLUE
 results = [
     ("KMO Measure of Sampling Adequacy: 0.813 (Meritorious)", Pt(15)),
     ("Bartlett's Test of Sphericity:", Pt(15)),
-    ("    Chi-Square = 637.65,    Significance: p < 0.0001", Pt(15)),
+    ("    Chi-Square = 637.65,    df = 55,    Significance: p < 0.0001", Pt(15)),
     ("Conclusion: Data is SUITABLE for Factor Analysis", Pt(15)),
 ]
 for text, size in results:
@@ -632,6 +634,8 @@ add_title_bar(slide, "Step 3: Communalities")
 slide.shapes.add_picture('figures/communalities.png', Inches(0.3), Inches(1.4), Inches(5.5), Inches(3.8))
 
 items = [
+    ("Source: Malhotra (2010)", 11, True, LIGHT_BLUE),
+    "",
     ("What are Communalities?", 15, True, DARK_BLUE),
     "Proportion of variance in a variable explained by the extracted factors",
     "",
@@ -651,7 +655,7 @@ add_content_box(slide, Inches(5.8), Inches(1.4), Inches(4.0), Inches(5.5), items
 # ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "Step 4: Eigenvalues & Total Variance Explained")
+add_title_bar(slide, "Step 4: Eigenvalues & Total Variance Explained", "Source: Malhotra (2010)")
 
 slide.shapes.add_picture('figures/variance_explained.png', Inches(0.2), Inches(1.4), Inches(5.5), Inches(3.5))
 
@@ -738,6 +742,8 @@ add_title_bar(slide, "Step 5: Rotated Component Matrix (Varimax)")
 slide.shapes.add_picture('figures/rotated_matrix.png', Inches(0.2), Inches(1.4), Inches(4.5), Inches(5.0))
 
 items = [
+    ("Source: Malhotra (2010)", 11, True, LIGHT_BLUE),
+    "",
     ("Factor 1 \u2013 Health Benefits:", 16, True, RGBColor(0, 64, 128)),
     "V1 (Cavities): 0.962",
     "V3 (Gums): 0.934",
