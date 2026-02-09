@@ -24,26 +24,31 @@ Academic project repository for SSIE-605 (Applied Multivariate Data Analysis) at
 - 2 factors extracted, 82.49% total variance explained
 - Eigenvalues: Factor 1 = 2.731, Factor 2 = 2.218
 
-## Presentation 2: Employee Job Satisfaction in Corporate Organizations
+## Presentation 2: Employee Job Satisfaction in Healthcare Organizations
 - **Topic:** Factor Analysis in Marketing Analytics / Employee Satisfaction
 - **Application Area:** Employee Job Satisfaction using EFA + CFA
-- **Format:** PowerPoint presentation (24 slides, 8 visualizations)
+- **Primary Study:** Karaferis, D., Aletras, V. & Niakas, D. (2022) — BMC Psychology
+- **Format:** PowerPoint presentation (27 slides, 11 visualizations)
 - **Output File:** Factor_Analysis_JobSatisfaction_Presentation.pptx
 - **Script:** create_presentation2.py
-- **Figures Directory:** figures2/ (8 PNG visualization files)
+- **Figures Directory:** figures2/ (11 PNG visualization files)
 - **Status:** Complete
 
 ### Research Papers Referenced (Presentation 2)
-1. Tsounis, A. & Sarafis, P. (2022). "Determining Dimensions of Job Satisfaction in Healthcare Using Factor Analysis." BMC Psychology, 10, Article 240. DOI: 10.1186/s40359-022-00941-2
+1. Karaferis, D., Aletras, V. & Niakas, D. (2022). "Determining Dimensions of Job Satisfaction in Healthcare Using Factor Analysis." BMC Psychology, 10, Article 240. DOI: 10.1186/s40359-022-00941-2
 2. Spector, P.E. (1985). "Measurement of Human Service Staff Satisfaction: Development of the Job Satisfaction Survey." American Journal of Community Psychology, 13, 693-713. DOI: 10.1007/BF00929796
 3. Dziuba, S.T. et al. (2020). "Employees' Job Satisfaction and Their Work Performance." CzOTO, 2(1), 18-25. DOI: 10.2478/czoto-2020-0003
 
-### Key Results (Presentation 2)
-- KMO = 0.912 (Superb), Bartlett's Chi-sq = 31,831.572, p = 0.000
-- 6 factors extracted: Benefits & Salary, Management's Attitude, Supervision, Communication, Nature of Work, Colleagues' Support
-- Overall Cronbach's Alpha = 0.81, dimension range: 0.61-0.81
-- CFA Model Fit: SRMR = 0.050, RMSEA = 0.055, IFI = 0.906, CFI = 0.906
-- Spector JSS: 36 items, 9 dimensions, validated across 30+ countries
+### Key Results (Presentation 2) — All from published tables
+- **Sample:** n = 3,278 healthcare employees from 13 Greek hospitals (81.95% response rate)
+- **KMO = 0.912** (Superb), Bartlett's p = 0.000
+- **6 factors extracted** from 20 retained items (reduced from original 36-item JSS):
+  - Benefits & Salary, Management's Attitude, Supervision, Communication, Nature of Work, Colleagues' Support
+- **Eigenvalues (Table 6):** 6.18, 3.00, 1.73, 1.64, 1.09, 1.00 — Total variance: 56.23%
+- **Factor Loadings (Table 7):** 20 items across 6 factors, range 0.54–0.83
+- **Cronbach's Alpha (Table 8):** Overall = 0.81, range by factor: 0.60–0.81
+- **CFA Model Fit:** SRMR = 0.050, RMSEA = 0.055, IFI = 0.906, CFI = 0.906
+- **JSS 9-dimension reliability (Table 1):** Range 0.41–0.81 in present study vs. 0.60–0.82 in Spector (1985)
 
 ## User Preferences
 - Preferred communication style: Simple, everyday language

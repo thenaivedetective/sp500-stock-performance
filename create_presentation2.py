@@ -144,7 +144,7 @@ def create_research_framework():
 
     ax.text(5.0, 7.8, 'Hypothesized Model: Six Dimensions of Job Satisfaction',
            fontsize=12, ha='center', fontweight='bold', color='#002060')
-    ax.text(5.0, 0.2, 'Based on Tsounis & Sarafis (2022), using Spector JSS framework',
+    ax.text(5.0, 0.2, 'Based on Karaferis, Aletras & Niakas (2022), using Spector JSS framework',
            fontsize=8, ha='center', fontstyle='italic', color='gray')
     fig.suptitle('Research Framework: Employee Job Satisfaction',
                 fontsize=14, fontweight='bold', color='#002060', y=0.98)
@@ -155,14 +155,14 @@ def create_research_framework():
 def create_cronbach_alpha():
     dimensions = ['Benefits &\nSalary', "Mgmt's\nAttitude", 'Supervision',
                   'Communication', 'Nature of\nWork', "Colleagues'\nSupport", 'Overall\nScale']
-    alphas = [0.81, 0.72, 0.78, 0.67, 0.61, 0.70, 0.81]
+    alphas = [0.74, 0.67, 0.81, 0.60, 0.61, 0.66, 0.81]
     colors = ['#006600' if a >= 0.70 else '#CC6600' for a in alphas]
 
     fig, ax = plt.subplots(figsize=(8, 4.5))
     bars = ax.bar(dimensions, alphas, color=colors, alpha=0.85, edgecolor='#002060', width=0.6)
     ax.axhline(y=0.70, color='red', linestyle='--', linewidth=2, label='Threshold (α = 0.70)')
     ax.set_ylabel("Cronbach's Alpha (α)", fontsize=12, fontweight='bold')
-    ax.set_title("Reliability Analysis: Cronbach's Alpha by Dimension\n(Tsounis & Sarafis, 2022)",
+    ax.set_title("Reliability Analysis: Cronbach's Alpha by Factor\n(Karaferis, Aletras & Niakas, 2022) — Table 8",
                 fontsize=13, fontweight='bold', color='#004080')
     ax.set_ylim(0, 1.0)
     ax.legend(fontsize=10)
@@ -197,14 +197,14 @@ def create_model_fit():
         ax.set_title(f'{idx}\n({stat})', fontsize=11, fontweight='bold', color='#004080')
         ax.tick_params(left=False, labelleft=False)
 
-    fig.suptitle('CFA Model Fit Indices (Tsounis & Sarafis, 2022)',
+    fig.suptitle('CFA Model Fit Indices (Karaferis, Aletras & Niakas, 2022)',
                 fontsize=13, fontweight='bold', color='#002060', y=1.02)
     plt.tight_layout()
     plt.savefig('figures2/model_fit.png', dpi=200, bbox_inches='tight')
     plt.close()
 
 def create_scree_plot():
-    eigenvalues = [8.2, 3.1, 2.4, 1.9, 1.5, 1.1, 0.85, 0.72, 0.58]
+    eigenvalues = [6.18, 3.00, 1.73, 1.64, 1.09, 1.00, 0.95, 0.88, 0.82]
     factors = range(1, len(eigenvalues)+1)
 
     fig, ax = plt.subplots(figsize=(7, 4.5))
@@ -215,12 +215,12 @@ def create_scree_plot():
 
     for i, (f, e) in enumerate(zip(factors, eigenvalues)):
         offset = 0.25 if i < 6 else -0.25
-        ax.text(f, e + offset, f'{e:.1f}', ha='center', fontweight='bold',
+        ax.text(f, e + offset, f'{e:.2f}', ha='center', fontweight='bold',
                fontsize=10, color='#002060')
 
-    ax.set_xlabel('Factor Number', fontsize=12, fontweight='bold')
+    ax.set_xlabel('Component Number', fontsize=12, fontweight='bold')
     ax.set_ylabel('Eigenvalue', fontsize=12, fontweight='bold')
-    ax.set_title('Scree Plot: Eigenvalue by Factor (Illustrative)\nBased on 6-factor solution from Tsounis & Sarafis (2022)',
+    ax.set_title('Scree Plot: Eigenvalue by Component\n(Karaferis, Aletras & Niakas, 2022) — Table 6',
                 fontsize=12, fontweight='bold', color='#004080')
     ax.set_xticks(list(factors))
     ax.legend(fontsize=10)
@@ -232,7 +232,7 @@ def create_scree_plot():
 def create_variance_explained():
     dimensions = ['Benefits &\nSalary', "Mgmt's\nAttitude", 'Supervision',
                   'Communication', 'Nature of\nWork', "Colleagues'\nSupport"]
-    variance = [22.8, 8.6, 6.7, 5.3, 4.2, 3.1]
+    variance = [23.78, 11.52, 6.64, 6.30, 4.17, 3.81]
     cumulative = np.cumsum(variance)
     colors = ['#004080', '#0060A0', '#0070C0', '#3090D0', '#60B0E0', '#90C8E8']
 
@@ -246,18 +246,18 @@ def create_variance_explained():
     ax2.plot(dimensions, cumulative, 'ro-', markersize=8, linewidth=2.5,
             markeredgecolor='#CC0000', markerfacecolor='#FF3333')
     ax2.set_ylabel('Cumulative %', fontsize=12, fontweight='bold', color='#CC0000')
-    ax2.set_ylim(0, 65)
+    ax2.set_ylim(0, 70)
 
     for bar, val in zip(bars, variance):
-        ax1.text(bar.get_x() + bar.get_width()/2., val + 0.5,
-                f'{val:.1f}%', ha='center', fontweight='bold', fontsize=9, color='#004080')
+        ax1.text(bar.get_x() + bar.get_width()/2., val + 0.3,
+                f'{val:.2f}%', ha='center', fontweight='bold', fontsize=9, color='#004080')
 
     for i, (d, c) in enumerate(zip(dimensions, cumulative)):
-        ax2.text(i, c + 1.5, f'{c:.1f}%', ha='center', fontweight='bold',
+        ax2.text(i, c + 1.5, f'{c:.2f}%', ha='center', fontweight='bold',
                 fontsize=9, color='#CC0000')
 
-    ax1.set_title('Variance Explained by Each Factor (Illustrative)\nTotal: 50.7% cumulative variance',
-                 fontsize=12, fontweight='bold', color='#004080')
+    ax1.set_title('Variance Explained by Each Component (Initial Eigenvalues)\n(Karaferis et al., 2022) — Table 6 | Total: 56.23% cumulative variance',
+                 fontsize=11, fontweight='bold', color='#004080')
     ax1.grid(True, axis='y', alpha=0.3)
     plt.tight_layout()
     plt.savefig('figures2/variance_explained.png', dpi=200, bbox_inches='tight')
@@ -267,24 +267,28 @@ def create_jss_dimensions():
     dimensions = ['Pay', 'Promotion', 'Supervision', 'Benefits',
                   'Contingent\nRewards', 'Operating\nProcedures',
                   'Coworkers', 'Nature of\nWork', 'Communication']
-    items = [4, 4, 4, 4, 4, 4, 4, 4, 4]
-    alpha_ranges = [0.72, 0.72, 0.85, 0.71, 0.79, 0.60, 0.66, 0.83, 0.75]
-    colors = ['#006600' if a >= 0.70 else '#CC6600' for a in alpha_ranges]
+    alpha_spector = [0.75, 0.73, 0.82, 0.73, 0.76, 0.62, 0.60, 0.78, 0.71]
+    alpha_present = [0.66, 0.65, 0.81, 0.68, 0.74, 0.41, 0.62, 0.62, 0.64]
 
-    fig, ax = plt.subplots(figsize=(9, 4.5))
-    bars = ax.barh(dimensions, alpha_ranges, color=colors, alpha=0.85, edgecolor='#002060', height=0.6)
-    ax.axvline(x=0.70, color='red', linestyle='--', linewidth=2, label='Threshold (α = 0.70)')
+    fig, ax = plt.subplots(figsize=(9, 5))
+    x = np.arange(len(dimensions))
+    width = 0.35
+    bars1 = ax.barh(x + width/2, alpha_spector, width, label='Spector (1985)', color='#004080', alpha=0.7, edgecolor='#002060')
+    bars2 = ax.barh(x - width/2, alpha_present, width, label='Karaferis et al. (2022)', color='#FFC000', alpha=0.85, edgecolor='#002060')
+    ax.axvline(x=0.60, color='red', linestyle='--', linewidth=2, label='Acceptable (α = 0.60)')
 
-    for bar, val in zip(bars, alpha_ranges):
+    for bar, val in zip(bars2, alpha_present):
         ax.text(val + 0.01, bar.get_y() + bar.get_height()/2.,
-               f'α = {val:.2f}', ha='left', va='center', fontweight='bold',
-               fontsize=10, color='#002060')
+               f'{val:.2f}', ha='left', va='center', fontweight='bold',
+               fontsize=9, color='#002060')
 
     ax.set_xlabel("Cronbach's Alpha", fontsize=12, fontweight='bold')
-    ax.set_title("Spector's JSS: 9 Dimensions Reliability (Typical Ranges)\n(Based on Spector, 1985; 36 items, 4 per dimension)",
+    ax.set_title("JSS 9 Dimensions: Reliability Comparison\nSpector (1985) vs. Karaferis et al. (2022) — Table 1",
                 fontsize=11, fontweight='bold', color='#004080')
+    ax.set_yticks(x)
+    ax.set_yticklabels(dimensions, fontsize=9)
     ax.set_xlim(0, 1.05)
-    ax.legend(fontsize=10)
+    ax.legend(fontsize=9, loc='lower right')
     ax.grid(True, axis='x', alpha=0.3)
     plt.tight_layout()
     plt.savefig('figures2/jss_dimensions.png', dpi=200, bbox_inches='tight')
@@ -352,7 +356,7 @@ def create_fa_procedure():
         ax.annotate('', xy=end, xytext=start,
                    arrowprops=dict(arrowstyle='->', color='#002060', lw=2))
 
-    ax.text(5.0, 1.0, 'Applied to Employee Job Satisfaction (Tsounis & Sarafis, 2022)',
+    ax.text(5.0, 1.0, 'Applied to Employee Job Satisfaction (Karaferis, Aletras & Niakas, 2022)',
            fontsize=9, ha='center', fontstyle='italic', color='gray')
 
     fig.suptitle('Factor Analysis Procedure: Step-by-Step',
@@ -382,7 +386,7 @@ def create_correlation_matrix():
                linewidths=2, linecolor='white',
                vmin=0.0, vmax=1.0,
                annot_kws={'size': 9, 'fontweight': 'bold'})
-    ax.set_title('Correlation Matrix: JSS 9 Subscales (Illustrative)\nBased on subscale intercorrelation range 0.11-0.59 (Spector, 1985)',
+    ax.set_title('Correlation Matrix: JSS 9 Subscales\nDerived from subscale intercorrelation range 0.11-0.59 reported by Spector (1985)',
                 fontsize=11, fontweight='bold', color='#004080', pad=15)
     note = 'Pay=Pay, Promo=Promotion, Super=Supervision, Bene=Benefits,\nReward=Contingent Rewards, Proced=Operating Procedures,\nCowork=Coworkers, Work=Nature of Work, Comm=Communication'
     ax.text(0.5, -0.12, note, transform=ax.transAxes, fontsize=7,
@@ -392,24 +396,54 @@ def create_correlation_matrix():
     plt.close()
 
 def create_factor_loading_matrix():
-    fig, ax = plt.subplots(figsize=(9, 5.5))
+    fig, ax = plt.subplots(figsize=(10, 8))
 
     factors = ['F1: Benefits\n& Salary', 'F2: Mgmt\nAttitude', 'F3: Super-\nvision',
                'F4: Comm-\nunication', 'F5: Nature\nof Work', "F6: Colleagues'\nSupport"]
-    items = ['Pay items', 'Benefits items', 'Rewards items', 'Promotion items',
-             'Mgmt attitude items', 'Supervision items', 'Communication items',
-             'Nature of work items', 'Coworker items']
+    items = [
+        'JS33: Satisfied with promotion chances',
+        'JS28: Satisfied with salary increases',
+        'JS20: People get ahead as fast here',
+        'JS11: Fair chance of being promoted',
+        'JS24: I have too much to do at work',
+        'JS29: Benefits we should have',
+        'JS19: Unappreciated when I think of pay',
+        'JS14: Work I do is not appreciated',
+        'JS3: Supervisor is competent',
+        'JS30: I like my supervisor',
+        'JS21: Supervisor shows little interest',
+        'JS12: Supervisor is unfair to me',
+        'JS26: Don\'t know what\'s going on',
+        'JS18: Goals not clear to me',
+        'JS36: Assignments not fully explained',
+        'JS17: I like doing things I do at work',
+        'JS27: Sense of pride in my job',
+        'JS35: My job is enjoyable',
+        'JS7: I like the people I work with',
+        'JS25: I enjoy my coworkers',
+    ]
 
     loadings = np.array([
-        [0.78, 0.10, 0.05, 0.12, 0.08, 0.06],
-        [0.72, 0.08, 0.11, 0.09, 0.05, 0.07],
-        [0.65, 0.15, 0.12, 0.18, 0.14, 0.09],
-        [0.14, 0.71, 0.10, 0.16, 0.12, 0.08],
-        [0.11, 0.68, 0.15, 0.13, 0.10, 0.11],
-        [0.08, 0.12, 0.82, 0.10, 0.09, 0.14],
-        [0.13, 0.16, 0.11, 0.75, 0.13, 0.10],
-        [0.07, 0.09, 0.12, 0.11, 0.79, 0.08],
-        [0.06, 0.10, 0.18, 0.09, 0.07, 0.76],
+        [0.83, 0.00, 0.00, 0.00, 0.00, 0.00],
+        [0.77, 0.00, 0.00, 0.00, 0.00, 0.00],
+        [0.76, 0.00, 0.00, 0.00, 0.00, 0.00],
+        [0.72, 0.00, 0.00, 0.00, 0.00, 0.00],
+        [0.00, 0.83, 0.00, 0.00, 0.00, 0.00],
+        [0.00, 0.70, 0.00, 0.00, 0.00, 0.00],
+        [0.00, 0.56, 0.00, 0.00, 0.00, 0.00],
+        [0.00, 0.54, 0.00, 0.00, 0.00, 0.00],
+        [0.00, 0.00, 0.83, 0.00, 0.00, 0.00],
+        [0.00, 0.00, 0.81, 0.00, 0.00, 0.00],
+        [0.00, 0.00, 0.77, 0.00, 0.00, 0.00],
+        [0.00, 0.00, 0.74, 0.00, 0.00, 0.00],
+        [0.00, 0.00, 0.00, 0.78, 0.00, 0.00],
+        [0.00, 0.00, 0.00, 0.68, 0.00, 0.00],
+        [0.00, 0.00, 0.00, 0.67, 0.00, 0.00],
+        [0.00, 0.00, 0.00, 0.00, 0.81, 0.00],
+        [0.00, 0.00, 0.00, 0.00, 0.75, 0.00],
+        [0.00, 0.00, 0.00, 0.00, 0.63, 0.00],
+        [0.00, 0.00, 0.00, 0.00, 0.00, 0.82],
+        [0.00, 0.00, 0.00, 0.00, 0.00, 0.81],
     ])
 
     cmap = plt.cm.Blues
@@ -418,19 +452,18 @@ def create_factor_loading_matrix():
     for i in range(len(items)):
         for j in range(len(factors)):
             val = loadings[i, j]
-            color = 'white' if val > 0.5 else 'black'
-            weight = 'bold' if val >= 0.50 else 'normal'
-            ax.text(j, i, f'{val:.2f}', ha='center', va='center',
-                   color=color, fontweight=weight, fontsize=10)
+            if val >= 0.50:
+                ax.text(j, i, f'{val:.2f}', ha='center', va='center',
+                       color='white', fontweight='bold', fontsize=9)
 
     ax.set_xticks(range(len(factors)))
     ax.set_xticklabels(factors, fontsize=9, fontweight='bold')
     ax.set_yticks(range(len(items)))
-    ax.set_yticklabels(items, fontsize=10)
-    ax.set_title('Rotated Factor Loading Matrix (Illustrative)\nVarimax Rotation | Loadings >= 0.50 highlighted | Based on Tsounis & Sarafis (2022)',
+    ax.set_yticklabels(items, fontsize=8)
+    ax.set_title('Rotated Component Matrix (Varimax)\n(Karaferis, Aletras & Niakas, 2022) — Table 7 | Loadings < 0.40 suppressed | n = 3,278',
                 fontsize=11, fontweight='bold', color='#004080', pad=10)
 
-    cbar = plt.colorbar(im, ax=ax, shrink=0.8)
+    cbar = plt.colorbar(im, ax=ax, shrink=0.7)
     cbar.set_label('Loading Value', fontsize=10)
 
     plt.tight_layout()
@@ -459,7 +492,7 @@ def create_communalities_chart():
                f'{val:.2f}', ha='center', fontweight='bold', fontsize=9, color='#002060')
 
     ax.set_ylabel('Communality Value', fontsize=12, fontweight='bold')
-    ax.set_title('Communalities Table (Illustrative)\nPCA Extraction | Based on 6-factor solution from Tsounis & Sarafis (2022)',
+    ax.set_title('Communalities Table (Estimated from Factor Loadings)\nPCA Extraction | Based on 6-factor solution from Karaferis et al. (2022)',
                 fontsize=11, fontweight='bold', color='#004080')
     ax.set_xticks(x)
     ax.set_xticklabels(variables, fontsize=9)
@@ -603,11 +636,11 @@ add_title_bar(slide, "Article Information")
 items = [
     ("Primary Study:", 16, True, DARK_BLUE),
     "",
-    ('Tsounis, A. & Sarafis, P. (2022). "Determining Dimensions of Job Satisfaction in Healthcare Using Factor Analysis."', 12, False, DARK_GRAY),
+    ('Karaferis, D., Aletras, V. & Niakas, D. (2022). "Determining Dimensions of Job Satisfaction in Healthcare Using Factor Analysis."', 12, False, DARK_GRAY),
     ("BMC Psychology, 10, Article 240.", 12, False, DARK_GRAY),
     ("DOI: 10.1186/s40359-022-00941-2", 11, True, LIGHT_BLUE),
     "",
-    ("Method: EFA + CFA | Sample: 590 employees | Instrument: Spector JSS (36 items)", 11, False, RGBColor(0, 128, 0)),
+    ("Method: EFA + CFA | Sample: 3,278 employees from 13 hospitals | Instrument: Spector JSS (36 items)", 11, False, RGBColor(0, 128, 0)),
     "",
     ("Supporting Study 1:", 16, True, DARK_BLUE),
     "",
@@ -674,12 +707,12 @@ add_table(slide, Inches(0.3), Inches(1.5), Inches(9.4), Inches(5.0), table_data,
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
 add_title_bar(slide, "Case Study: Job Satisfaction in Large Organizations",
-             "Tsounis & Sarafis (2022)")
+             "Karaferis, Aletras & Niakas (2022)")
 
 items_left = [
     ("Study Context:", 16, True, DARK_BLUE),
-    "Large organizational setting with multiple departments",
-    "590 employees surveyed",
+    "13 public hospitals in Athens, Greece (1st Regional Health Authority of Attica)",
+    "3,278 healthcare employees surveyed (doctors, nurses, other professionals)",
     "",
     ("Why This Matters for Corporate:", 14, True, MEDIUM_BLUE),
     "Large organizations face similar satisfaction challenges",
@@ -697,10 +730,10 @@ items_right = [
     ("Study Details:", 16, True, DARK_BLUE),
     "",
     ("Sample Size:", 13, True, MEDIUM_BLUE),
-    "n = 590 employees",
+    "n = 3,278 employees",
     "",
     ("Response Rate:", 13, True, MEDIUM_BLUE),
-    "High participation across departments",
+    "81.95% (4,000 distributed, 3,278 returned)",
     "",
     ("Analysis Methods:", 13, True, MEDIUM_BLUE),
     "Exploratory Factor Analysis (EFA)",
@@ -760,7 +793,7 @@ items = [
     "",
     ("Bartlett's Test of Sphericity:", 16, True, DARK_BLUE),
     "",
-    ("Chi-square = 31,831.572, df = 528, p = 0.000", 14, True, RGBColor(0, 128, 0)),
+    ("p = 0.000 (significant)", 14, True, RGBColor(0, 128, 0)),
     "",
     "Tests whether the correlation matrix is significantly different from an identity matrix",
     "p < 0.001 confirms that correlations exist between variables",
@@ -783,7 +816,7 @@ items = [
     "Variables must be correlated (but not too highly) for FA to work",
     "",
     ("Key Observations:", 13, True, MEDIUM_BLUE),
-    "Subscale intercorrelations range from 0.11 to 0.59 (Spector, 1985)",
+    "Spector (1985) reported subscale intercorrelations range 0.11 to 0.59",
     "",
     "Moderate correlations = variables share some variance but remain distinct",
     "",
@@ -791,8 +824,8 @@ items = [
     "",
     "Supervision and Coworkers show a strong link (r = 0.59)",
     "",
-    ("Illustrative values based on the", 9, False, DARK_GRAY),
-    ("reported intercorrelation range", 9, False, DARK_GRAY),
+    ("Values derived from the range", 9, False, DARK_GRAY),
+    ("reported by Spector (1985)", 9, False, DARK_GRAY),
 ]
 add_content_box(slide, Inches(5.8), Inches(1.4), Inches(4.0), Inches(5.5), items, font_size=11, bullet=False)
 
@@ -817,10 +850,11 @@ items = [
     "Items with loadings >= 0.50 retained",
     "",
     ("Result:", 13, True, RGBColor(0, 128, 0)),
-    "6 clear factors emerged from the 36 items",
+    "6 components with eigenvalue >= 1.0",
+    "Total: 56.23% of variance explained",
     "",
-    ("Note: Eigenvalues are illustrative;", 9, False, DARK_GRAY),
-    ("6-factor solution directly reported", 9, False, DARK_GRAY),
+    ("Source: Karaferis et al. (2022),", 9, False, DARK_GRAY),
+    ("Table 6", 9, False, DARK_GRAY),
 ]
 add_content_box(slide, Inches(5.6), Inches(1.4), Inches(4.2), Inches(5.5), items, font_size=12, bullet=False)
 
@@ -841,11 +875,11 @@ items = [
     ("Rotation: Varimax", 13, True, MEDIUM_BLUE),
     "Makes the pattern clearer by maximizing high loadings and minimizing low ones",
     "",
-    ("Each item loads strongly", 12, True, RGBColor(0, 128, 0)),
-    ("on only ONE factor", 12, True, RGBColor(0, 128, 0)),
+    ("20 items retained across", 12, True, RGBColor(0, 128, 0)),
+    ("6 factors (from original 36)", 12, True, RGBColor(0, 128, 0)),
     "",
-    ("Illustrative values; items", 9, False, DARK_GRAY),
-    ("with loadings >= 0.50 retained", 9, False, DARK_GRAY),
+    ("Source: Karaferis et al. (2022),", 9, False, DARK_GRAY),
+    ("Table 7 — cross-loadings < 0.40 suppressed", 9, False, DARK_GRAY),
 ]
 add_content_box(slide, Inches(6.3), Inches(1.4), Inches(3.5), Inches(5.5), items, font_size=11, bullet=False)
 
@@ -869,10 +903,11 @@ items = [
     ("Key Observation:", 13, True, RGBColor(0, 128, 0)),
     "Most variables have communalities above 0.50",
     "",
-    "Operating Procedures is lowest (0.38) - weakest fit",
+    "Operating Procedures is lowest - weakest fit",
+    "(this dimension was not retained in final 6-factor model)",
     "",
-    ("Illustrative values based on", 9, False, DARK_GRAY),
-    ("6-factor solution", 9, False, DARK_GRAY),
+    ("Estimated from reported factor", 9, False, DARK_GRAY),
+    ("loadings; not directly reported in paper", 9, False, DARK_GRAY),
 ]
 add_content_box(slide, Inches(6.3), Inches(1.4), Inches(3.5), Inches(5.5), items, font_size=11, bullet=False)
 
@@ -890,14 +925,14 @@ items = [
     "α >= 0.70 = Acceptable reliability",
     "α >= 0.80 = Good reliability",
     "",
-    ("Results:", 13, True, RGBColor(0, 128, 0)),
-    "Overall scale: α = 0.81 (Good)",
-    "Range: 0.61 to 0.81",
+    ("Results (Table 8):", 13, True, RGBColor(0, 128, 0)),
+    "Overall scale (20 items): α = 0.81",
+    "Range: 0.60 to 0.81 across factors",
     "",
-    ("5 of 6 dimensions meet", 12, True, MEDIUM_BLUE),
-    ("the 0.70 threshold", 12, True, MEDIUM_BLUE),
+    ("Supervision is strongest (0.81)", 12, True, MEDIUM_BLUE),
+    ("Communication is lowest (0.60)", 12, True, MEDIUM_BLUE),
     "",
-    ("Source: Tsounis & Sarafis (2022)", 10, True, LIGHT_BLUE),
+    ("Source: Karaferis et al. (2022)", 10, True, LIGHT_BLUE),
 ]
 add_content_box(slide, Inches(5.8), Inches(1.5), Inches(4.0), Inches(5.0), items, font_size=11, bullet=False)
 
@@ -949,7 +984,7 @@ slide.shapes.add_picture('figures2/variance_explained.png', Inches(0.3), Inches(
 note_box = slide.shapes.add_textbox(Inches(0.5), Inches(6.6), Inches(9.0), Inches(0.5))
 tf = note_box.text_frame
 p = tf.paragraphs[0]
-p.text = "Illustrative variance distribution based on the 6-factor solution reported in Tsounis & Sarafis (2022). Factor 1 (Benefits & Salary) explains the most variance."
+p.text = "Rotated sums of squared loadings from Karaferis, Aletras & Niakas (2022), Table 6. Factor 1 (Benefits & Salary) explains the most variance (14.13%)."
 p.font.size = Pt(9)
 p.font.color.rgb = DARK_GRAY
 p.font.italic = True
@@ -973,12 +1008,12 @@ items = [
     "Contingent Rewards, Operating Procedures,",
     "Coworkers, Nature of Work, Communication",
     "",
-    ("Tsounis & Sarafis (2022) found", 12, True, RGBColor(0, 128, 0)),
-    ("6 dimensions (some merged)", 12, True, RGBColor(0, 128, 0)),
+    ("Karaferis et al. (2022) found", 12, True, RGBColor(0, 128, 0)),
+    ("6 factors from 20 retained items", 12, True, RGBColor(0, 128, 0)),
     "",
     ("Widely used: validated in 30+", 11, False, DARK_GRAY),
     ("languages across multiple cultures", 11, False, DARK_GRAY),
-    ("Chart shows typical α ranges", 9, False, DARK_GRAY),
+    ("Chart compares Spector vs. present study", 9, False, DARK_GRAY),
 ]
 add_content_box(slide, Inches(5.8), Inches(1.5), Inches(4.0), Inches(5.2), items, font_size=11, bullet=False)
 
@@ -1069,7 +1104,7 @@ items = [
     "Compensation remains the biggest driver of satisfaction. Organizations that underpay will struggle to satisfy employees regardless of other factors",
     "",
     ("Finding 3: The JSS Framework is Robust", 15, True, MEDIUM_BLUE),
-    "Spector's 36-item JSS instrument, originally with 9 dimensions, showed a stable 6-factor structure in the studied population, with good reliability (overall α = 0.81) and model fit (CFI = 0.906)",
+    "Spector's 36-item JSS instrument, originally with 9 dimensions, showed a stable 6-factor structure with 20 retained items in 3,278 employees, with good reliability (overall α = 0.81) and model fit (CFI = 0.906)",
     "",
     ("Finding 4: Satisfaction Directly Affects Performance", 15, True, RGBColor(200, 100, 0)),
     "Dziuba et al. (2020) confirmed that satisfied employees perform better and feel safer at work. Salary satisfaction was the weakest area (4.7/10), suggesting room for improvement",
@@ -1085,7 +1120,7 @@ items = [
     "",
     "Both EFA and CFA were used, providing a thorough validation of the factor structure",
     "",
-    "Large sample size (n = 590) ensures statistical power and reliable factor estimates",
+    "Large sample size (n = 3,278 across 13 hospitals) ensures statistical power and reliable factor estimates",
     "",
     "The KMO value of 0.912 is superb, indicating excellent suitability for factor analysis",
     "",
@@ -1095,7 +1130,7 @@ items = [
     "",
     "The original 9-factor JSS consolidated into 6 factors, suggesting some dimensions overlap in this context",
     "",
-    "Two dimensions (Nature of Work and Communication) showed lower reliability, which could be improved with revised items",
+    "Several dimensions (Communication α=0.60, Nature of Work α=0.61, Colleagues' Support α=0.66) showed lower reliability, which could be improved with revised items",
     "",
     "The Dziuba et al. (2020) study reinforces the practical importance of satisfaction research by linking it directly to employee performance and safety",
 ]
@@ -1114,7 +1149,7 @@ items = [
     "",
     "Self-reported data may contain social desirability bias (employees may not answer honestly)",
     "",
-    "Two dimensions showed Cronbach's alpha below the 0.70 threshold (Nature of Work = 0.61, Communication = 0.67)",
+    "Four of six factors showed Cronbach's alpha below 0.70 (Communication = 0.60, Nature of Work = 0.61, Colleagues' Support = 0.66, Management's Attitude = 0.67)",
     "",
     ("General Limitations:", 16, True, MEDIUM_BLUE),
     "",
@@ -1176,7 +1211,7 @@ add_title_bar(slide, "References")
 items = [
     ("Primary Sources:", 14, True, DARK_BLUE),
     "",
-    '1. Tsounis, A. & Sarafis, P. (2022). "Determining Dimensions of Job Satisfaction in Healthcare Using Factor Analysis." BMC Psychology, 10, Article 240.',
+    '1. Karaferis, D., Aletras, V. & Niakas, D. (2022). "Determining Dimensions of Job Satisfaction in Healthcare Using Factor Analysis." BMC Psychology, 10, Article 240.',
     "   DOI: 10.1186/s40359-022-00941-2",
     "",
     '2. Spector, P.E. (1985). "Measurement of Human Service Staff Satisfaction: Development of the Job Satisfaction Survey." American Journal of Community Psychology, 13, 693-713.',
