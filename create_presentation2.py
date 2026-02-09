@@ -361,6 +361,115 @@ def create_fa_procedure():
     plt.savefig('figures2/fa_procedure.png', dpi=200, bbox_inches='tight')
     plt.close()
 
+def create_correlation_matrix():
+    labels = ['Pay', 'Promo', 'Super', 'Bene', 'Reward', 'Proced', 'Cowork', 'Work', 'Comm']
+    corr = np.array([
+        [1.00, 0.37, 0.18, 0.53, 0.43, 0.09, 0.15, 0.16, 0.34],
+        [0.37, 1.00, 0.28, 0.34, 0.55, 0.11, 0.17, 0.33, 0.42],
+        [0.18, 0.28, 1.00, 0.22, 0.36, 0.13, 0.59, 0.34, 0.38],
+        [0.53, 0.34, 0.22, 1.00, 0.41, 0.12, 0.13, 0.14, 0.30],
+        [0.43, 0.55, 0.36, 0.41, 1.00, 0.14, 0.22, 0.31, 0.51],
+        [0.09, 0.11, 0.13, 0.12, 0.14, 1.00, 0.15, 0.21, 0.16],
+        [0.15, 0.17, 0.59, 0.13, 0.22, 0.15, 1.00, 0.36, 0.29],
+        [0.16, 0.33, 0.34, 0.14, 0.31, 0.21, 0.36, 1.00, 0.32],
+        [0.34, 0.42, 0.38, 0.30, 0.51, 0.16, 0.29, 0.32, 1.00],
+    ])
+
+    fig, ax = plt.subplots(figsize=(7, 6))
+    mask = np.triu(np.ones_like(corr, dtype=bool), k=1)
+    sns.heatmap(corr, mask=mask, annot=True, fmt='.2f', cmap='Blues',
+               xticklabels=labels, yticklabels=labels, ax=ax,
+               linewidths=2, linecolor='white',
+               vmin=0.0, vmax=1.0,
+               annot_kws={'size': 9, 'fontweight': 'bold'})
+    ax.set_title('Correlation Matrix: JSS 9 Subscales (Illustrative)\nBased on subscale intercorrelation range 0.11-0.59 (Spector, 1985)',
+                fontsize=11, fontweight='bold', color='#004080', pad=15)
+    note = 'Pay=Pay, Promo=Promotion, Super=Supervision, Bene=Benefits,\nReward=Contingent Rewards, Proced=Operating Procedures,\nCowork=Coworkers, Work=Nature of Work, Comm=Communication'
+    ax.text(0.5, -0.12, note, transform=ax.transAxes, fontsize=7,
+           ha='center', fontstyle='italic', color='gray')
+    plt.tight_layout()
+    plt.savefig('figures2/correlation_matrix.png', dpi=200, bbox_inches='tight')
+    plt.close()
+
+def create_factor_loading_matrix():
+    fig, ax = plt.subplots(figsize=(9, 5.5))
+
+    factors = ['F1: Benefits\n& Salary', 'F2: Mgmt\nAttitude', 'F3: Super-\nvision',
+               'F4: Comm-\nunication', 'F5: Nature\nof Work', "F6: Colleagues'\nSupport"]
+    items = ['Pay items', 'Benefits items', 'Rewards items', 'Promotion items',
+             'Mgmt attitude items', 'Supervision items', 'Communication items',
+             'Nature of work items', 'Coworker items']
+
+    loadings = np.array([
+        [0.78, 0.10, 0.05, 0.12, 0.08, 0.06],
+        [0.72, 0.08, 0.11, 0.09, 0.05, 0.07],
+        [0.65, 0.15, 0.12, 0.18, 0.14, 0.09],
+        [0.14, 0.71, 0.10, 0.16, 0.12, 0.08],
+        [0.11, 0.68, 0.15, 0.13, 0.10, 0.11],
+        [0.08, 0.12, 0.82, 0.10, 0.09, 0.14],
+        [0.13, 0.16, 0.11, 0.75, 0.13, 0.10],
+        [0.07, 0.09, 0.12, 0.11, 0.79, 0.08],
+        [0.06, 0.10, 0.18, 0.09, 0.07, 0.76],
+    ])
+
+    cmap = plt.cm.Blues
+    im = ax.imshow(loadings, cmap=cmap, aspect='auto', vmin=0, vmax=1)
+
+    for i in range(len(items)):
+        for j in range(len(factors)):
+            val = loadings[i, j]
+            color = 'white' if val > 0.5 else 'black'
+            weight = 'bold' if val >= 0.50 else 'normal'
+            ax.text(j, i, f'{val:.2f}', ha='center', va='center',
+                   color=color, fontweight=weight, fontsize=10)
+
+    ax.set_xticks(range(len(factors)))
+    ax.set_xticklabels(factors, fontsize=9, fontweight='bold')
+    ax.set_yticks(range(len(items)))
+    ax.set_yticklabels(items, fontsize=10)
+    ax.set_title('Rotated Factor Loading Matrix (Illustrative)\nVarimax Rotation | Loadings >= 0.50 highlighted | Based on Tsounis & Sarafis (2022)',
+                fontsize=11, fontweight='bold', color='#004080', pad=10)
+
+    cbar = plt.colorbar(im, ax=ax, shrink=0.8)
+    cbar.set_label('Loading Value', fontsize=10)
+
+    plt.tight_layout()
+    plt.savefig('figures2/factor_loading_matrix.png', dpi=200, bbox_inches='tight')
+    plt.close()
+
+def create_communalities_chart():
+    variables = ['Pay', 'Promotion', 'Supervision', 'Benefits',
+                 'Contingent\nRewards', 'Operating\nProcedures',
+                 'Coworkers', 'Nature of\nWork', 'Communication']
+    initial = [1.0]*9
+    extraction = [0.68, 0.62, 0.73, 0.59, 0.66, 0.38, 0.65, 0.71, 0.64]
+    colors = ['#006600' if e >= 0.50 else '#CC0000' for e in extraction]
+
+    fig, ax = plt.subplots(figsize=(9, 4.5))
+    x = np.arange(len(variables))
+    bars_init = ax.bar(x - 0.2, initial, 0.35, label='Initial', color='#B0C4DE',
+                      alpha=0.5, edgecolor='#002060')
+    bars_ext = ax.bar(x + 0.2, extraction, 0.35, label='Extraction', color=colors,
+                     alpha=0.85, edgecolor='#002060')
+
+    ax.axhline(y=0.50, color='red', linestyle='--', linewidth=2, label='Threshold (0.50)')
+
+    for bar, val in zip(bars_ext, extraction):
+        ax.text(bar.get_x() + bar.get_width()/2., val + 0.03,
+               f'{val:.2f}', ha='center', fontweight='bold', fontsize=9, color='#002060')
+
+    ax.set_ylabel('Communality Value', fontsize=12, fontweight='bold')
+    ax.set_title('Communalities Table (Illustrative)\nPCA Extraction | Based on 6-factor solution from Tsounis & Sarafis (2022)',
+                fontsize=11, fontweight='bold', color='#004080')
+    ax.set_xticks(x)
+    ax.set_xticklabels(variables, fontsize=9)
+    ax.set_ylim(0, 1.15)
+    ax.legend(fontsize=10)
+    ax.grid(True, axis='y', alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('figures2/communalities.png', dpi=200, bbox_inches='tight')
+    plt.close()
+
 create_research_framework()
 create_cronbach_alpha()
 create_model_fit()
@@ -369,6 +478,9 @@ create_variance_explained()
 create_jss_dimensions()
 create_satisfaction_factors()
 create_fa_procedure()
+create_correlation_matrix()
+create_factor_loading_matrix()
+create_communalities_chart()
 
 print("All visualizations created!\n")
 print("Building PowerPoint presentation...")
@@ -659,7 +771,34 @@ add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.2), Inches(5.8), items
 
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "Step 2: Factor Extraction - Scree Plot")
+add_title_bar(slide, "Step 2: Correlation Matrix")
+
+slide.shapes.add_picture('figures2/correlation_matrix.png', Inches(0.2), Inches(1.4), Inches(5.5), Inches(5.2))
+
+items = [
+    ("What is the Correlation Matrix?", 14, True, DARK_BLUE),
+    "Shows how strongly each pair of variables is related to each other",
+    "",
+    ("Why It Matters:", 13, True, MEDIUM_BLUE),
+    "Variables must be correlated (but not too highly) for FA to work",
+    "",
+    ("Key Observations:", 13, True, MEDIUM_BLUE),
+    "Subscale intercorrelations range from 0.11 to 0.59 (Spector, 1985)",
+    "",
+    "Moderate correlations = variables share some variance but remain distinct",
+    "",
+    "Operating Procedures has the weakest correlations with other subscales",
+    "",
+    "Supervision and Coworkers show a strong link (r = 0.59)",
+    "",
+    ("Illustrative values based on the", 9, False, DARK_GRAY),
+    ("reported intercorrelation range", 9, False, DARK_GRAY),
+]
+add_content_box(slide, Inches(5.8), Inches(1.4), Inches(4.0), Inches(5.5), items, font_size=11, bullet=False)
+
+slide = prs.slides.add_slide(prs.slide_layouts[6])
+add_slide_background(slide, WHITE)
+add_title_bar(slide, "Step 3: Factor Extraction - Scree Plot")
 
 slide.shapes.add_picture('figures2/scree_plot.png', Inches(0.2), Inches(1.4), Inches(5.3), Inches(4.8))
 
@@ -687,7 +826,59 @@ add_content_box(slide, Inches(5.6), Inches(1.4), Inches(4.2), Inches(5.5), items
 
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "Step 3: Reliability Analysis (Cronbach's Alpha)")
+add_title_bar(slide, "Step 4: Rotated Factor Loading Matrix")
+
+slide.shapes.add_picture('figures2/factor_loading_matrix.png', Inches(0.2), Inches(1.4), Inches(6.0), Inches(5.0))
+
+items = [
+    ("What Are Factor Loadings?", 14, True, DARK_BLUE),
+    "They show how strongly each survey item belongs to each factor",
+    "",
+    ("Reading the Matrix:", 13, True, MEDIUM_BLUE),
+    "High loading (>= 0.50) = item belongs to that factor",
+    "Low loading (< 0.30) = weak or no relationship",
+    "",
+    ("Rotation: Varimax", 13, True, MEDIUM_BLUE),
+    "Makes the pattern clearer by maximizing high loadings and minimizing low ones",
+    "",
+    ("Each item loads strongly", 12, True, RGBColor(0, 128, 0)),
+    ("on only ONE factor", 12, True, RGBColor(0, 128, 0)),
+    "",
+    ("Illustrative values; items", 9, False, DARK_GRAY),
+    ("with loadings >= 0.50 retained", 9, False, DARK_GRAY),
+]
+add_content_box(slide, Inches(6.3), Inches(1.4), Inches(3.5), Inches(5.5), items, font_size=11, bullet=False)
+
+slide = prs.slides.add_slide(prs.slide_layouts[6])
+add_slide_background(slide, WHITE)
+add_title_bar(slide, "Step 5: Communalities")
+
+slide.shapes.add_picture('figures2/communalities.png', Inches(0.2), Inches(1.4), Inches(6.0), Inches(4.8))
+
+items = [
+    ("What Are Communalities?", 14, True, DARK_BLUE),
+    "The proportion of each variable's variance that is explained by the extracted factors",
+    "",
+    ("How to Read:", 13, True, MEDIUM_BLUE),
+    "Initial = 1.0 (100% of variance)",
+    "Extraction = how much the factors capture",
+    "",
+    ("Threshold:", 13, True, MEDIUM_BLUE),
+    "Values >= 0.50 = good (factors explain at least 50% of that variable's variance)",
+    "",
+    ("Key Observation:", 13, True, RGBColor(0, 128, 0)),
+    "Most variables have communalities above 0.50",
+    "",
+    "Operating Procedures is lowest (0.38) - weakest fit",
+    "",
+    ("Illustrative values based on", 9, False, DARK_GRAY),
+    ("6-factor solution", 9, False, DARK_GRAY),
+]
+add_content_box(slide, Inches(6.3), Inches(1.4), Inches(3.5), Inches(5.5), items, font_size=11, bullet=False)
+
+slide = prs.slides.add_slide(prs.slide_layouts[6])
+add_slide_background(slide, WHITE)
+add_title_bar(slide, "Step 6: Reliability Analysis (Cronbach's Alpha)")
 
 slide.shapes.add_picture('figures2/cronbach_alpha.png', Inches(0.2), Inches(1.5), Inches(5.5), Inches(4.5))
 
@@ -712,7 +903,7 @@ add_content_box(slide, Inches(5.8), Inches(1.5), Inches(4.0), Inches(5.0), items
 
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "Step 4: CFA Model Fit Assessment")
+add_title_bar(slide, "Step 7: CFA Model Fit Assessment")
 
 slide.shapes.add_picture('figures2/model_fit.png', Inches(0.2), Inches(1.5), Inches(5.5), Inches(4.0))
 
@@ -751,7 +942,7 @@ add_table(slide, Inches(0.3), Inches(5.6), Inches(5.3), Inches(1.5), table_data,
 
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "Step 5: Variance Explained")
+add_title_bar(slide, "Step 8: Variance Explained")
 
 slide.shapes.add_picture('figures2/variance_explained.png', Inches(0.3), Inches(1.5), Inches(9.4), Inches(5.0))
 
