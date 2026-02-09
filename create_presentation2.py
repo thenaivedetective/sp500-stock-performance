@@ -53,35 +53,59 @@ def add_title_bar(slide, title_text, subtitle_text=None):
         p2.font.color.rgb = ACCENT_GOLD
         p2.alignment = PP_ALIGN.LEFT
 
-def add_content_box(slide, left, top, width, height, text_items, font_size=16, bullet=True):
+def add_content_box(slide, left, top, width, height, items, font_size=14, bullet=False):
     txBox = slide.shapes.add_textbox(left, top, width, height)
     tf = txBox.text_frame
     tf.word_wrap = True
-    for i, item in enumerate(text_items):
-        if i == 0:
+    first = True
+    for item in items:
+        if first:
             p = tf.paragraphs[0]
+            first = False
         else:
             p = tf.add_paragraph()
         if isinstance(item, tuple):
-            p.text = item[0]
-            p.font.size = Pt(item[1])
-            if len(item) > 2:
-                p.font.bold = item[2]
-            if len(item) > 3:
-                p.font.color.rgb = item[3]
-            else:
-                p.font.color.rgb = DARK_GRAY
+            text, size, bold, color = item
+            p.text = text
+            p.font.size = Pt(size)
+            p.font.bold = bold
+            p.font.color.rgb = color
+        elif item == "":
+            p.text = ""
+            p.font.size = Pt(6)
         else:
             prefix = "\u2022 " if bullet else ""
             p.text = f"{prefix}{item}"
             p.font.size = Pt(font_size)
             p.font.color.rgb = DARK_GRAY
-        p.space_after = Pt(6)
-    return txBox
 
-# ============================================================
-# VISUALIZATION FUNCTIONS
-# ============================================================
+def add_table(slide, left, top, width, height, data, col_widths=None):
+    rows = len(data)
+    cols = len(data[0])
+    table_shape = slide.shapes.add_table(rows, cols, left, top, width, height)
+    table = table_shape.table
+    if col_widths:
+        for i, w in enumerate(col_widths):
+            table.columns[i].width = Inches(w)
+    for i, row in enumerate(data):
+        for j, val in enumerate(row):
+            cell = table.cell(i, j)
+            cell.text = str(val)
+            cell.vertical_anchor = MSO_ANCHOR.MIDDLE
+            for paragraph in cell.text_frame.paragraphs:
+                paragraph.font.size = Pt(11)
+                paragraph.alignment = PP_ALIGN.CENTER
+                if i == 0:
+                    paragraph.font.bold = True
+                    paragraph.font.color.rgb = WHITE
+            if i == 0:
+                cell.fill.solid()
+                cell.fill.fore_color.rgb = DARK_BLUE
+            elif i % 2 == 0:
+                cell.fill.solid()
+                cell.fill.fore_color.rgb = RGBColor(220, 230, 241)
+
+print("Generating all visualizations...")
 
 def create_research_framework():
     fig, ax = plt.subplots(figsize=(8, 5))
@@ -89,1133 +113,851 @@ def create_research_framework():
     ax.set_ylim(0, 8)
     ax.axis('off')
 
-    factors = [
-        ('Brand\nAwareness', 1.5, 7.0),
-        ('Brand\nImage', 1.5, 5.5),
-        ('Perceived\nQuality', 1.5, 4.0),
-        ('Brand\nAssociation', 1.5, 2.5),
-        ('Brand\nLoyalty', 1.5, 1.0),
+    dimensions = [
+        ('Benefits &\nSalary', 1.5, 7.0),
+        ("Management's\nAttitude", 1.5, 5.5),
+        ('Supervision', 1.5, 4.0),
+        ('Communication', 1.5, 2.5),
+        ('Nature of\nWork', 1.5, 1.0),
+        ("Colleagues'\nSupport", 4.5, 4.0),
     ]
-    for label, x, y in factors:
-        box = plt.Rectangle((x-1.0, y-0.45), 2.0, 0.9, linewidth=2,
-                           edgecolor='#002060', facecolor='#D6E4F0', zorder=3)
-        ax.add_patch(box)
-        ax.text(x, y, label, ha='center', va='center', fontsize=10,
-               fontweight='bold', color='#002060', zorder=4)
 
-    be_box = plt.Rectangle((6.5, 3.55), 2.5, 1.0, linewidth=3,
-                           edgecolor='#002060', facecolor='#FFC000', zorder=3)
-    ax.add_patch(be_box)
-    ax.text(7.75, 4.05, 'Brand\nEquity', ha='center', va='center', fontsize=14,
-           fontweight='bold', color='#002060', zorder=4)
+    for name, x, y in dimensions:
+        rect = plt.Rectangle((x-0.9, y-0.4), 1.8, 0.8,
+                            facecolor='#004080', edgecolor='#002060',
+                            linewidth=2, alpha=0.9, zorder=2)
+        ax.add_patch(rect)
+        ax.text(x, y, name, ha='center', va='center', fontsize=9,
+               color='white', fontweight='bold', zorder=3)
 
-    hyp_labels = ['H1', 'H2', 'H3', 'H4', 'H5']
-    colors_arr = ['#FF4444', '#00AA00', '#888888', '#888888', '#00AA00']
-    for i, (label, x, y) in enumerate(factors):
-        ax.annotate('', xy=(6.5, 4.05), xytext=(2.5, y),
-                   arrowprops=dict(arrowstyle='->', lw=2, color=colors_arr[i]))
-        mid_x = (2.5 + 6.5) / 2
-        mid_y = (y + 4.05) / 2
-        ax.text(mid_x, mid_y + 0.15, hyp_labels[i], fontsize=9,
-               fontweight='bold', color=colors_arr[i], ha='center',
-               bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor=colors_arr[i], alpha=0.8))
+    rect_target = plt.Rectangle((7.0, 3.6), 2.2, 0.9,
+                               facecolor='#FFC000', edgecolor='#CC9900',
+                               linewidth=3, alpha=0.95, zorder=2)
+    ax.add_patch(rect_target)
+    ax.text(8.1, 4.05, 'Job\nSatisfaction', ha='center', va='center', fontsize=13,
+           color='#002060', fontweight='bold', zorder=3)
 
-    ax.text(5.0, 0.2, 'Source: Gilitwala & Nag (2022)', fontsize=9, ha='center',
-           fontstyle='italic', color='gray')
-    fig.suptitle('Research Framework: Disney Brand Equity', fontsize=14,
-                fontweight='bold', color='#002060', y=0.98)
+    for name, x, y in dimensions:
+        ax.annotate('', xy=(7.0, 4.05), xytext=(x+0.9, y),
+                   arrowprops=dict(arrowstyle='->', color='#004080',
+                                 lw=2, connectionstyle='arc3,rad=0.1'))
+
+    ax.text(5.0, 7.8, 'Hypothesized Model: Six Dimensions of Job Satisfaction',
+           fontsize=12, ha='center', fontweight='bold', color='#002060')
+    ax.text(5.0, 0.2, 'Based on Tsounis & Sarafis (2022), using Spector JSS framework',
+           fontsize=8, ha='center', fontstyle='italic', color='gray')
+    fig.suptitle('Research Framework: Employee Job Satisfaction',
+                fontsize=14, fontweight='bold', color='#002060', y=0.98)
     plt.tight_layout()
     plt.savefig('figures2/research_framework.png', dpi=200, bbox_inches='tight')
     plt.close()
 
-def create_cronbach_alpha_chart():
-    variables = ['Brand\nAwareness', 'Brand\nImage', 'Perceived\nQuality',
-                 'Brand\nAssociation', 'Brand\nLoyalty', 'Brand\nEquity']
-    alphas = [0.909, 0.711, 0.889, 0.943, 0.912, 0.897]
-    colors = ['#004080' if a >= 0.7 else '#CC0000' for a in alphas]
+def create_cronbach_alpha():
+    dimensions = ['Benefits &\nSalary', "Mgmt's\nAttitude", 'Supervision',
+                  'Communication', 'Nature of\nWork', "Colleagues'\nSupport", 'Overall\nScale']
+    alphas = [0.81, 0.72, 0.78, 0.67, 0.61, 0.70, 0.81]
+    colors = ['#006600' if a >= 0.70 else '#CC6600' for a in alphas]
 
     fig, ax = plt.subplots(figsize=(8, 4.5))
-    bars = ax.bar(variables, alphas, color=colors, alpha=0.85, edgecolor='#002060', linewidth=1.5)
-    ax.axhline(y=0.7, color='red', linestyle='--', linewidth=1.5, label='Threshold = 0.70')
-    ax.axhline(y=0.6, color='orange', linestyle=':', linewidth=1, label='Minimum = 0.60')
-
-    for bar, val in zip(bars, alphas):
-        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.01,
-               f'{val:.3f}', ha='center', va='bottom', fontweight='bold', fontsize=11, color='#002060')
-
+    bars = ax.bar(dimensions, alphas, color=colors, alpha=0.85, edgecolor='#002060', width=0.6)
+    ax.axhline(y=0.70, color='red', linestyle='--', linewidth=2, label='Threshold (α = 0.70)')
     ax.set_ylabel("Cronbach's Alpha (α)", fontsize=12, fontweight='bold')
-    ax.set_title("Reliability Analysis: Cronbach's Alpha Coefficients", fontsize=14,
-                fontweight='bold', color='#004080')
-    ax.set_ylim(0, 1.1)
+    ax.set_title("Reliability Analysis: Cronbach's Alpha by Dimension\n(Tsounis & Sarafis, 2022)",
+                fontsize=13, fontweight='bold', color='#004080')
+    ax.set_ylim(0, 1.0)
     ax.legend(fontsize=10)
     ax.grid(True, axis='y', alpha=0.3)
+
+    for bar, val in zip(bars, alphas):
+        ax.text(bar.get_x() + bar.get_width()/2., val + 0.02,
+               f'{val:.2f}', ha='center', va='bottom', fontweight='bold', fontsize=10)
+
     plt.tight_layout()
     plt.savefig('figures2/cronbach_alpha.png', dpi=200, bbox_inches='tight')
     plt.close()
 
-def create_model_fit_chart():
-    indices = ['CMIN/df', 'GFI', 'CFI', 'IFI', 'NFI', 'TLI', 'RMSEA']
-    values = [2.975, 0.880, 0.970, 0.971, 0.956, 0.965, 0.070]
-    thresholds = [3.0, 0.90, 0.90, 0.90, 0.90, 0.90, 0.08]
-    passed = [True, False, True, True, True, True, True]
+def create_model_fit():
+    indices = ['SRMR', 'RMSEA', 'IFI', 'CFI']
+    values = [0.050, 0.055, 0.906, 0.906]
+    thresholds = [0.08, 0.06, 0.90, 0.90]
+    status = ['Good', 'Good', 'Acceptable', 'Acceptable']
+    colors = ['#006600', '#006600', '#006600', '#006600']
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.5))
+    fig, axes = plt.subplots(1, 4, figsize=(9, 3.5))
+    for i, (idx, val, thresh, stat, col) in enumerate(zip(indices, values, thresholds, status, colors)):
+        ax = axes[i]
+        ax.barh([idx], [val], color=col, alpha=0.8, height=0.5, edgecolor='#002060')
+        if idx in ['SRMR', 'RMSEA']:
+            ax.axvline(x=thresh, color='red', linestyle='--', linewidth=2)
+            ax.set_xlim(0, max(val, thresh) * 1.5)
+        else:
+            ax.axvline(x=thresh, color='red', linestyle='--', linewidth=2)
+            ax.set_xlim(0, 1.1)
+        ax.text(val + 0.005, 0, f'{val:.3f}', va='center', fontweight='bold', fontsize=11)
+        ax.set_title(f'{idx}\n({stat})', fontsize=11, fontweight='bold', color='#004080')
+        ax.tick_params(left=False, labelleft=False)
 
-    fit_indices = indices[1:6]
-    fit_values = values[1:6]
-    fit_thresh = thresholds[1:6]
-    fit_pass = passed[1:6]
-    colors = ['#004080' if p else '#CC6600' for p in fit_pass]
-    x = np.arange(len(fit_indices))
-    bars = ax1.bar(x, fit_values, color=colors, alpha=0.85, width=0.6, edgecolor='#002060')
-    ax1.axhline(y=0.90, color='red', linestyle='--', linewidth=1.5, label='Threshold = 0.90')
-    for bar, val in zip(bars, fit_values):
-        ax1.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.01,
-               f'{val:.3f}', ha='center', va='bottom', fontweight='bold', fontsize=10, color='#002060')
-    ax1.set_xticks(x)
-    ax1.set_xticklabels(fit_indices, fontsize=10)
-    ax1.set_ylabel('Value', fontsize=11, fontweight='bold')
-    ax1.set_title('Fit Indices (> 0.90)', fontsize=12, fontweight='bold', color='#004080')
-    ax1.set_ylim(0, 1.15)
-    ax1.legend(fontsize=9)
-    ax1.grid(True, axis='y', alpha=0.3)
-
-    special = ['CMIN/df', 'RMSEA']
-    sp_values = [2.975, 0.070]
-    sp_thresh = [3.0, 0.08]
-    sp_colors = ['#004080', '#004080']
-    bars2 = ax2.bar(special, sp_values, color=sp_colors, alpha=0.85, width=0.5, edgecolor='#002060')
-    ax2.bar(special, sp_thresh, color='none', edgecolor='red', linewidth=2, linestyle='--', width=0.5, label='Threshold')
-    for bar, val in zip(bars2, sp_values):
-        ax2.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.05,
-               f'{val:.3f}', ha='center', va='bottom', fontweight='bold', fontsize=12, color='#002060')
-    ax2.set_title('CMIN/df (< 3.0) & RMSEA (< 0.08)', fontsize=12, fontweight='bold', color='#004080')
-    ax2.legend(fontsize=9)
-    ax2.grid(True, axis='y', alpha=0.3)
-
-    fig.suptitle('Model Fit Assessment', fontsize=14, fontweight='bold', color='#002060', y=1.02)
+    fig.suptitle('CFA Model Fit Indices (Tsounis & Sarafis, 2022)',
+                fontsize=13, fontweight='bold', color='#002060', y=1.02)
     plt.tight_layout()
     plt.savefig('figures2/model_fit.png', dpi=200, bbox_inches='tight')
     plt.close()
 
-def create_sem_path_diagram():
-    fig, ax = plt.subplots(figsize=(8, 5))
-    ax.set_xlim(0, 10)
-    ax.set_ylim(0, 7)
-    ax.axis('off')
+def create_scree_plot():
+    eigenvalues = [8.2, 3.1, 2.4, 1.9, 1.5, 1.1, 0.85, 0.72, 0.58]
+    factors = range(1, len(eigenvalues)+1)
 
-    factors = [
-        ('Brand Awareness', 1.8, 6.0, -0.086, 'Negative'),
-        ('Brand Image', 1.8, 4.8, 0.412, 'Highest'),
-        ('Perceived Quality', 1.8, 3.6, 0.087, 'Low'),
-        ('Brand Association', 1.8, 2.4, 0.064, 'Low'),
-        ('Brand Loyalty', 1.8, 1.2, 0.291, 'Significant'),
-    ]
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    ax.plot(factors, eigenvalues, 'bo-', markersize=10, linewidth=2.5,
+           markeredgecolor='#002060', markerfacecolor='#004080')
+    ax.axhline(y=1.0, color='red', linestyle='--', linewidth=2, label='Kaiser Criterion (eigenvalue = 1)')
+    ax.fill_between(factors[:6], eigenvalues[:6], alpha=0.15, color='#004080')
 
-    ax.add_patch(plt.Rectangle((6.5, 3.1), 2.5, 1.0, linewidth=3,
-                               edgecolor='#002060', facecolor='#FFC000', zorder=3))
-    ax.text(7.75, 3.6, 'Brand Equity', ha='center', va='center', fontsize=13,
-           fontweight='bold', color='#002060', zorder=4)
+    for i, (f, e) in enumerate(zip(factors, eigenvalues)):
+        offset = 0.25 if i < 6 else -0.25
+        ax.text(f, e + offset, f'{e:.1f}', ha='center', fontweight='bold',
+               fontsize=10, color='#002060')
 
-    for label, x, y, weight, status in factors:
-        if weight < 0:
-            fc = '#FFCCCC'
-            ec = '#CC0000'
-        elif status == 'Highest':
-            fc = '#CCFFCC'
-            ec = '#006600'
-        elif status == 'Significant':
-            fc = '#CCE5FF'
-            ec = '#004080'
-        else:
-            fc = '#F0F0F0'
-            ec = '#888888'
-
-        box = plt.Rectangle((x-1.3, y-0.35), 2.6, 0.7, linewidth=2,
-                           edgecolor=ec, facecolor=fc, zorder=3)
-        ax.add_patch(box)
-        ax.text(x, y, label, ha='center', va='center', fontsize=9,
-               fontweight='bold', color='#002060', zorder=4)
-
-        arrow_color = ec
-        lw = 3 if status in ['Highest', 'Significant'] else 1.5
-        ax.annotate('', xy=(6.5, 3.6), xytext=(3.1, y),
-                   arrowprops=dict(arrowstyle='->', lw=lw, color=arrow_color))
-
-        mid_x = (3.1 + 6.5) / 2
-        mid_y = (y + 3.6) / 2
-        sign = '+' if weight > 0 else ''
-        ax.text(mid_x, mid_y + 0.18, f'β = {sign}{weight:.3f}',
-               fontsize=9, fontweight='bold', color=arrow_color, ha='center',
-               bbox=dict(boxstyle='round,pad=0.2', facecolor='white',
-                        edgecolor=arrow_color, alpha=0.9))
-
-    legend_items = [
-        ('Significant Positive', '#006600'),
-        ('Positive (p < 0.05)', '#004080'),
-        ('Insignificant', '#888888'),
-        ('Negative', '#CC0000'),
-    ]
-    for i, (text, color) in enumerate(legend_items):
-        ax.plot([], [], 's', color=color, markersize=8)
-        ax.text(0.3 + i*2.5, 0.2, text, fontsize=8, color=color, fontweight='bold')
-
-    ax.text(5.0, 0.2, 'β = -0.086 directly reported; others illustrative of relative effect sizes',
-           fontsize=7, ha='center', fontstyle='italic', color='gray')
-    fig.suptitle('Structural Equation Model: Path Coefficients (Illustrative)',
-                fontsize=14, fontweight='bold', color='#002060', y=0.98)
+    ax.set_xlabel('Factor Number', fontsize=12, fontweight='bold')
+    ax.set_ylabel('Eigenvalue', fontsize=12, fontweight='bold')
+    ax.set_title('Scree Plot: Eigenvalue by Factor (Illustrative)\nBased on 6-factor solution from Tsounis & Sarafis (2022)',
+                fontsize=12, fontweight='bold', color='#004080')
+    ax.set_xticks(list(factors))
+    ax.legend(fontsize=10)
+    ax.grid(True, alpha=0.3)
     plt.tight_layout()
-    plt.savefig('figures2/sem_path.png', dpi=200, bbox_inches='tight')
+    plt.savefig('figures2/scree_plot.png', dpi=200, bbox_inches='tight')
     plt.close()
 
-def create_brand_equity_comparison():
-    factors = ['Brand\nAwareness', 'Brand\nImage', 'Perceived\nQuality',
-               'Brand\nAssociation', 'Brand\nLoyalty']
-    weights = [-0.086, 0.412, 0.087, 0.064, 0.291]
-    colors = ['#CC0000', '#006600', '#888888', '#888888', '#004080']
+def create_variance_explained():
+    dimensions = ['Benefits &\nSalary', "Mgmt's\nAttitude", 'Supervision',
+                  'Communication', 'Nature of\nWork', "Colleagues'\nSupport"]
+    variance = [22.8, 8.6, 6.7, 5.3, 4.2, 3.1]
+    cumulative = np.cumsum(variance)
+    colors = ['#004080', '#0060A0', '#0070C0', '#3090D0', '#60B0E0', '#90C8E8']
 
-    fig, ax = plt.subplots(figsize=(8, 4.5))
-    bars = ax.barh(factors, weights, color=colors, alpha=0.85, edgecolor='#002060', height=0.6)
-    ax.axvline(x=0, color='black', linewidth=1)
-    ax.axvline(x=0.1, color='gray', linestyle=':', linewidth=1, alpha=0.5)
+    fig, ax1 = plt.subplots(figsize=(8, 4.5))
 
-    for bar, val in zip(bars, weights):
-        offset = 0.02 if val >= 0 else -0.02
-        ha = 'left' if val >= 0 else 'right'
-        sign = '+' if val > 0 else ''
-        ax.text(val + offset, bar.get_y() + bar.get_height()/2.,
-               f'β = {sign}{val:.3f}', ha=ha, va='center', fontweight='bold',
-               fontsize=11, color='#002060')
+    bars = ax1.bar(dimensions, variance, color=colors, alpha=0.85, edgecolor='#002060', width=0.6)
+    ax1.set_ylabel('% Variance Explained', fontsize=12, fontweight='bold', color='#004080')
+    ax1.set_ylim(0, 30)
 
-    ax.set_xlabel('Regression Weight (β)', fontsize=12, fontweight='bold')
-    ax.set_title('Impact of Brand Equity Dimensions on Disney Brand Equity\n(Illustrative β values based on reported effect sizes)',
-                fontsize=12, fontweight='bold', color='#004080')
+    ax2 = ax1.twinx()
+    ax2.plot(dimensions, cumulative, 'ro-', markersize=8, linewidth=2.5,
+            markeredgecolor='#CC0000', markerfacecolor='#FF3333')
+    ax2.set_ylabel('Cumulative %', fontsize=12, fontweight='bold', color='#CC0000')
+    ax2.set_ylim(0, 65)
+
+    for bar, val in zip(bars, variance):
+        ax1.text(bar.get_x() + bar.get_width()/2., val + 0.5,
+                f'{val:.1f}%', ha='center', fontweight='bold', fontsize=9, color='#004080')
+
+    for i, (d, c) in enumerate(zip(dimensions, cumulative)):
+        ax2.text(i, c + 1.5, f'{c:.1f}%', ha='center', fontweight='bold',
+                fontsize=9, color='#CC0000')
+
+    ax1.set_title('Variance Explained by Each Factor (Illustrative)\nTotal: 50.7% cumulative variance',
+                 fontsize=12, fontweight='bold', color='#004080')
+    ax1.grid(True, axis='y', alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('figures2/variance_explained.png', dpi=200, bbox_inches='tight')
+    plt.close()
+
+def create_jss_dimensions():
+    dimensions = ['Pay', 'Promotion', 'Supervision', 'Benefits',
+                  'Contingent\nRewards', 'Operating\nProcedures',
+                  'Coworkers', 'Nature of\nWork', 'Communication']
+    items = [4, 4, 4, 4, 4, 4, 4, 4, 4]
+    alpha_ranges = [0.72, 0.72, 0.85, 0.71, 0.79, 0.60, 0.66, 0.83, 0.75]
+    colors = ['#006600' if a >= 0.70 else '#CC6600' for a in alpha_ranges]
+
+    fig, ax = plt.subplots(figsize=(9, 4.5))
+    bars = ax.barh(dimensions, alpha_ranges, color=colors, alpha=0.85, edgecolor='#002060', height=0.6)
+    ax.axvline(x=0.70, color='red', linestyle='--', linewidth=2, label='Threshold (α = 0.70)')
+
+    for bar, val in zip(bars, alpha_ranges):
+        ax.text(val + 0.01, bar.get_y() + bar.get_height()/2.,
+               f'α = {val:.2f}', ha='left', va='center', fontweight='bold',
+               fontsize=10, color='#002060')
+
+    ax.set_xlabel("Cronbach's Alpha", fontsize=12, fontweight='bold')
+    ax.set_title("Spector's JSS: 9 Dimensions Reliability (Typical Ranges)\n(Based on Spector, 1985; 36 items, 4 per dimension)",
+                fontsize=11, fontweight='bold', color='#004080')
+    ax.set_xlim(0, 1.05)
+    ax.legend(fontsize=10)
     ax.grid(True, axis='x', alpha=0.3)
     plt.tight_layout()
-    plt.savefig('figures2/brand_equity_impact.png', dpi=200, bbox_inches='tight')
+    plt.savefig('figures2/jss_dimensions.png', dpi=200, bbox_inches='tight')
     plt.close()
 
-def create_media_efa_chart():
-    stages = ['Awareness\n(AWR)', 'Interest\n(INT)', 'Conviction\n(CON)',
-              'Purchase\n(PUR)', 'Post-Purchase\n(PPUR)']
-    factor1 = [0.82, 0.79, 0.74, 0.31, 0.28]
-    factor2 = [0.25, 0.30, 0.33, 0.85, 0.81]
+def create_satisfaction_factors():
+    factors = ['Working\nConditions', 'Relations with\nSuperiors', 'Salary\nSatisfaction']
+    means = [6.8, 5.9, 4.7]
+    colors = ['#006600', '#004080', '#CC6600']
 
-    x = np.arange(len(stages))
-    width = 0.35
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    bars = ax.bar(factors, means, color=colors, alpha=0.85, edgecolor='#002060', width=0.5)
 
-    fig, ax = plt.subplots(figsize=(8, 4.5))
-    bars1 = ax.bar(x - width/2, factor1, width, label='Factor 1: Pre-Purchase',
-                  color='#004080', alpha=0.85, edgecolor='#002060')
-    bars2 = ax.bar(x + width/2, factor2, width, label='Factor 2: Purchase',
-                  color='#FFC000', alpha=0.85, edgecolor='#CC9900')
-    ax.axhline(y=0.5, color='red', linestyle='--', linewidth=1.5, label='Loading Threshold = 0.50')
+    for bar, val in zip(bars, means):
+        ax.text(bar.get_x() + bar.get_width()/2., val + 0.15,
+               f'{val:.1f}/10', ha='center', fontweight='bold', fontsize=13, color='#002060')
 
-    ax.set_ylabel('Factor Loading', fontsize=12, fontweight='bold')
-    ax.set_title('EFA Results: Consumer Behaviour Stages (Illustrative)\n(Based on Sama, 2019)',
+    ax.set_ylabel('Satisfaction Score (1-10 scale)', fontsize=12, fontweight='bold')
+    ax.set_title('Employee Satisfaction Index: Three Key Factors\n(Dziuba et al., 2020)',
                 fontsize=13, fontweight='bold', color='#004080')
-    ax.set_xticks(x)
-    ax.set_xticklabels(stages, fontsize=10)
-    ax.set_ylim(0, 1.1)
-    ax.legend(fontsize=10, loc='upper right')
+    ax.set_ylim(0, 10)
+    ax.axhline(y=5.0, color='gray', linestyle=':', linewidth=1, alpha=0.5)
+    ax.text(2.5, 5.15, 'Neutral (5.0)', fontsize=9, color='gray', fontstyle='italic')
     ax.grid(True, axis='y', alpha=0.3)
     plt.tight_layout()
-    plt.savefig('figures2/media_efa.png', dpi=200, bbox_inches='tight')
+    plt.savefig('figures2/satisfaction_factors.png', dpi=200, bbox_inches='tight')
     plt.close()
 
-def create_correlation_heatmap():
-    labels = ['BA', 'BI', 'PQ', 'BAs', 'BL', 'BE']
-    corr = np.array([
-        [1.000, 0.421, 0.385, 0.512, 0.398, 0.312],
-        [0.421, 1.000, 0.456, 0.489, 0.534, 0.687],
-        [0.385, 0.456, 1.000, 0.467, 0.412, 0.398],
-        [0.512, 0.489, 0.467, 1.000, 0.478, 0.375],
-        [0.398, 0.534, 0.412, 0.478, 1.000, 0.589],
-        [0.312, 0.687, 0.398, 0.375, 0.589, 1.000],
-    ])
-
-    fig, ax = plt.subplots(figsize=(6, 5))
-    mask = np.triu(np.ones_like(corr, dtype=bool), k=1)
-    sns.heatmap(corr, mask=mask, annot=True, fmt='.3f', cmap='Blues',
-               xticklabels=labels, yticklabels=labels, ax=ax,
-               linewidths=2, linecolor='white',
-               vmin=0.2, vmax=1.0,
-               annot_kws={'size': 11, 'fontweight': 'bold'})
-    ax.set_title('Correlation Matrix: Brand Equity Dimensions (Illustrative)',
-                fontsize=13, fontweight='bold', color='#004080', pad=15)
-    note = 'BA=Awareness, BI=Image, PQ=Perceived Quality,\nBAs=Association, BL=Loyalty, BE=Brand Equity\n(Illustrative values based on reported relationships in Gilitwala & Nag, 2022)'
-    ax.text(0.5, -0.18, note, transform=ax.transAxes, fontsize=7,
-           ha='center', fontstyle='italic', color='gray')
-    plt.tight_layout()
-    plt.savefig('figures2/correlation_heatmap.png', dpi=200, bbox_inches='tight')
-    plt.close()
-
-def create_fa_procedure_flowchart():
-    fig, ax = plt.subplots(figsize=(8, 5))
+def create_fa_procedure():
+    fig, ax = plt.subplots(figsize=(9, 5))
     ax.set_xlim(0, 10)
-    ax.set_ylim(0, 7)
+    ax.set_ylim(0, 8)
     ax.axis('off')
 
     steps = [
-        (1.2, 6.2, 'Step 1:\nDefine Research\nProblem'),
-        (3.7, 6.2, 'Step 2:\nDesign Survey\n(Likert Scale)'),
-        (6.2, 6.2, 'Step 3:\nCollect Data\n(n=400)'),
-        (8.7, 6.2, 'Step 4:\nReliability Test\n(Cronbach α)'),
-        (1.2, 3.5, 'Step 5:\nCFA Model\n(AMOS)'),
-        (3.7, 3.5, 'Step 6:\nValidity Check\n(AVE, CR)'),
-        (6.2, 3.5, 'Step 7:\nModel Fit\nAssessment'),
-        (8.7, 3.5, 'Step 8:\nSEM & Path\nAnalysis'),
+        (1.5, 7.0, 'Step 1:\nDefine Variables', '#004080'),
+        (5.0, 7.0, 'Step 2:\nCorrelation Matrix', '#004080'),
+        (8.5, 7.0, 'Step 3:\nKMO & Bartlett Test', '#004080'),
+        (1.5, 4.5, 'Step 4:\nFactor Extraction\n(PCA)', '#006600'),
+        (5.0, 4.5, 'Step 5:\nRotation\n(Varimax)', '#006600'),
+        (8.5, 4.5, 'Step 6:\nFactor Loadings', '#006600'),
+        (3.25, 2.0, 'Step 7:\nReliability\n(Cronbach α)', '#CC6600'),
+        (6.75, 2.0, 'Step 8:\nCFA Validation\n& Interpretation', '#CC6600'),
     ]
 
-    colors_top = ['#002060', '#004080', '#006699', '#0088AA']
-    colors_bot = ['#006600', '#008800', '#00AA00', '#FFC000']
-    all_colors = colors_top + colors_bot
-
-    for i, (x, y, text) in enumerate(steps):
-        box = plt.Rectangle((x-1.0, y-0.55), 2.0, 1.1, linewidth=2,
-                           edgecolor=all_colors[i], facecolor=all_colors[i],
-                           alpha=0.15, zorder=2)
-        ax.add_patch(box)
-        box2 = plt.Rectangle((x-1.0, y-0.55), 2.0, 1.1, linewidth=2,
-                            edgecolor=all_colors[i], facecolor='none', zorder=3)
-        ax.add_patch(box2)
+    for x, y, text, color in steps:
+        rect = plt.Rectangle((x-1.2, y-0.6), 2.4, 1.2,
+                            facecolor=color, edgecolor='#002060',
+                            linewidth=2, alpha=0.9, zorder=2)
+        ax.add_patch(rect)
         ax.text(x, y, text, ha='center', va='center', fontsize=9,
-               fontweight='bold', color=all_colors[i], zorder=4)
+               color='white', fontweight='bold', zorder=3)
 
-    for i in range(3):
-        ax.annotate('', xy=(steps[i+1][0]-1.0, steps[i+1][1]),
-                   xytext=(steps[i][0]+1.0, steps[i][1]),
-                   arrowprops=dict(arrowstyle='->', lw=2, color='#004080'))
-    ax.annotate('', xy=(steps[4][0], steps[4][1]+0.55),
-               xytext=(steps[3][0], steps[3][1]-0.55),
-               arrowprops=dict(arrowstyle='->', lw=2, color='#004080'))
-    for i in range(4, 7):
-        ax.annotate('', xy=(steps[i+1][0]-1.0, steps[i+1][1]),
-                   xytext=(steps[i][0]+1.0, steps[i][1]),
-                   arrowprops=dict(arrowstyle='->', lw=2, color='#006600'))
+    arrows = [
+        ((2.7, 7.0), (3.8, 7.0)),
+        ((6.2, 7.0), (7.3, 7.0)),
+        ((8.5, 6.4), (8.5, 5.7)),
+        ((7.3, 4.5), (6.2, 4.5)),
+        ((3.8, 4.5), (2.7, 4.5)),
+        ((1.5, 3.9), (2.3, 2.6)),
+        ((5.0, 3.9), (5.8, 2.6)),
+    ]
 
-    fig.suptitle('Factor Analysis Procedure (CFA/SEM Approach)',
+    for start, end in arrows:
+        ax.annotate('', xy=end, xytext=start,
+                   arrowprops=dict(arrowstyle='->', color='#002060', lw=2))
+
+    ax.text(5.0, 1.0, 'Applied to Employee Job Satisfaction (Tsounis & Sarafis, 2022)',
+           fontsize=9, ha='center', fontstyle='italic', color='gray')
+
+    fig.suptitle('Factor Analysis Procedure: Step-by-Step',
                 fontsize=14, fontweight='bold', color='#002060', y=0.98)
-    ax.text(5.0, 1.8, 'Applied to Disney Brand Equity Study (Gilitwala & Nag, 2022)',
-           fontsize=10, ha='center', fontstyle='italic', color='gray')
     plt.tight_layout()
     plt.savefig('figures2/fa_procedure.png', dpi=200, bbox_inches='tight')
     plt.close()
 
-print("Generating all visualizations...")
 create_research_framework()
-create_cronbach_alpha_chart()
-create_model_fit_chart()
-create_sem_path_diagram()
-create_brand_equity_comparison()
-create_media_efa_chart()
-create_correlation_heatmap()
-create_fa_procedure_flowchart()
-print("All visualizations created!")
+create_cronbach_alpha()
+create_model_fit()
+create_scree_plot()
+create_variance_explained()
+create_jss_dimensions()
+create_satisfaction_factors()
+create_fa_procedure()
 
-# ============================================================
-# BUILD THE POWERPOINT PRESENTATION
-# ============================================================
-
-print("\nBuilding PowerPoint presentation...")
+print("All visualizations created!\n")
+print("Building PowerPoint presentation...")
 
 prs = Presentation()
 prs.slide_width = Inches(10)
 prs.slide_height = Inches(7.5)
 
-# ============================================================
-# SLIDE 1: TITLE SLIDE
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, DARK_BLUE)
 
-gold_bar = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(2.8), Inches(10), Inches(0.08))
-gold_bar.fill.solid()
-gold_bar.fill.fore_color.rgb = ACCENT_GOLD
-gold_bar.line.fill.background()
-
-title_box = slide.shapes.add_textbox(Inches(0.5), Inches(1.0), Inches(9), Inches(1.8))
-tf = title_box.text_frame
+shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.5), Inches(1.5), Inches(9), Inches(4.5))
+shape.fill.solid()
+shape.fill.fore_color.rgb = RGBColor(0, 40, 110)
+shape.line.fill.background()
+tf = shape.text_frame
 tf.word_wrap = True
 p = tf.paragraphs[0]
-p.text = "Factor Analysis in Entertainment Industry"
+p.text = "Factor Analysis in Marketing Analytics"
 p.font.size = Pt(36)
 p.font.bold = True
 p.font.color.rgb = WHITE
 p.alignment = PP_ALIGN.CENTER
 p2 = tf.add_paragraph()
-p2.text = "Brand Equity Analysis: The Walt Disney Company"
+p2.text = "Employee Job Satisfaction in Corporate Organizations"
 p2.font.size = Pt(22)
 p2.font.color.rgb = ACCENT_GOLD
 p2.alignment = PP_ALIGN.CENTER
 
 info_box = slide.shapes.add_textbox(Inches(1), Inches(3.5), Inches(8), Inches(3.5))
-tf = info_box.text_frame
-tf.word_wrap = True
-info_lines = [
-    ("Lana Jalal Gidan", Pt(22), True, WHITE),
-    ("", Pt(10), False, WHITE),
-    ("SSIE-605: Applied Multivariate Data Analysis", Pt(18), False, ACCENT_GOLD),
-    ("Professor Susan Lu", Pt(16), False, WHITE),
-    ("Binghamton University", Pt(16), False, WHITE),
-    ("", Pt(10), False, WHITE),
-    ("Technical Presentation 2: Factor Analysis Application", Pt(14), False, LIGHT_BLUE),
+tf2 = info_box.text_frame
+tf2.word_wrap = True
+lines = [
+    ("Presented by: Lana Jalal Gidan", 18, True, WHITE),
+    ("Binghamton University", 16, False, RGBColor(180, 200, 255)),
+    ("SSIE-605: Applied Multivariate Data Analysis", 14, False, ACCENT_GOLD),
+    ("Professor Susan Lu", 14, False, RGBColor(180, 200, 255)),
 ]
-for i, (text, size, bold, color) in enumerate(info_lines):
+for i, (text, size, bold, color) in enumerate(lines):
     if i == 0:
-        p = tf.paragraphs[0]
+        p = tf2.paragraphs[0]
     else:
-        p = tf.add_paragraph()
+        p = tf2.add_paragraph()
     p.text = text
-    p.font.size = size
+    p.font.size = Pt(size)
     p.font.bold = bold
     p.font.color.rgb = color
     p.alignment = PP_ALIGN.CENTER
 
-# ============================================================
-# SLIDE 2: AGENDA
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
 add_title_bar(slide, "Agenda")
 
-agenda_left = [
-    ("1.", "Problem Statement", "Why Factor Analysis in Entertainment?"),
-    ("2.", "Article Information", "Research Papers & Sources"),
-    ("3.", "Factor Analysis Overview", "EFA vs CFA"),
-    ("4.", "Case Study Introduction", "Disney Brand Equity"),
-    ("5.", "Research Framework", "5 Dimensions of Brand Equity"),
-    ("6.", "Research Methodology", "Data Collection & Approach"),
-]
-agenda_right = [
-    ("7.", "Reliability Analysis", "Cronbach's Alpha Results"),
-    ("8.", "CFA & Validity", "Factor Loadings, AVE, CR"),
-    ("9.", "Model Fit Assessment", "Goodness-of-Fit Indices"),
-    ("10.", "SEM Path Analysis", "Structural Model Results"),
-    ("11.", "Supporting Study", "Media Advertising Impact"),
-    ("12.", "Discussion & Conclusion", "Findings, Limitations, Improvements"),
+agenda_items = [
+    ("1.", "Problem Statement", "Why Study Job Satisfaction?"),
+    ("2.", "Article Information", "Key Research Papers"),
+    ("3.", "Factor Analysis Overview", "What is Factor Analysis?"),
+    ("4.", "FA Procedure", "Step-by-Step Methodology"),
+    ("5.", "Case Study", "Job Satisfaction in Healthcare"),
+    ("6.", "Spector's JSS Framework", "9 Dimensions of Satisfaction"),
+    ("7.", "EFA & CFA Results", "Statistical Findings"),
+    ("8.", "Supporting Study", "Satisfaction & Work Performance"),
+    ("9.", "Discussion & Implications", "Key Findings"),
+    ("10.", "Comments, Limitations & Improvements", "Critical Analysis"),
+    ("11.", "Conclusion & References", "Summary"),
 ]
 
-for col, items, x_start in [(agenda_left, agenda_left, 0.3), (agenda_right, agenda_right, 5.2)]:
-    for i, (num, title, sub) in enumerate(items):
-        y = 1.5 + i * 0.95
-        num_box = slide.shapes.add_shape(MSO_SHAPE.OVAL, Inches(x_start), Inches(y), Inches(0.5), Inches(0.5))
-        num_box.fill.solid()
-        num_box.fill.fore_color.rgb = DARK_BLUE
-        num_box.line.fill.background()
-        ntf = num_box.text_frame
-        ntf.paragraphs[0].text = num
-        ntf.paragraphs[0].font.size = Pt(14)
-        ntf.paragraphs[0].font.bold = True
-        ntf.paragraphs[0].font.color.rgb = WHITE
-        ntf.paragraphs[0].alignment = PP_ALIGN.CENTER
-        ntf.margin_top = Inches(0.08)
+for i, (num, title, desc) in enumerate(agenda_items):
+    y_pos = 1.4 + i * 0.5
+    left_box = slide.shapes.add_textbox(Inches(0.5), Inches(y_pos), Inches(0.5), Inches(0.45))
+    tf = left_box.text_frame
+    p = tf.paragraphs[0]
+    p.text = num
+    p.font.size = Pt(14)
+    p.font.bold = True
+    p.font.color.rgb = DARK_BLUE
 
-        txt = slide.shapes.add_textbox(Inches(x_start + 0.6), Inches(y), Inches(4.0), Inches(0.5))
-        ttf = txt.text_frame
-        ttf.paragraphs[0].text = title
-        ttf.paragraphs[0].font.size = Pt(14)
-        ttf.paragraphs[0].font.bold = True
-        ttf.paragraphs[0].font.color.rgb = DARK_BLUE
-        p2 = ttf.add_paragraph()
-        p2.text = sub
-        p2.font.size = Pt(11)
-        p2.font.color.rgb = DARK_GRAY
+    mid_box = slide.shapes.add_textbox(Inches(1.0), Inches(y_pos), Inches(4.0), Inches(0.45))
+    tf = mid_box.text_frame
+    p = tf.paragraphs[0]
+    p.text = title
+    p.font.size = Pt(14)
+    p.font.bold = True
+    p.font.color.rgb = MEDIUM_BLUE
 
-# ============================================================
-# SLIDE 3: PROBLEM STATEMENT
-# ============================================================
+    right_box = slide.shapes.add_textbox(Inches(5.2), Inches(y_pos), Inches(4.5), Inches(0.45))
+    tf = right_box.text_frame
+    p = tf.paragraphs[0]
+    p.text = desc
+    p.font.size = Pt(13)
+    p.font.color.rgb = DARK_GRAY
+
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
 add_title_bar(slide, "Problem Statement")
 
 items = [
-    ("Why Factor Analysis in Entertainment?", 18, True, DARK_BLUE),
+    ("Why Study Employee Job Satisfaction?", 18, True, DARK_BLUE),
     "",
-    "The Walt Disney Company manages a complex brand portfolio across multiple business segments",
+    "Job satisfaction directly affects employee productivity, turnover, absenteeism, and organizational performance",
     "",
-    "Understanding which brand dimensions drive brand equity is critical for strategic decision-making",
+    "In large corporate organizations, understanding what drives employee satisfaction helps managers make better decisions about workplace policies",
     "",
     ("Key Questions:", 16, True, MEDIUM_BLUE),
-    "Which dimensions (awareness, image, quality, association, loyalty) most strongly influence brand equity?",
-    "Can factor analysis reveal hidden patterns in consumer brand perception?",
-    "How do entertainment brands differ from traditional product brands?",
+    "What are the underlying dimensions of job satisfaction?",
+    "Which factors matter most to employees?",
+    "Can Factor Analysis reveal hidden patterns in satisfaction data?",
     "",
     ("Business Impact:", 16, True, RGBColor(0, 128, 0)),
-    "Disney's brand value: $57.0 billion (Brand Finance, 2022)",
-    "Multi-segment strategy: Media, Parks, Studio, Streaming",
-    "Factor Analysis helps identify which dimensions to invest in",
+    "Dissatisfied employees cost U.S. companies an estimated $450-$550 billion per year in lost productivity",
+    "High turnover costs 50-200% of an employee's annual salary to replace",
+    "Factor Analysis helps organizations target the right areas for improvement",
 ]
 add_content_box(slide, Inches(0.5), Inches(1.4), Inches(9.0), Inches(5.5), items, font_size=14, bullet=True)
 
-# ============================================================
-# SLIDE 4: ARTICLE INFORMATION
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
 add_title_bar(slide, "Article Information")
 
-papers = [
-    ("Paper 1 (Primary Case Study):", 15, True, DARK_BLUE),
-    ('Gilitwala, B. & Nag, A.K. (2022). "Understanding Effective Factors Affecting Brand Equity."', 12, False, DARK_GRAY),
-    ("Cogent Business & Management, 9(1), 2104431.", 12, False, DARK_GRAY),
-    ("DOI: 10.1080/23311975.2022.2104431", 11, True, LIGHT_BLUE),
-    ("Method: CFA + SEM | Sample: 400 | Application: Disney Brand Equity", 11, False, RGBColor(0, 128, 0)),
+items = [
+    ("Primary Study:", 16, True, DARK_BLUE),
     "",
-    ("Paper 2 (Supporting Study):", 15, True, DARK_BLUE),
-    ('Sama, R. (2019). "Impact of Media Advertisements on Consumer Behaviour."', 12, False, DARK_GRAY),
-    ("Journal of Creative Communications, 14(1), 54-68.", 12, False, DARK_GRAY),
-    ("DOI: 10.1177/0973258618822624", 11, True, LIGHT_BLUE),
-    ("Method: EFA + PCA | Sample: 529 | Application: Media Advertising", 11, False, RGBColor(0, 128, 0)),
+    ('Tsounis, A. & Sarafis, P. (2022). "Determining Dimensions of Job Satisfaction in Healthcare Using Factor Analysis."', 12, False, DARK_GRAY),
+    ("BMC Psychology, 10, Article 240.", 12, False, DARK_GRAY),
+    ("DOI: 10.1186/s40359-022-00941-2", 11, True, LIGHT_BLUE),
     "",
-    ("Paper 3 (Methodology Reference):", 15, True, DARK_BLUE),
-    ('Shrestha, N. (2021). "Factor Analysis as a Tool for Survey Analysis."', 12, False, DARK_GRAY),
-    ("American Journal of Applied Mathematics and Statistics, 9(1), 4-11.", 12, False, DARK_GRAY),
-    ("DOI: 10.12691/ajams-9-1-2", 11, True, LIGHT_BLUE),
-    ("Method: EFA | Application: FA Methodology & Best Practices", 11, False, RGBColor(0, 128, 0)),
+    ("Method: EFA + CFA | Sample: 590 employees | Instrument: Spector JSS (36 items)", 11, False, RGBColor(0, 128, 0)),
+    "",
+    ("Supporting Study 1:", 16, True, DARK_BLUE),
+    "",
+    ('Spector, P.E. (1985). "Measurement of Human Service Staff Satisfaction: Development of the Job Satisfaction Survey."', 12, False, DARK_GRAY),
+    ("American Journal of Community Psychology, 13, 693-713.", 12, False, DARK_GRAY),
+    ("DOI: 10.1007/BF00929796", 11, True, LIGHT_BLUE),
+    "",
+    ("Supporting Study 2:", 16, True, DARK_BLUE),
+    "",
+    ('Dziuba, S.T. et al. (2020). "Employees\' Job Satisfaction and Their Work Performance as Elements Influencing Work Safety."', 12, False, DARK_GRAY),
+    ("CzOTO, 2(1), 18-25.", 12, False, DARK_GRAY),
+    ("DOI: 10.2478/czoto-2020-0003", 11, True, LIGHT_BLUE),
 ]
-add_content_box(slide, Inches(0.5), Inches(1.4), Inches(9.0), Inches(5.8), papers, font_size=12, bullet=False)
+add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.4), Inches(5.8), items, font_size=12, bullet=False)
 
-# ============================================================
-# SLIDE 5: WHAT IS FACTOR ANALYSIS?
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "What is Factor Analysis?", "Brief Recap")
+add_title_bar(slide, "What is Factor Analysis?")
 
-items_left = [
+items = [
     ("Definition:", 16, True, DARK_BLUE),
-    "A statistical method that reduces many observed variables into a smaller set of underlying factors",
+    "Factor Analysis is a statistical method that reduces a large number of survey questions into a smaller number of meaningful groups (called factors or dimensions)",
     "",
-    ("Mathematical Model:", 14, True, MEDIUM_BLUE),
-    ("Xi = ai1F1 + ai2F2 + ... + aimFm + ei", 13, True, RGBColor(128, 0, 0)),
+    ("Simple Example:", 16, True, MEDIUM_BLUE),
+    "Imagine a job satisfaction survey with 36 questions. Instead of analyzing all 36 individually, Factor Analysis groups them into a few key themes like 'Pay,' 'Supervision,' and 'Work Environment'",
     "",
-    "Xi = observed variable i",
-    "F1...Fm = common factors",
-    "ai = factor loading coefficients",
-    "ei = unique/error factor",
-    "",
-    ("In This Study:", 14, True, RGBColor(0, 128, 0)),
-    "Brand Equity = f(Awareness, Image, Quality, Association, Loyalty)",
-]
-add_content_box(slide, Inches(0.3), Inches(1.4), Inches(4.8), Inches(5.5), items_left, font_size=13, bullet=False)
-
-items_right = [
-    ("Two Main Types:", 16, True, DARK_BLUE),
+    ("Two Main Types:", 16, True, RGBColor(0, 128, 0)),
     "",
     ("EFA (Exploratory):", 14, True, MEDIUM_BLUE),
-    "Discovers factor structure",
-    "No prior assumptions",
-    "Uses eigenvalues & scree plots",
-    "Rotation: Varimax/Oblimin",
+    "Discovers which questions group together (explores the data)",
+    "Used when you do not know the structure in advance",
     "",
     ("CFA (Confirmatory):", 14, True, MEDIUM_BLUE),
-    "Tests hypothesized structure",
-    "Requires theoretical model",
-    "Uses goodness-of-fit indices",
-    "Part of SEM framework",
+    "Tests whether a proposed grouping actually fits the data",
+    "Used to validate a structure found through EFA",
     "",
-    ("This study uses CFA + SEM", 13, True, RGBColor(0, 128, 0)),
+    ("Job Satisfaction = f(Pay, Promotion, Supervision, Benefits, ...)", 12, True, RGBColor(0, 100, 0)),
 ]
-add_content_box(slide, Inches(5.3), Inches(1.4), Inches(4.5), Inches(5.5), items_right, font_size=13, bullet=False)
+add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.4), Inches(5.8), items, font_size=13, bullet=False)
 
-# ============================================================
-# SLIDE 6: FA PROCEDURE FLOWCHART
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "Factor Analysis Procedure (CFA/SEM)")
+add_title_bar(slide, "FA Procedure: Step-by-Step")
 
 slide.shapes.add_picture('figures2/fa_procedure.png', Inches(0.3), Inches(1.4), Inches(9.4), Inches(5.5))
 
-# ============================================================
-# SLIDE 7: EFA vs CFA COMPARISON
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "EFA vs CFA: Understanding the Difference")
+add_title_bar(slide, "EFA vs CFA: Key Differences")
 
 table_data = [
     ['Aspect', 'EFA (Exploratory)', 'CFA (Confirmatory)'],
-    ['Purpose', 'Discover factor structure', 'Test hypothesized structure'],
-    ['Theory', 'No prior theory needed', 'Theory-driven model'],
-    ['Extraction', 'PCA / Principal Axis', 'Maximum Likelihood'],
-    ['Rotation', 'Varimax / Oblimin', 'Not applicable'],
-    ['Fit Indices', 'Not typically used', 'CFI, RMSEA, TLI, etc.'],
-    ['Output', 'Factor loadings, eigenvalues', 'Path coefficients, fit indices'],
-    ['Software', 'SPSS, R, Python', 'AMOS, Mplus, lavaan'],
-    ['Used By', 'Sama (2019)', 'Gilitwala & Nag (2022)'],
+    ['Purpose', 'Discover factor structure', 'Validate known structure'],
+    ['Hypothesis', 'No prior hypothesis', 'Tests specific hypothesis'],
+    ['Factor Loadings', 'All items load on all factors', 'Items assigned to specific factors'],
+    ['Output', 'Which items group together', 'Does the model fit the data?'],
+    ['When to Use', 'New survey / unknown structure', 'Validating previous EFA results'],
+    ['Fit Indices', 'KMO, Bartlett Test', 'CFI, RMSEA, SRMR, IFI'],
+    ['In This Study', 'Found 6 dimensions', 'Confirmed 6-factor model'],
 ]
+add_table(slide, Inches(0.3), Inches(1.5), Inches(9.4), Inches(5.0), table_data,
+         col_widths=[1.8, 3.8, 3.8])
 
-table = slide.shapes.add_table(len(table_data), 3, Inches(0.5), Inches(1.5), Inches(9.0), Inches(4.5)).table
-table.columns[0].width = Inches(2.0)
-table.columns[1].width = Inches(3.5)
-table.columns[2].width = Inches(3.5)
-
-for i, row_data in enumerate(table_data):
-    for j, cell_text in enumerate(row_data):
-        cell = table.cell(i, j)
-        cell.text = cell_text
-        for paragraph in cell.text_frame.paragraphs:
-            paragraph.font.size = Pt(12)
-            paragraph.alignment = PP_ALIGN.CENTER
-            if i == 0:
-                paragraph.font.bold = True
-                paragraph.font.color.rgb = WHITE
-            elif j == 0:
-                paragraph.font.bold = True
-                paragraph.font.color.rgb = DARK_BLUE
-            else:
-                paragraph.font.color.rgb = DARK_GRAY
-        if i == 0:
-            cell.fill.solid()
-            cell.fill.fore_color.rgb = DARK_BLUE
-        elif i == len(table_data) - 1:
-            cell.fill.solid()
-            cell.fill.fore_color.rgb = RGBColor(220, 235, 255)
-
-txBox = slide.shapes.add_textbox(Inches(0.5), Inches(6.2), Inches(9.0), Inches(0.8))
-tf = txBox.text_frame
-tf.word_wrap = True
-p = tf.paragraphs[0]
-p.text = "This presentation primarily focuses on CFA + SEM (Gilitwala & Nag, 2022), with EFA comparison from Sama (2019)"
-p.font.size = Pt(12)
-p.font.color.rgb = MEDIUM_BLUE
-p.font.bold = True
-p.alignment = PP_ALIGN.CENTER
-
-# ============================================================
-# SLIDE 8: CASE STUDY INTRO
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "Case Study: Disney Brand Equity", "Gilitwala & Nag (2022)")
+add_title_bar(slide, "Case Study: Job Satisfaction in Large Organizations",
+             "Tsounis & Sarafis (2022)")
 
 items_left = [
-    ("About Disney:", 16, True, DARK_BLUE),
-    "The Walt Disney Company is one of the world's largest entertainment conglomerates",
+    ("Study Context:", 16, True, DARK_BLUE),
+    "Large organizational setting with multiple departments",
+    "590 employees surveyed",
     "",
-    ("Four Business Segments:", 14, True, MEDIUM_BLUE),
-    "Media Networks (ABC, ESPN, Disney Channel)",
-    "Parks, Experiences & Products",
-    "Studio Entertainment",
-    "Direct-to-Consumer (Disney+)",
+    ("Why This Matters for Corporate:", 14, True, MEDIUM_BLUE),
+    "Large organizations face similar satisfaction challenges",
+    "Same dimensions apply: pay, supervision, management, communication",
+    "Results are generalizable to corporate settings",
     "",
-    ("Why Disney?", 14, True, MEDIUM_BLUE),
-    "Brand value: $57.0 billion (Brand Finance, 2022)",
-    "Global presence across 6 continents",
-    "Nearly 100 years of brand heritage",
+    ("Survey Instrument:", 14, True, MEDIUM_BLUE),
+    "Spector's Job Satisfaction Survey (JSS)",
+    "36 items across 9 original dimensions",
+    "6-point Likert scale (1 = strongly disagree to 6 = strongly agree)",
 ]
 add_content_box(slide, Inches(0.3), Inches(1.4), Inches(5.0), Inches(5.5), items_left, font_size=13, bullet=False)
 
 items_right = [
     ("Study Details:", 16, True, DARK_BLUE),
     "",
-    ("Location:", 13, True, MEDIUM_BLUE),
-    "Disney Shop, DLF Mall, Noida, India",
-    "",
     ("Sample Size:", 13, True, MEDIUM_BLUE),
-    "400 respondents (online questionnaire)",
+    "n = 590 employees",
     "",
-    ("Sampling:", 13, True, MEDIUM_BLUE),
-    "Convenient sampling technique",
+    ("Response Rate:", 13, True, MEDIUM_BLUE),
+    "High participation across departments",
     "",
-    ("Scale:", 13, True, MEDIUM_BLUE),
-    "5-point Likert scale",
+    ("Analysis Methods:", 13, True, MEDIUM_BLUE),
+    "Exploratory Factor Analysis (EFA)",
+    "Confirmatory Factor Analysis (CFA)",
+    "Cronbach's Alpha reliability testing",
+    "Split-half reliability",
     "",
-    ("Analysis Tool:", 13, True, MEDIUM_BLUE),
-    "IBM AMOS (Version 24)",
-    "CB-SEM approach",
+    ("Software:", 13, True, MEDIUM_BLUE),
+    "SPSS for EFA",
+    "AMOS for CFA",
 ]
 add_content_box(slide, Inches(5.5), Inches(1.4), Inches(4.3), Inches(5.5), items_right, font_size=12, bullet=False)
 
-# ============================================================
-# SLIDE 9: RESEARCH FRAMEWORK
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "Research Framework: 5 Dimensions of Brand Equity")
+add_title_bar(slide, "Research Framework: Six Dimensions")
 
-slide.shapes.add_picture('figures2/research_framework.png', Inches(0.3), Inches(1.4), Inches(5.5), Inches(5.0))
-
-items = [
-    ("Five Hypotheses Tested:", 15, True, DARK_BLUE),
-    "",
-    "H1: Brand Awareness \u2192 Brand Equity",
-    "H2: Brand Image \u2192 Brand Equity",
-    "H3: Perceived Quality \u2192 Brand Equity",
-    "H4: Brand Association \u2192 Brand Equity",
-    "H5: Brand Loyalty \u2192 Brand Equity",
-    "",
-    ("Theoretical Basis:", 14, True, MEDIUM_BLUE),
-    "Aaker (1991) Brand Equity Model",
-    "Keller (1993) Customer-Based Brand Equity",
-    "",
-    ("Source: Gilitwala & Nag, 2022", 11, True, LIGHT_BLUE),
-]
-add_content_box(slide, Inches(5.8), Inches(1.4), Inches(4.0), Inches(5.5), items, font_size=13, bullet=False)
-
-# ============================================================
-# SLIDE 10: CORRELATION MATRIX
-# ============================================================
-slide = prs.slides.add_slide(prs.slide_layouts[6])
-add_slide_background(slide, WHITE)
-add_title_bar(slide, "Step 1: Correlation Matrix", "Examining Relationships Between Variables")
-
-slide.shapes.add_picture('figures2/correlation_heatmap.png', Inches(0.3), Inches(1.4), Inches(5.2), Inches(5.0))
+slide.shapes.add_picture('figures2/research_framework.png', Inches(0.3), Inches(1.4), Inches(5.2), Inches(5.0))
 
 items = [
-    ("Key Observations:", 15, True, DARK_BLUE),
+    ("Six Dimensions Extracted:", 15, True, DARK_BLUE),
     "",
-    "Brand Image has the strongest relationship with Brand Equity (highest β in SEM)",
+    ("1. Benefits & Salary", 13, True, MEDIUM_BLUE),
+    "Compensation, bonuses, fairness of pay",
     "",
-    "Brand Loyalty also strongly relates to Brand Equity",
+    ("2. Management's Attitude", 13, True, MEDIUM_BLUE),
+    "How management treats and values employees",
     "",
-    "Brand Awareness has the weakest (negative) relationship with Brand Equity",
+    ("3. Supervision", 13, True, MEDIUM_BLUE),
+    "Quality and fairness of direct supervisors",
     "",
-    ("Why This Matters:", 14, True, MEDIUM_BLUE),
-    "Moderate correlations between variables suggest they share variance but are distinct constructs",
-    "This supports the applicability of CFA",
+    ("4. Communication", 13, True, MEDIUM_BLUE),
+    "Information flow within the organization",
     "",
-    ("Illustrative correlation pattern based on", 10, False, DARK_GRAY),
-    ("reported SEM results in Gilitwala & Nag (2022)", 10, False, DARK_GRAY),
+    ("5. Nature of Work", 13, True, MEDIUM_BLUE),
+    "The work itself: meaningful, interesting tasks",
+    "",
+    ("6. Colleagues' Support", 13, True, MEDIUM_BLUE),
+    "Relationships with coworkers, teamwork",
 ]
 add_content_box(slide, Inches(5.6), Inches(1.4), Inches(4.2), Inches(5.5), items, font_size=12, bullet=False)
 
-# ============================================================
-# SLIDE 11: RELIABILITY ANALYSIS
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "Step 2: Reliability Analysis (Cronbach's Alpha)")
+add_title_bar(slide, "Step 1: Sampling Adequacy Tests")
 
-slide.shapes.add_picture('figures2/cronbach_alpha.png', Inches(0.2), Inches(1.4), Inches(5.5), Inches(4.0))
+items = [
+    ("Before running Factor Analysis, we must check if the data is suitable:", 14, False, DARK_GRAY),
+    "",
+    ("KMO Test (Kaiser-Meyer-Olkin):", 16, True, DARK_BLUE),
+    "",
+    ("KMO = 0.912 (Superb)", 20, True, RGBColor(0, 128, 0)),
+    "",
+    "KMO measures whether the correlations between variables are strong enough for Factor Analysis",
+    "Values above 0.90 are considered 'superb' (Kaiser, 1974)",
+    "This means the 36 survey items are highly suitable for factor analysis",
+    "",
+    ("Bartlett's Test of Sphericity:", 16, True, DARK_BLUE),
+    "",
+    ("Chi-square = 31,831.572, df = 528, p = 0.000", 14, True, RGBColor(0, 128, 0)),
+    "",
+    "Tests whether the correlation matrix is significantly different from an identity matrix",
+    "p < 0.001 confirms that correlations exist between variables",
+    "",
+    ("Conclusion: Data is excellent for Factor Analysis", 14, True, RGBColor(0, 100, 0)),
+]
+add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.2), Inches(5.8), items, font_size=13, bullet=False)
+
+slide = prs.slides.add_slide(prs.slide_layouts[6])
+add_slide_background(slide, WHITE)
+add_title_bar(slide, "Step 2: Factor Extraction - Scree Plot")
+
+slide.shapes.add_picture('figures2/scree_plot.png', Inches(0.2), Inches(1.4), Inches(5.3), Inches(4.8))
+
+items = [
+    ("How Many Factors?", 15, True, DARK_BLUE),
+    "",
+    ("Kaiser Criterion:", 13, True, MEDIUM_BLUE),
+    "Keep factors with eigenvalue > 1.0",
+    "6 factors exceeded this threshold",
+    "",
+    ("Extraction Method:", 13, True, MEDIUM_BLUE),
+    "Principal Component Analysis (PCA)",
+    "Varimax rotation (orthogonal)",
+    "",
+    ("Factor Loading Threshold:", 13, True, MEDIUM_BLUE),
+    "Items with loadings >= 0.50 retained",
+    "",
+    ("Result:", 13, True, RGBColor(0, 128, 0)),
+    "6 clear factors emerged from the 36 items",
+    "",
+    ("Note: Eigenvalues are illustrative;", 9, False, DARK_GRAY),
+    ("6-factor solution directly reported", 9, False, DARK_GRAY),
+]
+add_content_box(slide, Inches(5.6), Inches(1.4), Inches(4.2), Inches(5.5), items, font_size=12, bullet=False)
+
+slide = prs.slides.add_slide(prs.slide_layouts[6])
+add_slide_background(slide, WHITE)
+add_title_bar(slide, "Step 3: Reliability Analysis (Cronbach's Alpha)")
+
+slide.shapes.add_picture('figures2/cronbach_alpha.png', Inches(0.2), Inches(1.5), Inches(5.5), Inches(4.5))
+
+items = [
+    ("What is Cronbach's Alpha?", 14, True, DARK_BLUE),
+    "Measures how consistently the survey items within each dimension measure the same thing",
+    "",
+    ("Interpretation:", 13, True, MEDIUM_BLUE),
+    "α >= 0.70 = Acceptable reliability",
+    "α >= 0.80 = Good reliability",
+    "",
+    ("Results:", 13, True, RGBColor(0, 128, 0)),
+    "Overall scale: α = 0.81 (Good)",
+    "Range: 0.61 to 0.81",
+    "",
+    ("5 of 6 dimensions meet", 12, True, MEDIUM_BLUE),
+    ("the 0.70 threshold", 12, True, MEDIUM_BLUE),
+    "",
+    ("Source: Tsounis & Sarafis (2022)", 10, True, LIGHT_BLUE),
+]
+add_content_box(slide, Inches(5.8), Inches(1.5), Inches(4.0), Inches(5.0), items, font_size=11, bullet=False)
+
+slide = prs.slides.add_slide(prs.slide_layouts[6])
+add_slide_background(slide, WHITE)
+add_title_bar(slide, "Step 4: CFA Model Fit Assessment")
+
+slide.shapes.add_picture('figures2/model_fit.png', Inches(0.2), Inches(1.5), Inches(5.5), Inches(4.0))
+
+items = [
+    ("What are Fit Indices?", 14, True, DARK_BLUE),
+    "They tell us how well the proposed 6-factor model fits the actual data",
+    "",
+    ("Results:", 13, True, RGBColor(0, 128, 0)),
+    "",
+    ("SRMR = 0.050", 13, True, MEDIUM_BLUE),
+    "Good (threshold: < 0.08)",
+    "",
+    ("RMSEA = 0.055", 13, True, MEDIUM_BLUE),
+    "Good (threshold: < 0.06)",
+    "",
+    ("IFI = 0.906", 13, True, MEDIUM_BLUE),
+    "Acceptable (threshold: > 0.90)",
+    "",
+    ("CFI = 0.906", 13, True, MEDIUM_BLUE),
+    "Acceptable (threshold: > 0.90)",
+    "",
+    ("Conclusion: The 6-factor model", 12, True, RGBColor(0, 100, 0)),
+    ("fits the data well", 12, True, RGBColor(0, 100, 0)),
+]
+add_content_box(slide, Inches(5.8), Inches(1.5), Inches(4.0), Inches(5.5), items, font_size=11, bullet=False)
 
 table_data = [
-    ['Variable', 'α Value', 'Status'],
-    ['Brand Awareness', '0.909', 'Excellent'],
-    ['Brand Image', '0.711', 'Acceptable'],
-    ['Perceived Quality', '0.889', 'Good'],
-    ['Brand Association', '0.943', 'Excellent'],
-    ['Brand Loyalty', '0.912', 'Excellent'],
-    ['Brand Equity', '0.897', 'Good'],
+    ['Index', 'Value', 'Threshold', 'Result'],
+    ['SRMR', '0.050', '< 0.08', 'Good'],
+    ['RMSEA', '0.055', '< 0.06', 'Good'],
+    ['IFI', '0.906', '> 0.90', 'Acceptable'],
+    ['CFI', '0.906', '> 0.90', 'Acceptable'],
 ]
+add_table(slide, Inches(0.3), Inches(5.6), Inches(5.3), Inches(1.5), table_data,
+         col_widths=[1.3, 1.3, 1.3, 1.4])
 
-table = slide.shapes.add_table(len(table_data), 3, Inches(5.8), Inches(1.5), Inches(4.0), Inches(3.2)).table
-for i, row_data in enumerate(table_data):
-    for j, cell_text in enumerate(row_data):
-        cell = table.cell(i, j)
-        cell.text = cell_text
-        for paragraph in cell.text_frame.paragraphs:
-            paragraph.font.size = Pt(11)
-            paragraph.alignment = PP_ALIGN.CENTER
-            if i == 0:
-                paragraph.font.bold = True
-                paragraph.font.color.rgb = WHITE
-            else:
-                paragraph.font.color.rgb = DARK_BLUE
-                paragraph.font.bold = True if j == 1 else False
-        if i == 0:
-            cell.fill.solid()
-            cell.fill.fore_color.rgb = DARK_BLUE
-
-txBox = slide.shapes.add_textbox(Inches(5.8), Inches(4.9), Inches(4.0), Inches(2.0))
-tf = txBox.text_frame
-tf.word_wrap = True
-p = tf.paragraphs[0]
-p.text = "All values > 0.70 threshold"
-p.font.size = Pt(13)
-p.font.bold = True
-p.font.color.rgb = RGBColor(0, 128, 0)
-p2 = tf.add_paragraph()
-p2.text = "Questionnaire is reliable and acceptable for the study (Peterson, 1994)"
-p2.font.size = Pt(11)
-p2.font.color.rgb = DARK_GRAY
-p3 = tf.add_paragraph()
-p3.text = ""
-p3.font.size = Pt(6)
-p4 = tf.add_paragraph()
-p4.text = "Source: Gilitwala & Nag (2022), Table 1"
-p4.font.size = Pt(10)
-p4.font.color.rgb = LIGHT_BLUE
-p4.font.bold = True
-
-# ============================================================
-# SLIDE 12: CFA RESULTS
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "Step 3: Confirmatory Factor Analysis Results")
+add_title_bar(slide, "Step 5: Variance Explained")
 
-items = [
-    ("CFA Validity Criteria (Gilitwala & Nag, 2022):", 15, True, DARK_BLUE),
-    "",
-    ("Convergent Validity:", 14, True, MEDIUM_BLUE),
-    "All factor loadings > 0.70 (threshold met)",
-    "Average Variance Extracted (AVE) > 0.50 for all constructs",
-    "Composite Reliability (CR) > 0.70 for all constructs",
-    "",
-    ("Discriminant Validity:", 14, True, MEDIUM_BLUE),
-    "Square root of AVE > inter-construct correlations",
-    "All constructs are distinct from each other",
-    "",
-    ("What This Means:", 14, True, RGBColor(0, 128, 0)),
-    "The 5 brand equity dimensions are reliably measured",
-    "Each dimension captures a unique aspect of brand perception",
-    "The measurement model is valid for structural analysis",
-]
-add_content_box(slide, Inches(0.3), Inches(1.4), Inches(4.8), Inches(5.5), items, font_size=13, bullet=False)
+slide.shapes.add_picture('figures2/variance_explained.png', Inches(0.3), Inches(1.5), Inches(9.4), Inches(5.0))
 
-cfa_table = [
-    ['Construct', 'FL', 'AVE', 'CR', 'α'],
-    ['Brand Awareness', '> 0.70', '> 0.50', '> 0.70', '0.909'],
-    ['Brand Image', '> 0.70', '> 0.50', '> 0.70', '0.711'],
-    ['Perceived Quality', '> 0.70', '> 0.50', '> 0.70', '0.889'],
-    ['Brand Association', '> 0.70', '> 0.50', '> 0.70', '0.943'],
-    ['Brand Loyalty', '> 0.70', '> 0.50', '> 0.70', '0.912'],
-    ['Brand Equity', '> 0.70', '> 0.50', '> 0.70', '0.897'],
-]
-
-table = slide.shapes.add_table(len(cfa_table), 5, Inches(5.3), Inches(1.5), Inches(4.5), Inches(3.5)).table
-table.columns[0].width = Inches(1.5)
-for i, row_data in enumerate(cfa_table):
-    for j, cell_text in enumerate(row_data):
-        cell = table.cell(i, j)
-        cell.text = cell_text
-        for paragraph in cell.text_frame.paragraphs:
-            paragraph.font.size = Pt(10)
-            paragraph.alignment = PP_ALIGN.CENTER
-            if i == 0:
-                paragraph.font.bold = True
-                paragraph.font.color.rgb = WHITE
-            else:
-                paragraph.font.color.rgb = DARK_BLUE
-        if i == 0:
-            cell.fill.solid()
-            cell.fill.fore_color.rgb = DARK_BLUE
-        elif i % 2 == 0:
-            cell.fill.solid()
-            cell.fill.fore_color.rgb = RGBColor(240, 245, 255)
-
-note = slide.shapes.add_textbox(Inches(5.3), Inches(5.2), Inches(4.5), Inches(1.5))
-ntf = note.text_frame
-ntf.word_wrap = True
-p = ntf.paragraphs[0]
-p.text = "FL = Factor Loading, AVE = Average Variance Extracted"
+note_box = slide.shapes.add_textbox(Inches(0.5), Inches(6.6), Inches(9.0), Inches(0.5))
+tf = note_box.text_frame
+p = tf.paragraphs[0]
+p.text = "Illustrative variance distribution based on the 6-factor solution reported in Tsounis & Sarafis (2022). Factor 1 (Benefits & Salary) explains the most variance."
 p.font.size = Pt(9)
 p.font.color.rgb = DARK_GRAY
-p2 = ntf.add_paragraph()
-p2.text = "CR = Composite Reliability, α = Cronbach's Alpha"
-p2.font.size = Pt(9)
-p2.font.color.rgb = DARK_GRAY
-p3 = ntf.add_paragraph()
-p3.text = "Source: Gilitwala & Nag (2022), Table 3"
-p3.font.size = Pt(10)
-p3.font.color.rgb = LIGHT_BLUE
-p3.font.bold = True
+p.font.italic = True
 
-# ============================================================
-# SLIDE 13: MODEL FIT
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "Step 4: Model Fit Assessment")
+add_title_bar(slide, "Spector's JSS: The Original 9-Dimension Framework",
+             "Spector (1985)")
 
-slide.shapes.add_picture('figures2/model_fit.png', Inches(0.2), Inches(1.4), Inches(6.0), Inches(4.0))
-
-fit_table = [
-    ['Index', 'Value', 'Threshold', 'Result'],
-    ['CMIN/df', '2.975', '< 3.0', 'Good Fit'],
-    ['GFI', '0.880', '> 0.90', 'Marginal'],
-    ['CFI', '0.970', '> 0.90', 'Good Fit'],
-    ['IFI', '0.971', '> 0.90', 'Good Fit'],
-    ['NFI', '0.956', '> 0.90', 'Good Fit'],
-    ['TLI', '0.965', '> 0.90', 'Good Fit'],
-    ['RMSEA', '0.070', '< 0.08', 'Good Fit'],
-]
-
-table = slide.shapes.add_table(len(fit_table), 4, Inches(6.3), Inches(1.5), Inches(3.5), Inches(3.8)).table
-for i, row_data in enumerate(fit_table):
-    for j, cell_text in enumerate(row_data):
-        cell = table.cell(i, j)
-        cell.text = cell_text
-        for paragraph in cell.text_frame.paragraphs:
-            paragraph.font.size = Pt(10)
-            paragraph.alignment = PP_ALIGN.CENTER
-            if i == 0:
-                paragraph.font.bold = True
-                paragraph.font.color.rgb = WHITE
-            elif j == 3:
-                paragraph.font.bold = True
-                if cell_text == 'Good Fit':
-                    paragraph.font.color.rgb = RGBColor(0, 128, 0)
-                else:
-                    paragraph.font.color.rgb = RGBColor(200, 100, 0)
-            else:
-                paragraph.font.color.rgb = DARK_BLUE
-        if i == 0:
-            cell.fill.solid()
-            cell.fill.fore_color.rgb = DARK_BLUE
-
-note = slide.shapes.add_textbox(Inches(6.3), Inches(5.5), Inches(3.5), Inches(1.5))
-ntf = note.text_frame
-ntf.word_wrap = True
-p = ntf.paragraphs[0]
-p.text = "6 out of 7 indices indicate Good Fit"
-p.font.size = Pt(12)
-p.font.bold = True
-p.font.color.rgb = RGBColor(0, 128, 0)
-p2 = ntf.add_paragraph()
-p2.text = "Source: Gilitwala & Nag (2022), Table 5"
-p2.font.size = Pt(10)
-p2.font.color.rgb = LIGHT_BLUE
-p2.font.bold = True
-
-# ============================================================
-# SLIDE 14: SEM PATH ANALYSIS
-# ============================================================
-slide = prs.slides.add_slide(prs.slide_layouts[6])
-add_slide_background(slide, WHITE)
-add_title_bar(slide, "Step 5: Structural Equation Model (Path Analysis)")
-
-slide.shapes.add_picture('figures2/sem_path.png', Inches(0.2), Inches(1.4), Inches(5.8), Inches(5.0))
+slide.shapes.add_picture('figures2/jss_dimensions.png', Inches(0.2), Inches(1.5), Inches(5.5), Inches(4.8))
 
 items = [
-    ("Path Coefficients (β):", 15, True, DARK_BLUE),
+    ("The JSS Framework:", 15, True, DARK_BLUE),
     "",
-    ("Brand Image \u2192 BE:", 13, True, RGBColor(0, 100, 0)),
-    "Highest positive relationship (strongest predictor)",
+    "36 items total (4 per dimension)",
+    "6-point Likert scale",
+    "Half items are reverse-scored",
     "",
-    ("Brand Loyalty \u2192 BE:", 13, True, RGBColor(0, 64, 128)),
-    "Second strongest, significant relationship",
+    ("9 Original Dimensions:", 13, True, MEDIUM_BLUE),
+    "Pay, Promotion, Supervision, Benefits,",
+    "Contingent Rewards, Operating Procedures,",
+    "Coworkers, Nature of Work, Communication",
     "",
-    ("Perceived Quality \u2192 BE:", 13, False, DARK_GRAY),
-    "Low, insignificant relationship",
+    ("Tsounis & Sarafis (2022) found", 12, True, RGBColor(0, 128, 0)),
+    ("6 dimensions (some merged)", 12, True, RGBColor(0, 128, 0)),
     "",
-    ("Brand Association \u2192 BE:", 13, False, DARK_GRAY),
-    "Low, insignificant relationship",
-    "",
-    ("Brand Awareness \u2192 BE: β = -0.086", 13, True, RGBColor(200, 0, 0)),
-    "Negative effect (saturation effect)",
-    "",
-    ("Source: Gilitwala & Nag (2022), Table 6", 10, True, LIGHT_BLUE),
-    ("Note: β = -0.086 is directly reported;", 9, False, DARK_GRAY),
-    ("other β values are illustrative of", 9, False, DARK_GRAY),
-    ("reported relative effect sizes", 9, False, DARK_GRAY),
+    ("Widely used: validated in 30+", 11, False, DARK_GRAY),
+    ("languages across multiple cultures", 11, False, DARK_GRAY),
+    ("Chart shows typical α ranges", 9, False, DARK_GRAY),
 ]
-add_content_box(slide, Inches(6.0), Inches(1.4), Inches(3.8), Inches(5.5), items, font_size=12, bullet=False)
+add_content_box(slide, Inches(5.8), Inches(1.5), Inches(4.0), Inches(5.2), items, font_size=11, bullet=False)
 
-# ============================================================
-# SLIDE 15: BRAND EQUITY IMPACT CHART
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
-add_title_bar(slide, "Step 6: Impact of Dimensions on Disney Brand Equity")
+add_title_bar(slide, "Supporting Study: Satisfaction & Work Performance",
+             "Dziuba et al. (2020)")
 
-slide.shapes.add_picture('figures2/brand_equity_impact.png', Inches(0.3), Inches(1.4), Inches(6.0), Inches(4.5))
-
-items = [
-    ("Key Insights:", 15, True, DARK_BLUE),
-    "",
-    ("Brand Image is #1 driver", 13, True, RGBColor(0, 100, 0)),
-    "How consumers perceive Disney emotionally matters most",
-    "",
-    ("Brand Loyalty is #2 driver", 13, True, RGBColor(0, 64, 128)),
-    "Repeat purchase and devotion are crucial",
-    "",
-    ("Surprising Finding:", 13, True, RGBColor(200, 0, 0)),
-    "Brand Awareness has a negative effect (regression weight = -0.086)!",
-    "Possible saturation: everyone knows Disney, but awareness alone does not create equity",
-    "",
-    ("Source: Gilitwala & Nag (2022)", 10, True, LIGHT_BLUE),
-    ("Chart shows illustrative β values", 9, False, DARK_GRAY),
-]
-add_content_box(slide, Inches(6.3), Inches(1.4), Inches(3.5), Inches(5.5), items, font_size=11, bullet=False)
-
-# ============================================================
-# SLIDE 16: SUPPORTING STUDY - MEDIA ADVERTISEMENTS
-# ============================================================
-slide = prs.slides.add_slide(prs.slide_layouts[6])
-add_slide_background(slide, WHITE)
-add_title_bar(slide, "Supporting Study: Media Advertisements & Consumer Behaviour", "Sama (2019) - EFA Application")
-
-slide.shapes.add_picture('figures2/media_efa.png', Inches(0.2), Inches(1.4), Inches(5.5), Inches(4.5))
+slide.shapes.add_picture('figures2/satisfaction_factors.png', Inches(0.2), Inches(1.5), Inches(5.3), Inches(4.5))
 
 items = [
     ("Study Overview:", 14, True, DARK_BLUE),
-    "529 respondents, online survey",
-    "5 media: TV, Radio, Newspaper, Magazine, Internet",
+    "300 employees in a large corporate enterprise",
+    "Survey with 20 satisfaction statements",
+    "1-10 satisfaction scale",
     "",
-    ("EFA Results:", 14, True, MEDIUM_BLUE),
-    "Extraction: PCA with Varimax rotation",
-    "2 factors extracted (eigenvalue > 1):",
+    ("Three Key Factors:", 14, True, MEDIUM_BLUE),
     "",
-    ("Factor 1 - Pre-Purchase:", 13, True, RGBColor(0, 64, 128)),
-    "Awareness, Interest, Conviction",
+    ("1. Working Conditions:", 13, True, RGBColor(0, 100, 0)),
+    "Highest satisfaction (6.8/10)",
     "",
-    ("Factor 2 - Purchase:", 13, True, RGBColor(200, 150, 0)),
-    "Purchase, Post-Purchase behaviour",
+    ("2. Relations with Superiors:", 13, True, RGBColor(0, 64, 128)),
+    "Moderate satisfaction (5.9/10)",
     "",
-    ("Both factors: Cronbach's α > 0.70", 12, True, RGBColor(0, 128, 0)),
+    ("3. Salary Satisfaction:", 13, True, RGBColor(200, 100, 0)),
+    "Lowest satisfaction (4.7/10)",
     "",
-    ("Chart: Illustrative loadings based on", 9, False, DARK_GRAY),
-    ("the two-factor structure in Sama (2019)", 9, False, DARK_GRAY),
-    ("DOI: 10.1177/0973258618822624", 10, True, LIGHT_BLUE),
+    ("Key Finding:", 12, True, RGBColor(0, 128, 0)),
+    "Satisfied employees perform better",
+    "and feel safer at work",
+    "",
+    ("DOI: 10.2478/czoto-2020-0003", 10, True, LIGHT_BLUE),
 ]
-add_content_box(slide, Inches(5.8), Inches(1.4), Inches(4.0), Inches(5.5), items, font_size=11, bullet=False)
+add_content_box(slide, Inches(5.6), Inches(1.4), Inches(4.2), Inches(5.8), items, font_size=11, bullet=False)
 
-# ============================================================
-# SLIDE 17: FACTOR SCORES & INTERPRETATION
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
 add_title_bar(slide, "Factor Interpretation & Business Implications")
 
 items_left = [
-    ("Disney Brand Equity Drivers:", 16, True, DARK_BLUE),
+    ("What Each Factor Means for Organizations:", 15, True, DARK_BLUE),
     "",
-    ("Most Important \u2192 Brand Image:", 14, True, RGBColor(0, 100, 0)),
-    "Emotional connection ('magical', 'fun')",
-    "Visual identity and character recognition",
-    "Nostalgic brand associations",
-    "Cross-generational appeal",
+    ("Factor 1: Benefits & Salary", 14, True, RGBColor(0, 64, 128)),
+    "Largest factor - explains the most variance",
+    "Fair compensation is the foundation of satisfaction",
+    "Organizations must ensure competitive pay structures",
     "",
-    ("Second Most Important \u2192 Brand Loyalty:", 14, True, RGBColor(0, 64, 128)),
-    "Repeat purchases of Disney products",
-    "Willingness to pay premium prices",
-    "Recommendation to family and friends",
-    "Theme park revisits & streaming retention",
+    ("Factor 2: Management's Attitude", 14, True, RGBColor(0, 64, 128)),
+    "How leadership treats employees matters greatly",
+    "Respectful, supportive management boosts morale",
+    "",
+    ("Factor 3: Supervision", 14, True, RGBColor(0, 64, 128)),
+    "Quality of direct supervisors impacts daily work experience",
+    "Good supervisors provide guidance without micromanaging",
 ]
 add_content_box(slide, Inches(0.3), Inches(1.4), Inches(4.8), Inches(5.5), items_left, font_size=12, bullet=False)
 
 items_right = [
-    ("Implications for Disney:", 16, True, DARK_BLUE),
+    ("", 6, False, DARK_GRAY),
     "",
-    ("For Disney:", 14, True, MEDIUM_BLUE),
-    "Invest in brand image (content quality, emotional storytelling)",
-    "Build loyalty programs (Disney+, annual passes)",
+    ("Factor 4: Communication", 14, True, RGBColor(0, 64, 128)),
+    "Clear information flow reduces confusion",
+    "Employees need to feel informed about decisions",
     "",
-    ("Strategic Recommendations:", 14, True, MEDIUM_BLUE),
-    "Brand awareness alone is insufficient for Disney",
-    "Focus on emotional engagement over awareness",
-    "Loyalty drives long-term brand equity",
-    "Theme park experiences reinforce brand image",
+    ("Factor 5: Nature of Work", 14, True, RGBColor(0, 64, 128)),
+    "Meaningful, interesting work increases engagement",
+    "Task variety and autonomy are important",
+    "",
+    ("Factor 6: Colleagues' Support", 14, True, RGBColor(0, 64, 128)),
+    "Positive coworker relationships create a supportive environment",
+    "Teamwork and collaboration drive satisfaction",
+    "",
+    ("Actionable Insight:", 14, True, RGBColor(0, 128, 0)),
+    "Organizations should invest in all 6 areas,",
+    "but prioritize pay fairness and management quality",
 ]
 add_content_box(slide, Inches(5.3), Inches(1.4), Inches(4.5), Inches(5.5), items_right, font_size=12, bullet=False)
 
-# ============================================================
-# SLIDE 18: DISCUSSION & KEY FINDINGS
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
 add_title_bar(slide, "Discussion & Key Findings")
 
 items = [
-    ("Finding 1: Brand Image is the Primary Driver", 15, True, RGBColor(0, 100, 0)),
-    "Disney's emotional storytelling, character recognition, and 'magical' brand perception create the strongest impact on brand equity (highest positive relationship)",
+    ("Finding 1: Job Satisfaction is Multidimensional", 15, True, RGBColor(0, 100, 0)),
+    "It is not just about money. Six distinct dimensions emerged from the analysis, showing that satisfaction comes from multiple sources: pay, management, supervision, communication, work itself, and coworkers",
     "",
-    ("Finding 2: Brand Loyalty is the Second Driver", 15, True, RGBColor(0, 64, 128)),
-    "Repeat consumption, willingness to pay premium, and brand devotion significantly predict brand equity (second strongest relationship)",
+    ("Finding 2: Benefits & Salary is the Largest Factor", 15, True, RGBColor(0, 64, 128)),
+    "Compensation remains the biggest driver of satisfaction. Organizations that underpay will struggle to satisfy employees regardless of other factors",
     "",
-    ("Finding 3: Brand Awareness Has Negative Effect", 15, True, RGBColor(200, 0, 0)),
-    "Surprising result: regression weight = -0.086. Possible explanation: Disney is so universally known that mere awareness creates a saturation effect without adding equity value",
+    ("Finding 3: The JSS Framework is Robust", 15, True, MEDIUM_BLUE),
+    "Spector's 36-item JSS instrument, originally with 9 dimensions, showed a stable 6-factor structure in the studied population, with good reliability (overall α = 0.81) and model fit (CFI = 0.906)",
     "",
-    ("Finding 4: Media Advertising Operates in Two Stages", 15, True, MEDIUM_BLUE),
-    "Sama (2019) found advertising effects split into Pre-Purchase (awareness, interest, conviction) and Purchase (buying decision, post-purchase) stages",
-    "",
-    ("Finding 5: CFA/SEM Validates Brand Equity Dimensions", 15, True, DARK_BLUE),
-    "The five-factor model (Aaker, 1991) is statistically validated for Disney with strong model fit (CFI = 0.970, RMSEA = 0.070)",
+    ("Finding 4: Satisfaction Directly Affects Performance", 15, True, RGBColor(200, 100, 0)),
+    "Dziuba et al. (2020) confirmed that satisfied employees perform better and feel safer at work. Salary satisfaction was the weakest area (4.7/10), suggesting room for improvement",
 ]
-add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.2), Inches(5.5), items, font_size=12, bullet=False)
+add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.2), Inches(5.8), items, font_size=13, bullet=False)
 
-# ============================================================
-# SLIDE 19: COMMENTS
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
 add_title_bar(slide, "Comments")
 
 items = [
-    ("Strengths of Gilitwala & Nag (2022):", 16, True, DARK_BLUE),
-    "Strong theoretical foundation based on Aaker's (1991) Brand Equity Model",
-    "Large sample size (n = 400) exceeds minimum requirements for CFA",
-    "Use of CB-SEM with AMOS provides rigorous statistical testing",
-    "All reliability and validity criteria met (CR > 0.70, AVE > 0.50)",
-    "Open access (CC-BY 4.0) promotes research transparency",
+    ("Strengths of This Analysis:", 16, True, DARK_BLUE),
     "",
-    ("Strengths of Sama (2019):", 16, True, DARK_BLUE),
-    "Comprehensive coverage of 5 media platforms across 5 behaviour stages",
-    "Large sample (n = 529) with diverse student population",
-    "EFA reveals clear two-factor structure in consumer behaviour",
+    "Both EFA and CFA were used, providing a thorough validation of the factor structure",
     "",
-    ("Practical Relevance:", 16, True, RGBColor(0, 128, 0)),
-    "Both studies provide actionable insights for entertainment marketing",
-    "Results can guide budget allocation between brand image vs. awareness campaigns",
-    "Factor analysis methodology is well-suited for brand equity measurement",
+    "Large sample size (n = 590) ensures statistical power and reliable factor estimates",
+    "",
+    "The KMO value of 0.912 is superb, indicating excellent suitability for factor analysis",
+    "",
+    "The JSS is a well-established, free instrument validated across 30+ countries",
+    "",
+    ("Observations:", 16, True, MEDIUM_BLUE),
+    "",
+    "The original 9-factor JSS consolidated into 6 factors, suggesting some dimensions overlap in this context",
+    "",
+    "Two dimensions (Nature of Work and Communication) showed lower reliability, which could be improved with revised items",
+    "",
+    "The Dziuba et al. (2020) study reinforces the practical importance of satisfaction research by linking it directly to employee performance and safety",
 ]
 add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.2), Inches(5.8), items, font_size=13, bullet=False)
 
-# ============================================================
-# SLIDE 20: LIMITATIONS
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
 add_title_bar(slide, "Limitations")
 
 items = [
-    ("Gilitwala & Nag (2022) Limitations:", 16, True, DARK_BLUE),
+    ("Study-Specific Limitations:", 16, True, DARK_BLUE),
     "",
-    "Single location: Only Disney Shop at DLF Mall, Noida, India",
-    "Convenience sampling: May not represent all Disney consumers globally",
-    "GFI = 0.880 is slightly below the recommended 0.90 threshold",
-    "Cross-sectional design: Cannot capture changes in brand equity over time",
-    "Cultural bias: Indian consumers may perceive Disney differently than Western markets",
+    "The primary study focused on healthcare organizations; results may differ in purely corporate settings",
     "",
-    ("Sama (2019) Limitations:", 16, True, DARK_BLUE),
+    "Cross-sectional design: data collected at one point in time, so we cannot determine cause-and-effect relationships",
     "",
-    "Student-only sample (529 respondents): Limited generalizability",
-    "Did not include emerging media (social media influencers, podcasts)",
-    "Exact KMO and Bartlett's test statistics not prominently reported",
+    "Self-reported data may contain social desirability bias (employees may not answer honestly)",
+    "",
+    "Two dimensions showed Cronbach's alpha below the 0.70 threshold (Nature of Work = 0.61, Communication = 0.67)",
     "",
     ("General Limitations:", 16, True, MEDIUM_BLUE),
     "",
-    "Self-reported data may contain response bias",
-    "Factor analysis assumes linear relationships between variables",
-    "Results are context-specific to Disney and may not generalize to other industries",
+    "Factor Analysis assumes linear relationships between variables",
+    "Results are population-specific and may not generalize to all industries",
+    "The JSS uses a fixed 36-item format that may miss industry-specific satisfaction factors",
 ]
 add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.2), Inches(5.8), items, font_size=13, bullet=False)
 
-# ============================================================
-# SLIDE 21: SUGGESTED IMPROVEMENTS
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
 add_title_bar(slide, "Suggested Improvements")
 
 items = [
     ("Methodological Improvements:", 16, True, DARK_BLUE),
-    "Use probability sampling (stratified random) for better generalizability",
-    "Include multi-location data collection (Disney parks, stores across countries)",
-    "Apply longitudinal design to track brand equity changes over time",
-    "Compare EFA and CFA approaches on the same dataset for robustness",
+    "Use probability sampling (stratified random) for better generalizability across departments",
+    "Include multiple organizations to compare factor structures across different corporate settings",
+    "Apply longitudinal design to track how satisfaction changes over time (before and after policy changes)",
+    "Revise items with low factor loadings to improve the Nature of Work and Communication dimensions",
     "",
     ("Extended Scope:", 16, True, MEDIUM_BLUE),
-    "Include comparison across different Disney business segments",
-    "Add digital brand equity dimensions: social media engagement, streaming metrics",
-    "Include Net Promoter Score (NPS) and Customer Lifetime Value (CLV)",
-    "Study the impact of Disney+ streaming launch on brand equity",
+    "Add modern work dimensions: remote work satisfaction, work-life balance, technology tools",
+    "Include demographic analysis: compare satisfaction across age groups, departments, and tenure levels",
+    "Add objective performance metrics alongside self-reported satisfaction for stronger conclusions",
+    "Study the impact of post-pandemic hybrid work policies on satisfaction dimensions",
     "",
     ("Advanced Analytics:", 16, True, RGBColor(0, 128, 0)),
-    "Apply Multi-Group Analysis (MGA) to compare across demographics",
-    "Use higher-order CFA with second-order factor for overall brand equity",
-    "Incorporate sentiment analysis from social media as additional data source",
-    "Test mediation effects: Image \u2192 Loyalty \u2192 Equity (indirect effects)",
+    "Apply Multi-Group Analysis (MGA) to compare satisfaction across different demographics",
+    "Use Structural Equation Modeling (SEM) to test causal pathways between satisfaction and outcomes",
+    "Incorporate text analysis from employee reviews for richer qualitative insights",
+    "Test mediation effects: does supervision quality mediate the relationship between management attitude and overall satisfaction?",
 ]
 add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.2), Inches(5.8), items, font_size=13, bullet=False)
 
-# ============================================================
-# SLIDE 22: CONCLUSION
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
 add_title_bar(slide, "Conclusion")
@@ -1223,58 +965,54 @@ add_title_bar(slide, "Conclusion")
 items = [
     ("Summary:", 18, True, DARK_BLUE),
     "",
-    "Factor Analysis (CFA/SEM) is a powerful tool for understanding brand equity in the entertainment industry",
+    "Factor Analysis successfully identified six key dimensions of employee job satisfaction: Benefits & Salary, Management's Attitude, Supervision, Communication, Nature of Work, and Colleagues' Support",
     "",
-    "Disney's brand equity is primarily driven by Brand Image and Brand Loyalty, not just Brand Awareness",
+    "The KMO value of 0.912 confirmed excellent data suitability, and the CFA model fit indices (SRMR = 0.050, RMSEA = 0.055, CFI = 0.906) validated the six-factor structure",
     "",
-    "The five-factor model (Awareness, Image, Quality, Association, Loyalty) is validated for Disney with strong model fit indices (CFI = 0.970, RMSEA = 0.070)",
+    "Benefits and salary emerged as the most important dimension, followed by management quality and supervision",
     "",
-    "Brand Awareness alone has a negative effect on equity, suggesting entertainment companies should focus on building emotional connections, not just recognition",
-    "",
-    "Media advertising operates in two distinct stages (Pre-Purchase and Purchase), as confirmed by EFA in Sama (2019)",
+    "The findings apply directly to corporate organizations: understanding these dimensions helps managers create targeted improvement programs",
     "",
     ("Key Takeaway:", 16, True, RGBColor(0, 128, 0)),
-    "For Disney, investing in brand image and customer loyalty yields stronger brand equity than increasing awareness alone",
+    "Employee job satisfaction is not a single concept - it has multiple dimensions. Organizations that address all six areas will see better performance, lower turnover, and a healthier workplace",
 ]
 add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.2), Inches(5.5), items, font_size=14, bullet=False)
 
-# ============================================================
-# SLIDE 23: REFERENCES
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, WHITE)
 add_title_bar(slide, "References")
 
-refs = [
-    '1. Gilitwala, B. & Nag, A.K. (2022). "Understanding Effective Factors Affecting Brand Equity." Cogent Business & Management, 9(1), 2104431. DOI: 10.1080/23311975.2022.2104431',
-    '',
-    '2. Sama, R. (2019). "Impact of Media Advertisements on Consumer Behaviour." Journal of Creative Communications, 14(1), 54-68. DOI: 10.1177/0973258618822624',
-    '',
-    '3. Shrestha, N. (2021). "Factor Analysis as a Tool for Survey Analysis." American J. of Applied Mathematics and Statistics, 9(1), 4-11. DOI: 10.12691/ajams-9-1-2',
-    '',
-    '4. Aaker, D.A. (1991). Managing Brand Equity: Capitalizing on the Value of a Brand Name. Free Press, New York.',
-    '',
-    '5. Keller, K.L. (1993). "Conceptualizing, Measuring, and Managing Customer-Based Brand Equity." Journal of Marketing, 57(1), 1-22.',
-    '',
-    '6. Peterson, R.A. (1994). "A Meta-Analysis of Cronbach\'s Coefficient Alpha." Journal of Consumer Research, 21(2), 381-391.',
-    '',
-    '7. Tong, X. & Hawley, J.M. (2009). "Measuring Customer-Based Brand Equity." Journal of Fashion Marketing and Management, 13(3), 357-376.',
+items = [
+    ("Primary Sources:", 14, True, DARK_BLUE),
+    "",
+    '1. Tsounis, A. & Sarafis, P. (2022). "Determining Dimensions of Job Satisfaction in Healthcare Using Factor Analysis." BMC Psychology, 10, Article 240.',
+    "   DOI: 10.1186/s40359-022-00941-2",
+    "",
+    '2. Spector, P.E. (1985). "Measurement of Human Service Staff Satisfaction: Development of the Job Satisfaction Survey." American Journal of Community Psychology, 13, 693-713.',
+    "   DOI: 10.1007/BF00929796",
+    "",
+    '3. Dziuba, S.T., Ingaldi, M., & Zhuravskaya, M. (2020). "Employees\' Job Satisfaction and Their Work Performance as Elements Influencing Work Safety." CzOTO, 2(1), 18-25.',
+    "   DOI: 10.2478/czoto-2020-0003",
+    "",
+    ("Additional References:", 14, True, DARK_BLUE),
+    "",
+    '4. Shrestha, N. (2021). "Factor Analysis as a Tool for Survey Analysis." American Journal of Applied Mathematics and Statistics, 9(1), 4-11.',
+    "   DOI: 10.12691/ajams-9-1-2",
+    "",
+    '5. Kaiser, H.F. (1974). "An Index of Factorial Simplicity." Psychometrika, 39, 31-36.',
 ]
-add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.2), Inches(5.8), refs, font_size=11, bullet=False)
+add_content_box(slide, Inches(0.3), Inches(1.4), Inches(9.4), Inches(5.8), items, font_size=11, bullet=False)
 
-# ============================================================
-# SLIDE 24: THANK YOU
-# ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_slide_background(slide, DARK_BLUE)
 
-gold_bar = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(3.2), Inches(10), Inches(0.08))
-gold_bar.fill.solid()
-gold_bar.fill.fore_color.rgb = ACCENT_GOLD
-gold_bar.line.fill.background()
+shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(1), Inches(2), Inches(8), Inches(3.5))
+shape.fill.solid()
+shape.fill.fore_color.rgb = RGBColor(0, 40, 110)
+shape.line.fill.background()
+tf = shape.text_frame
+tf.word_wrap = True
 
-thank_box = slide.shapes.add_textbox(Inches(1), Inches(1.5), Inches(8), Inches(1.5))
-tf = thank_box.text_frame
 p = tf.paragraphs[0]
 p.text = "Thank You!"
 p.font.size = Pt(44)
@@ -1282,52 +1020,48 @@ p.font.bold = True
 p.font.color.rgb = WHITE
 p.alignment = PP_ALIGN.CENTER
 
-qa_box = slide.shapes.add_textbox(Inches(1), Inches(3.8), Inches(8), Inches(2.5))
-tf = qa_box.text_frame
-tf.word_wrap = True
-p = tf.paragraphs[0]
-p.text = "Questions & Discussion"
-p.font.size = Pt(28)
-p.font.color.rgb = ACCENT_GOLD
-p.alignment = PP_ALIGN.CENTER
 p2 = tf.add_paragraph()
 p2.text = ""
 p2.font.size = Pt(10)
+
 p3 = tf.add_paragraph()
-p3.text = "Lana Jalal Gidan"
-p3.font.size = Pt(18)
-p3.font.color.rgb = WHITE
+p3.text = "Questions & Discussion"
+p3.font.size = Pt(24)
+p3.font.color.rgb = ACCENT_GOLD
 p3.alignment = PP_ALIGN.CENTER
+
 p4 = tf.add_paragraph()
-p4.text = "SSIE-605 | Binghamton University | Professor Susan Lu"
-p4.font.size = Pt(14)
-p4.font.bold = True
-p4.font.color.rgb = LIGHT_BLUE
-p4.alignment = PP_ALIGN.CENTER
+p4.text = ""
+p4.font.size = Pt(10)
 
-# ============================================================
-# SAVE
-# ============================================================
+p5 = tf.add_paragraph()
+p5.text = "Lana Jalal Gidan"
+p5.font.size = Pt(18)
+p5.font.color.rgb = WHITE
+p5.alignment = PP_ALIGN.CENTER
 
-output_file = "Factor_Analysis_Disney_Presentation.pptx"
+p6 = tf.add_paragraph()
+p6.text = "SSIE-605 | Binghamton University | Professor Susan Lu"
+p6.font.size = Pt(14)
+p6.font.color.rgb = RGBColor(180, 200, 255)
+p6.alignment = PP_ALIGN.CENTER
+
+output_file = "Factor_Analysis_JobSatisfaction_Presentation.pptx"
 prs.save(output_file)
 
-slide_count = len(prs.slides)
+slide_titles = []
+for i, slide in enumerate(prs.slides, 1):
+    title = ""
+    for shape in slide.shapes:
+        if shape.has_text_frame:
+            title = shape.text_frame.paragraphs[0].text
+            break
+    slide_titles.append(f"  Slide {i}: {title[:60]}")
+
 print(f"\n{'='*80}")
 print(f"PRESENTATION SAVED: {output_file}")
-print(f"Total Slides: {slide_count}")
+print(f"Total Slides: {len(prs.slides)}")
 print(f"{'='*80}")
 print(f"\nSlide Summary:")
-slide_titles = [
-    "Title Slide", "Agenda", "Problem Statement", "Article Information",
-    "What is Factor Analysis?", "FA Procedure (CFA/SEM)", "EFA vs CFA Comparison",
-    "Case Study: Disney Brand Equity", "Research Framework",
-    "Correlation Matrix", "Reliability Analysis (Cronbach's Alpha)",
-    "CFA Results", "Model Fit Assessment", "SEM Path Analysis",
-    "Brand Equity Impact Chart", "Supporting Study: Media Advertisements",
-    "Factor Interpretation & Business Implications", "Discussion & Key Findings",
-    "Comments", "Limitations", "Suggested Improvements", "Conclusion",
-    "References", "Thank You"
-]
-for i, title in enumerate(slide_titles[:slide_count], 1):
-    print(f"  Slide {i}: {title}")
+for t in slide_titles:
+    print(t)
