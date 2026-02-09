@@ -17,7 +17,7 @@ Academic project repository for SSIE500 course.
 - Preferred communication style: Simple, everyday language
 - Appreciates step-by-step explanations with concrete examples
 - Wants simple approaches (not complicated)
-- Author attribution: "Zeinab Davoudmanesh"
+- Author attribution: "Lana Jalal Gidan"
 - Institution: Binghamton University
 
 ## System Architecture
