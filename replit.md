@@ -3,7 +3,15 @@
 ## Overview
 Academic project repository for SSIE500 course.
 
-**Current Status:** Ready for new topic
+**Current Status:** Upcoming - Technical Presentation on Factor Analysis
+
+## Upcoming Project: Technical Presentation
+- **Topic:** Factor Analysis
+- **Application Area:** Marketing / Consumer Analytics
+- **Format:** PowerPoint presentation
+- **Requirements:** Review, summary, and comments on journal/conference papers; focus on applications and methodologies; improvement of existing methods recommended
+- **Status:** Waiting for user to say "go" before starting
+- **Need to find:** Research papers with DOIs on factor analysis in marketing/consumer analytics
 
 ## User Preferences
 - Preferred communication style: Simple, everyday language
