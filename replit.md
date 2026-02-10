@@ -3,7 +3,7 @@
 ## Overview
 Academic project repository for SSIE-605 (Applied Multivariate Data Analysis) at Binghamton University.
 
-**Current Status:** Three Factor Analysis presentations completed
+**Current Status:** Four Factor Analysis presentations completed
 
 ## Presentation 1: Toothpaste Consumer Preferences
 - **Topic:** Factor Analysis in Marketing / Consumer Analytics
@@ -75,6 +75,33 @@ Academic project repository for SSIE-605 (Applied Multivariate Data Analysis) at
 - **Factor Loadings (Table 4):** 9 variables x 3 factors, range 0.732–0.956 for primary loadings
 - **Score Coefficients (Table 5):** Used to build comprehensive scoring equations
 - **Score Ranges (Table 6):** Solvency: -24.85 to 46.09, Profitability: -0.32 to 66.24, Oper. Dev.: -156.91 to 947.95
+
+## Presentation 4: Social Media Influence on Consumer Purchase Decisions
+- **Topic:** Factor Analysis in Marketing Analytics / Consumer Behavior
+- **Application Area:** Social media influence on rural consumer purchase decisions
+- **Primary Study:** Ahmad, A., Singh, N.K., Ahmad, S., Fatima, R., Alam, A. & Ghani, U. (2026) — Intl. Review of Management & Marketing
+- **Format:** PowerPoint presentation (27 slides, 10 visualizations)
+- **Output File:** Factor_Analysis_SocialMedia_Presentation.pptx
+- **Script:** create_presentation4.py
+- **Figures Directory:** figures4/ (10 PNG visualization files)
+- **Status:** Complete
+
+### Research Papers Referenced (Presentation 4)
+1. Ahmad, A., Singh, N.K., Ahmad, S., Fatima, R., Alam, A. & Ghani, U. (2026). "Identifying Determinants of Social Media Influence on Purchase Decisions: A Factor Analytical Study of Rural Consumers in Selected Districts of Uttar Pradesh." IRMM, 16(2), 111-119. DOI: 10.32479/irmm.21497
+2. Hair, J.F., Black, W.C., Babin, B.J. & Anderson, R.E. (2019). Multivariate Data Analysis (8th Ed.). Cengage Learning.
+3. Nunnally, J.C. (1978). Psychometric Theory (2nd Ed.). McGraw-Hill.
+
+### Key Results (Presentation 4) — All from published tables
+- **Sample:** n = 241 rural consumers from 5 districts of Uttar Pradesh, India
+- **Instrument:** 25-item structured questionnaire, 5-point Likert scale
+- **KMO = 0.90** (Marvellous), Bartlett's χ² = 2890.7, df = 300, P < 0.001
+- **5 factors extracted** via PCA with Varimax rotation:
+  - Content & Informativeness, Trust & Credibility, Peer & Community, Emotional Engagement, Convenience
+- **Factor Loadings (Table 4):** All > 0.74; ranges: CI 0.74–0.81, TC 0.81–0.85, PI 0.76–0.80, EE 0.79–0.85, CV 0.79–0.84
+- **Cronbach's Alpha (Table 2):** Overall = 0.92; by factor: 0.84–0.88
+- **CFA Model Fit (Table 5):** CFI = 0.95, TLI = 0.93, RMSEA = 0.05, SRMR = 0.06
+- **SEM Path Coefficients:** H1 β=0.67, H2 β=0.72, H3 β=0.65, H4 β=0.61, H5 β=0.68 (all P < 0.001)
+- **Note:** Individual eigenvalues and total variance explained not reported in published tables
 
 ## User Preferences
 - Preferred communication style: Simple, everyday language
