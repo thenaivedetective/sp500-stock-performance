@@ -3,7 +3,7 @@
 ## Overview
 Academic project repository for SSIE-605 (Applied Multivariate Data Analysis) at Binghamton University.
 
-**Current Status:** Four Factor Analysis presentations completed
+**Current Status:** Five Factor Analysis presentations completed
 
 ## Presentation 1: Toothpaste Consumer Preferences
 - **Topic:** Factor Analysis in Marketing / Consumer Analytics
@@ -102,6 +102,33 @@ Academic project repository for SSIE-605 (Applied Multivariate Data Analysis) at
 - **CFA Model Fit (Table 5):** CFI = 0.95, TLI = 0.93, RMSEA = 0.05, SRMR = 0.06
 - **SEM Path Coefficients:** H1 β=0.67, H2 β=0.72, H3 β=0.65, H4 β=0.61, H5 β=0.68 (all P < 0.001)
 - **Note:** Individual eigenvalues and total variance explained not reported in published tables
+
+## Presentation 5: Green Supply Chain Management & Sustainability
+- **Topic:** Factor Analysis in Supply Chain Management / Sustainability
+- **Application Area:** GSCM practices and sustainability in Indian manufacturing
+- **Primary Study:** Gupta, P., Sharma, Y., Chauhan, A., Parewa, B., Rai, P. & Naik, N. (2025) — Scientific Reports
+- **Format:** PowerPoint presentation (27 slides, 10 visualizations)
+- **Output File:** Factor_Analysis_GSCM_Presentation.pptx
+- **Script:** create_presentation5.py
+- **Figures Directory:** figures5/ (10 PNG visualization files)
+- **Status:** Complete
+
+### Research Papers Referenced (Presentation 5)
+1. Gupta, P., Sharma, Y., Chauhan, A., Parewa, B., Rai, P. & Naik, N. (2025). "Investigation of green supply chain management practices and sustainability in Indian manufacturing enterprises using a structural equation modelling approach." Scientific Reports, 15, 14909. DOI: 10.1038/s41598-025-95940-9
+2. Hair, J.F., Black, W.C., Babin, B.J. & Anderson, R.E. (2019). Multivariate Data Analysis (8th Ed.). Cengage Learning.
+3. Kaiser, H.F. (1974). "An Index of Factorial Simplicity." Psychometrika, 39, 31-36.
+
+### Key Results (Presentation 5) — All from published tables
+- **Sample:** n = 389 managers from bag-manufacturing firms in India (from 480 collected)
+- **Instrument:** 41-item questionnaire across 8 constructs, 5-point Likert scale
+- **PCA Eigenvalues (Table 6):** 11.389, 3.348, 3.153, 2.815, 2.472, 2.181, 1.965, 1.067 — 8 components, 66.02% variance
+- **8 constructs:** Green Procurement, Green Logistics, Green Product & Design, Regulatory Framework, Top Mgmt. Performance, Low Carbon Performance, Sustainable Society, Sustainable Manufacturing
+- **Factor Loadings (Table 3):** 41 items, range 0.604–0.844
+- **Cronbach's Alpha (Table 3):** Range 0.729–0.896
+- **Composite Reliability (Table 3):** Range 0.730–0.898; AVE range 0.502–0.633
+- **SEM Path Coefficients (Table 7):** GP→TMP β=0.130, GL→TMP β=0.200, GD→TMP β=0.274, RF→TMP β=0.100, TMP→CP β=0.388, CP→SS β=0.359, CP→SM β=0.295 (all p < 0.05)
+- **R² Values:** TMP=20.7%, CP=19.5%, SS=16.1%, SM=14.7%
+- **Effect Sizes (f²):** TMP→CP=0.215 (medium), CP→SM=0.139 (small), CP→SS=0.176 (medium)
 
 ## User Preferences
 - Preferred communication style: Simple, everyday language
