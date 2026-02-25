@@ -263,47 +263,13 @@ slide.shapes.add_picture('figures4_new/demographics.png', Inches(0.2), Inches(1.
 add_footer(slide, FOOTER)
 
 # ============================================================
-# SLIDE 6: METHODOLOGY
+# SLIDE 6: METHODOLOGY - VISUAL FLOWCHART
 # ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_bg(slide, LIGHT_BG)
 add_title_bar(slide, "Research Methodology", "Split-Sample Design: EFA + CFA")
 add_accent(slide)
-add_content(slide, Inches(0.3), Inches(1.5), Inches(4.5), Inches(5.5), [
-    ("Study Design:", 14, True, PURPLE),
-    "",
-    "- Cross-sectional study (2015 data)",
-    "- Part of 20-year longitudinal follow-up",
-    "- Originally recruited as girls (1995)",
-    "- Currently working women only",
-    "- Final sample: n = 702",
-    "",
-    ("Sample Split:", 14, True, PURPLE),
-    "",
-    "- EFA sample: n = 341",
-    "- CFA sample: n = 342",
-    "- 19 cases excluded (missing data, 3%)",
-    "- Total with complete data: n = 683",
-], font_size=12)
-add_content(slide, Inches(5.0), Inches(1.5), Inches(4.8), Inches(5.5), [
-    ("Statistical Methods:", 14, True, TEAL),
-    "",
-    "Exploratory Factor Analysis (EFA):",
-    "  - Maximum likelihood extraction",
-    "  - Eigenvalues > 1 criterion",
-    "  - Promax rotation (forced 3-factor)",
-    "  - Parallel Analysis",
-    "  - Velicer's MAP test",
-    "",
-    "Confirmatory Factor Analysis (CFA):",
-    "  - Maximum likelihood estimation",
-    "  - Three models tested:",
-    "    1-factor, 2-factor, 3-factor",
-    "",
-    "Software: Stata 14 + SPSS",
-    "",
-    ("Ethics: Uppsala Regional Board (2014/401)", 10, False, RGBColor(120, 120, 120)),
-], font_size=12)
+slide.shapes.add_picture('figures4_new/split_sample_flowchart.png', Inches(0.2), Inches(1.3), Inches(9.6), Inches(5.8))
 add_footer(slide, FOOTER)
 
 # ============================================================
@@ -384,6 +350,28 @@ add_content(slide, Inches(0.5), Inches(1.5), Inches(9), Inches(5.5), [
     "",
     ("Conclusion: EFA strongly supports a single 'Work Engagement' factor", 13, True, TEAL),
 ], font_size=12)
+
+shape_tc = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.5), Inches(5.8), Inches(9.0), Inches(1.2))
+shape_tc.fill.solid()
+shape_tc.fill.fore_color.rgb = RGBColor(255, 243, 224)
+shape_tc.line.color.rgb = WARM
+shape_tc.line.width = Pt(2)
+tf_tc = shape_tc.text_frame
+tf_tc.word_wrap = True
+tf_tc.margin_left = Inches(0.15)
+tf_tc.margin_right = Inches(0.15)
+p_tc = tf_tc.paragraphs[0]
+p_tc.text = "Technical Commentary:"
+p_tc.font.size = Pt(11)
+p_tc.font.bold = True
+p_tc.font.color.rgb = WARM
+p_tc2 = tf_tc.add_paragraph()
+p_tc2.text = ("While EFA and MAP tests supported a 1-factor solution, Parallel Analysis suggested 4 factors. "
+              "This often occurs in multivariate data with high inter-item correlations (0.52-0.85), "
+              "leading to 'over-factoring' -- a known limitation of Parallel Analysis in highly correlated datasets.")
+p_tc2.font.size = Pt(10)
+p_tc2.font.color.rgb = DARK_GRAY
+
 add_footer(slide, FOOTER)
 
 # ============================================================
@@ -450,13 +438,73 @@ slide.shapes.add_picture('figures4_new/goodness_of_fit.png', Inches(0.2), Inches
 add_footer(slide, FOOTER)
 
 # ============================================================
-# SLIDE 18: GOODNESS-OF-FIT TABLE
+# SLIDE 18: GOODNESS-OF-FIT TABLE WITH THRESHOLDS
 # ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_bg(slide, LIGHT_BG)
-add_title_bar(slide, "Goodness-of-Fit: Full Table", "Table 5 from Willmer et al. (2019)")
+add_title_bar(slide, "Goodness-of-Fit: Full Table with Thresholds", "Table 5 | Red = Failed to Meet Acceptable Threshold")
 add_accent(slide)
-slide.shapes.add_picture('figures4_new/gof_table.png', Inches(0.2), Inches(1.3), Inches(9.6), Inches(5.8))
+gof_data = [
+    ["Fit Statistic", "One-Factor", "Two-Factor", "Three-Factor", "Good Fit Threshold"],
+    ["Chi2 (df)", "633.90 (27)", "354.49 (26)", "247.76 (24)", "Non-significant"],
+    ["RMSEA", "0.181", "0.192", "0.167", "< 0.05 (pref.) / < 0.08"],
+    ["RMSEA 90% CI", "0.169-0.194", "0.175-0.192", "0.154-0.180", "--"],
+    ["AIC", "16221.47", "8246.29", "8143.56", "Lower = better"],
+    ["BIC", "16343.70", "8353.66", "8258.60", "Lower = better"],
+    ["CFI", "0.895", "0.882", "0.920", "> 0.95"],
+    ["TLI", "0.860", "0.837", "0.880", "> 0.95"],
+    ["SRMR", "0.046", "0.049", "0.065", "< 0.08"],
+]
+rows = len(gof_data)
+cols = len(gof_data[0])
+table_shape = slide.shapes.add_table(rows, cols, Inches(0.3), Inches(1.5), Inches(9.4), Inches(4.8))
+table = table_shape.table
+col_ws = [1.8, 1.6, 1.6, 1.6, 2.8]
+for ci, w in enumerate(col_ws):
+    table.columns[ci].width = Inches(w)
+RED = RGBColor(192, 57, 43)
+for i, row in enumerate(gof_data):
+    for j, val in enumerate(row):
+        cell = table.cell(i, j)
+        cell.text = str(val)
+        cell.vertical_anchor = MSO_ANCHOR.MIDDLE
+        for paragraph in cell.text_frame.paragraphs:
+            paragraph.alignment = PP_ALIGN.CENTER
+            paragraph.font.size = Pt(10)
+            if i == 0:
+                paragraph.font.bold = True
+                paragraph.font.color.rgb = WHITE
+            elif i == 2 and j in (1, 2, 3):
+                paragraph.font.bold = True
+                paragraph.font.color.rgb = RED
+            elif i in (6, 7) and j in (1, 2, 3):
+                paragraph.font.bold = True
+                paragraph.font.color.rgb = RED
+        if i == 0:
+            from pptx.oxml.ns import qn
+            tcPr = cell._tc.get_or_add_tcPr()
+            solidFill = tcPr.makeelement(qn('a:solidFill'), {})
+            srgbClr = solidFill.makeelement(qn('a:srgbClr'), {'val': '6B2D7B'})
+            solidFill.append(srgbClr)
+            tcPr.append(solidFill)
+        elif j == 4:
+            from pptx.oxml.ns import qn
+            tcPr = cell._tc.get_or_add_tcPr()
+            solidFill = tcPr.makeelement(qn('a:solidFill'), {})
+            srgbClr = solidFill.makeelement(qn('a:srgbClr'), {'val': 'FFF3E0'})
+            solidFill.append(srgbClr)
+            tcPr.append(solidFill)
+        cell.text_frame.paragraphs[0].font.size = Pt(10)
+
+shape_note = slide.shapes.add_textbox(Inches(0.3), Inches(6.4), Inches(9.4), Inches(0.5))
+tf_note = shape_note.text_frame
+tf_note.word_wrap = True
+p_note = tf_note.paragraphs[0]
+p_note.text = "Red values = Failed to meet acceptable fit thresholds. Only SRMR met the < 0.08 criterion for all models."
+p_note.font.size = Pt(10)
+p_note.font.bold = True
+p_note.font.color.rgb = RED
+p_note.alignment = PP_ALIGN.CENTER
 add_footer(slide, FOOTER)
 
 # ============================================================
@@ -568,7 +616,58 @@ add_content(slide, Inches(0.5), Inches(1.5), Inches(9), Inches(5.5), [
 add_footer(slide, FOOTER)
 
 # ============================================================
-# SLIDE 22: CONCLUSION
+# SLIDE 22: METHODOLOGICAL IMPROVEMENTS (Lu Requirement)
+# ============================================================
+slide = prs.slides.add_slide(prs.slide_layouts[6])
+add_bg(slide, LIGHT_BG)
+add_title_bar(slide, "Technical Improvements to the UWES-9 Framework", "Proposed Methodological Enhancements")
+add_accent(slide)
+
+for i, (title, items_list, color) in enumerate([
+    ("Bifactor Modeling", [
+        "Since the three subscales (Vigor, Dedication, Absorption) are highly correlated (0.79-0.84), a Bifactor Model would allow for:",
+        "",
+        "- A general 'Engagement' factor accounting for shared variance across all 9 items",
+        "- Specific sub-factors capturing unique variance of each subscale",
+        "- Better separation of general vs. specific engagement components",
+        "- This addresses the core problem: are the subscales truly distinct?",
+    ], PURPLE),
+    ("Multigroup CFA & Invariance Testing", [
+        "Future research should use Multigroup CFA to determine if the factor structure is invariant across:",
+        "",
+        "- Gender: Compare all-female vs. mixed-gender samples",
+        "- Nationality: Test across Swedish, Norwegian, Finnish populations",
+        "- Occupation: Compare engagement structure across professions",
+        "- This would reveal whether poor fit is due to instrument or sample",
+    ], TEAL),
+]):
+    top = Inches(1.5) + i * Inches(2.8)
+    shape = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.3), top, Inches(9.4), Inches(2.5))
+    shape.fill.solid()
+    shape.fill.fore_color.rgb = WHITE
+    shape.line.color.rgb = color
+    shape.line.width = Pt(2.5)
+    tf = shape.text_frame
+    tf.word_wrap = True
+    tf.margin_left = Inches(0.2)
+    tf.margin_right = Inches(0.2)
+    p = tf.paragraphs[0]
+    p.text = title
+    p.font.size = Pt(15)
+    p.font.bold = True
+    p.font.color.rgb = color
+    for item in items_list:
+        p2 = tf.add_paragraph()
+        p2.text = item
+        p2.font.size = Pt(11)
+        p2.font.color.rgb = DARK_GRAY
+        if item == "":
+            p2.font.size = Pt(4)
+
+add_footer(slide, FOOTER)
+
+# ============================================================
+# SLIDE 23: CONCLUSION
 # ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_bg(slide, LIGHT_BG)
