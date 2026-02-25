@@ -76,32 +76,32 @@ Academic project repository for SSIE-605 (Applied Multivariate Data Analysis) at
 - **Score Coefficients (Table 5):** Used to build comprehensive scoring equations
 - **Score Ranges (Table 6):** Solvency: -24.85 to 46.09, Profitability: -0.32 to 66.24, Oper. Dev.: -156.91 to 947.95
 
-## Presentation 4: Social Media Influence on Consumer Purchase Decisions
-- **Topic:** Factor Analysis in Marketing Analytics / Consumer Behavior
-- **Application Area:** Social media influence on rural consumer purchase decisions
-- **Primary Study:** Ahmad, A., Singh, N.K., Ahmad, S., Fatima, R., Alam, A. & Ghani, U. (2026) — Intl. Review of Management & Marketing
-- **Format:** PowerPoint presentation (27 slides, 10 visualizations)
-- **Output File:** Factor_Analysis_SocialMedia_Presentation.pptx
-- **Script:** create_presentation4.py
-- **Figures Directory:** figures4/ (10 PNG visualization files)
+## Presentation 4: Women & Work Engagement (UWES-9 Factor Analysis)
+- **Topic:** Factor Analysis in Occupational Psychology / Women's Work Engagement
+- **Application Area:** Factorial structure of UWES-9 in an all-female multi-occupational Swedish sample
+- **Primary Study:** Willmer, M., Westerberg Jacobson, J. & Lindberg, M. (2019) — Frontiers in Psychology
+- **Format:** PowerPoint presentation (25 slides, 11 visualizations)
+- **Output File:** Factor_Analysis_Women_WorkEngagement_Presentation.pptx
+- **Script:** create_presentation4_new.py
+- **Figures Directory:** figures4_new/ (11 PNG visualization files)
 - **Status:** Complete
 
 ### Research Papers Referenced (Presentation 4)
-1. Ahmad, A., Singh, N.K., Ahmad, S., Fatima, R., Alam, A. & Ghani, U. (2026). "Identifying Determinants of Social Media Influence on Purchase Decisions: A Factor Analytical Study of Rural Consumers in Selected Districts of Uttar Pradesh." IRMM, 16(2), 111-119. DOI: 10.32479/irmm.21497
-2. Hair, J.F., Black, W.C., Babin, B.J. & Anderson, R.E. (2019). Multivariate Data Analysis (8th Ed.). Cengage Learning.
-3. Nunnally, J.C. (1978). Psychometric Theory (2nd Ed.). McGraw-Hill.
+1. Willmer, M., Westerberg Jacobson, J. & Lindberg, M. (2019). "Exploratory and Confirmatory Factor Analysis of the 9-Item Utrecht Work Engagement Scale in a Multi-Occupational Female Sample: A Cross-Sectional Study." Frontiers in Psychology, 10, 2771. DOI: 10.3389/fpsyg.2019.02771
+2. Schaufeli, W.B., Salanova, M., Gonzalez-Roma, V. & Bakker, A.B. (2002). The measurement of engagement and burnout. Journal of Happiness Studies, 3, 71-92.
+3. Kulikowski, K. (2017). Do we all agree on how to measure work engagement? Polish Psychological Bulletin, 48(3), 350-360.
 
 ### Key Results (Presentation 4) — All from published tables
-- **Sample:** n = 241 rural consumers from 5 districts of Uttar Pradesh, India
-- **Instrument:** 25-item structured questionnaire, 5-point Likert scale
-- **KMO = 0.90** (Marvellous), Bartlett's χ² = 2890.7, df = 300, P < 0.001
-- **5 factors extracted** via PCA with Varimax rotation:
-  - Content & Informativeness, Trust & Credibility, Peer & Community, Emotional Engagement, Convenience
-- **Factor Loadings (Table 4):** All > 0.74; ranges: CI 0.74–0.81, TC 0.81–0.85, PI 0.76–0.80, EE 0.79–0.85, CV 0.79–0.84
-- **Cronbach's Alpha (Table 2):** Overall = 0.92; by factor: 0.84–0.88
-- **CFA Model Fit (Table 5):** CFI = 0.95, TLI = 0.93, RMSEA = 0.05, SRMR = 0.06
-- **SEM Path Coefficients:** H1 β=0.67, H2 β=0.72, H3 β=0.65, H4 β=0.61, H5 β=0.68 (all P < 0.001)
-- **Note:** Individual eigenvalues and total variance explained not reported in published tables
+- **Sample:** n = 702 women, aged 26-37, multi-occupational Swedish sample
+- **Instrument:** UWES-9 (9 items, 0-6 scale), 3 subscales: Vigor, Dedication, Absorption
+- **KMO = 0.922** (Marvellous), Bartlett's p < 0.001, Cronbach's Alpha = 0.947
+- **UWES Scores:** Total = 4.06, Vigor = 3.96, Dedication = 4.24, Absorption = 3.98
+- **EFA (n=341):** 1-factor explains > 70% variance, all loadings 0.65–0.93
+- **CFA (n=342):** 3 models tested — none achieved good fit:
+  - 1-Factor: RMSEA=0.181, CFI=0.895, TLI=0.860, SRMR=0.046
+  - 2-Factor: RMSEA=0.192, CFI=0.882, TLI=0.837, SRMR=0.049
+  - 3-Factor: RMSEA=0.167, CFI=0.920, TLI=0.880, SRMR=0.065
+- **Inter-factor correlations:** 0.79–0.84 (very high, suggesting factors not distinct)
 
 ## Presentation 5: Green Supply Chain Management & Sustainability
 - **Topic:** Factor Analysis in Supply Chain Management / Sustainability
