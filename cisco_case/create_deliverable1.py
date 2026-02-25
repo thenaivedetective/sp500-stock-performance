@@ -93,7 +93,17 @@ bullet(pdf, 'Microsoft Teams: 320M+ monthly active users, deeply integrated with
 bullet(pdf, 'Zoom: ~$4.6B annual revenue (FY2025), 3,900+ enterprise customers contributing >$100K ARR. Zoom AI Companion launched September 2023 and is free for all paid users.')
 bullet(pdf, 'Cisco Webex: ~150M+ users, part of Cisco\'s $53.8B total revenue (FY2024). Strong in government and regulated industries due to superior security certifications.')
 pdf.ln(2)
-source_note(pdf, 'Sources: Microsoft FY2024 10-K (https://www.microsoft.com/en-us/investor), Zoom FY2025 10-K (https://investors.zoom.us), Cisco FY2024 10-K (https://investor.cisco.com), IDC UC&C Market Tracker 2024, Gartner Future of Work Research 2024, McKinsey American Opportunity Survey 2024.')
+
+subheading(pdf, 'Why Microsoft Teams Leads')
+body(pdf, 'Teams dominates primarily because it is bundled free with Microsoft 365, giving it an automatic install base of 320M+ users. Its AI advantage comes from Microsoft Copilot, which works across the entire Office suite -- not just meetings. Copilot can draft documents in Word from meeting context, generate formulas in Excel, create presentations in PowerPoint, and summarize email threads in Outlook. The Microsoft Graph connects all enterprise data (emails, files, calendar, chats), allowing Copilot to personalize responses with full organizational context. Microsoft has also launched custom AI Agents that connect to company-specific data, and offers 2,000+ third-party integrations in the Teams app marketplace.')
+
+subheading(pdf, 'Why Zoom Remains Competitive')
+body(pdf, 'Zoom\'s advantage lies in simplicity -- one click to join, no account needed for guests, and a "just works" user experience that drove pandemic-era adoption. Zoom AI Companion is included free for all paid users, lowering the barrier to AI adoption. Zoom AI Companion 2.0 is moving toward early agentic capabilities: it drafts documents alongside the AI in Zoom Docs, automatically generates action items, updates CRM through Zoom Revenue Accelerator, and includes a built-in workflow automation engine. Zoom also offers 2,500+ integrations in its app marketplace.')
+
+subheading(pdf, 'Where Webex Falls Short Today')
+body(pdf, 'Unlike Teams, Webex is not bundled with a productivity suite -- it requires a separate purchase decision. Unlike Zoom, Webex\'s AI only summarizes and transcribes; it cannot draft documents, execute tasks, or automate workflows. Webex has no cross-app AI orchestration (Teams has Microsoft Graph, Zoom has Zoom Docs), no developer agent SDK or marketplace, and a smaller integration ecosystem. These gaps create a self-reinforcing disadvantage cycle.')
+pdf.ln(1)
+source_note(pdf, 'Sources: Microsoft FY2024 10-K (https://www.microsoft.com/en-us/investor), Zoom FY2025 10-K (https://investors.zoom.us), Cisco FY2024 10-K (https://investor.cisco.com), IDC UC&C Market Tracker 2024, Gartner Future of Work Research 2024, McKinsey American Opportunity Survey 2024, microsoft.com/copilot, zoom.us/ai-assistant, webex.com/ai.')
 
 subheading(pdf, 'The Rise of Agentic AI')
 body(pdf, 'The global agentic AI market is projected to grow from $5.1 billion (2024) to $47 billion by 2030, representing a CAGR of 44.8% (MarketsandMarkets, 2024). This represents the shift from AI that assists (generating summaries, answering questions) to AI that acts (executing tasks, managing workflows, making decisions within defined guardrails).')
@@ -152,11 +162,12 @@ body(pdf, 'Our three solutions are designed to transform Webex from an assistant
 subheading(pdf, 'Solution 1: Agentic AI Transformation -- AI That Works, Not Just Assists')
 body_bold(pdf, 'Problem Addressed: Low User Engagement (Problem 1) and Passive AI (Problem 2)')
 body(pdf, 'Transform the Webex AI Assistant from a passive summarization tool into an agentic AI system that autonomously executes tasks end-to-end. Rather than telling users "Here are your action items," the agentic AI would execute them: scheduling follow-up meetings, drafting and sending recap emails, creating project tasks in integrated tools, and triggering workflow automations.')
-body_bold(pdf, 'Technical Architecture:')
-bullet(pdf, 'Task Decomposition Engine: Uses LLM-based planning to break complex requests into executable sub-tasks (e.g., "organize quarterly review" becomes: schedule meeting, invite participants, create agenda template, prepare data summary from integrated sources).')
-bullet(pdf, 'Execution Layer: Secure API connectors to enterprise tools (Salesforce, Jira, ServiceNow, SAP) enabling the AI to execute actions, not just suggest them.')
-bullet(pdf, 'Human-in-the-Loop Guardrails: Configurable approval workflows where high-stakes actions require user confirmation while routine tasks execute autonomously. This addresses enterprise security concerns.')
-bullet(pdf, 'Learning Loop: Reinforcement learning from user feedback to improve task completion accuracy over time, leveraging Cisco\'s Splunk observability data ($28B acquisition) for pattern recognition.')
+body_bold(pdf, 'Technical Architecture -- Perceive-Reason-Act Loop:')
+body(pdf, 'The agentic AI system follows a "Perceive-Reason-Act" loop, which is the standard architecture for autonomous AI agents. This differentiates Webex from competitors\' "assist-only" models:')
+bullet(pdf, 'PERCEIVE: The Webex AI Codec processes real-time audio using Real-Time Media Models (RMM). Natural Language Processing (NLP) identifies "Task Intents" from conversation context (e.g., "Lana, update the Jira ticket for project alpha").')
+bullet(pdf, 'REASON: When a task intent is detected, the AI Agent uses A2A (Agent-to-Agent) Protocols to fetch existing project data from external systems (Jira, Salesforce, SAP). It then generates a task/document draft using the retrieved context.')
+bullet(pdf, 'ACT: Human-in-the-loop verification -- the user sees the draft on-screen and clicks "Approve" or "Reject." Upon approval, the agent pushes data via secure API to the external application. Confirmation is posted to Webex chat.')
+bullet(pdf, 'OBSERVE: Cisco\'s Splunk Observability monitors end-to-end agent performance, tracks task completion accuracy, and feeds reinforcement learning to improve the system over time.')
 pdf.ln(1)
 body_bold(pdf, 'Technical Feasibility:')
 body(pdf, 'Cisco\'s $7.98B R&D budget (FY2024) and existing AI infrastructure (Webex AI already handles real-time transcription at scale for 150M+ users) provide the foundation. The Splunk acquisition provides enterprise data observability capabilities essential for agentic decision-making. The agentic framework builds on existing LLM capabilities (meeting summaries, NLP) and extends them with a task execution layer.')
@@ -203,8 +214,8 @@ body(pdf, 'As Watson College of Engineering students, we assess the technical fe
 subheading(pdf, '1. Infrastructure Readiness')
 body(pdf, 'Cisco operates one of the world\'s largest networking infrastructures with 40+ global data centers. Webex already processes billions of meeting minutes annually with real-time AI transcription. The agentic AI layer adds computational overhead estimated at 15-25% above current workloads, well within Cisco\'s elastic cloud scaling capabilities. The Splunk acquisition ($28B) provides the observability infrastructure needed for monitoring agentic AI decision-making in real time.')
 
-subheading(pdf, '2. Security & Compliance')
-body(pdf, 'Cisco\'s existing security certifications (FedRAMP High, HIPAA, SOC 2 Type II, ISO 27001) provide the compliance foundation that competitors lack in regulated industries. The agentic AI system implements a "zero-trust agent" architecture where every AI action is authenticated, authorized, and audited. This is a significant competitive advantage over Teams and Zoom in government, healthcare, and financial services verticals.')
+subheading(pdf, '2. Security & Compliance -- Webex\'s Leapfrog Advantage')
+body(pdf, 'Cisco\'s existing security certifications (FedRAMP High, HIPAA, SOC 2 Type II, ISO 27001) provide the compliance foundation that competitors lack in regulated industries. The agentic AI system implements a "zero-trust agent" architecture where every AI action is authenticated, authorized, and audited. This is the single biggest competitive advantage over Teams and Zoom: neither platform can offer agentic AI in government, healthcare, or financial services with the same level of trust. Webex can leapfrog both competitors by being the first platform where regulated industries can safely deploy autonomous AI agents, because the security infrastructure already exists.')
 
 subheading(pdf, '3. Constraints')
 bullet(pdf, 'Latency: Agentic task execution must complete within 2-5 seconds for user satisfaction. Multi-tool workflows may exceed this threshold. Mitigation: Asynchronous execution with real-time status updates.')

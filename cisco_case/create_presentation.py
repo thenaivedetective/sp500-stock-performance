@@ -309,14 +309,21 @@ add_content(slide, Inches(5.2), Inches(1.5), Inches(4.5), Inches(5.5), [
 ], font_size=11)
 add_footer(slide, "Industry Analysis | Problem Identification | Recommendations | Implementation | Financials | Risks | Executive Summary")
 
-# SLIDE 10: Flowchart
+# SLIDE 10: Engineering Flowchart - Workflow Orchestrator Agent
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_bg(slide, WHITE)
-add_title_bar(slide, "Problem-Solution Flowchart", "From Root Causes to Agentic AI Solutions")
+add_title_bar(slide, "Workflow Orchestrator Agent: Technical Flowchart", "Perceive - Reason - Act Loop | Swimlane Architecture")
 add_accent(slide)
-slide.shapes.add_picture('cisco_case/figures/flowchart.png', Inches(0.2), Inches(1.3), Inches(9.6), Inches(6.0))
+slide.shapes.add_picture('cisco_case/figures/flowchart.png', Inches(0.1), Inches(1.25), Inches(9.8), Inches(6.1))
 
-# SLIDE 11: Recommendation Overview
+# SLIDE 11: Why Teams & Zoom Win Today + How Webex Leapfrogs
+slide = prs.slides.add_slide(prs.slide_layouts[6])
+add_bg(slide, WHITE)
+add_title_bar(slide, "Competitive Analysis: How Webex Leapfrogs", "Why Teams & Zoom Lead Today + Webex's Agentic Advantage")
+add_accent(slide)
+slide.shapes.add_picture('cisco_case/figures/competitive_advantage.png', Inches(0.1), Inches(1.25), Inches(9.8), Inches(6.1))
+
+# SLIDE 12: Recommendation Overview
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 add_bg(slide, WHITE)
 add_title_bar(slide, "Recommendation Overview", "Three Solutions to Make Webex the Agentic Collaboration Leader")
@@ -363,25 +370,25 @@ add_bg(slide, WHITE)
 add_title_bar(slide, "Solution 1: Technical Architecture", "How Agentic AI Works in Webex")
 add_accent(slide)
 add_content(slide, Inches(0.5), Inches(1.5), Inches(4.3), Inches(5.5), [
-    ("Core Components:", 14, True, CISCO_DARK),
+    ("Perceive-Reason-Act Architecture:", 14, True, CISCO_DARK),
     "",
-    "1. Task Decomposition Engine",
-    "   LLM breaks requests into sub-tasks",
-    "   e.g., 'organize review' becomes:",
-    "   schedule + invite + agenda + data",
+    "1. PERCEIVE: Webex AI Codec",
+    "   Real-Time Media Models (RMM)",
+    "   process audio + detect task intents",
     "",
-    "2. Execution Layer",
-    "   Secure API connectors to Salesforce,",
-    "   Jira, ServiceNow, SAP, etc.",
+    "2. REASON: NLP Task Decomposition",
+    "   LLM identifies intent, fetches context",
+    "   via A2A (Agent-to-Agent) Protocols",
+    "   from Jira, Salesforce, SAP, etc.",
     "",
-    "3. Human-in-the-Loop Guardrails",
-    "   Configurable approval levels",
-    "   High-stakes = user confirms",
-    "   Routine = auto-execute",
+    "3. ACT: Autonomous Execution",
+    "   Agent pushes via secure API",
+    "   Human-in-the-loop: Approve/Reject",
+    "   Confirmation posted to Webex chat",
     "",
-    "4. Learning Loop",
+    "4. OBSERVE: Splunk Observability",
+    "   End-to-end monitoring + learning loop",
     "   Reinforcement from user feedback",
-    "   Splunk data for pattern recognition",
 ], font_size=11)
 add_content(slide, Inches(5.0), Inches(1.5), Inches(4.5), Inches(5.5), [
     ("Feasibility Evidence:", 14, True, ACCENT_GREEN),
