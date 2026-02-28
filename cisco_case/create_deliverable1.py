@@ -13,14 +13,14 @@ class PDF(FPDF):
 
 pdf = PDF('P', 'mm', 'Letter')
 pdf.set_auto_page_break(auto=True, margin=25)
-pdf.set_left_margin(25)
-pdf.set_right_margin(25)
+pdf.set_left_margin(25.4)
+pdf.set_right_margin(25.4)
 
-W = 215.9 - 25 - 25
-
+W = 215.9 - 25.4 - 25.4
 LH = 5
+INDENT = 10
 
-def heading(pdf, text, size=12):
+def heading(pdf, text):
     pdf.set_font('Times', 'B', 12)
     pdf.cell(0, LH, text, new_x="LMARGIN", new_y="NEXT")
     pdf.ln(LH)
@@ -42,9 +42,11 @@ def body_bold(pdf, text):
 
 def bullet(pdf, text):
     pdf.set_font('Times', '', 12)
-    x = pdf.get_x()
-    pdf.set_x(x + 5)
-    pdf.multi_cell(W - 5, LH, f'- {text}')
+    lm = pdf.l_margin
+    pdf.set_left_margin(lm + INDENT)
+    pdf.set_x(lm + INDENT)
+    pdf.multi_cell(0, LH, f'- {text}')
+    pdf.set_left_margin(lm)
 
 def source_note(pdf, text):
     pdf.set_font('Times', 'I', 12)
@@ -90,7 +92,6 @@ subheading(pdf, '1.3 Market Sizing')
 body(pdf, 'The UC&C market is projected to reach approximately $85 billion by 2030 at the current 8.4% CAGR. However, the AI-enhanced collaboration segment is growing significantly faster. IDC estimates that AI-enabled collaboration features will influence over $30 billion in platform spending by 2028. The intersection of agentic AI and collaboration creates a new market category with substantial first-mover advantages for the platform that establishes this capability first.')
 source_note(pdf, 'Sources: IDC Worldwide UC&C Market Tracker 2024; Gartner Future of Work Survey 2024; McKinsey American Opportunity Survey 2024; MarketsandMarkets Agentic AI Market Report 2024.')
 
-pdf.add_page()
 heading(pdf, '2. Business Overview')
 
 subheading(pdf, '2.1 Cisco Systems: Corporate Profile')
@@ -105,7 +106,6 @@ subheading(pdf, '2.3 Revenue Context')
 body(pdf, 'Cisco does not break out Webex revenue separately in its financial disclosures. Webex falls within the broader Collaboration segment, which generated approximately $4.2 billion in FY2024 revenue. While this is substantial in absolute terms, it represents less than 8% of Cisco\'s total revenue and has shown slower growth compared to the Security and Observability segments. This positions Webex as a platform with significant upside potential if Cisco can differentiate it effectively in the market.')
 source_note(pdf, 'Sources: Cisco FY2024 Annual Report (10-K), SEC Filing; Cisco Investor Relations (investor.cisco.com); Webex product documentation (webex.com/ai).')
 
-pdf.add_page()
 heading(pdf, '3. Competitive Landscape')
 
 subheading(pdf, '3.1 Microsoft Teams')
@@ -120,9 +120,14 @@ body(pdf, 'Weaknesses: Zoom lacks the enterprise data fabric that Cisco has thro
 
 subheading(pdf, '3.3 Comparative Summary')
 body(pdf, 'The table below summarizes key competitive metrics across the three platforms:')
+
+tw = W
+c1 = tw * 0.26
+c2 = tw * 0.26
+c3 = tw * 0.22
+c4 = tw * 0.26
 pdf.set_font('Times', 'B', 12)
-cols = [('Metric', 42), ('Microsoft Teams', 36), ('Zoom', 36), ('Cisco Webex', 36)]
-for label, w in cols:
+for label, w in [('Metric', c1), ('Microsoft Teams', c2), ('Zoom', c3), ('Cisco Webex', c4)]:
     pdf.cell(w, LH, label, border=1, align='C')
 pdf.ln()
 pdf.set_font('Times', '', 12)
@@ -136,15 +141,14 @@ rows = [
     ('Parent Revenue', '$236B (FY24)', '$4.6B (FY25)', '$53.8B (FY24)'),
 ]
 for metric, teams, zoom, webex in rows:
-    pdf.cell(42, LH, metric, border=1)
-    pdf.cell(36, LH, teams, border=1, align='C')
-    pdf.cell(36, LH, zoom, border=1, align='C')
-    pdf.cell(36, LH, webex, border=1, align='C')
+    pdf.cell(c1, LH, metric, border=1)
+    pdf.cell(c2, LH, teams, border=1, align='C')
+    pdf.cell(c3, LH, zoom, border=1, align='C')
+    pdf.cell(c4, LH, webex, border=1, align='C')
     pdf.ln()
 pdf.ln(2)
 source_note(pdf, 'Sources: Microsoft FY2024 10-K; Zoom FY2025 10-K; Cisco FY2024 10-K; G2.com Video Conferencing Category Reviews; respective product documentation.')
 
-pdf.add_page()
 heading(pdf, '4. Company Strengths and Weaknesses')
 
 subheading(pdf, '4.1 Strengths')
@@ -176,7 +180,6 @@ body_bold(pdf, 'Brand Perception')
 body(pdf, 'Webex is often perceived as an "enterprise-only" or "legacy" platform compared to the more consumer-friendly brands of Teams and Zoom. While Webex\'s security strength is valued in government and regulated industries, it can be a liability in broader market segments where ease of use and brand appeal drive adoption decisions.')
 source_note(pdf, 'Sources: Cisco FY2024 10-K; Webex product documentation; competitive feature analysis from G2.com and TrustRadius reviews.')
 
-pdf.add_page()
 heading(pdf, '5. Key Challenges and Opportunities')
 
 subheading(pdf, '5.1 Key Challenges')
@@ -205,7 +208,6 @@ body_bold(pdf, 'Opportunity 4: Open Agent Platform Economics')
 body(pdf, 'Launching an open AI agent development platform (SDK, marketplace, developer incentives) could transform Webex\'s ecosystem disadvantage into a strength. If Webex becomes the platform where developers build and monetize AI agents for enterprise collaboration, it creates network effects similar to those that made the iPhone App Store and Salesforce AppExchange successful. This would generate new revenue streams and increase platform stickiness.')
 source_note(pdf, 'Sources: MarketsandMarkets Agentic AI Market Report 2024; Cisco FY2024 10-K; Gartner "Predicts 2025: AI and Collaboration" Report; IDC UC&C Market Tracker 2024.')
 
-pdf.add_page()
 heading(pdf, '6. Preliminary Recommendation')
 
 body(pdf, 'In response to the case prompt -- "What product and/or platform improvement can Cisco implement to Webex (powered by an AI assistant) to outperform Zoom and Microsoft Teams in the next phase of hybrid work?" -- we recommend that Cisco transform Webex from an assistant-led platform into the industry\'s first agentic collaboration platform through three integrated initiatives:')
