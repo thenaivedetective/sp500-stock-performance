@@ -251,7 +251,7 @@ ax.text(lx+2.3, ly-4.5, '= ML Pipeline Group', fontsize=9, va='center', color='#
 # ============================================
 # WEBEX AI CODEC CALLOUT BOX (in 3rd party lane area, below legend)
 # ============================================
-cb_x = 17.8; cb_y = 15.5; cb_w = 7.2; cb_h = 4.5
+cb_x = 17.8; cb_y = 17.5; cb_w = 7.2; cb_h = 2.8
 cb_rect = mpatches.FancyBboxPatch((cb_x, cb_y), cb_w, cb_h, boxstyle="round,pad=0.15",
                                     facecolor='#F0F7FF', edgecolor='#002060', linewidth=2.5)
 ax.add_patch(cb_rect)
@@ -259,27 +259,78 @@ ax.text(cb_x + cb_w/2, cb_y + cb_h - 0.35, 'Webex AI Codec: ML Capabilities',
         ha='center', fontsize=12, fontweight='bold', color='#002060')
 
 codec_items = [
-    ('Neural Speech Synthesis:', 'Reconstructs high-quality'),
-    ('', 'speech from as low as ~1 kbps bandwidth'),
-    ('DNN Noise Removal:', '150+ background noise types'),
-    ('', 'removed using trained deep neural networks'),
-    ('Super Resolution:', 'CNN upscales low-res video'),
-    ('', 'to HD quality in real-time'),
-    ('Voice Isolation:', 'ML model separates target'),
-    ('', 'speaker from overlapping voices'),
-    ('Gesture Recognition:', 'Computer vision detects'),
-    ('', 'hand raises, thumbs up, reactions'),
+    ('Neural Speech Synthesis:', '~1 kbps high-quality audio'),
+    ('DNN Noise Removal:', '150+ noise types in real-time'),
+    ('Super Resolution:', 'CNN upscales low-res to HD'),
+    ('Voice Isolation:', 'ML separates speakers'),
+    ('Gesture Recognition:', 'Detects hand raises, reactions'),
     ('Auto-Framing:', 'ML tracks & centers speakers'),
-    ('', 'dynamically in video frame'),
 ]
 for i, (bold_part, regular) in enumerate(codec_items):
-    y_pos = cb_y + cb_h - 0.8 - i * 0.3
-    if bold_part:
-        ax.text(cb_x + 0.3, y_pos, bold_part, fontsize=8.5, fontweight='bold', color='#1A5276')
-        ax.text(cb_x + 0.3 + len(bold_part) * 0.065 + 0.1, y_pos, regular,
-                fontsize=8.5, color='#333333')
-    else:
-        ax.text(cb_x + 0.5, y_pos, regular, fontsize=8.5, color='#333333')
+    y_pos = cb_y + cb_h - 0.8 - i * 0.32
+    ax.text(cb_x + 0.3, y_pos, bold_part, fontsize=8.5, fontweight='bold', color='#1A5276')
+    ax.text(cb_x + 0.3 + len(bold_part) * 0.065 + 0.1, y_pos, regular,
+            fontsize=8.5, color='#333333')
+
+# ============================================
+# EXAMPLE SCENARIO BOX (in 3rd party lane area)
+# Shows a concrete walkthrough of the agentic flow
+# ============================================
+ex_x = 17.8; ex_y = 7.2; ex_w = 7.2; ex_h = 10.0
+ex_rect = mpatches.FancyBboxPatch((ex_x, ex_y), ex_w, ex_h, boxstyle="round,pad=0.15",
+                                    facecolor='#F0FFF0', edgecolor='#27AE60', linewidth=2.5)
+ax.add_patch(ex_rect)
+ax.text(ex_x + ex_w/2, ex_y + ex_h - 0.35, 'EXAMPLE: Real Meeting Scenario',
+        ha='center', fontsize=12, fontweight='bold', color='#27AE60')
+
+ax.text(ex_x + ex_w/2, ex_y + ex_h - 0.75,
+        '"Sprint Planning Meeting for Product Team"',
+        ha='center', fontsize=9, fontstyle='italic', color='#333333')
+
+example_steps = [
+    ('1. PERCEIVE', '#1A5276',
+     ['PM says: "We need to create a Jira',
+      'ticket for the login bug Sarah found."',
+      'AI Codec removes cafe noise (DNN),',
+      'NLP transcribes & detects task intent.']),
+    ('2. REASON', '#27AE60',
+     ['A2A Protocol queries Jira via API:',
+      '- Finds project "WEBAPP-2026"',
+      '- Pulls Sarah\'s recent bug reports',
+      '- Retrieves sprint board context']),
+    ('3. ACT: DRAFT', '#0070C0',
+     ['Agent auto-generates Jira ticket:',
+      'Title: "Login Bug - Auth Timeout"',
+      'Assignee: Sarah | Priority: High',
+      'Sprint: Current | Labels: bug, auth']),
+    ('4. HUMAN-IN-LOOP', '#F39C12',
+     ['Webex shows in-meeting card:',
+      '"Create this Jira ticket? [Approve]"',
+      'PM clicks Approve during meeting.',
+      '']),
+    ('5. EXECUTE + CONFIRM', '#E74C3C',
+     ['Ticket WEBAPP-2026-347 created.',
+      'Webex posts: "Jira ticket created',
+      'successfully. Assigned to Sarah."',
+      'Meeting continues -- zero tab switches.']),
+]
+
+for i, (step_title, color, lines) in enumerate(example_steps):
+    step_y = ex_y + ex_h - 1.3 - i * 1.75
+
+    step_rect = mpatches.FancyBboxPatch((ex_x + 0.2, step_y - 0.55), ex_w - 0.4, 1.55,
+                                         boxstyle="round,pad=0.08",
+                                         facecolor='white', edgecolor=color, linewidth=1.5, alpha=0.9)
+    ax.add_patch(step_rect)
+    ax.text(ex_x + 0.45, step_y + 0.75, step_title,
+            fontsize=9, fontweight='bold', color=color)
+    for j, line in enumerate(lines):
+        if line:
+            ax.text(ex_x + 0.45, step_y + 0.42 - j * 0.28, line,
+                    fontsize=7.8, color='#333333')
+
+    if i < len(example_steps) - 1:
+        arrow(ax, ex_x + ex_w/2, step_y - 0.55, ex_x + ex_w/2, step_y - 0.75, '#27AE60', 1.5)
 
 plt.tight_layout()
 plt.savefig('cisco_case/figures/flowchart.png', dpi=200, bbox_inches='tight')
