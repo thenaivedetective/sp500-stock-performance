@@ -14,14 +14,14 @@ os.makedirs("cisco_case/figures", exist_ok=True)
 # Perceive -> Reason -> Act loop
 # EXPANDED: Webex AI Codec ML pipeline detail
 # ============================================================
-fig, ax = plt.subplots(figsize=(26, 28))
+fig, ax = plt.subplots(figsize=(26, 38))
 ax.set_xlim(0, 26)
-ax.set_ylim(0, 28)
+ax.set_ylim(0, 38)
 ax.axis('off')
 
-ax.text(13, 27.5, 'Webex Workflow Orchestrator Agent: Technical Flowchart',
+ax.text(13, 37.5, 'Webex Workflow Orchestrator Agent: Technical Flowchart',
         ha='center', fontsize=24, fontweight='bold', color='#002060')
-ax.text(13, 26.95, 'Perceive \u2192 Reason \u2192 Act Loop  |  Webex AI Codec ML Pipeline  |  Agentic AI Architecture',
+ax.text(13, 36.95, 'Perceive \u2192 Reason \u2192 Act Loop  |  Webex AI Codec ML Pipeline  |  Agentic AI Architecture',
         ha='center', fontsize=14, color='#555555')
 
 # --- SWIMLANES ---
@@ -31,11 +31,11 @@ lane_sublabels = ['(Webex AI Codec + Real-Time Media Models)', '(Splunk Observab
 lane_xs = [(0.5, 8.5), (9.0, 17.0), (17.5, 25.5)]
 
 for i, ((x1, x2), color, label, sublabel) in enumerate(zip(lane_xs, lane_colors, lane_labels, lane_sublabels)):
-    rect = mpatches.FancyBboxPatch((x1, 1.2), x2 - x1, 25.0, boxstyle="round,pad=0.1",
+    rect = mpatches.FancyBboxPatch((x1, 11.2), x2 - x1, 25.0, boxstyle="round,pad=0.1",
                                     facecolor=color, edgecolor='#999999', linewidth=1.5, alpha=0.5)
     ax.add_patch(rect)
-    ax.text((x1 + x2) / 2, 26.0, label, ha='center', fontsize=14, fontweight='bold', color='#002060')
-    ax.text((x1 + x2) / 2, 25.55, sublabel, ha='center', fontsize=9, color='#666666')
+    ax.text((x1 + x2) / 2, 36.0, label, ha='center', fontsize=14, fontweight='bold', color='#002060')
+    ax.text((x1 + x2) / 2, 35.55, sublabel, ha='center', fontsize=9, color='#666666')
 
 # --- HELPER FUNCTIONS ---
 def draw_oval(ax, cx, cy, w, h, text, color='#002060', tc='white', fs=10):
@@ -90,145 +90,131 @@ def arrow(ax, x1, y1, x2, y2, color='#333333', lw=2.5):
     ax.annotate('', xy=(x2,y2), xytext=(x1,y1), arrowprops=dict(arrowstyle='->', color=color, lw=lw))
 
 # ===== FLOW LAYOUT =====
+# Shifted up by 10 to make room for example section below
+S = 10
 WX = 4.5
 DF = 13.0
 TP = 21.5
 
 # ============================================
-# ROW 1 (y=25): START
+# ROW 1: START
 # ============================================
-draw_oval(ax, WX, 25.0, 4.0, 1.0, 'START\nLive Webex Meeting Begins')
-arrow(ax, WX, 24.45, WX, 23.7)
+draw_oval(ax, WX, 25.0+S, 4.0, 1.0, 'START\nLive Webex Meeting Begins')
+arrow(ax, WX, 24.45+S, WX, 23.7+S)
 
 # ============================================
-# ROW 2 (y=20-24): PERCEIVE - EXPANDED AI CODEC SECTION
-# Dashed box grouping the ML pipeline
+# ROW 2: PERCEIVE - EXPANDED AI CODEC SECTION
 # ============================================
-draw_dashed_box(ax, 0.8, 18.0, 7.4, 5.5, 'PERCEIVE: Webex AI Codec ML Pipeline', '#0050A0')
+draw_dashed_box(ax, 0.8, 18.0+S, 7.4, 5.5, 'PERCEIVE: Webex AI Codec ML Pipeline', '#0050A0')
 
-# Sub-step 1: Raw Audio Input
-draw_para(ax, WX, 23.0, 5.5, 0.9,
+draw_para(ax, WX, 23.0+S, 5.5, 0.9,
           'Raw Audio/Video Input\nMicrophone + Camera streams', '#2C3E50', 'white', 9)
-arrow(ax, WX, 22.5, WX, 21.8)
+arrow(ax, WX, 22.5+S, WX, 21.8+S)
 
-# Sub-step 2: DNN Noise Removal
-draw_rect(ax, WX, 21.2, 5.8, 1.0,
+draw_rect(ax, WX, 21.2+S, 5.8, 1.0,
           'Deep Neural Network (DNN)\nBackground Noise Removal\nRemoves 150+ noise types in real-time', '#1A5276', 'white', 9)
-arrow(ax, WX, 20.65, WX, 20.0)
+arrow(ax, WX, 20.65+S, WX, 20.0+S)
 
-# Sub-step 3: AI Codec Compression
-draw_rect(ax, WX, 19.4, 5.8, 1.0,
+draw_rect(ax, WX, 19.4+S, 5.8, 1.0,
           'AI Codec: Neural Speech Synthesis\nCompresses audio to ~1 kbps\n(vs 32 kbps traditional codecs)', '#1A5276', 'white', 9)
-arrow(ax, WX, 18.85, WX, 18.1)
+arrow(ax, WX, 18.85+S, WX, 18.1+S)
 
-# Sub-step 4: Super Resolution + Reconstruction
-draw_rect(ax, WX, 17.2, 5.8, 1.2,
+draw_rect(ax, WX, 17.2+S, 5.8, 1.2,
           'Real-Time Media Models (RMM)\n- Super Resolution: AI upscales video\n- Voice Isolation: ML separates speakers\n- Gesture Recognition: detects reactions', '#0070C0', 'white', 9)
-arrow(ax, WX, 16.55, WX, 15.8)
+arrow(ax, WX, 16.55+S, WX, 15.8+S)
 
-# Sub-step 5: NLP Transcription
-draw_rect(ax, WX, 15.2, 5.8, 1.0,
+draw_rect(ax, WX, 15.2+S, 5.8, 1.0,
           'NLP Engine: Speech-to-Text\nReal-time transcription + translation\n(100+ languages, contextual understanding)', '#0070C0', 'white', 9)
-arrow(ax, WX, 14.65, WX, 13.8)
+arrow(ax, WX, 14.65+S, WX, 13.8+S)
 
 # ============================================
-# ROW 3 (y=13): DECISION - Task Intent Detected?
+# ROW 3: DECISION - Task Intent Detected?
 # ============================================
-draw_diamond(ax, WX, 12.8, 2.0, 'NLP detects\nTask Intent?', '#F39C12', 'black', 10)
+draw_diamond(ax, WX, 12.8+S, 2.0, 'NLP detects\nTask Intent?', '#F39C12', 'black', 10)
 
-# NO loop
-ax.text(1.3, 12.8, 'NO', fontsize=12, fontweight='bold', color='#E74C3C', ha='center')
-arrow(ax, WX - 1.0, 12.8, 1.8, 12.8, '#E74C3C', 2)
-arrow(ax, 1.3, 12.8, 1.3, 23.0, '#E74C3C', 2)
-arrow(ax, 1.3, 23.0, WX - 3.1, 23.0, '#E74C3C', 2)
-ax.text(1.3, 17.8, 'Continue\nMonitoring', fontsize=9, fontweight='bold', color='#E74C3C', ha='center',
+ax.text(1.3, 12.8+S, 'NO', fontsize=12, fontweight='bold', color='#E74C3C', ha='center')
+arrow(ax, WX - 1.0, 12.8+S, 1.8, 12.8+S, '#E74C3C', 2)
+arrow(ax, 1.3, 12.8+S, 1.3, 23.0+S, '#E74C3C', 2)
+arrow(ax, 1.3, 23.0+S, WX - 3.1, 23.0+S, '#E74C3C', 2)
+ax.text(1.3, 17.8+S, 'Continue\nMonitoring', fontsize=9, fontweight='bold', color='#E74C3C', ha='center',
         bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='#E74C3C', alpha=0.9))
 
-# YES arrow
-ax.text(WX + 1.7, 13.5, 'YES', fontsize=12, fontweight='bold', color='#27AE60', ha='center')
-arrow(ax, WX + 1.0, 12.8, DF - 3.0, 12.8, '#27AE60', 2.5)
+ax.text(WX + 1.7, 13.5+S, 'YES', fontsize=12, fontweight='bold', color='#27AE60', ha='center')
+arrow(ax, WX + 1.0, 12.8+S, DF - 3.0, 12.8+S, '#27AE60', 2.5)
 
 # ============================================
-# ROW 3 in Data Fabric (y=12.8): CONTEXT RETRIEVAL
+# ROW 3 in Data Fabric: CONTEXT RETRIEVAL
 # ============================================
-draw_para(ax, DF, 12.8, 5.5, 1.1,
+draw_para(ax, DF, 12.8+S, 5.5, 1.1,
           'REASON: Fetch Context\nA2A Protocol retrieves\nproject data from systems', '#27AE60', 'white', 10)
 
-# Arrow right to 3rd party
-arrow(ax, DF + 3.1, 12.8, TP - 2.5, 12.8, '#333333')
+arrow(ax, DF + 3.1, 12.8+S, TP - 2.5, 12.8+S, '#333333')
 
-# 3rd Party: External Systems
-draw_para(ax, TP, 12.8, 5.0, 1.1,
+draw_para(ax, TP, 12.8+S, 5.0, 1.1,
           'EXTERNAL SYSTEMS\nJira / Salesforce / SAP\nServiceNow / GitHub', '#D35400', 'white', 9)
 
-# Arrow down from context retrieval
-arrow(ax, DF, 12.15, DF, 11.2)
+arrow(ax, DF, 12.15+S, DF, 11.2+S)
 
 # ============================================
-# ROW 4 (y=10.3): DATABASE
+# ROW 4: DATABASE
 # ============================================
-draw_cyl(ax, DF, 10.3, 5.5, 1.6,
+draw_cyl(ax, DF, 10.3+S, 5.5, 1.6,
          'CISCO SECURE DATA FABRIC\nSplunk Observability + AppDynamics\nZero-Trust Identity Layer', '#8E44AD', 'white', 9)
 
-# Arrow down
-arrow(ax, DF, 9.4, DF, 8.5)
+arrow(ax, DF, 9.4+S, DF, 8.5+S)
 
 # ============================================
-# ROW 5 (y=7.8): DRAFTING
+# ROW 5: DRAFTING
 # ============================================
-draw_rect(ax, DF, 7.8, 5.5, 1.2,
+draw_rect(ax, DF, 7.8+S, 5.5, 1.2,
           'ACT: DRAFT\nAI Agent generates task/document\ndraft using retrieved context\n+ LLM-based planning', '#0070C0', 'white', 10)
 
-# Arrow left to Webex lane for verification
-arrow(ax, DF - 3.0, 7.8, WX + 1.5, 6.0, '#333333')
+arrow(ax, DF - 3.0, 7.8+S, WX + 1.5, 6.0+S, '#333333')
 
 # ============================================
-# ROW 6 (y=5): VERIFICATION DECISION
+# ROW 6: VERIFICATION DECISION
 # ============================================
-draw_diamond(ax, WX, 5.0, 2.0, 'Human-in-Loop\nApprove?', '#F39C12', 'black', 10)
+draw_diamond(ax, WX, 5.0+S, 2.0, 'Human-in-Loop\nApprove?', '#F39C12', 'black', 10)
 
-# REJECT
-ax.text(WX + 1.7, 4.0, 'REJECT', fontsize=11, fontweight='bold', color='#E74C3C', ha='center')
-arrow(ax, WX + 1.0, 5.0, DF - 3.0, 7.1, '#E74C3C', 2)
+ax.text(WX + 1.7, 4.0+S, 'REJECT', fontsize=11, fontweight='bold', color='#E74C3C', ha='center')
+arrow(ax, WX + 1.0, 5.0+S, DF - 3.0, 7.1+S, '#E74C3C', 2)
 
-# APPROVE
-ax.text(WX + 1.7, 5.8, 'APPROVE', fontsize=11, fontweight='bold', color='#27AE60', ha='center')
-arrow(ax, WX + 1.0, 5.0, TP - 2.7, 5.0, '#27AE60', 2.5)
+ax.text(WX + 1.7, 5.8+S, 'APPROVE', fontsize=11, fontweight='bold', color='#27AE60', ha='center')
+arrow(ax, WX + 1.0, 5.0+S, TP - 2.7, 5.0+S, '#27AE60', 2.5)
 
 # ============================================
-# ROW 6 in 3rd Party (y=5): EXECUTION
+# ROW 6 in 3rd Party: EXECUTION
 # ============================================
-draw_rect(ax, TP, 5.0, 5.0, 1.2,
+draw_rect(ax, TP, 5.0+S, 5.0, 1.2,
           'EXECUTE\nAgent pushes data via\nsecure API to external app\n(Jira, Salesforce, SAP)', '#E74C3C', 'white', 10)
 
-# Arrow down
-arrow(ax, TP, 4.35, TP, 3.5)
+arrow(ax, TP, 4.35+S, TP, 3.5+S)
 
 # ============================================
-# ROW 7 (y=2.8): CONFIRMATION + END
+# ROW 7: CONFIRMATION + END
 # ============================================
-draw_rect(ax, DF, 2.8, 5.8, 1.0,
+draw_rect(ax, DF, 2.8+S, 5.8, 1.0,
           'CONFIRM\nStatus posted to Webex Chat:\n"Task created successfully in Jira"', '#0070C0', 'white', 9)
-arrow(ax, TP, 2.8, DF + 3.0, 2.8, '#333333')
-arrow(ax, DF - 3.0, 2.8, WX + 2.1, 2.8, '#333333')
+arrow(ax, TP, 2.8+S, DF + 3.0, 2.8+S, '#333333')
+arrow(ax, DF - 3.0, 2.8+S, WX + 2.1, 2.8+S, '#333333')
 
-draw_oval(ax, WX, 2.8, 4.0, 1.0, 'END\nMeeting Continues\nSeamlessly')
+draw_oval(ax, WX, 2.8+S, 4.0, 1.0, 'END\nMeeting Continues\nSeamlessly')
 
 # ============================================
-# SUCCESS METRICS BOX
+# METRICS BOX (between flowchart and example)
 # ============================================
-mr = mpatches.FancyBboxPatch((0.5, 0.2), 25.0, 0.7, boxstyle='round,pad=0.1',
+mr = mpatches.FancyBboxPatch((0.5, 10.5), 25.0, 0.7, boxstyle='round,pad=0.1',
                                facecolor='#002060', edgecolor='black', linewidth=2)
 ax.add_patch(mr)
-ax.text(13, 0.55, 'QUANTIFIED IMPACT:  Reduces manual data entry by 15 min/meeting  |  '
+ax.text(13, 10.85, 'QUANTIFIED IMPACT:  Reduces manual data entry by 15 min/meeting  |  '
         '25% meeting-to-action conversion  |  40% workflow automation rate  |  '
         '85% task completion accuracy',
         ha='center', va='center', fontsize=11, fontweight='bold', color='white')
 
 # ============================================
-# LEGEND (top of 3rd party lane)
+# LEGEND (top-right of 3rd party lane)
 # ============================================
-lx = 18.2; ly = 25.0
+lx = 18.2; ly = 35.0
 ax.text(lx, ly, 'LEGEND:', fontsize=12, fontweight='bold', color='#002060')
 draw_oval(ax, lx+1.0, ly-0.8, 1.3, 0.5, 'Start/End', '#002060', 'white', 7)
 ax.text(lx+2.3, ly-0.8, '= Terminator', fontsize=9, va='center', color='#333333')
@@ -241,7 +227,6 @@ ax.text(lx+2.3, ly-3.1, '= Data I/O', fontsize=9, va='center', color='#333333')
 draw_cyl(ax, lx+1.0, ly-3.9, 1.3, 0.6, 'DB', '#8E44AD', 'white', 7)
 ax.text(lx+2.3, ly-3.9, '= Database/Store', fontsize=9, va='center', color='#333333')
 
-# Dashed box in legend
 r_leg = mpatches.FancyBboxPatch((lx+0.3, ly-4.7), 1.4, 0.45, boxstyle="round,pad=0.05",
                                  facecolor='white', edgecolor='#0050A0', linewidth=2, linestyle='--')
 ax.add_patch(r_leg)
@@ -249,9 +234,9 @@ ax.text(lx+1.0, ly-4.5, 'Group', fontsize=7, ha='center', va='center', fontweigh
 ax.text(lx+2.3, ly-4.5, '= ML Pipeline Group', fontsize=9, va='center', color='#333333')
 
 # ============================================
-# WEBEX AI CODEC CALLOUT BOX (in 3rd party lane area, below legend)
+# WEBEX AI CODEC CALLOUT BOX (right side, below legend)
 # ============================================
-cb_x = 17.8; cb_y = 17.5; cb_w = 7.2; cb_h = 2.8
+cb_x = 17.8; cb_y = 27.5; cb_w = 7.2; cb_h = 2.8
 cb_rect = mpatches.FancyBboxPatch((cb_x, cb_y), cb_w, cb_h, boxstyle="round,pad=0.15",
                                     facecolor='#F0F7FF', edgecolor='#002060', linewidth=2.5)
 ax.add_patch(cb_rect)
@@ -273,64 +258,66 @@ for i, (bold_part, regular) in enumerate(codec_items):
             fontsize=8.5, color='#333333')
 
 # ============================================
-# EXAMPLE SCENARIO BOX (in 3rd party lane area)
-# Shows a concrete walkthrough of the agentic flow
+# EXAMPLE SCENARIO - SEPARATE SECTION BELOW FLOWCHART
+# Full width, clean layout, no overlap
 # ============================================
-ex_x = 17.8; ex_y = 7.2; ex_w = 7.2; ex_h = 10.0
-ex_rect = mpatches.FancyBboxPatch((ex_x, ex_y), ex_w, ex_h, boxstyle="round,pad=0.15",
-                                    facecolor='#F0FFF0', edgecolor='#27AE60', linewidth=2.5)
-ax.add_patch(ex_rect)
-ax.text(ex_x + ex_w/2, ex_y + ex_h - 0.35, 'EXAMPLE: Real Meeting Scenario',
-        ha='center', fontsize=12, fontweight='bold', color='#27AE60')
+ex_bg = mpatches.FancyBboxPatch((0.5, 0.3), 25.0, 9.8, boxstyle="round,pad=0.15",
+                                  facecolor='#F0FFF0', edgecolor='#27AE60', linewidth=2.5)
+ax.add_patch(ex_bg)
 
-ax.text(ex_x + ex_w/2, ex_y + ex_h - 0.75,
-        '"Sprint Planning Meeting for Product Team"',
-        ha='center', fontsize=9, fontstyle='italic', color='#333333')
+ax.text(13, 9.7, 'APPLIED EXAMPLE: Sprint Planning Meeting for Product Team',
+        ha='center', fontsize=16, fontweight='bold', color='#27AE60')
+ax.text(13, 9.25, 'How the Webex Workflow Orchestrator Agent works in a real meeting scenario',
+        ha='center', fontsize=11, fontstyle='italic', color='#555555')
 
 example_steps = [
     ('1. PERCEIVE', '#1A5276',
-     ['PM says: "We need to create a Jira',
-      'ticket for the login bug Sarah found."',
-      'AI Codec removes cafe noise (DNN),',
-      'NLP transcribes & detects task intent.']),
+     'PM says: "We need to create a Jira ticket for the login\n'
+     'bug Sarah found."  AI Codec removes cafe noise (DNN),\n'
+     'NLP transcribes speech & detects task intent.'),
     ('2. REASON', '#27AE60',
-     ['A2A Protocol queries Jira via API:',
-      '- Finds project "WEBAPP-2026"',
-      '- Pulls Sarah\'s recent bug reports',
-      '- Retrieves sprint board context']),
+     'A2A Protocol queries Jira via secure API:\n'
+     '- Finds project "WEBAPP-2026"\n'
+     '- Pulls Sarah\'s recent bug reports & sprint board context'),
     ('3. ACT: DRAFT', '#0070C0',
-     ['Agent auto-generates Jira ticket:',
-      'Title: "Login Bug - Auth Timeout"',
-      'Assignee: Sarah | Priority: High',
-      'Sprint: Current | Labels: bug, auth']),
+     'Agent auto-generates Jira ticket draft:\n'
+     'Title: "Login Bug - Auth Timeout"  |  Assignee: Sarah\n'
+     'Priority: High  |  Sprint: Current  |  Labels: bug, auth'),
     ('4. HUMAN-IN-LOOP', '#F39C12',
-     ['Webex shows in-meeting card:',
-      '"Create this Jira ticket? [Approve]"',
-      'PM clicks Approve during meeting.',
-      '']),
+     'Webex shows in-meeting approval card:\n'
+     '"Create this Jira ticket?  [ Approve ]  [ Edit ]  [ Reject ]"\n'
+     'PM clicks Approve -- no tab switching needed.'),
     ('5. EXECUTE + CONFIRM', '#E74C3C',
-     ['Ticket WEBAPP-2026-347 created.',
-      'Webex posts: "Jira ticket created',
-      'successfully. Assigned to Sarah."',
-      'Meeting continues -- zero tab switches.']),
+     'Ticket WEBAPP-2026-347 created in Jira.\n'
+     'Webex posts confirmation to chat: "Jira ticket created\n'
+     'successfully. Assigned to Sarah."  Meeting continues.'),
 ]
 
-for i, (step_title, color, lines) in enumerate(example_steps):
-    step_y = ex_y + ex_h - 1.3 - i * 1.75
+step_w = 4.6
+gap = 0.25
+total_w = 5 * step_w + 4 * gap
+start_x = (26 - total_w) / 2
 
-    step_rect = mpatches.FancyBboxPatch((ex_x + 0.2, step_y - 0.55), ex_w - 0.4, 1.55,
-                                         boxstyle="round,pad=0.08",
-                                         facecolor='white', edgecolor=color, linewidth=1.5, alpha=0.9)
+for i, (title, color, desc) in enumerate(example_steps):
+    sx = start_x + i * (step_w + gap)
+    sy = 1.2
+
+    step_rect = mpatches.FancyBboxPatch((sx, sy), step_w, 7.5, boxstyle="round,pad=0.12",
+                                         facecolor='white', edgecolor=color, linewidth=2.5)
     ax.add_patch(step_rect)
-    ax.text(ex_x + 0.45, step_y + 0.75, step_title,
-            fontsize=9, fontweight='bold', color=color)
-    for j, line in enumerate(lines):
-        if line:
-            ax.text(ex_x + 0.45, step_y + 0.42 - j * 0.28, line,
-                    fontsize=7.8, color='#333333')
+
+    header_rect = mpatches.FancyBboxPatch((sx, sy + 6.3), step_w, 1.2, boxstyle="round,pad=0.08",
+                                           facecolor=color, edgecolor=color, linewidth=1)
+    ax.add_patch(header_rect)
+    ax.text(sx + step_w/2, sy + 6.9, title,
+            ha='center', va='center', fontsize=12, fontweight='bold', color='white')
+
+    for j, line in enumerate(desc.split('\n')):
+        ax.text(sx + 0.2, sy + 5.8 - j * 0.5, line,
+                fontsize=8.5, color='#333333', va='top')
 
     if i < len(example_steps) - 1:
-        arrow(ax, ex_x + ex_w/2, step_y - 0.55, ex_x + ex_w/2, step_y - 0.75, '#27AE60', 1.5)
+        arrow(ax, sx + step_w + 0.02, sy + 4.5, sx + step_w + gap - 0.02, sy + 4.5, '#27AE60', 2.5)
 
 plt.tight_layout()
 plt.savefig('cisco_case/figures/flowchart.png', dpi=200, bbox_inches='tight')
