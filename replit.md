@@ -3,7 +3,7 @@
 ## Overview
 Academic project repository for SSIE-605 (Applied Multivariate Data Analysis) at Binghamton University.
 
-**Current Status:** Five Factor Analysis presentations completed
+**Current Status:** Five Factor Analysis presentations completed + Cisco case competition deliverables + SSIE 553 homeworks
 
 ## Presentation 1: Toothpaste Consumer Preferences
 - **Topic:** Factor Analysis in Marketing / Consumer Analytics
@@ -139,8 +139,28 @@ Academic project repository for SSIE-605 (Applied Multivariate Data Analysis) at
 - Institution: Binghamton University
 - Course: SSIE-605, Professor Susan Lu
 
+## SSIE 553 Homeworks (Professor Neha Patankar)
+
+### Homework 3
+- **Script:** homework/create_hw3_ssie553.py
+- **Output:** homework/SSIE553_Homework3_Lana_Jalal_Gidan.pdf
+- **Status:** Complete
+
+### Homework 4
+- **Script:** homework/create_hw4_ssie553.py
+- **Output:** homework/SSIE553_Homework4_Lana_Jalal_Gidan.pdf
+- **Topics:** LP Simplex basis analysis, Sensitivity analysis (candy bars & manufacturing), Big M method, Two-Phase method
+- **Pages:** 18
+- **Status:** Complete
+
+## Cisco Case Competition
+- **Deliverable 1:** cisco_case/Deliverable1_Lana_Jalal_Gidan.pdf
+- **Presentation:** cisco_case/Cisco_Webex_AI_Presentation.pptx
+- **Flowchart:** cisco_case/figures/flowchart.png
+- **Team:** Lana Jalal Gidan, Krishianjan Lanka, Nur Ali, Zoe Zimmermann
+
 ## System Architecture
 - **Language**: Python 3.11
 - **Development Environment**: Replit-based development
 - **Project Type**: Academic presentations and data analysis
-- **Key Dependencies**: python-pptx, matplotlib, seaborn, numpy, scipy, pandas
+- **Key Dependencies**: python-pptx, matplotlib, seaborn, numpy, scipy, pandas, fpdf2
