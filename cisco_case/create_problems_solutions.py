@@ -17,7 +17,7 @@ def draw_rect(ax, cx, cy, w, h, text, color='#0070C0', tc='white', fs=10):
     r = mpatches.FancyBboxPatch((cx-w/2, cy-h/2), w, h, boxstyle="round,pad=0.08",
                                  facecolor=color, edgecolor='black', linewidth=2)
     ax.add_patch(r)
-    ax.text(cx, cy, text, ha='center', va='center', fontsize=fs, fontweight='bold', color=tc)
+    ax.text(cx, cy, text, ha='center', va='center', fontsize=fs, fontweight='bold', color=tc, wrap=True)
 
 def draw_diamond(ax, cx, cy, size, text, color='#F39C12', tc='black', fs=9):
     half = size / 2
@@ -59,18 +59,79 @@ def draw_dashed_box(ax, x, y, w, h, title, color='#0050A0'):
 def arrow(ax, x1, y1, x2, y2, color='#333333', lw=2.5):
     ax.annotate('', xy=(x2,y2), xytext=(x1,y1), arrowprops=dict(arrowstyle='->', color=color, lw=lw))
 
+def draw_symbol_directory(ax, x, y, w, h):
+    bg = mpatches.FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.1",
+                                  facecolor='#F8F9FA', edgecolor='#002060', linewidth=2.5, zorder=10)
+    ax.add_patch(bg)
+    ax.text(x + w/2, y + h - 0.3, 'SYMBOL DIRECTORY', ha='center', fontsize=10,
+            fontweight='bold', color='#002060', zorder=11)
+
+    cx = x + 1.0
+    tx = x + 2.2
+
+    sy = y + h - 0.9
+    sp = 0.62
+
+    e = mpatches.Ellipse((cx, sy), 1.0, 0.35, facecolor='#002060', edgecolor='black', linewidth=1.5, zorder=11)
+    ax.add_patch(e)
+    ax.text(tx, sy, '= Start / End (Terminator)', fontsize=7.5, va='center', color='#333333', zorder=11)
+
+    sy -= sp
+    r = mpatches.FancyBboxPatch((cx-0.5, sy-0.14), 1.0, 0.28, boxstyle="round,pad=0.04",
+                                 facecolor='#0070C0', edgecolor='black', linewidth=1.5, zorder=11)
+    ax.add_patch(r)
+    ax.text(tx, sy, '= Process / Action Step', fontsize=7.5, va='center', color='#333333', zorder=11)
+
+    sy -= sp
+    hs = 0.25
+    dxs = [cx, cx+hs, cx, cx-hs]
+    dys = [sy+hs, sy, sy-hs, sy]
+    dp = plt.Polygon(list(zip(dxs, dys)), facecolor='#F39C12', edgecolor='black', linewidth=1.5, zorder=11)
+    ax.add_patch(dp)
+    ax.text(tx, sy, '= Decision Gate (Yes/No)', fontsize=7.5, va='center', color='#333333', zorder=11)
+
+    sy -= sp
+    sk = 0.12
+    pxs = [cx-0.5+sk, cx+0.5+sk, cx+0.5-sk, cx-0.5-sk]
+    pys = [sy-0.14, sy-0.14, sy+0.14, sy+0.14]
+    pp = plt.Polygon(list(zip(pxs, pys)), facecolor='#27AE60', edgecolor='black', linewidth=1.5, zorder=11)
+    ax.add_patch(pp)
+    ax.text(tx, sy, '= Data Input / Output', fontsize=7.5, va='center', color='#333333', zorder=11)
+
+    sy -= sp
+    cr = mpatches.FancyBboxPatch((cx-0.5, sy-0.18), 1.0, 0.3, boxstyle='square,pad=0',
+                                  facecolor='#8E44AD', edgecolor='black', linewidth=1.5, zorder=11)
+    ax.add_patch(cr)
+    ce = mpatches.Ellipse((cx, sy+0.12), 1.0, 0.16, facecolor='#8E44AD', edgecolor='black', linewidth=1.5, zorder=12)
+    ax.add_patch(ce)
+    ax.text(tx, sy, '= Database / Storage', fontsize=7.5, va='center', color='#333333', zorder=11)
+
+    sy -= sp
+    dr = mpatches.FancyBboxPatch((cx-0.5, sy-0.14), 1.0, 0.28, boxstyle="round,pad=0.04",
+                                  facecolor='white', edgecolor='#0050A0', linewidth=1.5, linestyle='--', zorder=11)
+    ax.add_patch(dr)
+    ax.text(tx, sy, '= Phase / Group Boundary', fontsize=7.5, va='center', color='#333333', zorder=11)
+
+    sy -= sp * 0.8
+    ax.annotate('', xy=(cx+0.4, sy), xytext=(cx-0.4, sy),
+                arrowprops=dict(arrowstyle='->', color='#333333', lw=2, zorder=11))
+    ax.text(tx, sy, '= Flow Direction', fontsize=7.5, va='center', color='#333333', zorder=11)
+
+
 # ============================================================
 # FLOWCHART 1: Enhanced Agentic AI - Prepare-Perceive-Reason-Act-Follow-Up
 # ============================================================
-fig, ax = plt.subplots(figsize=(22, 42))
+fig, ax = plt.subplots(figsize=(22, 44))
 ax.set_xlim(0, 22)
-ax.set_ylim(0, 42)
+ax.set_ylim(0, 44)
 ax.axis('off')
 
-ax.text(11, 41.3, 'Solution 1: Webex AI Meeting Prep & Workflow Orchestrator',
+ax.text(11, 43.3, 'Solution 1: Webex AI Meeting Prep & Workflow Orchestrator',
         ha='center', fontsize=21, fontweight='bold', color='#002060')
-ax.text(11, 40.7, 'Prepare \u2192 Perceive \u2192 Reason \u2192 Act \u2192 Follow-Up  |  Full Meeting Lifecycle AI',
+ax.text(11, 42.7, 'Prepare \u2192 Perceive \u2192 Reason \u2192 Act \u2192 Follow-Up  |  Full Meeting Lifecycle AI',
         ha='center', fontsize=13, color='#555555')
+
+draw_symbol_directory(ax, 15.5, 26.0, 5.5, 4.8)
 
 lane_colors = ['#E8F4FD', '#FFF3E0', '#F3E5F5']
 lane_labels = ['WEBEX CLOUD', 'CISCO SECURE DATA FABRIC', 'THIRD-PARTY APPS']
@@ -78,494 +139,674 @@ lane_sublabels = ['(AI Codec + NLP + Agent Runtime)', '(Splunk + Zero-Trust Iden
 lane_xs = [(0.3, 7.0), (7.5, 14.5), (15.0, 21.7)]
 
 for i, ((x1, x2), color, label, sublabel) in enumerate(zip(lane_xs, lane_colors, lane_labels, lane_sublabels)):
-    rect = mpatches.FancyBboxPatch((x1, 1.0), x2 - x1, 38.5, boxstyle="round,pad=0.1",
+    rect = mpatches.FancyBboxPatch((x1, 1.0), x2 - x1, 40.5, boxstyle="round,pad=0.1",
                                     facecolor=color, edgecolor='#999999', linewidth=1.5, alpha=0.5)
     ax.add_patch(rect)
-    ax.text((x1 + x2) / 2, 39.2, label, ha='center', fontsize=13, fontweight='bold', color='#002060')
-    ax.text((x1 + x2) / 2, 38.8, sublabel, ha='center', fontsize=9, color='#666666')
+    ax.text((x1 + x2) / 2, 41.2, label, ha='center', fontsize=13, fontweight='bold', color='#002060')
+    ax.text((x1 + x2) / 2, 40.8, sublabel, ha='center', fontsize=9, color='#666666')
 
 WX = 3.65
 DF = 11.0
 TP = 18.35
 
-draw_oval(ax, WX, 38.0, 4.5, 1.0, 'START\nMeeting Scheduled', '#002060', 'white', 11)
-arrow(ax, WX, 37.45, WX, 36.8)
+draw_oval(ax, WX, 39.8, 4.5, 1.0, 'START\nMeeting Scheduled', '#002060', 'white', 11)
+arrow(ax, WX, 39.25, WX, 38.6)
 
-draw_dashed_box(ax, 0.5, 32.5, 6.3, 4.0, 'PREPARE: AI Meeting Prep', '#0050A0')
+draw_dashed_box(ax, 0.5, 34.2, 6.3, 4.2, 'PREPARE: AI Meeting Prep', '#0050A0')
 
-draw_rect(ax, WX, 36.2, 5.5, 1.0,
+draw_rect(ax, WX, 37.9, 5.5, 1.0,
           'Context Ingestion\nIngest title, participants, docs,\nCRM records, past transcripts', '#1A5276', 'white', 9)
-arrow(ax, WX, 35.65, WX, 35.0)
+arrow(ax, WX, 37.35, WX, 36.7)
 
-draw_rect(ax, WX, 34.4, 5.5, 1.0,
+draw_rect(ax, WX, 36.1, 5.5, 1.0,
           'AI Generates Agenda + Insights\nPrep checklist, key metrics,\npredicted Q&A for presenter', '#1A5276', 'white', 9)
-arrow(ax, WX, 33.85, WX, 33.2)
+arrow(ax, WX, 35.55, WX, 34.9)
 
-draw_rect(ax, WX, 32.6, 5.5, 1.0,
+draw_rect(ax, WX, 34.3, 5.5, 1.0,
           'Auto-Slide Generation\nFirst-draft deck from CRM data,\nJira issues, financial metrics', '#0070C0', 'white', 9)
 
-arrow(ax, WX + 2.8, 36.2, TP - 2.5, 36.2, '#333333')
-draw_para(ax, TP, 36.2, 5.0, 1.0,
+arrow(ax, WX + 2.8, 37.9, TP - 2.5, 37.9, '#333333')
+draw_para(ax, TP, 37.9, 5.0, 1.0,
           'PULL CONTEXT\nCRM pipeline, Jira backlog,\nCalendar history', '#D35400', 'white', 9)
 
-arrow(ax, WX + 2.8, 34.4, DF - 2.5, 34.4, '#333333')
-draw_cyl(ax, DF, 34.4, 5.0, 1.2,
+arrow(ax, WX + 2.8, 36.1, DF - 2.5, 36.1, '#333333')
+draw_cyl(ax, DF, 36.1, 5.0, 1.2,
          'Cisco Secure Data Fabric\nZero-Trust data retrieval\nSplunk audit logging', '#8E44AD', 'white', 9)
 
-arrow(ax, WX, 32.05, WX, 31.3)
+arrow(ax, WX, 33.75, WX, 33.1)
 
-draw_oval(ax, WX, 30.7, 4.5, 1.0, 'Meeting\nBegins Live', '#27AE60', 'white', 11)
-arrow(ax, WX, 30.15, WX, 29.5)
+draw_oval(ax, WX, 32.5, 4.5, 1.0, 'Meeting\nBegins Live', '#27AE60', 'white', 11)
+arrow(ax, WX, 31.95, WX, 31.3)
 
-draw_dashed_box(ax, 0.5, 23.5, 6.3, 5.8, 'PERCEIVE: AI Codec ML Pipeline', '#0050A0')
+draw_dashed_box(ax, 0.5, 25.0, 6.3, 6.1, 'PERCEIVE: AI Codec ML Pipeline', '#0050A0')
 
-draw_para(ax, WX, 28.9, 5.2, 0.9,
+draw_para(ax, WX, 30.7, 5.2, 0.9,
           'Raw Audio/Video Input\nMicrophone + Camera streams', '#2C3E50', 'white', 9)
-arrow(ax, WX, 28.4, WX, 27.8)
+arrow(ax, WX, 30.2, WX, 29.6)
+
+draw_rect(ax, WX, 29.0, 5.5, 1.0,
+          'DNN Noise Removal\n150+ noise types in real-time\n+ Echo Cancellation', '#1A5276', 'white', 9)
+arrow(ax, WX, 28.45, WX, 27.8)
 
 draw_rect(ax, WX, 27.2, 5.5, 1.0,
-          'Deep Neural Network (DNN)\nBackground Noise Removal\n150+ noise types in real-time', '#1A5276', 'white', 9)
+          'AI Codec: Neural Speech Synthesis\nCompresses to ~1 kbps\nRMM: Super Resolution + Voice Isolation', '#1A5276', 'white', 9)
 arrow(ax, WX, 26.65, WX, 26.0)
 
 draw_rect(ax, WX, 25.4, 5.5, 1.0,
-          'AI Codec: Neural Speech Synthesis\nCompresses audio to ~1 kbps\n(vs 32 kbps traditional codecs)', '#1A5276', 'white', 9)
-arrow(ax, WX, 24.85, WX, 24.2)
-
-draw_rect(ax, WX, 23.6, 5.5, 1.0,
           'NLP Engine: Speech-to-Text\nReal-time transcription + translation\nTask intent + decision detection', '#0070C0', 'white', 9)
-arrow(ax, WX, 23.05, WX, 22.3)
+arrow(ax, WX, 24.85, WX, 24.0)
 
-draw_diamond(ax, WX, 21.3, 2.0, 'NLP detects\nTask Intent?', '#F39C12', 'black', 10)
+draw_diamond(ax, WX, 23.0, 2.0, 'NLP detects\nTask Intent?', '#F39C12', 'black', 10)
 
-ax.text(1.0, 21.3, 'NO', fontsize=12, fontweight='bold', color='#E74C3C', ha='center')
-arrow(ax, WX - 1.0, 21.3, 1.5, 21.3, '#E74C3C', 2)
-arrow(ax, 1.0, 21.3, 1.0, 28.9, '#E74C3C', 2)
-arrow(ax, 1.0, 28.9, WX - 2.8, 28.9, '#E74C3C', 2)
-ax.text(1.0, 25.0, 'Continue\nMonitoring', fontsize=9, fontweight='bold', color='#E74C3C', ha='center',
+ax.text(1.0, 23.0, 'NO', fontsize=12, fontweight='bold', color='#E74C3C', ha='center')
+arrow(ax, WX - 1.0, 23.0, 1.5, 23.0, '#E74C3C', 2)
+arrow(ax, 1.0, 23.0, 1.0, 30.7, '#E74C3C', 2)
+arrow(ax, 1.0, 30.7, WX - 2.8, 30.7, '#E74C3C', 2)
+ax.text(1.0, 26.8, 'Continue\nMonitoring', fontsize=9, fontweight='bold', color='#E74C3C', ha='center',
         bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='#E74C3C', alpha=0.9))
 
-ax.text(WX + 1.7, 22.0, 'YES', fontsize=12, fontweight='bold', color='#27AE60', ha='center')
-arrow(ax, WX + 1.0, 21.3, DF - 2.5, 21.3, '#27AE60', 2.5)
+ax.text(WX + 1.7, 23.7, 'YES', fontsize=12, fontweight='bold', color='#27AE60', ha='center')
+arrow(ax, WX + 1.0, 23.0, DF - 2.5, 23.0, '#27AE60', 2.5)
 
-draw_para(ax, DF, 21.3, 5.0, 1.1,
+draw_para(ax, DF, 23.0, 5.0, 1.1,
           'REASON: Fetch Context\nA2A Protocol retrieves\nproject data from systems', '#27AE60', 'white', 10)
 
-arrow(ax, DF + 2.8, 21.3, TP - 2.2, 21.3, '#333333')
+arrow(ax, DF + 2.8, 23.0, TP - 2.2, 23.0, '#333333')
 
-draw_para(ax, TP, 21.3, 5.0, 1.1,
+draw_para(ax, TP, 23.0, 5.0, 1.1,
           'EXTERNAL SYSTEMS\nJira / Salesforce / SAP\nServiceNow / GitHub', '#D35400', 'white', 9)
 
-arrow(ax, DF, 20.65, DF, 19.5)
+arrow(ax, DF, 22.35, DF, 21.2)
 
-draw_cyl(ax, DF, 18.7, 5.0, 1.5,
+draw_cyl(ax, DF, 20.4, 5.0, 1.5,
          'CISCO SECURE DATA FABRIC\nSplunk Observability\nZero-Trust Identity Layer', '#8E44AD', 'white', 9)
 
-arrow(ax, DF, 17.85, DF, 16.8)
+arrow(ax, DF, 19.55, DF, 18.5)
 
-draw_rect(ax, DF, 16.1, 5.0, 1.2,
+draw_rect(ax, DF, 17.8, 5.0, 1.2,
           'ACT: DRAFT\nAI Agent generates task draft\nusing retrieved context\n+ LLM-based planning', '#0070C0', 'white', 10)
 
-arrow(ax, DF - 2.8, 16.1, WX + 1.5, 14.5, '#333333')
+arrow(ax, DF - 2.8, 17.8, WX + 1.5, 16.3, '#333333')
 
-draw_diamond(ax, WX, 13.5, 2.0, 'Human-in-Loop\nApprove?', '#F39C12', 'black', 10)
+draw_diamond(ax, WX, 15.3, 2.0, 'Human-in-Loop\nApprove?', '#F39C12', 'black', 10)
 
-ax.text(WX + 1.7, 12.5, 'REJECT', fontsize=11, fontweight='bold', color='#E74C3C', ha='center')
-arrow(ax, WX + 1.0, 13.5, DF - 2.8, 15.5, '#E74C3C', 2)
+ax.text(WX + 1.7, 14.3, 'REJECT', fontsize=11, fontweight='bold', color='#E74C3C', ha='center')
+arrow(ax, WX + 1.0, 15.3, DF - 2.8, 17.2, '#E74C3C', 2)
 
-ax.text(WX + 1.7, 14.3, 'APPROVE', fontsize=11, fontweight='bold', color='#27AE60', ha='center')
-arrow(ax, WX + 1.0, 13.5, TP - 2.5, 13.5, '#27AE60', 2.5)
+ax.text(WX + 1.7, 16.1, 'APPROVE', fontsize=11, fontweight='bold', color='#27AE60', ha='center')
+arrow(ax, WX + 1.0, 15.3, TP - 2.5, 15.3, '#27AE60', 2.5)
 
-draw_rect(ax, TP, 13.5, 5.0, 1.2,
+draw_rect(ax, TP, 15.3, 5.0, 1.2,
           'EXECUTE\nAgent pushes data via\nsecure API to external app', '#E74C3C', 'white', 10)
 
-arrow(ax, TP, 12.85, TP, 12.0)
+arrow(ax, TP, 14.65, TP, 13.8)
 
-draw_rect(ax, DF, 11.3, 5.5, 1.0,
+draw_rect(ax, DF, 13.0, 5.5, 1.0,
           'Splunk Logs Execution\nPerformance metrics + audit trail\nAnomaly detection on agent actions', '#8E44AD', 'white', 9)
-arrow(ax, TP, 11.3, DF + 2.8, 11.3, '#333333')
+arrow(ax, TP, 13.0, DF + 2.8, 13.0, '#333333')
 
-arrow(ax, DF - 2.8, 11.3, WX + 2.0, 11.3, '#333333')
+arrow(ax, DF, 12.45, DF, 11.8)
 
-draw_rect(ax, DF, 9.8, 5.5, 1.0,
-          'CONFIRM\nStatus posted to Webex Chat:\n"Task created successfully"', '#0070C0', 'white', 9)
-arrow(ax, DF, 10.7, DF, 10.35)
+draw_rect(ax, DF, 11.1, 5.5, 1.0,
+          'CONFIRM\nStatus posted to Webex Chat:\n"Task WEBAPP-2026-347 created"', '#0070C0', 'white', 9)
+arrow(ax, DF - 2.8, 11.1, WX + 2.0, 11.1, '#333333')
 
-arrow(ax, DF, 9.25, DF, 8.5)
+arrow(ax, DF, 10.55, DF, 9.8)
 
-draw_dashed_box(ax, 0.5, 3.5, 6.3, 4.8, 'FOLLOW-UP: Post-Meeting AI', '#0050A0')
+draw_dashed_box(ax, 0.5, 3.8, 6.3, 5.8, 'FOLLOW-UP: Post-Meeting AI', '#0050A0')
 
-draw_oval(ax, WX, 7.8, 4.5, 1.0, 'Meeting\nEnds', '#27AE60', 'white', 11)
-arrow(ax, DF - 2.8, 7.8, WX + 2.5, 7.8, '#333333')
-arrow(ax, WX, 7.25, WX, 6.6)
+draw_oval(ax, WX, 9.2, 4.5, 1.0, 'Meeting\nEnds', '#27AE60', 'white', 11)
+arrow(ax, DF - 2.8, 9.2, WX + 2.5, 9.2, '#333333')
+arrow(ax, WX, 8.65, WX, 8.0)
 
-draw_rect(ax, WX, 6.0, 5.5, 1.0,
+draw_rect(ax, WX, 7.4, 5.5, 1.0,
           'Unanswered Q Detection\nIdentify deferred questions\nfrom transcript + predicted Q&A', '#1A5276', 'white', 9)
-arrow(ax, WX, 5.45, WX, 4.8)
+arrow(ax, WX, 6.85, WX, 6.2)
 
-draw_rect(ax, WX, 4.2, 5.5, 1.0,
+draw_rect(ax, WX, 5.6, 5.5, 1.0,
           'AI Drafts Follow-Up Answers\nOwner reviews, edits, approves\nMulti-channel delivery', '#0070C0', 'white', 9)
+arrow(ax, WX, 5.05, WX, 4.4)
 
-arrow(ax, WX + 2.8, 6.0, DF - 2.5, 6.0, '#333333')
-draw_rect(ax, DF, 6.0, 5.0, 1.0,
-          'Q&A Tracker Dashboard\nStatus, deadlines, SLA tracking\nWeekly digest to participants', '#8E44AD', 'white', 9)
+draw_rect(ax, WX, 3.8, 5.5, 1.0,
+          'Q&A Tracker Dashboard\nWeekly digest to participants\nResolution rate monitoring', '#0070C0', 'white', 9)
 
-arrow(ax, WX + 2.8, 4.2, TP - 2.5, 4.2, '#333333')
-draw_rect(ax, TP, 4.2, 5.0, 1.0,
+arrow(ax, WX + 2.8, 7.4, DF - 2.5, 7.4, '#333333')
+draw_cyl(ax, DF, 7.4, 5.0, 1.2,
+         'Splunk Observability\nFollow-up completion tracking\nSLA monitoring + alerts', '#8E44AD', 'white', 9)
+
+arrow(ax, WX + 2.8, 5.6, TP - 2.5, 5.6, '#333333')
+draw_rect(ax, TP, 5.6, 5.0, 1.0,
           'Deliver Answers via\nWebex Spaces / Email /\nIntegrated Chat Tools', '#D35400', 'white', 9)
 
-arrow(ax, WX, 3.65, WX, 3.0)
-draw_oval(ax, WX, 2.5, 4.5, 0.9, 'END\nAll Loops Closed')
+arrow(ax, WX, 3.25, WX, 2.6)
+draw_oval(ax, WX, 2.0, 4.5, 0.9, 'END\nAll Loops Closed')
 
-mr = mpatches.FancyBboxPatch((0.3, 1.2), 21.4, 0.8, boxstyle='round,pad=0.1',
+mr = mpatches.FancyBboxPatch((0.3, 1.0), 21.4, 0.6, boxstyle='round,pad=0.05',
                                facecolor='#002060', edgecolor='black', linewidth=2)
 ax.add_patch(mr)
-ax.text(11, 1.6, 'IMPACT: 15 min saved/meeting  |  25% meeting-to-action  |  '
-        '40% workflow automation  |  85% task accuracy  |  Q&A resolution rate 90%+',
-        ha='center', va='center', fontsize=10, fontweight='bold', color='white')
-
-lx = 15.5; ly = 38.5
-ax.text(lx, ly, 'LEGEND:', fontsize=11, fontweight='bold', color='#002060')
-draw_oval(ax, lx+0.9, ly-0.7, 1.2, 0.45, 'Start/End', '#002060', 'white', 7)
-ax.text(lx+2.1, ly-0.7, '= Terminator', fontsize=8, va='center', color='#333333')
-draw_rect(ax, lx+0.9, ly-1.4, 1.2, 0.4, 'Process', '#0070C0', 'white', 7)
-ax.text(lx+2.1, ly-1.4, '= Action/ML Step', fontsize=8, va='center', color='#333333')
-draw_diamond(ax, lx+0.9, ly-2.1, 0.6, 'Dec.', '#F39C12', 'black', 6)
-ax.text(lx+2.1, ly-2.1, '= Decision Point', fontsize=8, va='center', color='#333333')
-draw_para(ax, lx+0.9, ly-2.7, 1.2, 0.35, 'I/O', '#27AE60', 'white', 7)
-ax.text(lx+2.1, ly-2.7, '= Data I/O', fontsize=8, va='center', color='#333333')
-draw_cyl(ax, lx+0.9, ly-3.4, 1.2, 0.55, 'DB', '#8E44AD', 'white', 7)
-ax.text(lx+2.1, ly-3.4, '= Database/Store', fontsize=8, va='center', color='#333333')
+ax.text(11, 1.3, 'IMPACT: 15 min saved/meeting  |  25% meeting-to-action  |  '
+        '40% workflow automation  |  85% task accuracy  |  90%+ Q&A resolution',
+        ha='center', va='center', fontsize=9, fontweight='bold', color='white')
 
 plt.tight_layout()
 plt.savefig('cisco_case/figures/flowchart_1_agentic_ai.png', dpi=200, bbox_inches='tight')
 plt.close()
-print("Flowchart 1 (Enhanced Prepare-Perceive-Reason-Act-Follow-Up) created")
+print("Flowchart 1 created")
 
 # ============================================================
 # FLOWCHART 2: VIBE / VEL - Voice & Language Intelligence Layer
+# (Complete rebuild with all details from reference PDF)
 # ============================================================
-fig, ax = plt.subplots(figsize=(22, 44))
+fig, ax = plt.subplots(figsize=(22, 58))
 ax.set_xlim(0, 22)
-ax.set_ylim(0, 44)
+ax.set_ylim(0, 58)
 ax.axis('off')
 
-ax.text(11, 43.3, 'Solution 2: VIBE - Voice & Language Intelligence Layer',
+ax.text(11, 57.3, 'Solution 2: VIBE - Voice & Language Intelligence Layer',
         ha='center', fontsize=21, fontweight='bold', color='#002060')
-ax.text(11, 42.7, 'Voice Boost | Live Translation | Type-to-Speak | Simple Mode  |  Real-Time In-Meeting AI',
+ax.text(11, 56.7, 'Voice Boost | Live Translation | Type-to-Speak | Simple Mode  |  Real-Time In-Meeting AI',
         ha='center', fontsize=13, color='#555555')
 
-draw_oval(ax, 11, 41.8, 6.0, 0.9, 'START: User Joins Webex Meeting', '#002060', 'white', 12)
-arrow(ax, 11, 41.3, 11, 40.7)
+draw_symbol_directory(ax, 0.3, 51.5, 6.5, 4.8)
 
-p_onb = mpatches.FancyBboxPatch((0.3, 36.5), 21.4, 4.0, boxstyle="round,pad=0.15",
+ts_box = mpatches.FancyBboxPatch((15.2, 50.2), 6.5, 6.5, boxstyle="round,pad=0.1",
+                                   facecolor='#E8F4FD', edgecolor='#002060', linewidth=2.5)
+ax.add_patch(ts_box)
+ax.text(18.45, 56.35, 'TECH STACK', ha='center', fontsize=11, fontweight='bold', color='#002060')
+ts_items = [
+    ('ASR', 'Whisper / Cisco AI'),
+    ('NLP', 'Custom LLM + Rules'),
+    ('TTS', 'Neural Voice Synthesis'),
+    ('MT', 'Neural Machine Translation'),
+    ('DSP', 'DNN Noise + EQ'),
+    ('Codec', 'Webex AI Codec'),
+]
+for i, (label, desc) in enumerate(ts_items):
+    ty = 55.5 - i * 0.8
+    ax.text(15.6, ty, label, fontsize=9, fontweight='bold', color='#002060', va='center')
+    ax.text(17.0, ty, desc, fontsize=8, color='#333333', va='center')
+
+kpi_box = mpatches.FancyBboxPatch((7.5, 53.2), 6.8, 3.5, boxstyle="round,pad=0.1",
+                                    facecolor='#FFF3E0', edgecolor='#D35400', linewidth=2.5)
+ax.add_patch(kpi_box)
+ax.text(10.9, 56.35, 'KPIs & TARGETS', ha='center', fontsize=11, fontweight='bold', color='#D35400')
+kpi_items = [
+    'Noise reduction: 95%+',
+    'ASR accuracy: 98%',
+    'Translation latency: <1s',
+    'TTS naturalness: 4.5/5',
+    'Type-to-speak: <2s',
+]
+for i, kpi in enumerate(kpi_items):
+    ky = 55.5 - i * 0.7
+    ax.text(7.9, ky, kpi, fontsize=9, color='#333333', va='center')
+
+lang_box = mpatches.FancyBboxPatch((7.5, 50.2), 6.8, 2.7, boxstyle="round,pad=0.1",
+                                     facecolor='#F3E5F5', edgecolor='#8E44AD', linewidth=2.5)
+ax.add_patch(lang_box)
+ax.text(10.9, 52.55, 'LANGUAGES', ha='center', fontsize=11, fontweight='bold', color='#8E44AD')
+ax.text(10.9, 51.8, 'Hindi  |  Spanish  |  Mandarin  |  French', ha='center', fontsize=9, color='#333333')
+ax.text(10.9, 51.2, 'Arabic  |  Portuguese  |  Japanese  |  Korean', ha='center', fontsize=9, color='#333333')
+ax.text(10.9, 50.6, '+ 90 more via Neural Machine Translation', ha='center', fontsize=9, fontweight='bold', color='#8E44AD')
+
+draw_oval(ax, 11, 49.2, 7.0, 0.9, 'START - USER JOINS WEBEX MEETING', '#002060', 'white', 12)
+arrow(ax, 11, 48.7, 11, 48.1)
+
+p_onb = mpatches.FancyBboxPatch((2.0, 42.5), 18.0, 5.4, boxstyle="round,pad=0.15",
                                   facecolor='#1A5276', edgecolor='#1A5276', linewidth=2, alpha=0.08)
 ax.add_patch(p_onb)
-ax.text(1.0, 40.1, 'A: USER ONBOARDING', fontsize=13, fontweight='bold', color='#1A5276')
+ax.text(2.5, 47.5, 'A: USER ENTRY & ONBOARDING', fontsize=13, fontweight='bold', color='#1A5276')
 
-draw_rect(ax, 11, 40.1, 8.0, 1.0,
-          'User Enables VIBE in Meeting Controls\nToggle appears in controls bar - zero configuration required', '#1A5276', 'white', 11)
-arrow(ax, 11, 39.55, 11, 38.9)
+draw_rect(ax, 11, 47.4, 12.0, 0.9,
+          '1. User Enables VIBE in Meeting Controls  |  Toggle appears in controls bar  |  Zero configuration required', '#1A5276', 'white', 10)
+arrow(ax, 11, 46.9, 11, 46.3)
 
-draw_rect(ax, 11, 38.3, 8.0, 1.0,
-          'Select Active Modes\nVoice Boost | Live Translation | Type-to-Speak | Simple Mode\nOne or more modes active simultaneously', '#1A5276', 'white', 11)
-arrow(ax, 11, 37.75, 11, 37.1)
+draw_rect(ax, 5.5, 45.5, 5.5, 1.2,
+          '2. Select Active Modes\nVoice Boost | Live Translation\nType-to-Speak | Simple Mode', '#1A5276', 'white', 10)
 
-draw_rect(ax, 11, 36.5, 8.0, 1.0,
-          'Select Language & Voice Profile\nNative Language (100+ supported) | Tech Level | Voice Preset\nClear / Loud / Warm / Broadcast-style', '#0070C0', 'white', 11)
-arrow(ax, 11, 35.95, 11, 35.3)
+draw_rect(ax, 11, 45.5, 5.0, 1.2,
+          '3. Select Language\nNative: 100+ supported\nTech Level: Tech / Non-Tech', '#0070C0', 'white', 10)
 
-draw_diamond(ax, 11, 34.3, 2.5, 'User is\nSpeaking or\nTyping?', '#F39C12', 'black', 11)
+draw_rect(ax, 16.5, 45.5, 5.0, 1.2,
+          'Voice Preset Selection\nClear | Loud | Warm\nBroadcast-style', '#0070C0', 'white', 10)
 
-ax.text(5.0, 34.3, 'SPEAKING', fontsize=12, fontweight='bold', color='#27AE60', ha='center')
-arrow(ax, 11 - 1.25, 34.3, 4.5, 34.3, '#27AE60', 2.5)
-arrow(ax, 4.5, 34.3, 4.5, 33.2)
+arrow(ax, 11, 46.3, 5.5, 46.15, '#333333')
+arrow(ax, 11, 46.3, 16.5, 46.15, '#333333')
 
-ax.text(17.0, 34.3, 'TYPING', fontsize=12, fontweight='bold', color='#0070C0', ha='center')
-arrow(ax, 11 + 1.25, 34.3, 17.5, 34.3, '#0070C0', 2.5)
-arrow(ax, 17.5, 34.3, 17.5, 33.2)
+arrow(ax, 5.5, 44.85, 5.5, 44.2)
+arrow(ax, 16.5, 44.85, 16.5, 44.2)
+arrow(ax, 5.5, 44.2, 10.5, 43.7, '#333333')
+arrow(ax, 16.5, 44.2, 11.5, 43.7, '#333333')
 
-p_speak = mpatches.FancyBboxPatch((0.3, 24.0), 10.0, 9.0, boxstyle="round,pad=0.15",
+draw_diamond(ax, 11, 42.7, 2.2, 'User is\nSpeaking\nor Typing?', '#F39C12', 'black', 10)
+
+ax.text(4.5, 42.7, 'SPEAKING', fontsize=12, fontweight='bold', color='#27AE60', ha='center')
+arrow(ax, 11 - 1.1, 42.7, 5.2, 42.7, '#27AE60', 2.5)
+arrow(ax, 5.2, 42.7, 5.2, 41.8)
+
+ax.text(17.5, 42.7, 'TYPING', fontsize=12, fontweight='bold', color='#0070C0', ha='center')
+arrow(ax, 11 + 1.1, 42.7, 16.8, 42.7, '#0070C0', 2.5)
+arrow(ax, 16.8, 42.7, 16.8, 41.8)
+
+p_speak = mpatches.FancyBboxPatch((0.5, 28.0), 10.0, 13.6, boxstyle="round,pad=0.15",
                                     facecolor='#27AE60', edgecolor='#27AE60', linewidth=2, alpha=0.08)
 ax.add_patch(p_speak)
-ax.text(1.0, 32.6, 'B: LIVE SPEAK PATH', fontsize=13, fontweight='bold', color='#27AE60')
+ax.text(1.0, 41.2, 'B: LIVE AUDIO SPEAK PATH', fontsize=13, fontweight='bold', color='#27AE60')
 
-draw_para(ax, 4.5, 32.5, 5.5, 0.9,
-          'Microphone Audio Captured\nPer-speaker separation via AI Codec', '#2C3E50', 'white', 9)
-arrow(ax, 4.5, 32.0, 4.5, 31.3)
+draw_para(ax, 5.2, 41.0, 6.0, 0.9,
+          '1. Microphone Audio Captured\nPer-speaker separation via AI Codec', '#2C3E50', 'white', 9)
+arrow(ax, 5.2, 40.5, 5.2, 39.8)
 
-draw_rect(ax, 4.5, 30.7, 5.5, 1.0,
-          'DNN Noise Removal\n150+ noise types (cafe, keyboard,\nHVAC) + Echo Cancellation', '#27AE60', 'white', 9)
-arrow(ax, 4.5, 30.15, 4.5, 29.5)
+draw_rect(ax, 5.2, 39.2, 6.0, 1.0,
+          '2. Audio Intelligence Front-End\nDNN Noise Removal (150+ types)\nEcho Cancel + Auto Gain + Room Detect', '#27AE60', 'white', 9)
+arrow(ax, 5.2, 38.65, 5.2, 38.0)
 
-draw_rect(ax, 4.5, 28.9, 5.5, 1.0,
-          'Voice Boost & EQ Engine\nApply preset (Clear/Loud/Warm)\nAdaptive to environment', '#27AE60', 'white', 9)
-arrow(ax, 4.5, 28.35, 4.5, 27.7)
+draw_rect(ax, 5.2, 37.4, 6.0, 1.0,
+          '3. Voice Boost & EQ Engine\nPreset: Clear / Loud / Warm / Broadcast\nAdaptive to environment + normalization', '#27AE60', 'white', 9)
+arrow(ax, 5.2, 36.85, 5.2, 36.2)
 
-draw_rect(ax, 4.5, 27.1, 5.5, 1.0,
-          'Speech-to-Text (ASR)\nReal-time transcription + diarization\nFiller word removal (um/uh/like)', '#0070C0', 'white', 9)
-arrow(ax, 4.5, 26.55, 4.5, 25.9)
+draw_rect(ax, 5.2, 35.6, 6.0, 1.0,
+          '4. Speech-to-Text (ASR)\nReal-time transcription + diarization\nFiller word removal (um/uh/like)', '#0070C0', 'white', 9)
+arrow(ax, 5.2, 35.05, 5.2, 34.3)
 
-draw_rect(ax, 4.5, 25.3, 5.5, 1.0,
-          'NLP: Conditional Processing\nSimple Mode: jargon to plain language\nTranslation: native to English/target', '#0070C0', 'white', 9)
-arrow(ax, 4.5, 24.75, 4.5, 24.1)
+draw_rect(ax, 5.2, 33.5, 6.0, 1.4,
+          '5. NLP Layer - Conditional Processing\nSimple Mode: jargon -> plain language\nTranslation: native -> English/target\nAlways: intent tagging + clarity scoring', '#0070C0', 'white', 9)
+arrow(ax, 5.2, 32.75, 5.2, 32.1)
 
-draw_rect(ax, 4.5, 23.5, 5.5, 1.0,
-          'Text-to-Speech: VIBE Voice\nNeural TTS with user persona\nEmotional tone matching', '#27AE60', 'white', 9)
-arrow(ax, 4.5, 22.95, 4.5, 22.3)
+draw_rect(ax, 5.2, 31.4, 6.0, 1.2,
+          '6. Text-to-Speech: VIBE Voice\nNeural TTS with user persona\nEmotional tone matching\nConsistent voice identity per session', '#27AE60', 'white', 9)
+arrow(ax, 5.2, 30.75, 5.2, 30.1)
 
-draw_para(ax, 4.5, 21.7, 5.5, 1.0,
-          'Delivered to All Participants\nCleaned + boosted + translated voice\nPer-user captions in their language', '#2C3E50', 'white', 9)
+draw_para(ax, 5.2, 29.4, 6.0, 1.2,
+          '7. Delivered to All Participants\nCleaned + boosted + translated voice\nPer-user captions in their language\nEach attendee controls own caption', '#2C3E50', 'white', 9)
 
-p_type = mpatches.FancyBboxPatch((11.7, 26.0), 10.0, 7.0, boxstyle="round,pad=0.15",
+p_type = mpatches.FancyBboxPatch((11.5, 33.0), 10.0, 8.6, boxstyle="round,pad=0.15",
                                    facecolor='#0070C0', edgecolor='#0070C0', linewidth=2, alpha=0.08)
 ax.add_patch(p_type)
-ax.text(12.5, 32.6, 'C: TYPE-TO-SPEAK PATH', fontsize=13, fontweight='bold', color='#0070C0')
+ax.text(12.0, 41.2, 'C: TYPE-TO-SPEAK PATH', fontsize=13, fontweight='bold', color='#0070C0')
 
-draw_rect(ax, 17.5, 32.5, 5.5, 0.9,
-          'User Switches to Type-to-Speak\nTrigger: muted / noisy / speech difficulty', '#0070C0', 'white', 9)
-arrow(ax, 17.5, 32.0, 17.5, 31.3)
+draw_rect(ax, 16.8, 41.0, 6.0, 0.9,
+          '1. User Switches to Type-to-Speak\nTrigger: muted / noisy / mic issue / shy', '#0070C0', 'white', 9)
+arrow(ax, 16.8, 40.5, 16.8, 39.8)
 
-draw_rect(ax, 17.5, 30.7, 5.5, 1.0,
-          'User Types in VIBE Panel\nAny language - can paste code/data\nDraft visible only to user before send', '#0070C0', 'white', 9)
-arrow(ax, 17.5, 30.15, 17.5, 29.5)
+draw_rect(ax, 16.8, 39.2, 6.0, 1.0,
+          '2. User Types in VIBE Panel\nAny language - paste code/data/tables\nDraft visible only to user before send', '#0070C0', 'white', 9)
+arrow(ax, 16.8, 38.65, 16.8, 38.0)
 
-draw_rect(ax, 17.5, 28.9, 5.5, 1.0,
-          'NLP Processing\nDetect language + intent\nSimplify or translate to meeting lang\nPolish mode: draft to fluent speech', '#1A5276', 'white', 9)
-arrow(ax, 17.5, 28.35, 17.5, 27.7)
+draw_rect(ax, 16.8, 37.4, 6.0, 1.0,
+          '3. NLP Processing\nDetect language + translate to meeting lang\nPolish mode: draft -> fluent speech', '#1A5276', 'white', 9)
+arrow(ax, 16.8, 36.85, 16.8, 36.2)
 
-draw_rect(ax, 17.5, 27.1, 5.5, 1.0,
-          'VIBE Agent Speaks for User\nNeural TTS speaks typed message\nLabel: "Spoken by VIBE for [User]"', '#27AE60', 'white', 9)
-arrow(ax, 17.5, 26.55, 17.5, 25.9)
+draw_rect(ax, 16.8, 35.6, 6.0, 1.0,
+          '4. VIBE Agent Speaks for User\nNeural TTS speaks typed message\nLabel: "Spoken by VIBE for [User]"', '#27AE60', 'white', 9)
+arrow(ax, 16.8, 35.05, 16.8, 34.3)
 
-draw_rect(ax, 17.5, 25.3, 5.5, 1.0,
-          'Caption & Chat Sync\n"from [User] via VIBE" tag\nTranscript logs typed + spoken', '#0070C0', 'white', 9)
+draw_rect(ax, 16.8, 33.6, 6.0, 1.0,
+          '5. Caption & Chat Sync\n"from [User] via VIBE" tag in transcript\nChat logs typed + spoken side-by-side', '#0070C0', 'white', 9)
 
-arrow(ax, 4.5, 21.15, 4.5, 20.3)
-arrow(ax, 17.5, 24.75, 17.5, 20.3)
-arrow(ax, 17.5, 20.3, 11.5, 20.3, '#333333')
-arrow(ax, 4.5, 20.3, 10.5, 20.3, '#333333')
+arrow(ax, 5.2, 28.75, 5.2, 27.8)
+arrow(ax, 16.8, 33.05, 16.8, 27.8)
+arrow(ax, 16.8, 27.8, 11.5, 27.3, '#333333')
+arrow(ax, 5.2, 27.8, 10.5, 27.3, '#333333')
 
-p_qa = mpatches.FancyBboxPatch((0.3, 14.0), 21.4, 6.0, boxstyle="round,pad=0.15",
+p_qa = mpatches.FancyBboxPatch((0.5, 18.5), 21.0, 8.5, boxstyle="round,pad=0.15",
                                  facecolor='#8E44AD', edgecolor='#8E44AD', linewidth=2, alpha=0.08)
 ax.add_patch(p_qa)
-ax.text(1.0, 19.6, 'D: Q&A CLOSE-LOOP (NON-NATIVE / NON-TECH USERS)', fontsize=13, fontweight='bold', color='#8E44AD')
+ax.text(1.0, 26.6, 'D: Q&A CLOSE-LOOP (NON-NATIVE / NON-TECH USERS)', fontsize=13, fontweight='bold', color='#8E44AD')
 
-draw_rect(ax, 5.0, 19.5, 5.5, 0.9,
-          'User Asks in Own Language\nVoice or Type-to-Speak - any language', '#8E44AD', 'white', 10)
-arrow(ax, 5.0, 19.0, 5.0, 18.2)
+draw_rect(ax, 5.5, 26.4, 6.0, 1.0,
+          '1. User Asks in Own Language\nVoice or Type-to-Speak - any language\ne.g. Hindi, Spanish, Mandarin', '#8E44AD', 'white', 10)
+arrow(ax, 5.5, 25.85, 5.5, 25.2)
 
-draw_rect(ax, 5.0, 17.6, 5.5, 1.0,
-          'ASR + Translation to English\nPresenter sees translated question\nwith speaker attribution', '#8E44AD', 'white', 9)
-arrow(ax, 7.8, 17.6, 11.0, 17.6, '#333333')
+draw_rect(ax, 5.5, 24.5, 6.0, 1.2,
+          '2. ASR + Translation to English\nPresenter sees: "[Priya] asked\n(translated): How does the\nAPI integration work?"', '#8E44AD', 'white', 9)
+arrow(ax, 8.5, 24.5, 12.5, 24.5, '#333333')
 
-draw_rect(ax, 13.5, 17.6, 5.0, 1.0,
-          'Presenter Answers in English\nVIBE captures answer in real-time\nCan tag as "Simplified answer"', '#0070C0', 'white', 9)
-arrow(ax, 13.5, 17.05, 13.5, 16.2)
+draw_rect(ax, 16.5, 24.5, 6.0, 1.2,
+          '3. Presenter Answers in English\nVIBE captures answer in real-time\nCan tag: "Simplified answer"\nto trigger extra NLP', '#0070C0', 'white', 9)
+arrow(ax, 16.5, 23.85, 16.5, 23.0)
+arrow(ax, 16.5, 23.0, 11.5, 22.5, '#333333')
 
-draw_rect(ax, 11, 15.5, 7.0, 1.2,
-          'Translation + Simplification Back to User\nEnglish answer translated to native language\nSimple Mode adds analogy + concrete example', '#8E44AD', 'white', 10)
-arrow(ax, 11, 14.85, 11, 14.2)
+draw_rect(ax, 11, 21.8, 8.0, 1.2,
+          '4. Translation + Simplification Back to User\nEnglish -> native language | Simple Mode adds analogy\ne.g. "API = power outlet - device does not need to know how electricity works"', '#8E44AD', 'white', 9)
+arrow(ax, 11, 21.15, 11, 20.5)
 
-draw_rect(ax, 5.0, 13.5, 4.5, 1.0,
-          'Audio Output\nAnswer spoken in native\nlanguage via VIBE voice', '#27AE60', 'white', 9)
-draw_rect(ax, 17.0, 13.5, 4.5, 1.0,
-          'Text Output\nSimplified text + analogy\nin user caption pane', '#0070C0', 'white', 9)
-arrow(ax, 11 - 2.0, 14.2, 5.0, 14.05, '#333333')
-arrow(ax, 11 + 2.0, 14.2, 17.0, 14.05, '#333333')
+draw_rect(ax, 5.5, 19.8, 5.5, 1.2,
+          'Audio Output\nAnswer spoken in native\nlanguage via VIBE voice\nPrivate to user', '#27AE60', 'white', 9)
+draw_rect(ax, 16.5, 19.8, 5.5, 1.2,
+          'Text Output\nSimplified text + analogy\nin user caption pane\nBookmarkable for summary', '#0070C0', 'white', 9)
+arrow(ax, 11 - 2.0, 20.5, 5.5, 20.45, '#333333')
+arrow(ax, 11 + 2.0, 20.5, 16.5, 20.45, '#333333')
 
-arrow(ax, 5.0, 12.95, 5.0, 12.0)
-arrow(ax, 17.0, 12.95, 17.0, 12.0)
-arrow(ax, 5.0, 12.0, 10.5, 12.0, '#333333')
-arrow(ax, 17.0, 12.0, 11.5, 12.0, '#333333')
+arrow(ax, 5.5, 19.15, 5.5, 18.3)
+arrow(ax, 16.5, 19.15, 16.5, 18.3)
+arrow(ax, 5.5, 18.3, 10.5, 17.7, '#333333')
+arrow(ax, 16.5, 18.3, 11.5, 17.7, '#333333')
 
-p_end = mpatches.FancyBboxPatch((0.3, 5.5), 21.4, 6.2, boxstyle="round,pad=0.15",
+p_end = mpatches.FancyBboxPatch((0.5, 10.5), 21.0, 7.0, boxstyle="round,pad=0.15",
                                   facecolor='#D35400', edgecolor='#D35400', linewidth=2, alpha=0.08)
 ax.add_patch(p_end)
-ax.text(1.0, 11.3, 'E: END & LOGGING', fontsize=13, fontweight='bold', color='#D35400')
+ax.text(1.0, 17.1, 'E: END & LOGGING', fontsize=13, fontweight='bold', color='#D35400')
 
-draw_oval(ax, 11, 11.3, 5.0, 0.9, 'MEETING ENDS', '#D35400', 'white', 12)
-arrow(ax, 11, 10.8, 11, 10.2)
+draw_oval(ax, 11, 17.0, 5.0, 0.8, 'MEETING ENDS', '#D35400', 'white', 12)
+arrow(ax, 11, 16.55, 11, 15.8)
+arrow(ax, 11, 15.8, 5.5, 15.25, '#333333')
+arrow(ax, 11, 15.8, 16.5, 15.25, '#333333')
 
-draw_rect(ax, 4.5, 9.5, 5.0, 1.2,
-          'VIBE Transcript\nOriginal language layer\nEnglish translation layer\nSimplified text layer\nSpeaker IDs + timestamps', '#D35400', 'white', 9)
+draw_rect(ax, 5.5, 14.5, 5.5, 1.2,
+          'VIBE Transcript\nOriginal language layer\nEnglish translation layer\nSimplified text layer\nTimestamps + speaker IDs', '#D35400', 'white', 8)
 
-draw_rect(ax, 11, 9.5, 5.0, 1.2,
-          'VIBE Summary Pack\nKey Q&A in native language\nSimple explanations + examples\nDownloadable per-user\nShareable via Webex/email', '#D35400', 'white', 9)
+draw_rect(ax, 11, 14.5, 5.5, 1.2,
+          'VIBE Summary Pack\nKey Q&A in native language\nSimple explanations + examples\nDownloadable per-user\nShareable via Webex/email', '#D35400', 'white', 8)
 
-draw_rect(ax, 17.5, 9.5, 5.0, 1.2,
-          'Session Analytics\nVoice clarity score trend\nTranslation accuracy log\nQ&A resolution rate\nVIBE usage breakdown', '#D35400', 'white', 9)
+draw_rect(ax, 16.5, 14.5, 5.5, 1.2,
+          'Session Analytics\nVoice clarity score trend\nTranslation accuracy log\nQ&A resolution rate\nVIBE usage breakdown', '#D35400', 'white', 8)
 
-arrow(ax, 11, 10.2, 4.5, 10.15, '#333333')
-arrow(ax, 11, 10.2, 17.5, 10.15, '#333333')
+arrow(ax, 5.5, 13.85, 5.5, 13.0)
+arrow(ax, 11, 13.85, 11, 13.0)
+arrow(ax, 16.5, 13.85, 16.5, 13.0)
+arrow(ax, 5.5, 13.0, 10.5, 12.5, '#333333')
+arrow(ax, 16.5, 13.0, 11.5, 12.5, '#333333')
 
-arrow(ax, 4.5, 8.85, 4.5, 8.0)
-arrow(ax, 11, 8.85, 11, 8.0)
-arrow(ax, 17.5, 8.85, 17.5, 8.0)
-arrow(ax, 4.5, 8.0, 10.5, 7.5, '#333333')
-arrow(ax, 17.5, 8.0, 11.5, 7.5, '#333333')
+draw_cyl(ax, 11, 11.8, 10.0, 1.5,
+         'PRIVACY GUARANTEE: Transparency & Trust Layer - Always Active\n"Spoken by VIBE for [User]" on every TTS | Full audit trail | Zero data retention option\nVIBE never impersonates: voice persona is distinct from user\'s actual voice', '#002060', 'white', 9)
 
-draw_cyl(ax, 11, 6.8, 7.0, 1.5,
-         'Privacy Guarantee: Transparency & Trust Layer\nEvery VIBE voice labeled "Spoken by VIBE for [User]"\nFull audit trail | Zero data retention option | No deepfakes', '#002060', 'white', 9)
+arrow(ax, 11, 10.95, 11, 10.3)
+draw_oval(ax, 11, 9.8, 6.0, 0.9, 'END - VIBE SESSION COMPLETE', '#002060', 'white', 12)
 
-arrow(ax, 11, 5.95, 11, 5.3)
-draw_oval(ax, 11, 4.8, 6.0, 0.9, 'END: VIBE Session Complete', '#002060', 'white', 12)
+comp_box = mpatches.FancyBboxPatch((0.5, 1.5), 21.0, 7.8, boxstyle="round,pad=0.1",
+                                     facecolor='#F8F9FA', edgecolor='#002060', linewidth=2.5)
+ax.add_patch(comp_box)
+ax.text(11, 8.9, 'VIBE / VEL - COMPONENT ARCHITECTURE OVERVIEW', ha='center',
+        fontsize=13, fontweight='bold', color='#002060')
 
-tech_box = mpatches.FancyBboxPatch((0.3, 1.5), 21.4, 2.8, boxstyle='round,pad=0.1',
-                                     facecolor='#002060', edgecolor='black', linewidth=2)
-ax.add_patch(tech_box)
-ax.text(11, 3.8, 'TECH STACK', ha='center', fontsize=11, fontweight='bold', color='#FFD700')
-ax.text(11, 3.2, 'ASR: Whisper / Cisco AI  |  NLP: Custom LLM + Rules  |  TTS: Neural Voice Synthesis',
-        ha='center', fontsize=10, fontweight='bold', color='white')
-ax.text(11, 2.6, 'MT: Neural Machine Translation (100+ languages)  |  DSP: DNN Noise + EQ  |  Codec: Webex AI Codec',
-        ha='center', fontsize=10, fontweight='bold', color='white')
-ax.text(11, 2.0, 'KPIs: Noise reduction 95%+ | ASR accuracy 98% | Translation latency <1s | TTS naturalness 4.5/5 | Type-to-speak <2s',
-        ha='center', fontsize=9, fontweight='bold', color='#FFD700')
+col_w = 4.8
+col_h = 5.5
+col_x = [1.0, 6.0, 11.0, 16.0]
+col_titles = ['Audio Layer', 'AI / NLP Layer', 'Type-to-Speak Layer', 'Output & Logging']
+col_colors = ['#27AE60', '#0070C0', '#1A5276', '#D35400']
+col_items = [
+    ['Webex AI Codec', 'DNN Noise Removal', 'Echo Cancellation', 'Auto Gain Control', 'Voice Boost EQ', 'Per-Speaker Separation'],
+    ['ASR (Whisper/Cisco)', 'Neural Machine Translation', 'Jargon Simplification LLM', 'Intent & Domain Detection', 'Neural TTS Synthesis', 'VIBE Persona Voice Model'],
+    ['Text Input Panel (UI)', 'Language Detection', 'Polish / Simplify Mode', 'TTS Agent Voice', 'Caption + Chat Sync', '"via VIBE" Tag'],
+    ['Per-User Caption Stream', 'VIBE Transcript (3 layers)', 'VIBE Summary Download', 'Session Analytics', 'Audit Log (all actions)', 'Zero-Retention Option'],
+]
+
+for cx_off, title, color, items in zip(col_x, col_titles, col_colors, col_items):
+    cb = mpatches.FancyBboxPatch((cx_off, 2.0), col_w, col_h + 0.5, boxstyle="round,pad=0.08",
+                                   facecolor=color, edgecolor='black', linewidth=1.5, alpha=0.15)
+    ax.add_patch(cb)
+    ax.text(cx_off + col_w/2, 7.8, title, ha='center', fontsize=10, fontweight='bold', color=color)
+    for j, item in enumerate(items):
+        ax.text(cx_off + col_w/2, 7.0 - j * 0.75, item, ha='center', fontsize=8, color='#333333')
 
 plt.tight_layout()
 plt.savefig('cisco_case/figures/flowchart_2_vibe.png', dpi=200, bbox_inches='tight')
 plt.close()
-print("Flowchart 2 (VIBE - Voice & Language Intelligence Layer) created")
+print("Flowchart 2 (VIBE) created")
 
 # ============================================================
-# FLOWCHART 3: Secure AI Agent Marketplace Ecosystem
-# (Enhanced - kept same structure with minor updates)
+# FLOWCHART 3: Secure AI Agent Marketplace - 3-Lane Architecture
+# Developer Journey | Admin Journey | User Journey + Splunk
 # ============================================================
-fig, ax = plt.subplots(figsize=(18, 38))
-ax.set_xlim(0, 18)
-ax.set_ylim(0, 38)
+fig, ax = plt.subplots(figsize=(22, 56))
+ax.set_xlim(0, 22)
+ax.set_ylim(0, 56)
 ax.axis('off')
 
-ax.text(9, 37.4, 'Solution 3: Secure AI Agent Marketplace', ha='center',
-        fontsize=24, fontweight='bold', color='#002060')
-ax.text(9, 36.8, 'Build -> Certify -> Deploy -> Monitor Lifecycle  |  100s of Third-Party Integrations', ha='center',
-        fontsize=14, color='#555555')
+ax.text(11, 55.3, 'Solution 3: Webex Secure AI Agent Marketplace',
+        ha='center', fontsize=21, fontweight='bold', color='#002060')
+ax.text(11, 54.7, 'Build \u2192 Certify \u2192 Deploy \u2192 Monitor  |  Three-Lane Architecture  |  100s of Third-Party Integrations',
+        ha='center', fontsize=12, color='#555555')
 
-CX = 9.0
+draw_symbol_directory(ax, 0.3, 49.5, 6.5, 4.8)
 
-draw_oval(ax, CX, 36.0, 6.0, 0.9, 'START\nDeveloper Registers on Platform', '#002060', 'white', 12)
-arrow(ax, CX, 35.5, CX, 34.9)
+DX = 3.8
+AX = 11.0
+UX = 18.2
+LW = 6.0
 
-p1 = mpatches.FancyBboxPatch((0.5, 29.5), 17.0, 5.2, boxstyle="round,pad=0.15",
-                               facecolor='#1A5276', edgecolor='#1A5276', linewidth=2, alpha=0.08)
-ax.add_patch(p1)
-ax.text(1.2, 34.3, 'PHASE 1: BUILD', fontsize=14, fontweight='bold', color='#1A5276')
+lane_specs = [
+    (DX, '#E8F4FD', '#1A5276', 'DEVELOPER\nJOURNEY', '(Build & Certify)'),
+    (AX, '#FFF3E0', '#D35400', 'ADMIN\nJOURNEY', '(Deploy & Control)'),
+    (UX, '#F3E5F5', '#8E44AD', 'USER\nJOURNEY', '(Discover & Use)'),
+]
 
-draw_rect(ax, CX, 34.3, 8.0, 1.0,
-          'Download Agent SDK (Python / JavaScript)\nTemplates, API docs, A2A protocol reference', '#1A5276', 'white', 11)
-arrow(ax, CX, 33.75, CX, 33.1)
+for cx, bg_color, title_color, title, subtitle in lane_specs:
+    rect = mpatches.FancyBboxPatch((cx - LW/2, 4.0), LW, 45.5, boxstyle="round,pad=0.1",
+                                    facecolor=bg_color, edgecolor='#999999', linewidth=1.5, alpha=0.5)
+    ax.add_patch(rect)
+    ax.text(cx, 49.2, title, ha='center', fontsize=13, fontweight='bold', color=title_color, va='center')
+    ax.text(cx, 48.2, subtitle, ha='center', fontsize=9, color='#666666')
 
-draw_rect(ax, CX, 32.5, 8.0, 1.0,
-          'Developer Builds Custom Agent\nDefine triggers, actions, data scope, permissions', '#1A5276', 'white', 11)
-arrow(ax, CX, 31.95, CX, 31.3)
+draw_oval(ax, DX, 47.0, 5.2, 0.8, 'Developer Decides\nto Build Agent', '#1A5276', 'white', 10)
+arrow(ax, DX, 46.55, DX, 45.9)
 
-draw_rect(ax, CX, 30.7, 8.0, 1.0,
-          'Test in Sandbox Environment\nSimulates real meetings, API calls, edge cases\nNo production access required', '#1A5276', 'white', 11)
-arrow(ax, CX, 30.15, CX, 29.3)
+draw_rect(ax, DX, 45.3, 5.2, 1.0,
+          '1. Register on Dev Portal\nAccept Cisco terms & SDK\nagreement, choose category', '#1A5276', 'white', 9)
+arrow(ax, DX, 44.75, DX, 44.1)
 
-draw_diamond(ax, CX, 28.3, 2.0, 'Tests\nPass?', '#F39C12', 'black', 11)
+draw_rect(ax, DX, 43.5, 5.2, 1.0,
+          '2. Download SDK & Templates\nPython / JS SDK | Templates:\nListener, Executor, Retriever, Sender', '#1A5276', 'white', 9)
+arrow(ax, DX, 42.95, DX, 42.3)
 
-ax.text(CX - 3.0, 28.3, 'NO', fontsize=12, fontweight='bold', color='#E74C3C')
-arrow(ax, CX - 1.0, 28.3, CX - 3.8, 28.3, '#E74C3C', 2)
-arrow(ax, CX - 3.8, 28.3, CX - 3.8, 32.5, '#E74C3C', 2)
-arrow(ax, CX - 3.8, 32.5, CX - 4.2, 32.5, '#E74C3C', 2)
-ax.text(CX - 3.8, 30.3, 'Fix &\nRetry', fontsize=9, fontweight='bold', color='#E74C3C', ha='center',
-        bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='#E74C3C', alpha=0.9))
+draw_rect(ax, DX, 41.7, 5.2, 1.0,
+          '3. Build Agent Logic\nWebex Meeting API: transcription,\ncontext | A2A Protocol: external\ntool integration', '#0070C0', 'white', 8)
+arrow(ax, DX, 41.15, DX, 40.5)
 
-ax.text(CX + 2.0, 28.3, 'YES', fontsize=12, fontweight='bold', color='#27AE60')
-arrow(ax, CX, 27.3, CX, 26.7)
+draw_rect(ax, DX, 39.9, 5.2, 1.0,
+          '4. Test in Webex Sandbox\nSimulated meeting | Tests: latency,\naccuracy, error handling, load', '#0070C0', 'white', 9)
+arrow(ax, DX, 39.35, DX, 38.5)
 
-draw_rect(ax, CX, 26.1, 8.0, 1.0,
-          'Submit Agent to Cisco Marketplace Portal\nUpload manifest, documentation, permission declaration', '#1A5276', 'white', 11)
-arrow(ax, CX, 25.55, CX, 24.9)
+draw_diamond(ax, DX, 37.5, 1.8, 'Tests\nPass?', '#F39C12', 'black', 9)
 
-p2 = mpatches.FancyBboxPatch((0.5, 20.0), 17.0, 4.7, boxstyle="round,pad=0.15",
-                               facecolor='#27AE60', edgecolor='#27AE60', linewidth=2, alpha=0.08)
-ax.add_patch(p2)
-ax.text(1.2, 24.3, 'PHASE 2: CERTIFY (Cisco Security Pipeline)', fontsize=14, fontweight='bold', color='#27AE60')
+ax.text(DX - 2.0, 37.5, 'NO', fontsize=10, fontweight='bold', color='#E74C3C')
+arrow(ax, DX - 0.9, 37.5, DX - 2.5, 37.5, '#E74C3C', 2)
+arrow(ax, DX - 2.5, 37.5, DX - 2.5, 41.7, '#E74C3C', 2)
+arrow(ax, DX - 2.5, 41.7, DX - 2.8, 41.7, '#E74C3C', 2)
+ax.text(DX + 1.5, 37.5, 'YES', fontsize=10, fontweight='bold', color='#27AE60')
+arrow(ax, DX, 36.6, DX, 35.9)
 
-draw_rect(ax, CX, 24.3, 8.0, 1.0,
-          'Security Scan: Static code analysis, vulnerability detection,\ndata access audit, compliance check (SOC2 / HIPAA / FedRAMP)', '#27AE60', 'white', 11)
-arrow(ax, CX, 23.75, CX, 23.1)
+draw_rect(ax, DX, 35.3, 5.2, 1.0,
+          '5. Submit for Certification\nAgent code + config + docs\nuploaded to Cisco pipeline', '#1A5276', 'white', 9)
+arrow(ax, DX, 34.75, DX, 34.1)
 
-draw_rect(ax, CX, 22.5, 8.0, 1.0,
-          'Permission Review: Zero-trust policy enforcement,\nminimum-privilege validation, PII handling assessment', '#27AE60', 'white', 11)
-arrow(ax, CX, 21.95, CX, 21.3)
+draw_dashed_box(ax, DX - 2.8, 28.0, 5.6, 5.8, 'CISCO CERTIFICATION', '#27AE60')
 
-draw_rect(ax, CX, 20.7, 8.0, 1.0,
-          'Performance Testing: Latency benchmarks (< 200ms),\nload testing (1000+ concurrent users), failure recovery', '#27AE60', 'white', 11)
-arrow(ax, CX, 20.15, CX, 19.3)
+draw_rect(ax, DX, 33.3, 5.0, 0.9,
+          '6a. Static Code Analysis\nVulnerabilities, backdoors,\ndata-leak patterns', '#27AE60', 'white', 8)
+arrow(ax, DX, 32.8, DX, 32.2)
 
-draw_diamond(ax, CX, 18.3, 2.2, 'Cisco\nCertified?', '#F39C12', 'black', 11)
+draw_rect(ax, DX, 31.6, 5.0, 0.9,
+          '6b. Permission Review\nDeclared vs actual data access\nZero-trust enforcement', '#27AE60', 'white', 8)
+arrow(ax, DX, 31.1, DX, 30.5)
 
-ax.text(CX - 3.2, 18.3, 'FAIL', fontsize=12, fontweight='bold', color='#E74C3C')
-arrow(ax, CX - 1.1, 18.3, CX - 4.0, 18.3, '#E74C3C', 2)
-draw_rect(ax, CX - 5.5, 18.3, 3.0, 0.8,
-          'Return to developer\nwith feedback report', '#E74C3C', 'white', 9)
+draw_rect(ax, DX, 29.9, 5.0, 0.9,
+          '6c. Performance + Compliance\nLatency, load, SOC2, HIPAA,\nFedRAMP, GDPR checks', '#27AE60', 'white', 8)
+arrow(ax, DX, 29.4, DX, 28.6)
 
-ax.text(CX + 2.2, 18.3, 'PASS', fontsize=12, fontweight='bold', color='#27AE60')
-arrow(ax, CX, 17.2, CX, 16.6)
+draw_diamond(ax, DX, 27.5, 1.8, 'Cisco\nCertified?', '#F39C12', 'black', 9)
 
-draw_rect(ax, CX, 16.0, 8.0, 1.0,
-          'Cisco Trust Badge Issued: "Cisco Verified Agent"\nListed in Marketplace catalog with security rating', '#27AE60', 'white', 11)
-arrow(ax, CX, 15.45, CX, 14.8)
+ax.text(DX - 2.0, 27.5, 'FAIL', fontsize=10, fontweight='bold', color='#E74C3C')
+arrow(ax, DX - 0.9, 27.5, DX - 2.5, 27.5, '#E74C3C', 2)
 
-p3 = mpatches.FancyBboxPatch((0.5, 11.5), 17.0, 3.1, boxstyle="round,pad=0.15",
-                               facecolor='#0070C0', edgecolor='#0070C0', linewidth=2, alpha=0.08)
-ax.add_patch(p3)
-ax.text(1.2, 14.2, 'PHASE 3: DEPLOY', fontsize=14, fontweight='bold', color='#0070C0')
+ax.text(DX + 1.5, 27.5, 'PASS', fontsize=10, fontweight='bold', color='#27AE60')
+arrow(ax, DX, 26.6, DX, 25.9)
 
-draw_rect(ax, CX, 14.2, 8.0, 1.0,
-          'Enterprise Admin browses marketplace, selects agent,\nconfigures team access, permissions, and usage limits', '#0070C0', 'white', 11)
-arrow(ax, CX, 13.65, CX, 13.0)
+draw_rect(ax, DX, 25.3, 5.2, 1.0,
+          'Cisco Verified Agent Badge\nListed in Webex AI Agent Store\nName, vendor, badge, ratings', '#27AE60', 'white', 9)
 
-draw_diamond(ax, CX, 12.0, 2.0, 'Admin\nApproves?', '#F39C12', 'black', 11)
+arrow(ax, DX + 2.6, 25.3, AX - 2.5, 25.3, '#333333', 2)
 
-ax.text(CX - 2.8, 12.0, 'NO', fontsize=12, fontweight='bold', color='#E74C3C')
-arrow(ax, CX - 1.0, 12.0, CX - 2.2, 12.0, '#E74C3C', 2)
+draw_oval(ax, AX, 47.0, 5.2, 0.8, 'Enterprise IT Admin\nBrowses Agent Store', '#D35400', 'white', 10)
+arrow(ax, AX, 46.55, AX, 45.9)
 
-ax.text(CX + 2.0, 12.0, 'YES', fontsize=12, fontweight='bold', color='#27AE60')
-arrow(ax, CX, 11.0, CX, 10.4)
+draw_rect(ax, AX, 45.3, 5.2, 1.0,
+          '1. Browse & Filter Agents\nIndustry: Healthcare, Finance,\nGov, Mfg | Compliance level', '#D35400', 'white', 9)
+arrow(ax, AX, 44.75, AX, 44.1)
 
-draw_rect(ax, CX, 9.8, 8.0, 1.0,
-          'Agent deployed in sandboxed container (Webex Cloud)\nIsolated execution, strict network policies, resource limits', '#0070C0', 'white', 11)
-arrow(ax, CX, 9.25, CX, 8.6)
+draw_rect(ax, AX, 43.5, 5.2, 1.0,
+          '2. Review Agent Details\nVendor, use case, Cisco Verified\nbadge, ratings, pricing, data scope', '#D35400', 'white', 9)
+arrow(ax, AX, 42.95, AX, 42.3)
 
-p4 = mpatches.FancyBboxPatch((0.5, 4.5), 17.0, 4.3, boxstyle="round,pad=0.15",
-                               facecolor='#8E44AD', edgecolor='#8E44AD', linewidth=2, alpha=0.08)
-ax.add_patch(p4)
-ax.text(1.2, 8.4, 'PHASE 4: MONITOR (Splunk-Powered)', fontsize=14, fontweight='bold', color='#8E44AD')
+draw_rect(ax, AX, 41.7, 5.2, 1.0,
+          '3. Configure Scope & Permissions\nAssign to: orgs, teams, users\nData: read-only / limited / full write', '#0070C0', 'white', 9)
+arrow(ax, AX, 41.15, AX, 40.5)
 
-draw_rect(ax, CX, 8.0, 8.0, 1.0,
-          'Splunk monitors: agent performance, error rates, anomalies\nUsage analytics, ROI dashboards, automated alerts', '#8E44AD', 'white', 11)
-arrow(ax, CX, 7.45, CX, 6.6)
+draw_rect(ax, AX, 39.9, 5.2, 1.0,
+          '4. Set Approval Workflows\nHigh-risk writes -> manager approval\nUsage quotas & budget caps', '#0070C0', 'white', 9)
+arrow(ax, AX, 39.35, AX, 38.5)
 
-draw_diamond(ax, CX, 5.6, 2.0, 'Alert\nTriggered?', '#F39C12', 'black', 11)
+draw_diamond(ax, AX, 37.5, 1.8, 'Admin\nApproves?', '#F39C12', 'black', 9)
 
-ax.text(CX + 2.8, 5.6, 'YES: Kill Switch\n(auto-disable agent)', fontsize=10, fontweight='bold', color='#E74C3C',
-        ha='left', va='center',
+ax.text(AX - 2.0, 37.5, 'NO', fontsize=10, fontweight='bold', color='#E74C3C')
+arrow(ax, AX - 0.9, 37.5, AX - 2.0, 37.5, '#E74C3C', 2)
+
+ax.text(AX + 1.5, 37.5, 'YES', fontsize=10, fontweight='bold', color='#27AE60')
+arrow(ax, AX, 36.6, AX, 35.9)
+
+draw_rect(ax, AX, 35.3, 5.2, 1.0,
+          '5. Activate in Webex Cloud\nIsolated container deployment\nZero-trust identity layer controls', '#D35400', 'white', 9)
+arrow(ax, AX, 34.75, AX, 34.1)
+
+draw_rect(ax, AX, 33.5, 5.2, 1.0,
+          '6. Pilot Rollout\nDeploy to pilot group first\nMeasure: time saved, ticket rate,\nuser satisfaction', '#D35400', 'white', 9)
+arrow(ax, AX, 32.95, AX, 32.3)
+
+draw_rect(ax, AX, 31.7, 5.2, 1.0,
+          '7. Monitor Agent Activity\nPer-agent dashboard: invocations,\nsuccess rate, errors\nUsage by org / team / user', '#8E44AD', 'white', 9)
+arrow(ax, AX, 31.15, AX, 30.4)
+
+draw_diamond(ax, AX, 29.4, 1.8, 'Anomaly /\nAlert?', '#F39C12', 'black', 9)
+
+ax.text(AX + 1.5, 29.4, 'YES', fontsize=10, fontweight='bold', color='#E74C3C')
+arrow(ax, AX + 0.9, 29.4, AX + 2.0, 29.4, '#E74C3C', 2)
+ax.text(AX + 2.5, 29.4, 'Kill-Switch\n(instant disable)', fontsize=8, fontweight='bold', color='#E74C3C', ha='left',
         bbox=dict(boxstyle='round,pad=0.2', facecolor='#FADBD8', edgecolor='#E74C3C', linewidth=1.5))
-arrow(ax, CX + 1.0, 5.6, CX + 2.3, 5.6, '#E74C3C', 2)
 
-ax.text(CX - 2.8, 5.6, 'NO: Continue\nmonitoring', fontsize=10, fontweight='bold', color='#27AE60',
-        ha='right', va='center',
-        bbox=dict(boxstyle='round,pad=0.2', facecolor='#D5F5E3', edgecolor='#27AE60', linewidth=1.5))
-arrow(ax, CX - 1.0, 5.6, CX - 2.0, 5.6, '#27AE60', 2)
+ax.text(AX - 2.0, 29.4, 'NO', fontsize=10, fontweight='bold', color='#27AE60')
+arrow(ax, AX - 0.9, 29.4, AX - 2.0, 29.4, '#27AE60', 2)
 
-arrow(ax, CX, 4.6, CX, 3.8)
+arrow(ax, AX, 28.5, AX, 27.8)
 
-draw_oval(ax, CX, 3.2, 8.0, 0.9, 'Billing & Revenue Share (70/30 developer split)\nAgent runs continuously in Webex', '#002060', 'white', 10)
+draw_rect(ax, AX, 27.2, 5.2, 1.0,
+          '8. Adjust Scope or Quotas\nUpdate permissions, budget caps\nFull audit trail retained', '#D35400', 'white', 9)
 
-mr = mpatches.FancyBboxPatch((0.5, 1.5), 17.0, 0.8, boxstyle='round,pad=0.1',
+arrow(ax, AX + 2.6, 35.3, UX - 2.5, 35.3, '#333333', 2)
+
+draw_oval(ax, UX, 47.0, 5.2, 0.8, 'User Discovers\nAgents in Webex', '#8E44AD', 'white', 10)
+arrow(ax, UX, 46.55, UX, 45.9)
+
+draw_rect(ax, UX, 45.3, 5.2, 1.0,
+          '1. "AI Agents" Tab in Webex\nIn-meeting suggestion banner\nBrowse by use case / industry', '#8E44AD', 'white', 9)
+arrow(ax, UX, 44.75, UX, 44.1)
+
+draw_rect(ax, UX, 43.5, 5.2, 1.0,
+          '2. Reviews & Installs Agent\nSees permissions: "Can read\ntranscript, can create Jira tickets"\nAccepts Cisco data notice', '#8E44AD', 'white', 9)
+arrow(ax, UX, 42.95, UX, 42.3)
+
+draw_rect(ax, UX, 41.7, 5.2, 1.0,
+          '3. Uses Agent in Live Meeting\nPresenter says: "Create a Jira\nticket for the login bug"\nAgent listens in real-time', '#0070C0', 'white', 9)
+arrow(ax, UX, 41.15, UX, 40.5)
+
+draw_rect(ax, UX, 39.9, 5.2, 1.0,
+          '4. Agent Detects Intent & Drafts\nDetects task from transcript\nPulls Jira project + sprint context\nDrafts full ticket inline in Webex', '#0070C0', 'white', 9)
+arrow(ax, UX, 39.35, UX, 38.5)
+
+draw_diamond(ax, UX, 37.5, 1.8, 'Approve\nDraft?', '#F39C12', 'black', 9)
+
+ax.text(UX - 2.0, 37.5, 'REJECT', fontsize=10, fontweight='bold', color='#E74C3C')
+arrow(ax, UX - 0.9, 37.5, UX - 2.0, 37.5, '#E74C3C', 2)
+
+ax.text(UX + 1.5, 37.5, 'APPROVE', fontsize=10, fontweight='bold', color='#27AE60')
+arrow(ax, UX, 36.6, UX, 35.9)
+
+draw_rect(ax, UX, 35.3, 5.2, 1.0,
+          '5. In-Meeting Approval Card\nComplete draft shown inline\nApprove | Edit | Reject controls', '#27AE60', 'white', 9)
+arrow(ax, UX, 34.75, UX, 34.1)
+
+draw_rect(ax, UX, 33.5, 5.2, 1.0,
+          '6. Agent Executes Action\nAuthenticated API call to Jira /\nSalesforce / DocuSign / ServiceNow\nSplunk logs full execution chain', '#E74C3C', 'white', 9)
+arrow(ax, UX, 32.95, UX, 32.3)
+
+draw_rect(ax, UX, 31.7, 5.2, 1.0,
+          '7. Webex Confirms in Chat\n"Jira ticket WEBAPP-2026-347\ncreated. Assigned to Sarah Chen.\nPriority: High."', '#0070C0', 'white', 9)
+arrow(ax, UX, 31.15, UX, 30.5)
+
+draw_rect(ax, UX, 29.9, 5.2, 1.0,
+          '8. User Manages Agents\n"My Agents" panel: disable,\nupdate, downgrade, view usage', '#8E44AD', 'white', 9)
+
+splunk_box = mpatches.FancyBboxPatch((0.8, 18.0), 20.4, 5.5, boxstyle="round,pad=0.15",
+                                       facecolor='#002060', edgecolor='black', linewidth=2.5, alpha=0.95)
+ax.add_patch(splunk_box)
+ax.text(11, 23.1, 'SPLUNK OBSERVABILITY & GOVERNANCE - MONITORING ALL THREE LANES IN REAL TIME',
+        ha='center', fontsize=12, fontweight='bold', color='#FFD700')
+
+sp_cols = [
+    ('Real-Time Metrics', ['Agent invocations/hour', 'Success/error rate per agent', 'API latency percentiles', 'Usage by org/team/user', 'Active agent count']),
+    ('Anomaly Detection', ['Unusual data-access volume', 'Permission scope violations', 'Performance regression alerts', 'Unauthorized API attempts', 'Cross-tenant data flags']),
+    ('Governance Controls', ['Instant kill-switch per agent', 'Full audit trail retained', 'Policy enforcement rules', 'Manager approval routing', 'Compliance report export']),
+    ('Billing & Revenue', ['Usage tracked per agent', 'Pay-per-use or subscription', '70/30 revenue split', 'Monthly invoice generation', 'Developer payout dashboard']),
+]
+
+for i, (title, items) in enumerate(sp_cols):
+    sx = 1.5 + i * 5.1
+    ax.text(sx + 2.0, 22.3, title, ha='center', fontsize=10, fontweight='bold', color='#FFD700')
+    for j, item in enumerate(items):
+        ax.text(sx + 2.0, 21.5 - j * 0.65, item, ha='center', fontsize=8, color='white')
+
+agent_box = mpatches.FancyBboxPatch((0.8, 10.5), 20.4, 7.0, boxstyle="round,pad=0.15",
+                                      facecolor='#F8F9FA', edgecolor='#002060', linewidth=2.5)
+ax.add_patch(agent_box)
+ax.text(11, 17.1, 'AGENT EXAMPLES & INDUSTRY COVERAGE', ha='center',
+        fontsize=13, fontweight='bold', color='#002060')
+
+ax.text(4.0, 16.2, 'Agent Templates', ha='center', fontsize=11, fontweight='bold', color='#1A5276')
+templates = ['CRM Updater', 'Ticket Creator', 'Doc Generator', 'Calendar Scheduler', 'Contract Flow (DocuSign)', 'VIBE Voice Agent (1st-party)']
+for j, t in enumerate(templates):
+    ax.text(4.0, 15.5 - j * 0.7, t, ha='center', fontsize=9, color='#333333')
+
+ax.text(11.0, 16.2, 'Industry Filters', ha='center', fontsize=11, fontweight='bold', color='#D35400')
+industries = ['Healthcare', 'Finance', 'Government', 'Manufacturing', 'Sales / HR / Engineering', 'Support / ITSM']
+for j, ind in enumerate(industries):
+    ax.text(11.0, 15.5 - j * 0.7, ind, ha='center', fontsize=9, color='#333333')
+
+ax.text(18.0, 16.2, 'Live Agent Examples', ha='center', fontsize=11, fontweight='bold', color='#8E44AD')
+live_agents = ['Jira Sprint Agent', 'Salesforce Update Agent', 'DocuSign Flow Agent', 'ServiceNow Incident Agent', 'GitHub PR Agent', 'Slack Notification Agent']
+for j, la in enumerate(live_agents):
+    ax.text(18.0, 15.5 - j * 0.7, la, ha='center', fontsize=9, color='#333333')
+
+arch_box = mpatches.FancyBboxPatch((0.8, 4.5), 20.4, 5.5, boxstyle="round,pad=0.15",
+                                     facecolor='#F8F9FA', edgecolor='#002060', linewidth=2.5)
+ax.add_patch(arch_box)
+ax.text(11, 9.6, 'PLATFORM ARCHITECTURE STACK', ha='center',
+        fontsize=13, fontweight='bold', color='#002060')
+
+arch_cols = [
+    ('Developer Platform', '#1A5276', ['Webex AI Agent Dev Portal', 'Python / JS SDK', 'Webex Meeting API', 'A2A Protocol support', 'Sandbox environment', 'Certification submission UI']),
+    ('Security & Compliance', '#27AE60', ['Cisco Zero Trust Identity', 'Isolated container execution', 'Static code analysis pipeline', 'SOC2/HIPAA/FedRAMP/GDPR', 'Cisco Verified Agent badge', 'Splunk SIEM integration']),
+    ('User Experience Layer', '#8E44AD', ['Webex AI Agents tab (store)', 'In-meeting agent suggestions', 'In-meeting approval cards', '"AI" label on all agent actions', 'My Agents management panel', 'Chat confirmation threads']),
+]
+
+for i, (title, color, items) in enumerate(arch_cols):
+    acx = 1.5 + i * 7.0
+    ax.text(acx + 3.0, 9.0, title, ha='center', fontsize=10, fontweight='bold', color=color)
+    for j, item in enumerate(items):
+        ax.text(acx + 3.0, 8.3 - j * 0.6, item, ha='center', fontsize=8, color='#333333')
+
+mr = mpatches.FancyBboxPatch((0.8, 1.5), 20.4, 2.5, boxstyle='round,pad=0.1',
                                facecolor='#002060', edgecolor='black', linewidth=2)
 ax.add_patch(mr)
-ax.text(9, 1.9, 'IMPACT: 500+ certified agents Year 1  |  $150M GMV by FY2028  |  '
-        '3x ecosystem growth  |  85% renewal rate',
-        ha='center', va='center', fontsize=11, fontweight='bold', color='white')
+ax.text(11, 3.4, 'PROJECTED IMPACT', ha='center', fontsize=12, fontweight='bold', color='#FFD700')
+ax.text(11, 2.7, '500+ certified agents Year 1  |  $150M GMV by FY2028  |  3x ecosystem growth  |  85% renewal rate',
+        ha='center', fontsize=10, fontweight='bold', color='white')
+ax.text(11, 2.1, 'New revenue stream: $50M annual marketplace commission by FY2029  |  Hundreds of third-party integrations',
+        ha='center', fontsize=9, fontweight='bold', color='white')
 
 plt.tight_layout()
 plt.savefig('cisco_case/figures/flowchart_3_marketplace.png', dpi=200, bbox_inches='tight')
 plt.close()
-print("Flowchart 3 (Marketplace Ecosystem) created")
+print("Flowchart 3 (Marketplace - 3 Lane) created")
 
 
 # ============================================================
@@ -588,7 +829,6 @@ pdf.set_right_margin(25.4)
 W = 215.9 - 25.4 - 25.4
 LH = 5
 INDENT = 10
-
 LM = 25.4
 
 def heading(pdf, text):
@@ -619,21 +859,23 @@ def body_bold(pdf, text):
 
 def bullet(pdf, text):
     pdf.set_font('Times', '', 12)
-    pdf.set_left_margin(25.4)
-    pdf.set_x(25.4 + INDENT)
-    pdf.set_left_margin(25.4 + INDENT)
+    pdf.set_left_margin(LM)
+    pdf.set_x(LM + INDENT)
+    pdf.set_left_margin(LM + INDENT)
     pdf.multi_cell(0, LH, f'- {text}')
-    pdf.set_left_margin(25.4)
+    pdf.set_left_margin(LM)
 
 def sub_bullet(pdf, text):
     pdf.set_font('Times', '', 12)
-    pdf.set_left_margin(25.4)
-    pdf.set_x(25.4 + INDENT * 2)
-    pdf.set_left_margin(25.4 + INDENT * 2)
+    pdf.set_left_margin(LM)
+    pdf.set_x(LM + INDENT * 2)
+    pdf.set_left_margin(LM + INDENT * 2)
     pdf.multi_cell(0, LH, f'- {text}')
-    pdf.set_left_margin(25.4)
+    pdf.set_left_margin(LM)
 
 def source_note(pdf, text):
+    pdf.set_left_margin(LM)
+    pdf.set_x(LM)
     pdf.set_font('Times', 'I', 11)
     pdf.multi_cell(0, LH, text)
     pdf.ln(1)
@@ -721,58 +963,52 @@ body(pdf, 'Before the meeting begins, Webex AI proactively assists the presenter
 bullet(pdf, 'Context Ingestion: When a meeting is scheduled, Webex ingests the title, invite description, participant list, and attached documents, and where authorized, relevant records from CRM, project tools, and past meeting transcripts.')
 bullet(pdf, 'Insight & Agenda Suggestions: The AI generates key insights and metrics likely to matter to the invited stakeholders, along with a suggested agenda (sections such as "Status," "Risks," "Decisions Needed," "Q&A").')
 bullet(pdf, 'Prep Checklist: The agent creates a structured checklist (e.g., "Upload latest metrics deck," "Confirm owner for customer escalation," "Prepare answer on Q3 budget impact").')
-bullet(pdf, 'Auto-Slide Generation: If the presenter opts in, Webex AI generates a first-draft slide deck using meeting context and enterprise data (CRM pipeline, Jira issues, financial metrics), organized into the proposed agenda. The presenter can edit and finalize this deck inside Webex or a connected slides tool.')
-bullet(pdf, 'Predicted Q&A: The AI predicts likely questions based on role, history, and topic (e.g., "What is the impact on ACME\'s renewal?"), and suggests draft answers the presenter can review, refine, or reject. This seeds the system to recognize and handle these questions during the live meeting.')
+bullet(pdf, 'Auto-Slide Generation: If the presenter opts in, Webex AI generates a first-draft slide deck using meeting context and enterprise data (CRM pipeline, Jira issues, financial metrics), organized into the proposed agenda.')
+bullet(pdf, 'Predicted Q&A: The AI predicts likely questions based on role, history, and topic, and suggests draft answers the presenter can review, refine, or reject.')
 pdf.ln(1)
 
 body_bold(pdf, 'PERCEIVE Phase: Webex AI Codec ML Pipeline')
-body(pdf, 'During the live meeting, the existing Webex AI Codec serves as the perception layer. Raw audio and video streams pass through a multi-stage ML pipeline:')
+body(pdf, 'During the live meeting, the existing Webex AI Codec serves as the perception layer:')
 bullet(pdf, 'Deep Neural Network (DNN) Noise Removal: Real-time models remove background noise (keyboards, dogs, construction, etc.), isolating clean speech.')
-bullet(pdf, 'Neural Speech Synthesis Codec: Cleaned audio is compressed using a neural codec to maintain high quality even on low bandwidth, ensuring both human participants and AI models receive clear signals.')
-bullet(pdf, 'Real-Time Media Models (RMM): AI upscales low-resolution video, separates individual speakers, and detects gestures/reactions to better understand who is speaking and when emphasis or agreement occurs.')
-bullet(pdf, 'NLP Engine: Speech is converted to text with real-time transcription and translation. The NLP layer identifies task-related statements, decisions, commitments, and live occurrences of the predicted questions generated during the PREPARE phase.')
+bullet(pdf, 'Neural Speech Synthesis Codec: Cleaned audio is compressed using a neural codec to maintain high quality even on low bandwidth.')
+bullet(pdf, 'Real-Time Media Models (RMM): AI upscales low-resolution video, separates individual speakers, and detects gestures/reactions.')
+bullet(pdf, 'NLP Engine: Speech is converted to text with real-time transcription and translation. The NLP layer identifies task-related statements, decisions, commitments, and live occurrences of predicted questions from the PREPARE phase.')
 pdf.ln(1)
 
 body_bold(pdf, 'REASON Phase: Context Retrieval and Task Planning')
-body(pdf, 'When the NLP engine detects a potential task intent or a recognized predicted question, the reasoning phase is activated:')
-bullet(pdf, 'Context Retrieval via Agent-to-Agent (A2A) Protocols: Webex AI communicates with external system agents (Jira, Salesforce, GitHub, ServiceNow) through standardized protocols to retrieve relevant context: project details, customer records, previous tickets, or sprint information.')
-bullet(pdf, 'Cisco Secure Data Fabric & Observability: All retrieval passes through Cisco\'s zero-trust identity and access layer. Every call is monitored via Splunk observability tools to detect anomalies, unauthorized access patterns, and performance issues.')
-bullet(pdf, 'LLM-Based Task and Answer Planning: A large language model synthesizes live meeting context, retrieved system data, and organizational policies to generate either a complete task draft (Jira ticket, CRM update, follow-up email) or a suggested answer and follow-up plan for a question the presenter could not answer live.')
+bullet(pdf, 'Context Retrieval via Agent-to-Agent (A2A) Protocols: Webex AI communicates with external system agents (Jira, Salesforce, GitHub, ServiceNow) through standardized protocols to retrieve relevant context.')
+bullet(pdf, 'Cisco Secure Data Fabric & Observability: All retrieval passes through Cisco\'s zero-trust identity and access layer. Every call is monitored via Splunk observability tools.')
+bullet(pdf, 'LLM-Based Task and Answer Planning: A large language model synthesizes live meeting context, retrieved system data, and organizational policies to generate complete task drafts or follow-up plans.')
 pdf.ln(1)
 
 body_bold(pdf, 'ACT Phase: In-Meeting Human Verification and Execution')
-body(pdf, 'Before anything is committed externally, Webex keeps a human firmly in the loop:')
-bullet(pdf, 'In-Meeting Draft Cards: The user sees a non-disruptive overlay in the Webex interface showing the fully drafted task artifact (Jira ticket, ServiceNow incident, Salesforce update, etc.) or a draft follow-up response.')
-bullet(pdf, 'Approve / Edit / Reject Controls: The user can approve to execute as-is, edit to modify fields (title, description, assignee, due date), or reject to discard the draft.')
-bullet(pdf, 'Secure Execution & Logging: On approval, the agent executes through authenticated API calls. Every step from detection to execution is logged for auditing and compliance, including who approved which change and when.')
-bullet(pdf, 'Meeting Chat Confirmation: Webex posts a concise confirmation back into the meeting chat (e.g., "Jira ticket WEBAPP-2026-347 created and assigned to Sarah Chen; Priority: High").')
+bullet(pdf, 'In-Meeting Draft Cards: The user sees a non-disruptive overlay showing the fully drafted task artifact or follow-up response.')
+bullet(pdf, 'Approve / Edit / Reject Controls: The user can approve, edit, or reject each draft.')
+bullet(pdf, 'Secure Execution & Logging: On approval, the agent executes through authenticated API calls. Every step is logged for auditing and compliance.')
+bullet(pdf, 'Meeting Chat Confirmation: Webex posts a concise confirmation back into the meeting chat.')
 pdf.ln(1)
 
 body_bold(pdf, 'FOLLOW-UP Phase: Structured Q&A and Post-Meeting Delivery')
-body(pdf, 'After the meeting ends, Webex AI ensures that open loops are closed:')
-bullet(pdf, 'Unanswered Question Detection: Using the transcript and the predicted Q&A patterns from the PREPARE phase, the system identifies questions that were asked but not answered or explicitly deferred.')
-bullet(pdf, 'Q&A Follow-Up Drafts: For each unanswered question, the AI drafts a suggested response based on the same enterprise context used in the REASON phase and presents it to the owner for approval/edit.')
-bullet(pdf, 'Multi-Channel Delivery: Once approved, Webex automatically sends answers to the relevant participants via their preferred channels (Webex spaces, email, or other integrated systems), optionally simplifying the language for non-technical or non-native speakers.')
-bullet(pdf, 'Visibility & Observability: All follow-up actions are logged and visible to admins through observability dashboards, enabling organizations to measure completion rates for post-meeting Q&A and follow-up quality.')
+bullet(pdf, 'Unanswered Question Detection: The system identifies questions that were asked but not answered or explicitly deferred.')
+bullet(pdf, 'Q&A Follow-Up Drafts: For each unanswered question, the AI drafts a suggested response and presents it to the owner for approval/edit.')
+bullet(pdf, 'Multi-Channel Delivery: Approved answers are sent to participants via Webex spaces, email, or integrated systems, optionally simplified for non-technical speakers.')
+bullet(pdf, 'Visibility & Observability: All follow-up actions are logged and visible through Splunk dashboards.')
 pdf.ln(1)
 
 subheading(pdf, 'Why This Enhanced Solution Wins')
-body(pdf, 'This enhanced solution addresses two critical gaps simultaneously. First, it brings Webex from a passive summarization tool to an agentic AI system that can help users prepare more effectively (auto-decks, predicted Q&A, checklists), execute tasks in third-party systems from live conversation with human-in-the-loop, and close the loop with structured post-meeting answers. Second, it does so in a way that aligns with Cisco\'s strengths: enterprise-grade security, compliance, and observability for task execution; AI codec and media models that already enhance audio/video quality; and a runway to integrate tightly with the AI agent marketplace and Splunk-powered monitoring.')
-
-body(pdf, 'Where Microsoft Copilot and Zoom AI Companion focus primarily on content generation and partial task execution inside their own ecosystems, Webex can differentiate by owning the full Prepare-Perceive-Reason-Act-Follow-Up loop with strong guardrails and regulated-industry readiness.')
+body(pdf, 'This solution brings Webex from a passive summarization tool to an agentic AI system that covers the full meeting lifecycle. Where Microsoft Copilot and Zoom AI Companion focus primarily on content generation and partial task execution inside their own ecosystems, Webex differentiates by owning the full Prepare-Perceive-Reason-Act-Follow-Up loop with strong guardrails and regulated-industry readiness.')
 
 subheading(pdf, 'Expected Impact')
 bullet(pdf, 'Reduces manual post-meeting data entry by 15 minutes per meeting')
 bullet(pdf, '25% meeting-to-action conversion rate (vs. current ~5% industry average)')
 bullet(pdf, '40% workflow automation rate within 12 months of deployment')
 bullet(pdf, '85% task completion accuracy with human-in-the-loop verification')
-bullet(pdf, '35% increase in daily active Webex usage as the platform becomes a productivity hub')
 bullet(pdf, '90%+ Q&A resolution rate through structured post-meeting follow-up')
 pdf.ln(2)
 source_note(pdf, 'Sources: Cisco FY2024 10-K; Webex AI Codec documentation; MarketsandMarkets Agentic AI Market Report 2024; Microsoft Copilot & Zoom AI Companion product documentation.')
 
 subheading(pdf, 'Solution 1 Flowchart: Prepare-Perceive-Reason-Act-Follow-Up')
-body(pdf, 'The following flowchart details the complete five-phase architecture, including pre-meeting AI prep, the Webex AI Codec ML pipeline, data fabric integration, human-in-the-loop verification, cross-platform task execution, and post-meeting Q&A follow-up.')
+body(pdf, 'The following flowchart details the complete five-phase architecture including pre-meeting AI prep, the AI Codec ML pipeline, data fabric integration, human-in-the-loop verification, cross-platform task execution, and post-meeting Q&A follow-up.')
 pdf.ln(2)
 
 img_w = W
@@ -785,81 +1021,73 @@ pdf.add_page()
 heading(pdf, 'Problem 2: Webex Meetings Exclude Non-Native and Non-Technical Participants')
 
 subheading(pdf, 'Problem Definition')
-body(pdf, 'Hybrid and global workforces are now the norm. Enterprises routinely run meetings with participants spread across countries, languages, and technical backgrounds. Yet collaboration platforms, including Webex, treat meetings as though everyone speaks fluent English, understands technical jargon, has a quiet environment, and can always speak aloud. This assumption creates systemic exclusion:')
+body(pdf, 'Hybrid and global workforces are now the norm. Enterprises routinely run meetings with participants spread across countries, languages, and technical backgrounds. Yet collaboration platforms treat meetings as though everyone speaks fluent English, understands technical jargon, has a quiet environment, and can always speak aloud. This creates systemic exclusion:')
 
-bullet(pdf, 'Language barriers: Non-native English speakers struggle to follow fast-paced discussions, miss nuances, and hesitate to ask questions. Even with basic translation features, the experience is fragmented: captions lag, context is lost, and speakers must slow down or repeat themselves.')
-bullet(pdf, 'Technical jargon: In cross-functional meetings (engineering + sales + leadership), technical terminology alienates non-technical participants. When an engineer says "the API rate limiter is throttling at the gateway," a sales leader hears noise, not information.')
-bullet(pdf, 'Poor audio quality: Users in noisy environments (cafes, open offices, public transit) produce audio that degrades the experience for all participants. Background noise, echo, and low volume make it difficult to understand speakers and impossible for AI transcription to work accurately.')
-bullet(pdf, 'Inability to speak: Some participants cannot speak aloud due to noise, broken microphones, speech difficulties, or social anxiety in large meetings. These users are effectively silenced, reducing meeting participation and diversity of input.')
-
-body(pdf, 'The combined effect is that a significant portion of meeting participants are passive observers rather than active contributors. This reduces the quality of decisions, lowers engagement, and creates an uneven playing field that undermines the value of bringing diverse, global teams together.')
+bullet(pdf, 'Language barriers: Non-native English speakers struggle to follow fast-paced discussions, miss nuances, and hesitate to ask questions.')
+bullet(pdf, 'Technical jargon: In cross-functional meetings, technical terminology alienates non-technical participants. When an engineer says "the API rate limiter is throttling at the gateway," a sales leader hears noise, not information.')
+bullet(pdf, 'Poor audio quality: Users in noisy environments produce audio that degrades the experience for all participants and makes AI transcription inaccurate.')
+bullet(pdf, 'Inability to speak: Some participants cannot speak aloud due to noise, broken microphones, speech difficulties, or social anxiety in large meetings. These users are effectively silenced.')
 
 subheading(pdf, 'Competitive Gap Analysis')
-body(pdf, 'Microsoft Teams offers live captions and basic translation, but these are read-only text overlays that do not address voice quality, jargon simplification, or the inability to speak. Zoom provides similar caption-based translation features. Neither platform offers a comprehensive voice intelligence layer that cleans, boosts, translates, simplifies, and speaks on behalf of users in real-time. The market opportunity is an integrated, in-meeting voice and language AI layer that makes every participant equally capable, regardless of language, technical background, or environment.')
+body(pdf, 'Microsoft Teams offers live captions and basic translation, but these are read-only text overlays that do not address voice quality, jargon simplification, or the inability to speak. Zoom provides similar caption-based translation. Neither platform offers a comprehensive voice intelligence layer that cleans, boosts, translates, simplifies, and speaks on behalf of users in real-time.')
 
 subheading(pdf, 'Business Impact of the Problem')
-bullet(pdf, 'Reduced meeting ROI: When 30-40% of participants cannot fully engage due to language or audio barriers, meetings produce lower-quality decisions and require follow-up conversations to clarify what was discussed.')
-bullet(pdf, 'Global team friction: Multinational enterprises report that language barriers are the number one obstacle to effective cross-border collaboration, ahead of time zones and cultural differences.')
-bullet(pdf, 'Accessibility gaps: Users with speech difficulties, hearing impairments, or social anxiety are systematically excluded from verbal participation, reducing inclusion and diversity of input.')
-bullet(pdf, 'Competitive vulnerability: As enterprises prioritize DEI (Diversity, Equity, and Inclusion) in technology procurement, platforms that do not actively solve participation barriers will lose to those that do.')
+bullet(pdf, 'Reduced meeting ROI: When 30-40% of participants cannot fully engage due to language or audio barriers, meetings produce lower-quality decisions.')
+bullet(pdf, 'Global team friction: Language barriers are the number one obstacle to effective cross-border collaboration.')
+bullet(pdf, 'Accessibility gaps: Users with speech difficulties or social anxiety are systematically excluded from verbal participation.')
+bullet(pdf, 'Competitive vulnerability: As enterprises prioritize DEI in technology procurement, platforms that do not solve participation barriers will lose.')
 pdf.ln(2)
 
 subheading(pdf, 'Solution 2: VIBE - Voice & Language Intelligence Layer')
 
-body(pdf, 'VIBE (Voice & Language Intelligence Layer) is a real-time, in-meeting voice and language AI layer that boosts and cleans voice quality, translates between native and English in both speech and text, simplifies technical jargon for non-technical users, and enables type-to-speak so VIBE speaks on the user\'s behalf. All inside Webex. No deepfake risk. Every action is auditable and transparent.')
+body(pdf, 'VIBE is a real-time, in-meeting voice and language AI layer that boosts and cleans voice quality, translates between native and English in both speech and text, simplifies technical jargon for non-technical users, and enables type-to-speak so VIBE speaks on the user\'s behalf. All inside Webex. No deepfake risk. Every action is auditable and transparent.')
 
 body_bold(pdf, 'A: User Entry & Onboarding')
-body(pdf, 'When a user joins a Webex meeting, VIBE activation is simple and instant:')
-bullet(pdf, 'Toggle Activation: A VIBE toggle appears in the meeting controls bar. Zero configuration is required to activate.')
-bullet(pdf, 'Mode Selection: Users select one or more active modes simultaneously: Voice Boost, Live Translation, Type-to-Speak, and/or Simple Mode (non-technical jargon simplification).')
-bullet(pdf, 'Language & Profile: Users select their native language (Hindi, Spanish, Mandarin, French, Arabic, Portuguese, Japanese, Korean, and 90+ more via neural machine translation), their tech level (Technical or Non-Technical), and a voice preset (Clear, Loud, Warm, or Broadcast-style).')
+bullet(pdf, 'Toggle Activation: A VIBE toggle appears in the meeting controls bar. Zero configuration required.')
+bullet(pdf, 'Mode Selection: Voice Boost, Live Translation, Type-to-Speak, and/or Simple Mode (jargon simplification). One or more modes active simultaneously.')
+bullet(pdf, 'Language & Profile: Native language (Hindi, Spanish, Mandarin, French, Arabic, Portuguese, Japanese, Korean, +90 more), tech level (Technical/Non-Technical), voice preset (Clear, Loud, Warm, Broadcast-style).')
 pdf.ln(1)
 
 body_bold(pdf, 'B: Live Audio Path - When User Speaks')
-body(pdf, 'When the user speaks, VIBE processes the audio through a full intelligence pipeline:')
-bullet(pdf, 'Microphone Audio Captured: Raw PCM stream with per-speaker separation via Webex AI Codec and real-time buffer pipeline.')
-bullet(pdf, 'Audio Intelligence Front-End: DNN noise removal for 150+ noise types (cafe, keyboard, HVAC, crowd), echo cancellation and auto gain control, audio tuned to VIBE mode with optimized EQ profile per preset, and smart room detection with reverb and acoustic fingerprint adjustment.')
-bullet(pdf, 'Voice Boost & EQ Engine: Applies the selected preset (Clear, Loud, Warm, Broadcast-style), adapts to environment (noisy cafe vs. quiet office vs. conference room), normalizes waveform for consistent output level to all participants.')
-bullet(pdf, 'Speech-to-Text (ASR): Real-time transcription in user\'s native language with multi-accent support, per-speaker diarization (who said what, timestamped), and filler word detection that removes "um," "uh," and "like" from the clean transcript.')
-bullet(pdf, 'NLP Layer - Conditional Processing: Detects language, intent, domain, tech level, and sentiment. Simple Mode rewrites jargon to plain language with real-world analogies (e.g., "API" becomes "a waiter between kitchen and table"). Translation converts native language to English or any target language. Always-active features include intent and domain tagging, clarity scoring, and real-time caption preparation.')
-bullet(pdf, 'Text-to-Speech Output - VIBE Voice: Converts processed/translated text to natural neural speech with a consistent VIBE persona voice identity per user across the session. Emotional tone matching ensures excited text is delivered with energy.')
-bullet(pdf, 'Delivered to All Participants: Participants hear cleaned, boosted, and translated VIBE voice. Per-user captions appear in their own selected language. Each attendee independently controls their own caption language.')
+bullet(pdf, 'Microphone Audio Captured: Raw PCM stream with per-speaker separation via Webex AI Codec.')
+bullet(pdf, 'Audio Intelligence Front-End: DNN noise removal for 150+ noise types, echo cancellation, auto gain control, smart room detection with reverb and acoustic fingerprint adjustment.')
+bullet(pdf, 'Voice Boost & EQ Engine: Applies selected preset, adapts to environment, normalizes waveform for consistent output.')
+bullet(pdf, 'Speech-to-Text (ASR): Real-time transcription with multi-accent support, per-speaker diarization, filler word removal.')
+bullet(pdf, 'NLP Layer - Conditional Processing: Simple Mode rewrites jargon to plain language with analogies (e.g., "API" becomes "a waiter between kitchen and table"). Translation converts native language to English or target. Always-active intent tagging and clarity scoring.')
+bullet(pdf, 'Text-to-Speech: VIBE Voice with consistent persona, emotional tone matching.')
+bullet(pdf, 'Delivered to All Participants: Cleaned, boosted, translated VIBE voice with per-user captions in their own language.')
 pdf.ln(1)
 
 body_bold(pdf, 'C: Type-to-Speak Path - When User Cannot Speak')
-body(pdf, 'For users who are muted, in noisy environments, have a broken microphone, experience speech difficulties, or feel shy in large meetings:')
-bullet(pdf, 'Mode Activation: User switches to Type-to-Speak manually, or VIBE auto-suggests the mode switch when it detects prolonged silence combined with high ambient noise.')
-bullet(pdf, 'Text Input: User types in the VIBE panel or chat in any language. They can paste code, data, or tables. Drafts are visible only to the user before sending.')
-bullet(pdf, 'NLP Processing: VIBE detects language and intent, simplifies or professionalizes based on active mode, translates to the meeting language (English by default), and applies "Polish mode" to convert quick drafts into fluent spoken-style language.')
-bullet(pdf, 'VIBE Agent Speaks: Neural TTS voice speaks the typed message aloud in the meeting. On-screen label always displays "Spoken by VIBE for [UserName]," ensuring full transparency with no deception. Users select from three VIBE voice personas per session.')
-bullet(pdf, 'Caption & Chat Sync: Captions display "from [UserName] via VIBE" with the source tag auto-appended to the meeting transcript. Chat thread logs typed input and spoken output side-by-side.')
+bullet(pdf, 'Triggers: Muted, too noisy, broken mic, speech difficulty, large-meeting shyness. Auto-suggest when VIBE detects prolonged silence + high ambient noise.')
+bullet(pdf, 'User types in VIBE Panel in any language. Can paste code, data, tables. Drafts visible only to user before send.')
+bullet(pdf, 'NLP Processing: Detect language, translate to meeting language, apply "Polish mode" to convert draft into fluent spoken-style language.')
+bullet(pdf, 'VIBE Agent Speaks: Neural TTS speaks typed message aloud. Label: "Spoken by VIBE for [UserName]." Three voice personas per session.')
+bullet(pdf, 'Caption & Chat Sync: "from [UserName] via VIBE" tag in transcript. Chat logs typed input + spoken output side-by-side.')
 pdf.ln(1)
 
 body_bold(pdf, 'D: Q&A Close-Loop for Non-Native / Non-Technical Users')
-body(pdf, 'VIBE enables seamless cross-language Q&A during meetings:')
-bullet(pdf, 'User Asks in Own Language: A user asks a question using voice or Type-to-Speak in any language (e.g., "API integration kaise kaam karti hai?" in Hindi or "Cuanto cuesta el plan?" in Spanish).')
-bullet(pdf, 'ASR + Translation to English: The native speech is converted to English text and displayed as a caption to the presenter (e.g., "[Priya] asked (translated): How does the API integration work?").')
-bullet(pdf, 'Presenter Answers in English: The presenter responds normally. VIBE captures the answer in real-time. The presenter can tag the response as "Simplified answer" to trigger extra NLP treatment.')
-bullet(pdf, 'Translation + Simplification Back to User: The English answer is translated to the user\'s native language. Simple Mode adds an analogy and concrete example (e.g., "Think of an API like a power outlet - your device does not need to know how electricity is generated"). Audio output delivers the answer spoken in native language via VIBE voice (private to user), and text output shows simplified text and analogy in the user\'s caption pane, bookmarkable for the VIBE summary.')
+bullet(pdf, 'User Asks in Own Language via voice or type-to-speak.')
+bullet(pdf, 'ASR + Translation to English for the presenter.')
+bullet(pdf, 'Presenter answers in English; VIBE captures answer in real-time.')
+bullet(pdf, 'Translation + Simplification back to user: English answer translated to native language. Simple Mode adds analogy and concrete example.')
 pdf.ln(1)
 
 body_bold(pdf, 'E: End & Logging')
-body(pdf, 'When the meeting ends, VIBE generates comprehensive session outputs:')
-bullet(pdf, 'VIBE Transcript: Multi-layer transcript including original language layer, English translation layer, simplified text layer, timestamps and speaker IDs, and Type-to-Speak logs clearly marked.')
-bullet(pdf, 'VIBE Summary Pack: Key Q&A in native language with simple explanations and examples, downloadable by each user, shareable via Webex or email.')
-bullet(pdf, 'Session Analytics: Voice clarity score trend, translation accuracy log, Q&A resolution rate, and VIBE usage breakdown per participant.')
+bullet(pdf, 'VIBE Transcript: Original language layer, English translation layer, simplified text layer, timestamps + speaker IDs, Type-to-Speak logs marked.')
+bullet(pdf, 'VIBE Summary Pack: Key Q&A in native language with simple explanations, downloadable per-user, shareable via Webex/email.')
+bullet(pdf, 'Session Analytics: Voice clarity score trend, translation accuracy log, Q&A resolution rate, VIBE usage breakdown.')
 pdf.ln(1)
 
 body_bold(pdf, 'Privacy Guarantee: Transparency & Trust Layer')
-body(pdf, 'VIBE operates with complete transparency and trust:')
-bullet(pdf, 'Every VIBE-synthesized voice is labeled on-screen: "Spoken by VIBE for [User]." There is no hidden AI speech.')
-bullet(pdf, 'Full audit trail: every VIBE action (boost, translate, TTS) is logged with user consent timestamps.')
-bullet(pdf, 'Zero data retention option: transcript is deleted on meeting end if user opts out of VIBE Summary.')
-bullet(pdf, 'VIBE never impersonates: the voice persona is distinct from the user\'s actual recorded voice.')
+bullet(pdf, 'Every VIBE-synthesized voice is labeled: "Spoken by VIBE for [User]." No hidden AI speech.')
+bullet(pdf, 'Full audit trail: every VIBE action logged with user consent timestamps.')
+bullet(pdf, 'Zero data retention option: transcript deleted on meeting end if user opts out.')
+bullet(pdf, 'VIBE never impersonates: voice persona is distinct from user\'s actual voice.')
 pdf.ln(1)
 
 subheading(pdf, 'Why This Solution Wins')
-body(pdf, 'No collaboration platform today offers a unified, real-time voice and language intelligence layer. Teams and Zoom provide basic captions and translation as passive overlays. VIBE goes far beyond by actively improving voice quality, translating in real-time with TTS delivery, simplifying jargon with analogies, and enabling silent users to speak through AI. The Type-to-Speak feature alone addresses an unmet need that no competitor has solved. Combined with Cisco\'s AI Codec technology for noise removal and voice processing, VIBE creates a participation experience that makes every meeting truly inclusive, regardless of language, technical background, or environment.')
+body(pdf, 'No collaboration platform today offers a unified, real-time voice and language intelligence layer. Teams and Zoom provide basic captions and translation as passive overlays. VIBE goes far beyond by actively improving voice quality, translating with TTS delivery, simplifying jargon with analogies, and enabling silent users to speak through AI. Combined with Cisco\'s AI Codec technology, VIBE creates a participation experience that makes every meeting truly inclusive.')
 
 subheading(pdf, 'Expected Impact')
 bullet(pdf, 'Noise reduction effectiveness: 95%+ across 150+ noise types')
@@ -868,12 +1096,11 @@ bullet(pdf, 'Translation latency: <1 second end-to-end')
 bullet(pdf, 'TTS naturalness: 4.5/5 user rating target')
 bullet(pdf, 'Type-to-speak delivery: <2 seconds from send to spoken output')
 bullet(pdf, '40% increase in non-native speaker participation rates')
-bullet(pdf, '35% reduction in "please repeat that" requests during multilingual meetings')
 pdf.ln(2)
-source_note(pdf, 'Sources: Cisco Webex AI Codec documentation; Microsoft Work Trend Index 2024 (global workforce statistics); Gartner DEI in Technology Procurement Report 2024.')
+source_note(pdf, 'Sources: Cisco Webex AI Codec documentation; Microsoft Work Trend Index 2024; Gartner DEI in Technology Procurement Report 2024.')
 
 subheading(pdf, 'Solution 2 Flowchart: VIBE - Voice & Language Intelligence Layer')
-body(pdf, 'The following flowchart details the complete VIBE architecture, including user onboarding, the live audio speak path, type-to-speak path, cross-language Q&A close-loop, session logging, and the privacy and trust layer.')
+body(pdf, 'The following flowchart details the complete VIBE architecture including user onboarding, the live audio speak path, type-to-speak path, cross-language Q&A close-loop, session logging, privacy guarantee, tech stack, KPIs, and component architecture overview.')
 pdf.ln(2)
 
 pdf.image('cisco_case/figures/flowchart_2_vibe.png', x=pdf.l_margin, w=img_w)
@@ -887,84 +1114,85 @@ heading(pdf, 'Problem 3: Webex Has a Weaker, Less Strategic Developer Ecosystem'
 subheading(pdf, 'Problem Definition')
 body(pdf, 'Integration ecosystems are the hidden engines of collaboration platforms. Microsoft Teams offers over 2,000 integrations through its App Marketplace; Zoom supports over 2,500 third-party integrations. These platforms have become "glue layers" that connect nearly every SaaS tool an enterprise uses. Webex, while improving its integration catalog, still lags in scale, depth, and strategic positioning.')
 
-body(pdf, 'Beyond raw connector count, there is a second, more critical gap: intelligence. Today\'s integrations are mostly static, one-off connectors (e.g., "post a Slack message when a Jira ticket is updated") that perform simple, predefined actions. They do not understand meeting context, make decisions, or orchestrate multi-step workflows. The next competitive frontier is AI-driven agents: intelligent, multi-step integrations that can observe, reason, and act autonomously inside a meeting. Yet no platform has launched a dedicated, enterprise-grade AI agent marketplace.')
+body(pdf, 'Beyond raw connector count, there is a second, more critical gap: intelligence. Today\'s integrations are mostly static, one-off connectors that perform simple, predefined actions. The next competitive frontier is AI-driven agents: intelligent, multi-step integrations that can observe, reason, and act autonomously inside a meeting. Yet no platform has launched a dedicated, enterprise-grade AI agent marketplace.')
 
 body(pdf, 'For Webex, this uneven ecosystem creates several problems:')
-bullet(pdf, 'Reduced daily utility: Many users treat Webex as a "meetings-only" layer, reserving tasks, CRM updates, and automation for other tools. This reduces stickiness and weakens Webex\'s position in RFPs.')
-bullet(pdf, 'Developer disinterest: Developers gravitate toward platforms with large, engaged user bases and clear monetization. Without a compelling differentiator, Webex struggles to attract high-quality AI builders.')
-bullet(pdf, 'Procurement friction: Enterprise IT teams evaluate collaboration platforms partly on integration breadth and governance potential. A smaller, less strategic ecosystem makes Webex an easier "tie-breaking loss" when compared to Teams or Zoom.')
-bullet(pdf, 'Limited new revenue streams: Webex still relies predominantly on per-seat licensing, with no material marketplace-style revenue from integrations or AI-powered services. As AI becomes commoditized, this model caps growth and margin upside.')
-
-body(pdf, 'The market is ripe for a leapfrog innovation: not more point-to-point connectors, but a new category of AI agents that live inside meetings, act with intelligence, and still obey strict enterprise governance.')
+bullet(pdf, 'Reduced daily utility: Many users treat Webex as a "meetings-only" layer, reducing stickiness.')
+bullet(pdf, 'Developer disinterest: Without a compelling differentiator, Webex struggles to attract high-quality AI builders.')
+bullet(pdf, 'Procurement friction: A smaller ecosystem makes Webex an easier "tie-breaking loss" in enterprise evaluations.')
+bullet(pdf, 'Limited new revenue streams: Webex relies on per-seat licensing with no material marketplace-style revenue.')
 
 subheading(pdf, 'Competitive Landscape and Market Context')
-bullet(pdf, 'Microsoft Teams: Large app catalog built on the Microsoft 365 stack. Copilot operates tightly inside Office apps but does not yet offer a formal AI agent marketplace with third-party AI agents. Integrations are powerful but still largely static and workflow-constrained.')
-bullet(pdf, 'Zoom: Strong app marketplace with deep connector coverage. AI Companion provides early agentic behaviors (drafts, action items, CRM sync), but not a fully open, certified AI agent ecosystem. No coherent security governance layer for autonomous agents in regulated industries.')
-bullet(pdf, 'Webex: Growing but smaller integration footprint, with strong security and AI coding capabilities, but no dedicated AI agent platform. Remains mostly a "backend-for-video" with AI support rather than a developer-centric AI-agent hub.')
-
-body(pdf, 'Across the market, the next-generation expectation is clear: platforms should not just host apps; they should host intelligent agents that can observe meetings, understand intent, execute multi-step workflows, and operate within a governed, auditable environment. No vendor has yet built a marketplace-like layer that lets developers safely, visibly, and profitably deploy AI agents at scale. This is where Webex can change the game.')
+bullet(pdf, 'Microsoft Teams: Large app catalog on Microsoft 365 stack. Copilot operates inside Office apps but no formal AI agent marketplace with third-party AI agents.')
+bullet(pdf, 'Zoom: Strong app marketplace with deep coverage. AI Companion provides early agentic behaviors but no fully open, certified AI agent ecosystem.')
+bullet(pdf, 'Webex: Growing but smaller integration footprint, strong security capabilities, but no dedicated AI agent platform.')
 
 subheading(pdf, 'Business Impact of the Problem')
-bullet(pdf, 'Reduced daily utility: Users who cannot connect their daily tools to Webex treat it as a "meetings-only" platform, reducing engagement and stickiness.')
-bullet(pdf, 'Developer disinterest: Without a compelling differentiator, developer investment flows to Teams and Zoom.')
-bullet(pdf, 'Enterprise adoption friction: A smaller ecosystem creates friction in enterprise procurement decisions.')
-bullet(pdf, 'Revenue limitation: Without marketplace revenue, Webex relies solely on seat-based licensing, which limits growth potential.')
+bullet(pdf, 'Reduced daily utility and engagement')
+bullet(pdf, 'Developer investment flows to Teams and Zoom')
+bullet(pdf, 'Enterprise adoption friction in procurement decisions')
+bullet(pdf, 'Revenue limitation without marketplace monetization')
 pdf.ln(2)
 
 subheading(pdf, 'Solution 3: Webex Secure AI Agent Marketplace')
 
-body(pdf, 'Cisco will launch the Webex Secure AI Agent Marketplace, the industry\'s first enterprise-grade AI agent marketplace that lets developers build, certify, deploy, and monetize AI agents that run inside Webex, while respecting strict security, compliance, and governance boundaries. Unlike traditional app stores, this is not just a catalog of connectors. It is a governed AI operating layer for Webex that provides an SDK and development environment for intelligent agents, enforces a unified security and policy model, and opens a new revenue and ecosystem for Cisco and independent developers. The marketplace operates on a four-stage lifecycle: Build, Certify, Deploy, Monitor.')
+body(pdf, 'Cisco will launch the Webex Secure AI Agent Marketplace, the industry\'s first enterprise-grade AI agent marketplace where any third-party developer can host AI agents inside Webex under strict Cisco-defined security, data, and UX rules. Like Apple and Google enforce standards for iOS/Android apps, Cisco enforces standards for AI agents in Webex. Developers build, Cisco certifies, admins control, users benefit. The marketplace operates on a four-stage lifecycle: Build, Certify, Deploy, Monitor.')
 
 body_bold(pdf, 'Stage 1: BUILD - AI Agent SDK & Developer Environment')
-body(pdf, 'Developers build agents using a Webex AI Agent SDK that abstracts the complexity of Webex\'s media and AI infrastructure:')
-bullet(pdf, 'Agent SDK (Python / JavaScript): Pre-built components for common patterns: "Meeting listener," "Task executor," "Data retriever," "Notification sender." Developers can create AI agents that react to meeting context in hours, not weeks.')
-bullet(pdf, 'Agent Templates: Ready-to-customize templates for common scenarios (CRM updater, ticket creator, document generator, calendar scheduler). Templates reduce development time by up to 60% and standardize best practices.')
-bullet(pdf, 'Sandbox Environment: A cloud-based testing environment that simulates real Webex meetings, API calls, and data flows. Developers can test their agents against realistic conversation data and edge cases without touching production.')
-bullet(pdf, 'API & A2A Reference: Clear documentation for meeting lifecycle, real-time transcription feeds, user-context APIs, and Agent-to-Agent (A2A) protocols for cross-tool orchestration. Ensures agents can interact with external systems (Jira, Salesforce, Slack, etc.) in a controlled manner.')
+bullet(pdf, 'Agent SDK (Python / JavaScript): Pre-built components for common patterns: Meeting Listener, Task Executor, Data Retriever, Notification Sender.')
+bullet(pdf, 'Agent Templates: CRM Updater, Ticket Creator, Doc Generator, Calendar Scheduler, Contract Flow (DocuSign), VIBE Voice Agent (first-party). Templates reduce development time by 60%.')
+bullet(pdf, 'Sandbox Environment: Simulated meetings, API calls, and data flows. Tests: latency, accuracy, error handling, load performance.')
+bullet(pdf, 'API & A2A Reference: Meeting lifecycle, real-time transcription feeds, user-context APIs, Agent-to-Agent protocols for cross-tool orchestration with Jira, Salesforce, Slack, SAP, DocuSign, ServiceNow, GitHub.')
 pdf.ln(1)
 
 body_bold(pdf, 'Stage 2: CERTIFY - Cisco Security & Compliance Pipeline')
-body(pdf, 'This is the strategic differentiator. Every agent must pass a Cisco Security Certification Pipeline before appearing in the marketplace:')
-bullet(pdf, 'Static Code Analysis: Automated scanning for vulnerabilities, backdoors, data-exfiltration patterns, and insecure API usage. Ensures agents do not silently leak data or execute unauthorized commands.')
-bullet(pdf, 'Permission & Scope Validation: Reviews what data the agent declares it needs and verifies that it matches actual code behavior. Cisco\'s zero-trust data fabric enforces minimum-privilege principles: agents can only access data and systems explicitly authorized.')
-bullet(pdf, 'Performance & Reliability Testing: Latency benchmarks (<200 ms response time), load testing (1,000+ concurrent users), CPU/memory profiling, and failure-recovery validation. Ensures agents do not destabilize Webex or external systems.')
-bullet(pdf, 'Compliance Checks: Automated checks against SOC 2, HIPAA, FedRAMP, GDPR, and other regulatory standards based on the agent\'s declared data-handling practices. Agents handling sensitive data are flagged for stricter review.')
-bullet(pdf, 'Cisco Trust Badge: Agents that pass all certification stages receive the "Cisco Verified Agent" badge, signaling to enterprises that they meet Cisco\'s security and compliance bar.')
+bullet(pdf, 'Static Code Analysis: Scanning for vulnerabilities, backdoors, data-exfiltration patterns, insecure API usage.')
+bullet(pdf, 'Permission & Scope Validation: Declared vs actual data access verification. Zero-trust minimum-privilege enforcement.')
+bullet(pdf, 'Performance & Reliability Testing: Latency benchmarks (<200ms), load testing (1,000+ concurrent users), CPU/memory profiling, failure-recovery validation.')
+bullet(pdf, 'Compliance Checks: SOC 2, HIPAA, FedRAMP, GDPR automated checks based on declared data-handling practices.')
+bullet(pdf, 'Cisco Trust Badge: "Cisco Verified Agent" badge signals enterprise-grade security and compliance standards.')
 pdf.ln(1)
 
 body_bold(pdf, 'Stage 3: DEPLOY - Enterprise-Grade Management & Deployment')
-body(pdf, 'Enterprise IT administrators control how and where agents run:')
-bullet(pdf, 'Marketplace Discovery & Curation: Admins browse agents by industry vertical (healthcare, finance, government, manufacturing), use case (sales, support, HR, engineering), and security level (e.g., "no PII access," "customer-facing compliant"). A "Cisco Verified" filter highlights fully certified agents.')
-bullet(pdf, 'Configuration & Scoping: Admins define which teams or orgs can use each agent, what data and systems an agent can access, approval workflows (e.g., "high-risk actions require manager approval"), and usage limits and budgets.')
-bullet(pdf, 'Sandboxed, Isolated Execution: Deployed agents run in isolated containers inside Webex Cloud, with strict resource and network policies. Agents cannot directly access unapproved systems or data, preventing lateral-move attacks.')
-bullet(pdf, 'Gradual Rollout & A/B Testing: Admins can deploy agents to pilot groups first, compare productivity metrics, and then expand across the organization. This reduces change-management risk and provides data for ROI calculations.')
+bullet(pdf, 'Marketplace Discovery: Admins browse by industry vertical (healthcare, finance, government, manufacturing), use case (sales, support, HR, engineering), and security/compliance level.')
+bullet(pdf, 'Configuration & Scoping: Assign to orgs/teams/users. Data access levels: read-only, limited write, full write. Approval workflows for high-risk actions. Usage quotas and budget caps.')
+bullet(pdf, 'Sandboxed Execution: Isolated containers in Webex Cloud with zero-trust identity layer, network egress filtering, and rate limits.')
+bullet(pdf, 'Pilot Rollout & A/B Testing: Deploy to pilot groups first, measure time saved, ticket rate, user satisfaction before organization-wide activation.')
 pdf.ln(1)
 
 body_bold(pdf, 'Stage 4: MONITOR - Splunk-Powered Observability & Governance')
-body(pdf, 'Once agents are deployed, Cisco provides continuous observability:')
-bullet(pdf, 'Real-Time Dashboards: Metrics per agent (response time, success rate, error rate, CPU/memory/API usage) and aggregated usage analytics (active users, invocations per day, top-used agents).')
-bullet(pdf, 'Anomaly Detection & Alerting: Machine-learning-based anomaly detection flags unexpected data-access patterns, performance degradation, and security-policy violations. Automated alerts notify IT teams instantly.')
-bullet(pdf, 'Kill-Switch & Audit Trail: If an agent behaves suspiciously, admins can immediately deactivate it. Full audit trail preserves logs for compliance and forensic review.')
-bullet(pdf, 'Usage Analytics & Billing: Granular per-agent usage tracking enables pay-per-use pricing or subscription-based models. Revenue is shared between Cisco and developers (70/30 split favoring developers to stimulate ecosystem growth).')
+bullet(pdf, 'Real-Time Dashboards: Per-agent metrics (invocations/hour, success/error rate, API latency). Aggregated usage by org/team/user. Active agent count.')
+bullet(pdf, 'Anomaly Detection: ML-based detection of unusual data-access patterns, permission violations, performance regressions, unauthorized API attempts, cross-tenant data flags.')
+bullet(pdf, 'Kill-Switch & Audit Trail: Instant agent deactivation with full audit trail retained. Scope and quota adjustment.')
+bullet(pdf, 'Billing & Revenue: Usage tracked per agent. Pay-per-use or subscription models. 70/30 revenue split (developer-favoring). Monthly invoice generation.')
+pdf.ln(1)
+
+subheading(pdf, 'User Journey Within Webex')
+body(pdf, 'The marketplace integrates seamlessly into the Webex user experience:')
+bullet(pdf, 'Users discover agents through the "AI Agents" tab in Webex or via in-meeting suggestion banners.')
+bullet(pdf, 'Users review agent permissions (e.g., "Can read transcript, can create Jira tickets") and accept Cisco\'s data notice before installation.')
+bullet(pdf, 'During live meetings, agents detect task intents from the transcript, pull context from connected systems, and draft complete actions inline in Webex.')
+bullet(pdf, 'Users see in-meeting approval cards with Approve, Edit, or Reject controls before any action is executed.')
+bullet(pdf, 'On approval, agents execute via authenticated API calls. Webex confirms in chat (e.g., "Jira ticket WEBAPP-2026-347 created. Assigned to Sarah Chen. Priority: High.").')
+bullet(pdf, 'Users manage agents through a "My Agents" panel: disable, update, downgrade, or view usage history.')
 pdf.ln(1)
 
 subheading(pdf, 'Why This Solution Wins')
-body(pdf, 'The Secure AI Agent Marketplace changes the game in three ways:')
-bullet(pdf, 'Trust-First AI: Cisco\'s security certifications, zero-trust data fabric, and Splunk-powered observability create a level of enterprise-grade governance that neither Microsoft nor Zoom can match. Regulated industries (government, healthcare, finance) can safely experiment with AI agents inside Webex while satisfying strict compliance requirements.')
-bullet(pdf, 'Platform-Level Differentiation: Instead of competing on "who has more connectors?" Webex competes on "who has the most intelligent, safest, and most profitable AI agent ecosystem?" The marketplace instantly becomes a developer magnet, pulling in AI-first builders who want to reach enterprises securely.')
-bullet(pdf, 'New Revenue & Network Effects: Webex transitions from pure per-seat licensing to per-seat plus per-agent monetization (commissions, premium agents, usage-based fees). As more agents appear, more enterprise workflows bind themselves to Webex, creating a self-reinforcing flywheel: more agents lead to more value, more users, more developers, and more agents.')
+bullet(pdf, 'Trust-First AI: Cisco\'s security certifications and Splunk observability create governance that neither Microsoft nor Zoom can match for regulated industries.')
+bullet(pdf, 'Platform-Level Differentiation: Webex competes on "who has the most intelligent, safest AI agent ecosystem" rather than "who has more connectors."')
+bullet(pdf, 'New Revenue & Network Effects: Per-seat plus per-agent monetization creates a self-reinforcing flywheel: more agents lead to more value, more users, more developers.')
 
 subheading(pdf, 'Expected Impact')
 bullet(pdf, '500+ certified AI agents in the marketplace within Year 1')
-bullet(pdf, '$150 million in GMV (total agent-driven transactions) by FY2028')
+bullet(pdf, '$150 million in GMV by FY2028')
 bullet(pdf, '3x growth in Webex developer activity within 18 months')
 bullet(pdf, '85% enterprise renewal rate driven by agent-based stickiness')
-bullet(pdf, 'New annual marketplace commission revenue estimated at $50 million by FY2029')
+bullet(pdf, 'New annual marketplace commission revenue: $50 million by FY2029')
 pdf.ln(2)
-source_note(pdf, 'Sources: Cisco FY2024 10-K; Splunk platform documentation; Salesforce AppExchange economics model; Apple App Store developer revenue sharing framework; MarketsandMarkets Agentic AI Market Report 2024.')
+source_note(pdf, 'Sources: Cisco FY2024 10-K; Splunk platform documentation; Salesforce AppExchange economics model; MarketsandMarkets Agentic AI Market Report 2024.')
 
 subheading(pdf, 'Solution 3 Flowchart: Secure AI Agent Marketplace')
-body(pdf, 'The following flowchart details the complete Build-Certify-Deploy-Monitor lifecycle, including the Cisco security certification pipeline, enterprise admin deployment controls, Splunk-powered monitoring, and the developer revenue sharing model.')
+body(pdf, 'The following flowchart details the three-lane architecture (Developer Journey, Admin Journey, User Journey), the Cisco certification pipeline, Splunk observability layer, agent examples, industry coverage, and platform architecture stack.')
 pdf.ln(2)
 
 pdf.image('cisco_case/figures/flowchart_3_marketplace.png', x=pdf.l_margin, w=img_w)
@@ -975,65 +1203,62 @@ pdf.image('cisco_case/figures/flowchart_3_marketplace.png', x=pdf.l_margin, w=im
 pdf.add_page()
 heading(pdf, 'Technical Feasibility, Constraints & Scalability Assessment')
 
-body(pdf, 'This section assesses the technical feasibility, key constraints, and scalability considerations for each of the three proposed solutions. These assessments are based on Cisco\'s existing infrastructure, publicly available technology capabilities, and industry benchmarks.')
+body(pdf, 'This section assesses the technical feasibility, key constraints, and scalability considerations for each of the three proposed solutions.')
 
 subheading(pdf, 'Solution 1: AI Meeting Prep & Workflow Orchestrator')
 
 body_bold(pdf, 'Technical Feasibility')
-bullet(pdf, 'The Webex AI Codec (DNN noise removal, neural speech synthesis, RMM) already exists in production and processes millions of meeting minutes daily. Extending the NLP layer to detect task intents is an incremental ML advancement, not a greenfield build.')
-bullet(pdf, 'LLM-based task planning is technically proven. OpenAI, Anthropic, and Google have demonstrated multi-step reasoning with tool use. Cisco can fine-tune a model on enterprise meeting transcripts to achieve high accuracy for task detection and drafting.')
-bullet(pdf, 'A2A protocols for cross-system integration (Jira, Salesforce, ServiceNow) rely on REST/GraphQL APIs that are mature and well-documented. The challenge is not whether integration is possible, but how to manage authentication and data governance at scale.')
-bullet(pdf, 'The PREPARE phase (context ingestion, agenda generation, auto-slides) leverages retrieval-augmented generation (RAG), a well-established pattern for grounding LLM outputs in enterprise data.')
+bullet(pdf, 'The Webex AI Codec already exists in production and processes millions of meeting minutes daily. Extending the NLP layer to detect task intents is an incremental ML advancement.')
+bullet(pdf, 'LLM-based task planning is technically proven. Fine-tuning a model on enterprise meeting transcripts achieves high accuracy for task detection and drafting.')
+bullet(pdf, 'A2A protocols for cross-system integration rely on mature REST/GraphQL APIs.')
+bullet(pdf, 'The PREPARE phase leverages retrieval-augmented generation (RAG), a well-established pattern.')
 
 body_bold(pdf, 'Key Constraints')
-bullet(pdf, 'Latency: Real-time task detection during live meetings requires the NLP pipeline to process audio-to-intent in under 2 seconds. Current Webex AI Codec latency is approximately 200ms for noise removal; adding NLP inference adds 500-1000ms depending on model size. Total pipeline latency must remain below the 2-second threshold for a non-disruptive user experience.')
-bullet(pdf, 'LLM hallucination risk: Task drafts generated by the LLM may contain errors (wrong assignee, incorrect priority, fabricated project names). The human-in-the-loop approval step mitigates this risk but does not eliminate it. Confidence thresholds and retrieval grounding are essential safeguards.')
-bullet(pdf, 'Enterprise data access: The PREPARE and REASON phases require authorized access to CRM, project management, and calendar systems. Organizations with strict data governance policies may limit what Webex AI can ingest, reducing the quality of AI-generated prep materials and task drafts.')
+bullet(pdf, 'Latency: Real-time task detection requires the NLP pipeline to process audio-to-intent in under 2 seconds.')
+bullet(pdf, 'LLM hallucination risk: Mitigated by human-in-the-loop approval and confidence thresholds.')
+bullet(pdf, 'Enterprise data access: Organizations with strict governance may limit what Webex AI can ingest.')
 
 body_bold(pdf, 'Scalability')
-bullet(pdf, 'Cisco\'s cloud infrastructure supports 600+ million meeting minutes per month. The incremental compute for NLP task detection and LLM inference can be distributed across Cisco\'s existing GPU clusters.')
-bullet(pdf, 'The A2A protocol is stateless and horizontally scalable: each meeting session independently connects to external system agents without shared state.')
-bullet(pdf, 'Splunk observability is designed for enterprise-scale event ingestion (petabytes per day), making audit logging a non-bottleneck.')
+bullet(pdf, 'Cisco\'s cloud infrastructure supports 600+ million meeting minutes per month.')
+bullet(pdf, 'The A2A protocol is stateless and horizontally scalable.')
+bullet(pdf, 'Splunk observability handles petabytes per day.')
 pdf.ln(2)
 
 subheading(pdf, 'Solution 2: VIBE - Voice & Language Intelligence Layer')
 
 body_bold(pdf, 'Technical Feasibility')
-bullet(pdf, 'DNN noise removal and voice processing are already core capabilities of the Webex AI Codec. Voice Boost extends this with EQ presets, which is a signal processing task with minimal additional compute.')
-bullet(pdf, 'ASR (Automatic Speech Recognition) at 98% accuracy is achievable using models like Whisper (OpenAI) or Cisco\'s proprietary ASR. Multi-language support with 100+ languages is available through neural machine translation models that have been deployed at scale by Google, Microsoft, and Meta.')
-bullet(pdf, 'Neural TTS (Text-to-Speech) with natural voice personas is technically mature. Services like Google Cloud TTS, Amazon Polly, and open-source models (VITS, Bark) can generate natural speech in under 500ms. Cisco can build or license a TTS model that maintains consistent voice identity per session.')
-bullet(pdf, 'The Simple Mode jargon simplification requires a domain-adapted LLM that can rewrite technical text into plain language with analogies. This is a well-understood NLP task with strong performance from current models.')
+bullet(pdf, 'DNN noise removal and voice processing are already core Webex AI Codec capabilities.')
+bullet(pdf, 'ASR at 98% accuracy is achievable using Whisper or Cisco\'s proprietary ASR. 100+ language support via neural machine translation models deployed at scale.')
+bullet(pdf, 'Neural TTS with natural voice personas is technically mature (Google Cloud TTS, Amazon Polly, open-source models).')
+bullet(pdf, 'Simple Mode jargon simplification is a well-understood NLP task with strong performance from current models.')
 
 body_bold(pdf, 'Key Constraints')
-bullet(pdf, 'End-to-end latency: The full VIBE pipeline (ASR + translation + simplification + TTS) must complete in under 2 seconds for real-time delivery. Each stage adds latency: ASR (~300ms), translation (~200ms), simplification (~300ms), TTS (~500ms). Pipeline parallelization and model optimization are required to meet the target.')
-bullet(pdf, 'Translation accuracy for domain-specific terms: Neural machine translation may mistranslate technical jargon or proper nouns. VIBE needs a custom terminology dictionary per organization to handle domain-specific vocabulary correctly.')
-bullet(pdf, 'TTS voice consistency: Maintaining a consistent and natural voice persona across an entire meeting session while varying emotional tone is technically challenging. Voice cloning safeguards must prevent misuse while preserving quality.')
-bullet(pdf, 'Bandwidth: Delivering per-user audio streams (each participant receives a personalized VIBE voice in their language) increases bandwidth requirements. Cisco\'s neural codec compression (1 kbps) mitigates this, but meetings with 50+ participants may require adaptive quality scaling.')
+bullet(pdf, 'End-to-end latency: The full pipeline (ASR + translation + simplification + TTS) must complete in under 2 seconds. Pipeline parallelization and model optimization are required.')
+bullet(pdf, 'Translation accuracy for domain-specific terms: Custom terminology dictionaries per organization needed.')
+bullet(pdf, 'Bandwidth: Per-user VIBE audio streams increase requirements. Mitigated by neural codec compression (1 kbps).')
 
 body_bold(pdf, 'Scalability')
-bullet(pdf, 'VIBE processing is per-user and per-meeting, making it naturally parallelizable. Each user\'s audio pipeline runs independently.')
-bullet(pdf, 'Neural machine translation models can be deployed as microservices with auto-scaling based on concurrent meeting load.')
-bullet(pdf, 'The privacy guarantee (zero data retention option) simplifies storage scalability since ephemeral processing does not accumulate data.')
+bullet(pdf, 'VIBE processing is per-user and per-meeting, naturally parallelizable.')
+bullet(pdf, 'Neural machine translation models deploy as auto-scaling microservices.')
+bullet(pdf, 'Zero data retention option simplifies storage scalability.')
 pdf.ln(2)
 
 subheading(pdf, 'Solution 3: Secure AI Agent Marketplace')
 
 body_bold(pdf, 'Technical Feasibility')
-bullet(pdf, 'SDK development for agent creation is a standard software engineering task. Cisco already provides Webex APIs and developer tools. Extending these into a structured agent SDK with templates and sandbox environments is feasible within 6-9 months.')
-bullet(pdf, 'The security certification pipeline leverages existing Cisco capabilities: static code analysis (Cisco acquired SourceFire/Snort), zero-trust networking (Cisco Zero Trust), and observability (Splunk). Assembling these into a unified certification workflow is integration work, not invention.')
-bullet(pdf, 'Sandboxed agent execution using containerized environments (Kubernetes, WebAssembly) is a proven pattern used by AWS Lambda, Cloudflare Workers, and similar platforms.')
-bullet(pdf, 'The marketplace discovery and billing infrastructure can be modeled on existing platforms (Salesforce AppExchange, Shopify App Store) with well-understood UX patterns and revenue-sharing mechanics.')
+bullet(pdf, 'SDK development is standard engineering. Extending existing Webex APIs into a structured agent SDK is feasible within 6-9 months.')
+bullet(pdf, 'The certification pipeline leverages existing Cisco capabilities: static analysis, zero-trust networking, and Splunk observability.')
+bullet(pdf, 'Sandboxed agent execution using containerized environments is a proven pattern (AWS Lambda, Cloudflare Workers).')
 
 body_bold(pdf, 'Key Constraints')
-bullet(pdf, 'Certification throughput: If 1,000+ developers submit agents simultaneously, the certification pipeline must scale to handle parallel security reviews. Automated scanning can handle volume, but manual review of edge cases may create bottlenecks.')
-bullet(pdf, 'Agent quality control: A marketplace is only as good as its worst agent. Low-quality or poorly performing agents could damage the "Cisco Verified" brand. The certification bar must be high enough to maintain trust but low enough to encourage developer participation.')
-bullet(pdf, 'Cross-system compatibility: Agents that interact with third-party systems (Jira, Salesforce, SAP) depend on those systems\' APIs remaining stable. API deprecation, rate limits, or authentication changes could break deployed agents.')
-bullet(pdf, 'Developer adoption: Building the marketplace is technically feasible, but attracting developers requires compelling economics (the 70/30 revenue split) and a sufficiently large Webex user base to justify development effort.')
+bullet(pdf, 'Certification throughput: Automated scanning handles volume; manual review of edge cases may create bottlenecks.')
+bullet(pdf, 'Agent quality control: The certification bar must balance trust with developer accessibility.')
+bullet(pdf, 'Cross-system compatibility: Agents depend on third-party APIs remaining stable.')
 
 body_bold(pdf, 'Scalability')
-bullet(pdf, 'Agent execution scales horizontally: each agent runs in an isolated container with defined resource limits. Cisco\'s cloud infrastructure can provision containers on demand.')
-bullet(pdf, 'Splunk-powered monitoring is designed for enterprise-scale observability and can ingest millions of agent events per day without performance degradation.')
-bullet(pdf, 'The marketplace catalog itself is a standard web application with CDN-backed discovery, which scales trivially to thousands of listed agents.')
+bullet(pdf, 'Agent execution scales horizontally via isolated containers with defined resource limits.')
+bullet(pdf, 'Splunk monitoring handles millions of agent events per day.')
+bullet(pdf, 'The marketplace catalog scales trivially as a CDN-backed web application.')
 
 # ============================================================
 # IMPLEMENTATION RISKS & SYSTEM-LEVEL TRADE-OFFS
@@ -1041,48 +1266,48 @@ bullet(pdf, 'The marketplace catalog itself is a standard web application with C
 pdf.add_page()
 heading(pdf, 'Implementation Risks & System-Level Trade-Offs')
 
-body(pdf, 'This section identifies the key implementation risks and system-level trade-offs that Cisco must navigate when deploying the three proposed solutions. Understanding these trade-offs enables informed decision-making and proactive risk mitigation.')
+body(pdf, 'This section identifies key implementation risks and system-level trade-offs for each solution.')
 
 subheading(pdf, 'Solution 1: AI Meeting Prep & Workflow Orchestrator')
 
 body_bold(pdf, 'Implementation Risks')
-bullet(pdf, 'AI hallucination in task drafts: The LLM may generate task drafts with incorrect details (wrong project, wrong assignee, fabricated deadlines). Mitigation: Human-in-the-loop approval is mandatory for all external actions; confidence scoring filters low-certainty drafts into a review queue rather than auto-processing them.')
-bullet(pdf, 'Over-automation backlash: Users may feel overwhelmed by AI-generated suggestions if the system is too aggressive. Mitigation: Progressive disclosure (start with minimal suggestions, increase based on user engagement); user-controlled sensitivity settings; easy "snooze" controls.')
-bullet(pdf, 'Data privacy and compliance: Ingesting CRM records, calendar data, and past transcripts for the PREPARE phase raises data privacy concerns, especially under GDPR and HIPAA. Mitigation: All data access passes through Cisco\'s zero-trust data fabric with explicit user and admin consent; data minimization principles limit ingestion to what is strictly necessary.')
-bullet(pdf, 'Integration fragility: Dependency on third-party APIs (Jira, Salesforce, ServiceNow) means that API changes, rate limits, or outages can break the orchestrator. Mitigation: Circuit-breaker patterns, graceful degradation (continue meeting even if integration fails), and API version pinning.')
+bullet(pdf, 'AI hallucination in task drafts: Mitigated by mandatory human-in-the-loop approval and confidence scoring.')
+bullet(pdf, 'Over-automation backlash: Mitigated by progressive disclosure and user-controlled sensitivity settings.')
+bullet(pdf, 'Data privacy and compliance: All data access passes through zero-trust data fabric with explicit consent.')
+bullet(pdf, 'Integration fragility: Mitigated by circuit-breaker patterns and graceful degradation.')
 
 body_bold(pdf, 'System-Level Trade-Offs')
-bullet(pdf, 'Accuracy vs. speed: More context retrieval improves task draft quality but increases latency. Cisco must balance how much enterprise data the REASON phase retrieves against the 2-second pipeline target.')
-bullet(pdf, 'Automation vs. control: Fully autonomous execution would maximize productivity gains but introduces unacceptable risk for enterprise customers. The human-in-the-loop requirement reduces automation speed but is essential for trust and adoption in regulated industries.')
-bullet(pdf, 'Breadth vs. depth of integration: Supporting hundreds of third-party systems increases utility but dilutes engineering focus. Cisco should prioritize the top 10-15 enterprise tools (Jira, Salesforce, ServiceNow, SAP, GitHub, Slack, Confluence, HubSpot) for deep integration and use generic API connectors for long-tail systems.')
+bullet(pdf, 'Accuracy vs. speed: More context retrieval improves quality but increases latency.')
+bullet(pdf, 'Automation vs. control: Human-in-the-loop reduces speed but is essential for trust in regulated industries.')
+bullet(pdf, 'Breadth vs. depth of integration: Prioritize top 10-15 enterprise tools for deep integration; use generic connectors for long-tail.')
 pdf.ln(2)
 
-subheading(pdf, 'Solution 2: VIBE - Voice & Language Intelligence Layer')
+subheading(pdf, 'Solution 2: VIBE')
 
 body_bold(pdf, 'Implementation Risks')
-bullet(pdf, 'Deepfake perception risk: Even though VIBE explicitly labels all synthesized speech ("Spoken by VIBE for [User]") and uses distinct voice personas, external stakeholders unfamiliar with the feature may perceive AI-generated speech as deceptive. Mitigation: Mandatory on-screen labeling, meeting-start notification that VIBE is active, and admin controls to disable VIBE for customer-facing meetings if desired.')
-bullet(pdf, 'Translation errors in high-stakes contexts: Mistranslation of contractual terms, medical terminology, or legal language could have serious consequences. Mitigation: Custom terminology dictionaries per organization; confidence scoring on translations with visual warnings when confidence is low; option for human translator review before critical communications.')
-bullet(pdf, 'User adoption resistance: Some users may resist having AI speak on their behalf or simplify their language, perceiving it as patronizing. Mitigation: VIBE is fully opt-in with per-user control; users choose their own modes, languages, and voice presets; no organizational mandate required.')
-bullet(pdf, 'Compute cost: Running the full VIBE pipeline (ASR + translation + TTS) for every participant in every meeting significantly increases per-meeting compute costs. Mitigation: VIBE processing is activated only for users who enable it, not applied globally; adaptive quality scaling reduces resource consumption for large meetings.')
+bullet(pdf, 'Deepfake perception risk: Mitigated by mandatory on-screen labeling, meeting-start notification, and admin controls.')
+bullet(pdf, 'Translation errors in high-stakes contexts: Mitigated by custom terminology dictionaries and confidence scoring with visual warnings.')
+bullet(pdf, 'User adoption resistance: VIBE is fully opt-in with per-user control; no organizational mandate required.')
+bullet(pdf, 'Compute cost: VIBE processing activates only for users who enable it; adaptive quality scaling for large meetings.')
 
 body_bold(pdf, 'System-Level Trade-Offs')
-bullet(pdf, 'Latency vs. quality: Higher-quality translation and TTS require larger models with longer inference times. Cisco must choose between slightly lower translation accuracy (faster, smaller models) and better accuracy (slower, larger models) based on the 2-second latency target.')
-bullet(pdf, 'Privacy vs. personalization: Personalized voice personas and language profiles require storing user preferences. The zero-data-retention option limits personalization for privacy-conscious users. Cisco must offer both options and let users choose.')
-bullet(pdf, 'Simplification vs. accuracy: Simple Mode rewrites jargon into plain language, which inherently involves some loss of technical precision. Over-simplification may distort the original meaning. Cisco must calibrate the simplification level and always provide the original text alongside the simplified version.')
+bullet(pdf, 'Latency vs. quality: Larger models improve accuracy but increase inference time.')
+bullet(pdf, 'Privacy vs. personalization: Zero-data-retention limits personalization for privacy-conscious users.')
+bullet(pdf, 'Simplification vs. accuracy: Over-simplification may distort meaning. Original text always provided alongside simplified version.')
 pdf.ln(2)
 
-subheading(pdf, 'Solution 3: Secure AI Agent Marketplace')
+subheading(pdf, 'Solution 3: AI Agent Marketplace')
 
 body_bold(pdf, 'Implementation Risks')
-bullet(pdf, 'Marketplace cold-start problem: An agent marketplace with few agents attracts few users, and few users attract few developers. This chicken-and-egg problem can stall marketplace growth. Mitigation: Cisco should seed the marketplace with 20-30 first-party agents built in-house, partner with major ISVs (Salesforce, Atlassian, ServiceNow) for launch-day integrations, and offer developer grants and revenue guarantees during the first 18 months.')
-bullet(pdf, 'Security certification bottleneck: The certification pipeline could become a bottleneck if demand exceeds review capacity. Mitigation: Invest in automated scanning to handle 90%+ of certification checks; reserve manual review for agents that access sensitive data or execute high-risk actions.')
-bullet(pdf, 'Agent misbehavior in production: Even certified agents may exhibit unexpected behavior under real-world conditions (edge cases not covered in testing). Mitigation: Kill-switch capability for instant deactivation; sandboxed execution prevents lateral damage; Splunk anomaly detection provides early warning.')
-bullet(pdf, 'Revenue model uncertainty: The 70/30 revenue split may not be economically viable if marketplace transaction volume is low in the early years. Mitigation: Start with a generous developer split to attract builders; adjust as the marketplace matures and transaction volume grows.')
+bullet(pdf, 'Marketplace cold-start problem: Mitigated by seeding 20-30 first-party agents, ISV partnerships, and developer grants.')
+bullet(pdf, 'Security certification bottleneck: Automated scanning handles 90%+; manual review reserved for sensitive-data agents.')
+bullet(pdf, 'Agent misbehavior in production: Mitigated by kill-switch, sandboxed execution, and Splunk anomaly detection.')
+bullet(pdf, 'Revenue model uncertainty: Start with generous developer split; adjust as marketplace matures.')
 
 body_bold(pdf, 'System-Level Trade-Offs')
-bullet(pdf, 'Openness vs. security: A more open marketplace (lower certification bar, more permissive data access) grows faster but increases security risk. A stricter marketplace grows slower but builds stronger enterprise trust. Cisco\'s brand equity in enterprise security means the "trust-first" approach is the correct strategic choice, even if it slows initial growth.')
-bullet(pdf, 'First-party vs. third-party agents: Cisco must decide how many agents to build in-house versus leaving to third-party developers. Too many first-party agents discourages developer participation; too few leaves gaps in marketplace coverage. The recommended ratio is 15-20% first-party agents for core use cases, with the remaining 80%+ from the developer community.')
-bullet(pdf, 'Platform lock-in vs. portability: Agents built on the Webex SDK are inherently platform-specific. Developers may resist investing in a platform-locked ecosystem. Cisco should adopt open standards (A2A protocol) where possible to reduce perceived lock-in while maintaining competitive differentiation.')
+bullet(pdf, 'Openness vs. security: Trust-first approach grows slower but builds stronger enterprise trust. Correct for Cisco\'s brand.')
+bullet(pdf, 'First-party vs. third-party agents: Recommended 15-20% first-party for core use cases; 80%+ from developer community.')
+bullet(pdf, 'Platform lock-in vs. portability: Adopt open standards (A2A protocol) to reduce perceived lock-in while maintaining differentiation.')
 
 # ============================================================
 # INTEGRATED STRATEGY & CONCLUSION
@@ -1090,11 +1315,11 @@ bullet(pdf, 'Platform lock-in vs. portability: Agents built on the Webex SDK are
 pdf.add_page()
 heading(pdf, 'Integrated Strategy: How the Three Solutions Work Together')
 
-body(pdf, 'The three solutions are designed as an integrated system, not independent initiatives. Together, they create a comprehensive competitive moat:')
+body(pdf, 'The three solutions are designed as an integrated system, not independent initiatives:')
 
-bullet(pdf, 'Solution 1 (AI Meeting Prep & Workflow Orchestrator) provides the core intelligence: AI that can prepare users before meetings, perceive meeting context, reason about tasks, execute actions across enterprise systems, and follow up on unanswered questions after the meeting ends.')
-bullet(pdf, 'Solution 2 (VIBE - Voice & Language Intelligence Layer) ensures that every participant can fully engage in the meeting regardless of language, technical background, or environment. VIBE makes the input to Solution 1 richer and more inclusive by enabling non-native and non-technical participants to contribute actively.')
-bullet(pdf, 'Solution 3 (AI Agent Marketplace) scales the intelligence: instead of Cisco building every agent, the marketplace enables hundreds of developers to build vertical-specific agents for healthcare, finance, government, manufacturing, and more. The marketplace also provides the deployment and governance infrastructure that makes Solutions 1 and 2 safe for regulated industries.')
+bullet(pdf, 'Solution 1 (AI Meeting Prep & Workflow Orchestrator) provides the core intelligence: AI that can prepare, perceive, reason, act, and follow up across the full meeting lifecycle.')
+bullet(pdf, 'Solution 2 (VIBE) ensures every participant can fully engage regardless of language, technical background, or environment. VIBE makes the input to Solution 1 richer and more inclusive.')
+bullet(pdf, 'Solution 3 (AI Agent Marketplace) scales the intelligence: the marketplace enables hundreds of developers to build vertical-specific agents and provides the deployment and governance infrastructure for regulated industries.')
 pdf.ln(2)
 
 body(pdf, 'The combined impact makes Webex indispensable rather than interchangeable. Users stay on Webex not because the video quality is marginally better, but because leaving means losing their AI agents, their automated workflows, the productivity gains that accumulate over time, and the inclusive communication layer that makes global teamwork seamless.')
@@ -1141,21 +1366,21 @@ heading(pdf, 'References')
 pdf.ln(1)
 
 refs = [
-    'Cisco Systems. (2024). Annual Report (Form 10-K), Fiscal Year 2024. SEC Filing. Retrieved from https://investor.cisco.com',
-    'Microsoft Corporation. (2024). Annual Report (Form 10-K), Fiscal Year 2024. SEC Filing. Retrieved from https://www.microsoft.com/en-us/investor',
-    'Zoom Video Communications. (2025). Annual Report (Form 10-K), Fiscal Year 2025. SEC Filing. Retrieved from https://investors.zoom.us',
-    'IDC. (2024). Worldwide Unified Communications & Collaboration Market Tracker. International Data Corporation.',
-    'Gartner. (2024). Future of Work Survey: Hybrid Work Trends. Gartner Research.',
-    'McKinsey & Company. (2024). Future of Work Report: Meeting Productivity and Knowledge Worker Efficiency. McKinsey Global Institute.',
-    'MarketsandMarkets. (2024). Agentic AI Market Report: Global Forecast to 2030. MarketsandMarkets Research.',
-    'Microsoft. (2024). Work Trend Index: Annual Report on Workplace Trends and Meeting Culture. Microsoft Research.',
+    'Cisco Systems. (2024). Annual Report (Form 10-K), Fiscal Year 2024. SEC Filing.',
+    'Microsoft Corporation. (2024). Annual Report (Form 10-K), Fiscal Year 2024. SEC Filing.',
+    'Zoom Video Communications. (2025). Annual Report (Form 10-K), Fiscal Year 2025. SEC Filing.',
+    'IDC. (2024). Worldwide Unified Communications & Collaboration Market Tracker.',
+    'Gartner. (2024). Future of Work Survey: Hybrid Work Trends.',
+    'McKinsey & Company. (2024). Future of Work Report: Meeting Productivity and Knowledge Worker Efficiency.',
+    'MarketsandMarkets. (2024). Agentic AI Market Report: Global Forecast to 2030.',
+    'Microsoft. (2024). Work Trend Index: Annual Report on Workplace Trends and Meeting Culture.',
     'Otter.ai. (2024). Workplace Productivity Report: Meeting Follow-Up and Action Item Completion Rates.',
-    'Cisco Webex. (2025). Webex AI Assistant and AI Codec Technical Documentation. Retrieved from https://www.webex.com/ai',
-    'Microsoft. (2025). Microsoft 365 Copilot Product Documentation. Retrieved from https://www.microsoft.com/copilot',
-    'Zoom. (2025). Zoom AI Companion 2.0 Product Documentation. Retrieved from https://zoom.us/ai-assistant',
-    'G2. (2025). Video Conferencing Software Reviews and Ratings. Retrieved from https://www.g2.com/categories/video-conferencing',
-    'Salesforce. (2024). AppExchange Marketplace Economics and Developer Revenue Sharing Model. Salesforce Documentation.',
-    'Gartner. (2024). DEI in Technology Procurement: How Inclusion Features Influence Enterprise Buying Decisions. Gartner Research.',
+    'Cisco Webex. (2025). Webex AI Assistant and AI Codec Technical Documentation.',
+    'Microsoft. (2025). Microsoft 365 Copilot Product Documentation.',
+    'Zoom. (2025). Zoom AI Companion 2.0 Product Documentation.',
+    'G2. (2025). Video Conferencing Software Reviews and Ratings.',
+    'Salesforce. (2024). AppExchange Marketplace Economics and Developer Revenue Sharing Model.',
+    'Gartner. (2024). DEI in Technology Procurement Report.',
 ]
 
 for i, ref in enumerate(refs):
