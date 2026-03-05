@@ -351,217 +351,142 @@ print("Flowchart 2 (Meeting-to-Action Engine) created")
 
 # ============================================================
 # FLOWCHART 3: Secure AI Agent Marketplace Ecosystem
-# Completely rebuilt with proper spacing - no overlaps
+# Clean vertical flow - one column, no overlap
 # ============================================================
-fig, ax = plt.subplots(figsize=(24, 32))
-ax.set_xlim(0, 24)
-ax.set_ylim(0, 32)
+fig, ax = plt.subplots(figsize=(18, 36))
+ax.set_xlim(0, 18)
+ax.set_ylim(0, 36)
 ax.axis('off')
 
-ax.text(12, 31.3, 'Solution 3: Secure AI Agent Marketplace & Developer Platform',
-        ha='center', fontsize=24, fontweight='bold', color='#002060')
-ax.text(12, 30.7, 'Build -> Certify -> Deploy -> Monitor Lifecycle  |  Enterprise-Grade Agent Ecosystem',
-        ha='center', fontsize=14, color='#555555')
+ax.text(9, 35.4, 'Solution 3: Secure AI Agent Marketplace', ha='center',
+        fontsize=24, fontweight='bold', color='#002060')
+ax.text(9, 34.8, 'Build -> Certify -> Deploy -> Monitor Lifecycle', ha='center',
+        fontsize=14, color='#555555')
 
-# --- Phase label banners (below title, above START) ---
-phase_labels = [
-    ('1. BUILD', '#1A5276', 0.5, 5.5),
-    ('2. CERTIFY', '#27AE60', 6.5, 5.5),
-    ('3. DEPLOY', '#0070C0', 12.5, 5.5),
-    ('4. MONITOR', '#8E44AD', 18.5, 5.0),
-]
+CX = 9.0
 
-for label, color, x, w in phase_labels:
-    rect = mpatches.FancyBboxPatch((x, 8.0), w, 22.0, boxstyle="round,pad=0.1",
-                                    facecolor=color, edgecolor=color, linewidth=1.5, alpha=0.07)
-    ax.add_patch(rect)
-    ax.text(x + w/2, 29.7, label, ha='center', fontsize=15, fontweight='bold', color=color)
+# === START ===
+draw_oval(ax, CX, 34.0, 6.0, 0.9, 'START\nDeveloper Registers on Platform', '#002060', 'white', 12)
+arrow(ax, CX, 33.5, CX, 32.9)
 
-# --- START ---
-draw_oval(ax, 12, 29.0, 6.0, 0.9, 'START: Developer Registers on Platform', '#002060', 'white', 11)
+# === PHASE 1: BUILD ===
+p1 = mpatches.FancyBboxPatch((0.5, 27.5), 17.0, 5.2, boxstyle="round,pad=0.15",
+                               facecolor='#1A5276', edgecolor='#1A5276', linewidth=2, alpha=0.08)
+ax.add_patch(p1)
+ax.text(1.2, 32.3, 'PHASE 1: BUILD', fontsize=14, fontweight='bold', color='#1A5276')
 
-# === COLUMN 1: BUILD (x center = 3.25) ===
-BX = 3.25
-arrow(ax, 12, 28.5, BX, 27.8)
+draw_rect(ax, CX, 32.3, 8.0, 1.0,
+          'Download Agent SDK (Python / JavaScript)\nTemplates, API docs, code samples', '#1A5276', 'white', 11)
+arrow(ax, CX, 31.75, CX, 31.1)
 
-draw_rect(ax, BX, 27.2, 4.8, 1.0,
-          'Agent SDK (Python / JS)\nDownload SDK + templates\nAPI docs + code samples', '#1A5276', 'white', 10)
-arrow(ax, BX, 26.65, BX, 26.0)
+draw_rect(ax, CX, 30.5, 8.0, 1.0,
+          'Developer Builds Custom Agent\nDefine triggers, actions, data scope, permissions', '#1A5276', 'white', 11)
+arrow(ax, CX, 29.95, CX, 29.3)
 
-draw_rect(ax, BX, 25.4, 4.8, 1.0,
-          'Developer Builds Agent\nDefine triggers, actions,\ndata scope, permissions', '#1A5276', 'white', 10)
-arrow(ax, BX, 24.85, BX, 24.2)
+draw_rect(ax, CX, 28.7, 8.0, 1.0,
+          'Test in Sandbox Environment\nUnit tests + integration tests + performance benchmarks', '#1A5276', 'white', 11)
+arrow(ax, CX, 28.15, CX, 27.3)
 
-draw_rect(ax, BX, 23.6, 4.8, 1.0,
-          'Local Testing & Validation\nUnit + integration tests\nSandbox environment', '#1A5276', 'white', 10)
-arrow(ax, BX, 23.05, BX, 22.2)
+draw_diamond(ax, CX, 26.3, 2.0, 'Tests\nPass?', '#F39C12', 'black', 11)
 
-draw_diamond(ax, BX, 21.2, 1.8, 'Tests\nPass?', '#F39C12', 'black', 10)
+ax.text(CX - 3.0, 26.3, 'NO', fontsize=12, fontweight='bold', color='#E74C3C')
+arrow(ax, CX - 1.0, 26.3, CX - 3.8, 26.3, '#E74C3C', 2)
+arrow(ax, CX - 3.8, 26.3, CX - 3.8, 30.5, '#E74C3C', 2)
+arrow(ax, CX - 3.8, 30.5, CX - 4.2, 30.5, '#E74C3C', 2)
+ax.text(CX - 3.8, 28.3, 'Fix &\nRetry', fontsize=9, fontweight='bold', color='#E74C3C', ha='center',
+        bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='#E74C3C', alpha=0.9))
 
-ax.text(1.2, 21.8, 'NO', fontsize=11, fontweight='bold', color='#E74C3C')
-arrow(ax, BX - 0.9, 21.2, 0.8, 21.2, '#E74C3C', 2)
-arrow(ax, 0.8, 21.2, 0.8, 25.4, '#E74C3C', 2)
-arrow(ax, 0.8, 25.4, BX - 2.6, 25.4, '#E74C3C', 2)
+ax.text(CX + 2.0, 26.3, 'YES', fontsize=12, fontweight='bold', color='#27AE60')
+arrow(ax, CX, 25.3, CX, 24.7)
 
-ax.text(BX + 1.5, 21.8, 'YES', fontsize=11, fontweight='bold', color='#27AE60')
-arrow(ax, BX, 20.3, BX, 19.6)
+draw_rect(ax, CX, 24.1, 8.0, 1.0,
+          'Submit Agent to Cisco Marketplace Portal\nUpload manifest, documentation, permission declaration', '#1A5276', 'white', 11)
+arrow(ax, CX, 23.55, CX, 22.9)
 
-draw_rect(ax, BX, 19.0, 4.8, 1.0,
-          'Submit to Cisco\nMarketplace Portal\nManifest + docs + permissions', '#1A5276', 'white', 10)
+# === PHASE 2: CERTIFY ===
+p2 = mpatches.FancyBboxPatch((0.5, 18.0), 17.0, 4.7, boxstyle="round,pad=0.15",
+                               facecolor='#27AE60', edgecolor='#27AE60', linewidth=2, alpha=0.08)
+ax.add_patch(p2)
+ax.text(1.2, 22.3, 'PHASE 2: CERTIFY (Cisco Security Pipeline)', fontsize=14, fontweight='bold', color='#27AE60')
 
-arrow(ax, BX + 2.6, 19.0, 9.25 - 2.6, 19.0, '#333333', 2.5)
+draw_rect(ax, CX, 22.3, 8.0, 1.0,
+          'Security Scan: Static code analysis, vulnerability detection,\ndata access audit, compliance check (SOC2 / HIPAA / FedRAMP)', '#27AE60', 'white', 11)
+arrow(ax, CX, 21.75, CX, 21.1)
 
-# === COLUMN 2: CERTIFY (x center = 9.25) ===
-CX = 9.25
+draw_rect(ax, CX, 20.5, 8.0, 1.0,
+          'Permission Review: Zero-trust policy enforcement,\nminimum-privilege validation, PII handling assessment', '#27AE60', 'white', 11)
+arrow(ax, CX, 19.95, CX, 19.3)
 
-arrow(ax, 12, 28.5, CX, 27.8)
+draw_rect(ax, CX, 18.7, 8.0, 1.0,
+          'Performance Testing: Latency benchmarks (< 200ms),\nload testing (1000+ concurrent users), failure recovery', '#27AE60', 'white', 11)
+arrow(ax, CX, 18.15, CX, 17.3)
 
-draw_rect(ax, CX, 27.2, 4.8, 1.0,
-          'SECURITY SCAN\nStatic code analysis\nVulnerability detection', '#27AE60', 'white', 10)
-arrow(ax, CX, 26.65, CX, 26.0)
+draw_diamond(ax, CX, 16.3, 2.2, 'Cisco\nCertified?', '#F39C12', 'black', 11)
 
-draw_rect(ax, CX, 25.4, 4.8, 1.0,
-          'PERMISSION REVIEW\nZero-trust policy check\nMinimum-privilege validation', '#27AE60', 'white', 10)
-arrow(ax, CX, 24.85, CX, 24.2)
+ax.text(CX - 3.2, 16.3, 'FAIL', fontsize=12, fontweight='bold', color='#E74C3C')
+arrow(ax, CX - 1.1, 16.3, CX - 4.0, 16.3, '#E74C3C', 2)
+draw_rect(ax, CX - 5.5, 16.3, 3.0, 0.8,
+          'Return to developer\nwith feedback report', '#E74C3C', 'white', 9)
 
-draw_rect(ax, CX, 23.6, 4.8, 1.0,
-          'PERFORMANCE TESTING\nLatency < 200ms benchmark\nLoad test 1000+ concurrent', '#27AE60', 'white', 10)
-arrow(ax, CX, 23.05, CX, 22.2)
+ax.text(CX + 2.2, 16.3, 'PASS', fontsize=12, fontweight='bold', color='#27AE60')
+arrow(ax, CX, 15.2, CX, 14.6)
 
-draw_diamond(ax, CX, 21.2, 2.0, 'Cisco\nCertified?', '#F39C12', 'black', 10)
+draw_rect(ax, CX, 14.0, 8.0, 1.0,
+          'Cisco Trust Badge Issued: "Cisco Verified Agent"\nListed in Marketplace catalog with security rating', '#27AE60', 'white', 11)
+arrow(ax, CX, 13.45, CX, 12.8)
 
-ax.text(CX - 2.5, 21.8, 'FAIL', fontsize=11, fontweight='bold', color='#E74C3C')
-arrow(ax, CX - 1.0, 21.2, CX - 2.0, 21.2, '#E74C3C', 2)
-draw_rect(ax, CX - 2.8, 21.2, 1.8, 0.7,
-          'Return with\nfeedback', '#E74C3C', 'white', 8)
+# === PHASE 3: DEPLOY ===
+p3 = mpatches.FancyBboxPatch((0.5, 9.5), 17.0, 3.1, boxstyle="round,pad=0.15",
+                               facecolor='#0070C0', edgecolor='#0070C0', linewidth=2, alpha=0.08)
+ax.add_patch(p3)
+ax.text(1.2, 12.2, 'PHASE 3: DEPLOY', fontsize=14, fontweight='bold', color='#0070C0')
 
-ax.text(CX + 1.5, 21.8, 'PASS', fontsize=11, fontweight='bold', color='#27AE60')
-arrow(ax, CX, 20.2, CX, 19.6)
+draw_rect(ax, CX, 12.2, 8.0, 1.0,
+          'Enterprise Admin browses marketplace, selects agent,\nconfigures team access, permissions, and usage limits', '#0070C0', 'white', 11)
+arrow(ax, CX, 11.65, CX, 11.0)
 
-draw_rect(ax, CX, 19.0, 4.8, 1.0,
-          'Cisco Trust Badge Issued\n"Cisco Verified Agent"\nListed in marketplace', '#27AE60', 'white', 10)
+draw_diamond(ax, CX, 10.0, 2.0, 'Admin\nApproves?', '#F39C12', 'black', 11)
 
-arrow(ax, CX + 2.6, 19.0, 15.25 - 2.6, 19.0, '#333333', 2.5)
+ax.text(CX - 2.8, 10.0, 'NO', fontsize=12, fontweight='bold', color='#E74C3C')
+arrow(ax, CX - 1.0, 10.0, CX - 2.2, 10.0, '#E74C3C', 2)
 
-# === COLUMN 3: DEPLOY (x center = 15.25) ===
-DX = 15.25
+ax.text(CX + 2.0, 10.0, 'YES', fontsize=12, fontweight='bold', color='#27AE60')
+arrow(ax, CX, 9.0, CX, 8.4)
 
-arrow(ax, 12, 28.5, DX, 27.8)
+draw_rect(ax, CX, 7.8, 8.0, 1.0,
+          'Agent deployed to Webex workspace (sandboxed execution)\nListens for trigger phrases, executes within permissions', '#0070C0', 'white', 11)
+arrow(ax, CX, 7.25, CX, 6.6)
 
-draw_rect(ax, DX, 27.2, 4.8, 1.2,
-          'ADMIN DISCOVERY\nBrowse marketplace by:\nIndustry / Use case /\nSecurity cert level', '#0070C0', 'white', 10)
-arrow(ax, DX, 26.55, DX, 25.9)
+# === PHASE 4: MONITOR ===
+p4 = mpatches.FancyBboxPatch((0.5, 3.8), 17.0, 2.6, boxstyle="round,pad=0.15",
+                               facecolor='#8E44AD', edgecolor='#8E44AD', linewidth=2, alpha=0.08)
+ax.add_patch(p4)
+ax.text(1.2, 6.0, 'PHASE 4: MONITOR (Splunk Observability)', fontsize=14, fontweight='bold', color='#8E44AD')
 
-draw_rect(ax, DX, 25.3, 4.8, 1.0,
-          'CONFIGURE & SCOPE\nSet team access, permissions,\napproval rules, usage limits', '#0070C0', 'white', 10)
-arrow(ax, DX, 24.75, DX, 24.0)
+draw_rect(ax, CX, 6.0, 8.0, 1.0,
+          'Splunk monitors: agent performance, error rates, anomalies\nUsage analytics, ROI dashboards, automated alerts', '#8E44AD', 'white', 11)
+arrow(ax, CX, 5.45, CX, 4.8)
 
-draw_diamond(ax, DX, 23.0, 2.0, 'Admin\nApproves?', '#F39C12', 'black', 10)
+draw_diamond(ax, CX, 3.8, 2.0, 'Alert\nTriggered?', '#F39C12', 'black', 11)
 
-ax.text(DX - 2.3, 23.0, 'NO', fontsize=11, fontweight='bold', color='#E74C3C')
-arrow(ax, DX - 1.0, 23.0, DX - 1.8, 23.0, '#E74C3C', 2)
+ax.text(CX + 2.5, 4.5, 'YES: Kill Switch\n(auto-disable agent)', fontsize=10, fontweight='bold', color='#E74C3C',
+        bbox=dict(boxstyle='round,pad=0.2', facecolor='#FADBD8', edgecolor='#E74C3C', linewidth=1.5))
+arrow(ax, CX + 1.0, 3.8, CX + 2.0, 3.8, '#E74C3C', 2)
 
-ax.text(DX + 1.5, 23.6, 'YES', fontsize=11, fontweight='bold', color='#27AE60')
-arrow(ax, DX, 22.0, DX, 21.3)
+ax.text(CX - 2.5, 4.5, 'NO: Continue\nmonitoring', fontsize=10, fontweight='bold', color='#27AE60',
+        bbox=dict(boxstyle='round,pad=0.2', facecolor='#D5F5E3', edgecolor='#27AE60', linewidth=1.5))
+arrow(ax, CX - 1.0, 3.8, CX - 1.8, 3.8, '#27AE60', 2)
 
-draw_rect(ax, DX, 20.7, 4.8, 1.0,
-          'DEPLOY TO WORKSPACE\nAgent activated in Webex\nSandboxed execution env.', '#0070C0', 'white', 10)
-arrow(ax, DX, 20.15, DX, 19.6)
+arrow(ax, CX, 2.8, CX, 2.2)
 
-draw_rect(ax, DX, 19.0, 4.8, 1.0,
-          'AGENT LIVE IN MEETINGS\nListens for trigger phrases\nHuman-in-loop for high-risk', '#0070C0', 'white', 10)
-
-arrow(ax, DX + 2.6, 19.0, 21.25 - 1.5, 19.0, '#333333', 2.5)
-
-# === COLUMN 4: MONITOR (x center = 21.25) ===
-MX = 21.25
-
-arrow(ax, 12, 28.5, MX, 27.8)
-
-draw_rect(ax, MX, 27.2, 3.5, 1.0,
-          'REAL-TIME\nMONITORING\nSplunk dashboards', '#8E44AD', 'white', 10)
-arrow(ax, MX, 26.65, MX, 26.0)
-
-draw_rect(ax, MX, 25.4, 3.5, 1.0,
-          'ANOMALY\nDETECTION\nSecurity violations', '#8E44AD', 'white', 10)
-arrow(ax, MX, 24.85, MX, 24.0)
-
-draw_diamond(ax, MX, 23.0, 1.8, 'Alert?', '#F39C12', 'black', 10)
-
-ax.text(MX + 1.3, 23.6, 'YES', fontsize=10, fontweight='bold', color='#E74C3C')
-arrow(ax, MX + 0.9, 23.0, MX + 1.5, 23.0, '#E74C3C', 2)
-draw_rect(ax, MX + 2.0, 23.0, 1.2, 0.6,
-          'Kill\nSwitch', '#E74C3C', 'white', 8)
-
-ax.text(MX + 0.5, 21.8, 'NO', fontsize=10, fontweight='bold', color='#27AE60')
-arrow(ax, MX, 22.1, MX, 21.3)
-
-draw_rect(ax, MX, 20.7, 3.5, 1.0,
-          'USAGE ANALYTICS\nAdoption metrics\nROI calculation', '#8E44AD', 'white', 10)
-arrow(ax, MX, 20.15, MX, 19.6)
-
-draw_rect(ax, MX, 19.0, 3.5, 1.0,
-          'BILLING &\nREVENUE SHARE\nPay-per-use model', '#8E44AD', 'white', 10)
-
-# === BOTTOM ROW: Horizontal connecting bar ===
-bar_y = 17.8
-bar = mpatches.FancyBboxPatch((0.5, bar_y), 23.0, 0.6, boxstyle='round,pad=0.08',
-                               facecolor='#002060', edgecolor='black', linewidth=2)
-ax.add_patch(bar)
-ax.text(12, bar_y + 0.3, 'COMPLETE LIFECYCLE: Build -> Certify -> Deploy -> Monitor -> Continuous Improvement',
-        ha='center', va='center', fontsize=11, fontweight='bold', color='white')
-
-arrow(ax, BX, 18.45, BX, bar_y + 0.65)
-arrow(ax, CX, 18.45, CX, bar_y + 0.65)
-arrow(ax, DX, 18.45, DX, bar_y + 0.65)
-arrow(ax, MX, 18.45, MX, bar_y + 0.65)
-
-# === EXAMPLE AGENTS SECTION ===
-ax.text(12, 17.0, 'EXAMPLE AGENTS IN MARKETPLACE', ha='center', fontsize=16,
-        fontweight='bold', color='#002060')
-
-example_agents = [
-    ('Healthcare\nCompliance Agent', '#E74C3C',
-     'Auto-generates HIPAA-\ncompliant meeting notes\nRedacts PHI from transcripts\nRoutes to secure storage'),
-    ('Sales Pipeline\nAgent', '#F39C12',
-     'Updates Salesforce after\ncustomer calls automatically\nLogs call sentiment scores\nTriggers deal stage changes'),
-    ('IT Incident\nResponse Agent', '#0070C0',
-     'Detects outage discussions\nCreates ServiceNow tickets\nPages on-call engineers\nTracks resolution in Splunk'),
-    ('Legal Review\nAgent', '#27AE60',
-     'Flags contract discussions\nExtracts key terms/dates\nRoutes to legal team\nTracks approval workflow'),
-    ('HR Onboarding\nAgent', '#8E44AD',
-     'Detects new hire mentions\nCreates Workday tasks\nSchedules orientation meets\nAssigns training modules'),
-]
-
-aw = 4.2
-ag = 0.35
-total_aw = 5 * aw + 4 * ag
-start_ax = (24 - total_aw) / 2
-
-for i, (title, color, desc) in enumerate(example_agents):
-    sx = start_ax + i * (aw + ag)
-    sy = 12.0
-
-    step_rect = mpatches.FancyBboxPatch((sx, sy), aw, 4.5, boxstyle="round,pad=0.1",
-                                         facecolor='white', edgecolor=color, linewidth=2.5)
-    ax.add_patch(step_rect)
-
-    header_rect = mpatches.FancyBboxPatch((sx, sy + 3.4), aw, 1.1, boxstyle="round,pad=0.08",
-                                           facecolor=color, edgecolor=color, linewidth=1)
-    ax.add_patch(header_rect)
-    ax.text(sx + aw/2, sy + 3.95, title,
-            ha='center', va='center', fontsize=10, fontweight='bold', color='white')
-
-    for j, line in enumerate(desc.split('\n')):
-        ax.text(sx + 0.2, sy + 3.0 - j * 0.55, line,
-                fontsize=9, color='#333333', va='top')
+draw_oval(ax, CX, 1.6, 8.0, 0.9, 'Billing & Revenue Share (70/30 developer split)\nAgent runs continuously in Webex', '#002060', 'white', 10)
 
 # === IMPACT BAR ===
-mr = mpatches.FancyBboxPatch((0.5, 10.8), 23.0, 0.9, boxstyle='round,pad=0.1',
+mr = mpatches.FancyBboxPatch((0.5, 0.3), 17.0, 0.9, boxstyle='round,pad=0.1',
                                facecolor='#002060', edgecolor='black', linewidth=2)
 ax.add_patch(mr)
-ax.text(12, 11.25, 'IMPACT: 500+ certified agents in Year 1  |  $150M marketplace GMV by FY2028  |  '
-        '3x developer ecosystem growth  |  85% enterprise renewal rate',
+ax.text(9, 0.75, 'IMPACT: 500+ certified agents Year 1  |  $150M GMV by FY2028  |  '
+        '3x ecosystem growth  |  85% renewal rate',
         ha='center', va='center', fontsize=11, fontweight='bold', color='white')
 
 plt.tight_layout()
