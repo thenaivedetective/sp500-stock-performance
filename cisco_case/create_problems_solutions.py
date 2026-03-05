@@ -351,143 +351,173 @@ print("Flowchart 2 (Meeting-to-Action Engine) created")
 
 # ============================================================
 # FLOWCHART 3: Secure AI Agent Marketplace Ecosystem
+# Completely rebuilt with proper spacing - no overlaps
 # ============================================================
-fig, ax = plt.subplots(figsize=(22, 20))
-ax.set_xlim(0, 22)
-ax.set_ylim(0, 20)
+fig, ax = plt.subplots(figsize=(24, 32))
+ax.set_xlim(0, 24)
+ax.set_ylim(0, 32)
 ax.axis('off')
 
-S3 = -8
+ax.text(12, 31.3, 'Solution 3: Secure AI Agent Marketplace & Developer Platform',
+        ha='center', fontsize=24, fontweight='bold', color='#002060')
+ax.text(12, 30.7, 'Build -> Certify -> Deploy -> Monitor Lifecycle  |  Enterprise-Grade Agent Ecosystem',
+        ha='center', fontsize=14, color='#555555')
 
-ax.text(11, 27.5+S3, 'Solution 3: Secure AI Agent Marketplace & Developer Platform',
-        ha='center', fontsize=22, fontweight='bold', color='#002060')
-ax.text(11, 27.0+S3, 'Build -> Certify -> Deploy -> Monitor Lifecycle  |  Enterprise-Grade Agent Ecosystem',
-        ha='center', fontsize=13, color='#555555')
-
-lifecycle_phases = [
-    ('BUILD', '#1A5276', 0.3, 5.0),
-    ('CERTIFY', '#27AE60', 5.8, 5.0),
-    ('DEPLOY', '#0070C0', 11.3, 5.0),
-    ('MONITOR', '#8E44AD', 16.8, 5.0),
+# --- Phase label banners (below title, above START) ---
+phase_labels = [
+    ('1. BUILD', '#1A5276', 0.5, 5.5),
+    ('2. CERTIFY', '#27AE60', 6.5, 5.5),
+    ('3. DEPLOY', '#0070C0', 12.5, 5.5),
+    ('4. MONITOR', '#8E44AD', 18.5, 5.0),
 ]
 
-for label, color, x, w in lifecycle_phases:
-    rect = mpatches.FancyBboxPatch((x, 24.0+S3), w, 2.5, boxstyle="round,pad=0.15",
-                                    facecolor=color, edgecolor='black', linewidth=2, alpha=0.15)
+for label, color, x, w in phase_labels:
+    rect = mpatches.FancyBboxPatch((x, 8.0), w, 22.0, boxstyle="round,pad=0.1",
+                                    facecolor=color, edgecolor=color, linewidth=1.5, alpha=0.07)
     ax.add_patch(rect)
-    ax.text(x + w/2, 26.2+S3, label, ha='center', fontsize=14, fontweight='bold', color=color)
+    ax.text(x + w/2, 29.7, label, ha='center', fontsize=15, fontweight='bold', color=color)
 
-draw_oval(ax, 11, 26.2+S3, 5.0, 0.8, 'START: Developer Registers on Platform', '#002060', 'white', 10)
-arrow(ax, 11, 25.75+S3, 2.8, 25.3+S3)
+# --- START ---
+draw_oval(ax, 12, 29.0, 6.0, 0.9, 'START: Developer Registers on Platform', '#002060', 'white', 11)
 
-draw_rect(ax, 2.8, 24.7+S3, 4.2, 1.0,
-          'Agent SDK (Python / JS)\nDownload SDK + templates\nAPI documentation + samples', '#1A5276', 'white', 9)
-arrow(ax, 2.8, 24.15+S3, 2.8, 23.5+S3)
+# === COLUMN 1: BUILD (x center = 3.25) ===
+BX = 3.25
+arrow(ax, 12, 28.5, BX, 27.8)
 
-draw_rect(ax, 2.8, 22.9+S3, 4.2, 1.0,
-          'Developer Builds Agent\nDefine: triggers, actions, data\nscope, permission requirements\nTest in sandbox environment', '#1A5276', 'white', 9)
-arrow(ax, 2.8, 22.35+S3, 2.8, 21.7+S3)
+draw_rect(ax, BX, 27.2, 4.8, 1.0,
+          'Agent SDK (Python / JS)\nDownload SDK + templates\nAPI docs + code samples', '#1A5276', 'white', 10)
+arrow(ax, BX, 26.65, BX, 26.0)
 
-draw_rect(ax, 2.8, 21.1+S3, 4.2, 1.0,
-          'Local Testing & Validation\nUnit tests + integration tests\nMock API responses\nPerformance benchmarking', '#1A5276', 'white', 9)
-arrow(ax, 2.8, 20.55+S3, 2.8, 19.9+S3)
+draw_rect(ax, BX, 25.4, 4.8, 1.0,
+          'Developer Builds Agent\nDefine triggers, actions,\ndata scope, permissions', '#1A5276', 'white', 10)
+arrow(ax, BX, 24.85, BX, 24.2)
 
-draw_diamond(ax, 2.8, 19.0+S3, 1.8, 'Tests\nPass?', '#F39C12', 'black', 9)
-ax.text(1.0, 19.0+S3, 'NO', fontsize=10, fontweight='bold', color='#E74C3C')
-arrow(ax, 1.9, 19.0+S3, 1.3, 19.0+S3, '#E74C3C', 2)
-arrow(ax, 1.3, 19.0+S3, 1.3, 22.9+S3, '#E74C3C', 2)
-arrow(ax, 1.3, 22.9+S3, 2.8 - 2.3, 22.9+S3, '#E74C3C', 2)
+draw_rect(ax, BX, 23.6, 4.8, 1.0,
+          'Local Testing & Validation\nUnit + integration tests\nSandbox environment', '#1A5276', 'white', 10)
+arrow(ax, BX, 23.05, BX, 22.2)
 
-ax.text(4.3, 19.7+S3, 'YES', fontsize=10, fontweight='bold', color='#27AE60')
-arrow(ax, 3.7, 19.0+S3, 5.5, 19.0+S3, '#27AE60', 2.5)
+draw_diamond(ax, BX, 21.2, 1.8, 'Tests\nPass?', '#F39C12', 'black', 10)
 
-draw_rect(ax, 2.8, 17.5+S3, 4.2, 1.0,
-          'Submit Agent to\nCisco Marketplace Portal\nIncludes: manifest, docs,\npermission declaration', '#1A5276', 'white', 9)
-arrow(ax, 2.8, 18.1+S3, 2.8, 18.05+S3)
+ax.text(1.2, 21.8, 'NO', fontsize=11, fontweight='bold', color='#E74C3C')
+arrow(ax, BX - 0.9, 21.2, 0.8, 21.2, '#E74C3C', 2)
+arrow(ax, 0.8, 21.2, 0.8, 25.4, '#E74C3C', 2)
+arrow(ax, 0.8, 25.4, BX - 2.6, 25.4, '#E74C3C', 2)
 
-arrow(ax, 5.0, 17.5+S3, 8.3, 17.5+S3, '#333333', 2.5)
+ax.text(BX + 1.5, 21.8, 'YES', fontsize=11, fontweight='bold', color='#27AE60')
+arrow(ax, BX, 20.3, BX, 19.6)
 
-draw_rect(ax, 8.3, 25.0+S3, 4.2, 1.2,
-          'SECURITY SCAN\nStatic code analysis\nVulnerability detection\nData access audit\nCompliance check (SOC2/HIPAA)', '#27AE60', 'white', 9)
-arrow(ax, 11, 25.75+S3, 8.3, 25.3+S3)
+draw_rect(ax, BX, 19.0, 4.8, 1.0,
+          'Submit to Cisco\nMarketplace Portal\nManifest + docs + permissions', '#1A5276', 'white', 10)
 
-draw_rect(ax, 8.3, 23.2+S3, 4.2, 1.2,
-          'PERMISSION REVIEW\nVerify declared data scopes\nZero-trust policy enforcement\nMinimum-privilege validation\nPII handling assessment', '#27AE60', 'white', 9)
-arrow(ax, 8.3, 24.35+S3, 8.3, 23.85+S3)
+arrow(ax, BX + 2.6, 19.0, 9.25 - 2.6, 19.0, '#333333', 2.5)
 
-draw_rect(ax, 8.3, 21.4+S3, 4.2, 1.2,
-          'PERFORMANCE TESTING\nLatency benchmarks (<200ms)\nLoad testing (1000+ concurrent)\nMemory/CPU profiling\nFailure recovery testing', '#27AE60', 'white', 9)
-arrow(ax, 8.3, 22.55+S3, 8.3, 22.05+S3)
+# === COLUMN 2: CERTIFY (x center = 9.25) ===
+CX = 9.25
 
-draw_diamond(ax, 8.3, 19.7+S3, 2.0, 'Cisco\nCertified?', '#F39C12', 'black', 9)
-arrow(ax, 8.3, 20.75+S3, 8.3, 20.2+S3)
+arrow(ax, 12, 28.5, CX, 27.8)
 
-ax.text(6.0, 19.7+S3, 'FAIL', fontsize=10, fontweight='bold', color='#E74C3C')
-arrow(ax, 7.3, 19.7+S3, 5.0, 19.7+S3, '#E74C3C', 2)
-draw_rect(ax, 5.0, 19.7+S3, 2.0, 0.7,
+draw_rect(ax, CX, 27.2, 4.8, 1.0,
+          'SECURITY SCAN\nStatic code analysis\nVulnerability detection', '#27AE60', 'white', 10)
+arrow(ax, CX, 26.65, CX, 26.0)
+
+draw_rect(ax, CX, 25.4, 4.8, 1.0,
+          'PERMISSION REVIEW\nZero-trust policy check\nMinimum-privilege validation', '#27AE60', 'white', 10)
+arrow(ax, CX, 24.85, CX, 24.2)
+
+draw_rect(ax, CX, 23.6, 4.8, 1.0,
+          'PERFORMANCE TESTING\nLatency < 200ms benchmark\nLoad test 1000+ concurrent', '#27AE60', 'white', 10)
+arrow(ax, CX, 23.05, CX, 22.2)
+
+draw_diamond(ax, CX, 21.2, 2.0, 'Cisco\nCertified?', '#F39C12', 'black', 10)
+
+ax.text(CX - 2.5, 21.8, 'FAIL', fontsize=11, fontweight='bold', color='#E74C3C')
+arrow(ax, CX - 1.0, 21.2, CX - 2.0, 21.2, '#E74C3C', 2)
+draw_rect(ax, CX - 2.8, 21.2, 1.8, 0.7,
           'Return with\nfeedback', '#E74C3C', 'white', 8)
 
-ax.text(10.0, 20.3+S3, 'PASS', fontsize=10, fontweight='bold', color='#27AE60')
-arrow(ax, 8.3, 18.7+S3, 8.3, 18.1+S3)
+ax.text(CX + 1.5, 21.8, 'PASS', fontsize=11, fontweight='bold', color='#27AE60')
+arrow(ax, CX, 20.2, CX, 19.6)
 
-draw_rect(ax, 8.3, 17.5+S3, 4.2, 1.0,
-          'Cisco Trust Badge Issued\n"Cisco Verified Agent"\nListed in Marketplace catalog\nwith security rating', '#27AE60', 'white', 9)
+draw_rect(ax, CX, 19.0, 4.8, 1.0,
+          'Cisco Trust Badge Issued\n"Cisco Verified Agent"\nListed in marketplace', '#27AE60', 'white', 10)
 
-arrow(ax, 10.5, 17.5+S3, 13.8, 17.5+S3, '#333333', 2.5)
+arrow(ax, CX + 2.6, 19.0, 15.25 - 2.6, 19.0, '#333333', 2.5)
 
-draw_rect(ax, 13.8, 25.0+S3, 4.2, 1.2,
-          'ENTERPRISE ADMIN\nDISCOVERY\nBrowse marketplace by:\n- Industry vertical\n- Use case category\n- Security certification level', '#0070C0', 'white', 9)
-arrow(ax, 16.5, 25.75+S3, 13.8, 25.3+S3)
+# === COLUMN 3: DEPLOY (x center = 15.25) ===
+DX = 15.25
 
-draw_rect(ax, 13.8, 23.0+S3, 4.2, 1.2,
-          'CONFIGURE & SCOPE\nAdmin sets: which teams,\ndata access permissions,\napproval workflows,\nusage limits & budgets', '#0070C0', 'white', 9)
-arrow(ax, 13.8, 24.35+S3, 13.8, 23.65+S3)
+arrow(ax, 12, 28.5, DX, 27.8)
 
-draw_diamond(ax, 13.8, 21.3+S3, 2.0, 'Admin\nApproves?', '#F39C12', 'black', 9)
-arrow(ax, 13.8, 22.35+S3, 13.8, 21.8+S3)
+draw_rect(ax, DX, 27.2, 4.8, 1.2,
+          'ADMIN DISCOVERY\nBrowse marketplace by:\nIndustry / Use case /\nSecurity cert level', '#0070C0', 'white', 10)
+arrow(ax, DX, 26.55, DX, 25.9)
 
-ax.text(12.0, 21.3+S3, 'NO', fontsize=10, fontweight='bold', color='#E74C3C')
-arrow(ax, 12.8, 21.3+S3, 11.5, 21.3+S3, '#E74C3C', 2)
+draw_rect(ax, DX, 25.3, 4.8, 1.0,
+          'CONFIGURE & SCOPE\nSet team access, permissions,\napproval rules, usage limits', '#0070C0', 'white', 10)
+arrow(ax, DX, 24.75, DX, 24.0)
 
-ax.text(15.5, 21.9+S3, 'YES', fontsize=10, fontweight='bold', color='#27AE60')
-arrow(ax, 13.8, 20.3+S3, 13.8, 19.7+S3)
+draw_diamond(ax, DX, 23.0, 2.0, 'Admin\nApproves?', '#F39C12', 'black', 10)
 
-draw_rect(ax, 13.8, 19.1+S3, 4.2, 1.0,
-          'DEPLOY TO WORKSPACE\nAgent activated in Webex\nScoped to approved teams\nSandboxed execution env.', '#0070C0', 'white', 9)
+ax.text(DX - 2.3, 23.0, 'NO', fontsize=11, fontweight='bold', color='#E74C3C')
+arrow(ax, DX - 1.0, 23.0, DX - 1.8, 23.0, '#E74C3C', 2)
 
-draw_rect(ax, 13.8, 17.5+S3, 4.2, 1.0,
-          'AGENT LIVE IN MEETINGS\nListens for trigger phrases\nExecutes within permissions\nHuman-in-loop for high-risk', '#0070C0', 'white', 9)
-arrow(ax, 13.8, 18.55+S3, 13.8, 18.05+S3)
+ax.text(DX + 1.5, 23.6, 'YES', fontsize=11, fontweight='bold', color='#27AE60')
+arrow(ax, DX, 22.0, DX, 21.3)
 
-arrow(ax, 16.0, 17.5+S3, 19.3, 17.5+S3, '#333333', 2.5)
+draw_rect(ax, DX, 20.7, 4.8, 1.0,
+          'DEPLOY TO WORKSPACE\nAgent activated in Webex\nSandboxed execution env.', '#0070C0', 'white', 10)
+arrow(ax, DX, 20.15, DX, 19.6)
 
-draw_rect(ax, 19.3, 25.0+S3, 2.4, 1.2,
-          'REAL-TIME\nMONITORING\nSplunk dashboards\nAgent performance\nError rates', '#8E44AD', 'white', 8)
-arrow(ax, 19.3, 25.75+S3, 19.3, 25.6+S3)
+draw_rect(ax, DX, 19.0, 4.8, 1.0,
+          'AGENT LIVE IN MEETINGS\nListens for trigger phrases\nHuman-in-loop for high-risk', '#0070C0', 'white', 10)
 
-draw_rect(ax, 19.3, 23.2+S3, 2.4, 1.2,
-          'ANOMALY\nDETECTION\nUnusual data access\nPerformance degradation\nSecurity violations', '#8E44AD', 'white', 8)
-arrow(ax, 19.3, 24.35+S3, 19.3, 23.85+S3)
+arrow(ax, DX + 2.6, 19.0, 21.25 - 1.5, 19.0, '#333333', 2.5)
 
-draw_diamond(ax, 19.3, 21.5+S3, 1.8, 'Alert?', '#F39C12', 'black', 9)
-arrow(ax, 19.3, 22.55+S3, 19.3, 22.0+S3)
+# === COLUMN 4: MONITOR (x center = 21.25) ===
+MX = 21.25
 
-ax.text(20.8, 21.5+S3, 'YES', fontsize=9, fontweight='bold', color='#E74C3C')
-arrow(ax, 20.2, 21.5+S3, 21.0, 21.5+S3, '#E74C3C', 2)
-draw_rect(ax, 21.0, 21.5+S3, 0.8, 0.6,
-          'Kill\nSwitch', '#E74C3C', 'white', 7)
+arrow(ax, 12, 28.5, MX, 27.8)
 
-ax.text(19.3, 20.3+S3, 'NO', fontsize=9, fontweight='bold', color='#27AE60')
-arrow(ax, 19.3, 20.6+S3, 19.3, 20.0+S3)
+draw_rect(ax, MX, 27.2, 3.5, 1.0,
+          'REAL-TIME\nMONITORING\nSplunk dashboards', '#8E44AD', 'white', 10)
+arrow(ax, MX, 26.65, MX, 26.0)
 
-draw_rect(ax, 19.3, 19.3+S3, 2.4, 1.2,
-          'USAGE\nANALYTICS\nAdoption metrics\nROI calculation\nUser satisfaction', '#8E44AD', 'white', 8)
+draw_rect(ax, MX, 25.4, 3.5, 1.0,
+          'ANOMALY\nDETECTION\nSecurity violations', '#8E44AD', 'white', 10)
+arrow(ax, MX, 24.85, MX, 24.0)
 
-draw_rect(ax, 19.3, 17.5+S3, 2.4, 1.0,
-          'BILLING &\nREVENUE\nPay-per-use or\nsubscription', '#8E44AD', 'white', 8)
-arrow(ax, 19.3, 18.65+S3, 19.3, 18.05+S3)
+draw_diamond(ax, MX, 23.0, 1.8, 'Alert?', '#F39C12', 'black', 10)
 
-ax.text(11, 16.0+S3, 'EXAMPLE AGENTS IN MARKETPLACE', ha='center', fontsize=14,
+ax.text(MX + 1.3, 23.6, 'YES', fontsize=10, fontweight='bold', color='#E74C3C')
+arrow(ax, MX + 0.9, 23.0, MX + 1.5, 23.0, '#E74C3C', 2)
+draw_rect(ax, MX + 2.0, 23.0, 1.2, 0.6,
+          'Kill\nSwitch', '#E74C3C', 'white', 8)
+
+ax.text(MX + 0.5, 21.8, 'NO', fontsize=10, fontweight='bold', color='#27AE60')
+arrow(ax, MX, 22.1, MX, 21.3)
+
+draw_rect(ax, MX, 20.7, 3.5, 1.0,
+          'USAGE ANALYTICS\nAdoption metrics\nROI calculation', '#8E44AD', 'white', 10)
+arrow(ax, MX, 20.15, MX, 19.6)
+
+draw_rect(ax, MX, 19.0, 3.5, 1.0,
+          'BILLING &\nREVENUE SHARE\nPay-per-use model', '#8E44AD', 'white', 10)
+
+# === BOTTOM ROW: Horizontal connecting bar ===
+bar_y = 17.8
+bar = mpatches.FancyBboxPatch((0.5, bar_y), 23.0, 0.6, boxstyle='round,pad=0.08',
+                               facecolor='#002060', edgecolor='black', linewidth=2)
+ax.add_patch(bar)
+ax.text(12, bar_y + 0.3, 'COMPLETE LIFECYCLE: Build -> Certify -> Deploy -> Monitor -> Continuous Improvement',
+        ha='center', va='center', fontsize=11, fontweight='bold', color='white')
+
+arrow(ax, BX, 18.45, BX, bar_y + 0.65)
+arrow(ax, CX, 18.45, CX, bar_y + 0.65)
+arrow(ax, DX, 18.45, DX, bar_y + 0.65)
+arrow(ax, MX, 18.45, MX, bar_y + 0.65)
+
+# === EXAMPLE AGENTS SECTION ===
+ax.text(12, 17.0, 'EXAMPLE AGENTS IN MARKETPLACE', ha='center', fontsize=16,
         fontweight='bold', color='#002060')
 
 example_agents = [
@@ -503,35 +533,36 @@ example_agents = [
      'Detects new hire mentions\nCreates Workday tasks\nSchedules orientation meets\nAssigns training modules'),
 ]
 
-aw = 3.8
-ag = 0.3
+aw = 4.2
+ag = 0.35
 total_aw = 5 * aw + 4 * ag
-start_ax = (22 - total_aw) / 2
+start_ax = (24 - total_aw) / 2
 
 for i, (title, color, desc) in enumerate(example_agents):
     sx = start_ax + i * (aw + ag)
-    sy = 11.8+S3
+    sy = 12.0
 
-    step_rect = mpatches.FancyBboxPatch((sx, sy), aw, 3.8, boxstyle="round,pad=0.1",
+    step_rect = mpatches.FancyBboxPatch((sx, sy), aw, 4.5, boxstyle="round,pad=0.1",
                                          facecolor='white', edgecolor=color, linewidth=2.5)
     ax.add_patch(step_rect)
 
-    header_rect = mpatches.FancyBboxPatch((sx, sy + 2.8), aw, 1.0, boxstyle="round,pad=0.08",
+    header_rect = mpatches.FancyBboxPatch((sx, sy + 3.4), aw, 1.1, boxstyle="round,pad=0.08",
                                            facecolor=color, edgecolor=color, linewidth=1)
     ax.add_patch(header_rect)
-    ax.text(sx + aw/2, sy + 3.3, title,
-            ha='center', va='center', fontsize=9, fontweight='bold', color='white')
+    ax.text(sx + aw/2, sy + 3.95, title,
+            ha='center', va='center', fontsize=10, fontweight='bold', color='white')
 
     for j, line in enumerate(desc.split('\n')):
-        ax.text(sx + 0.15, sy + 2.4 - j * 0.5, line,
-                fontsize=8, color='#333333', va='top')
+        ax.text(sx + 0.2, sy + 3.0 - j * 0.55, line,
+                fontsize=9, color='#333333', va='top')
 
-mr = mpatches.FancyBboxPatch((0.3, 10.5+S3), 21.4, 0.9, boxstyle='round,pad=0.1',
+# === IMPACT BAR ===
+mr = mpatches.FancyBboxPatch((0.5, 10.8), 23.0, 0.9, boxstyle='round,pad=0.1',
                                facecolor='#002060', edgecolor='black', linewidth=2)
 ax.add_patch(mr)
-ax.text(11, 10.95+S3, 'IMPACT: 500+ certified agents in Year 1  |  $150M marketplace GMV by FY2028  |  '
+ax.text(12, 11.25, 'IMPACT: 500+ certified agents in Year 1  |  $150M marketplace GMV by FY2028  |  '
         '3x developer ecosystem growth  |  85% enterprise renewal rate',
-        ha='center', va='center', fontsize=10, fontweight='bold', color='white')
+        ha='center', va='center', fontsize=11, fontweight='bold', color='white')
 
 plt.tight_layout()
 plt.savefig('cisco_case/figures/flowchart_3_marketplace.png', dpi=200, bbox_inches='tight')
