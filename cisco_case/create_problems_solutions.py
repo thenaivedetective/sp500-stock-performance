@@ -230,11 +230,13 @@ arrow(ax, DF - 2.8, 17.8, WX + 1.5, 16.3, '#333333')
 
 draw_diamond(ax, WX, 15.3, 2.0, 'Human-in-Loop\nApprove?', '#F39C12', 'black', 10)
 
-ax.text(WX + 1.7, 14.3, 'REJECT', fontsize=11, fontweight='bold', color='#E74C3C', ha='center')
 arrow(ax, WX + 1.0, 15.3, DF - 2.8, 17.2, '#E74C3C', 2)
+ax.text(6.5, 16.6, 'REJECT', fontsize=11, fontweight='bold', color='#E74C3C', ha='center',
+        bbox=dict(boxstyle='round,pad=0.15', facecolor='white', edgecolor='#E74C3C', alpha=0.9))
 
-ax.text(WX + 1.7, 16.1, 'APPROVE', fontsize=11, fontweight='bold', color='#27AE60', ha='center')
 arrow(ax, WX + 1.0, 15.3, TP - 2.5, 15.3, '#27AE60', 2.5)
+ax.text(10.0, 15.8, 'APPROVE', fontsize=11, fontweight='bold', color='#27AE60', ha='center',
+        bbox=dict(boxstyle='round,pad=0.15', facecolor='white', edgecolor='#27AE60', alpha=0.9))
 
 draw_rect(ax, TP, 15.3, 5.0, 1.2,
           'EXECUTE\nAgent pushes data via\nsecure API to external app', '#E74C3C', 'white', 10)
@@ -251,40 +253,40 @@ draw_rect(ax, DF, 11.1, 5.5, 1.0,
           'CONFIRM\nStatus posted to Webex Chat:\n"Task WEBAPP-2026-347 created"', '#0070C0', 'white', 9)
 arrow(ax, DF - 2.8, 11.1, WX + 2.0, 11.1, '#333333')
 
-arrow(ax, DF, 10.55, DF, 9.8)
+arrow(ax, DF, 10.55, DF, 10.0)
 
-draw_dashed_box(ax, 0.5, 3.8, 6.3, 5.8, 'FOLLOW-UP: Post-Meeting AI', '#0050A0')
+draw_dashed_box(ax, 0.5, 2.5, 6.3, 8.2, 'FOLLOW-UP: Post-Meeting AI', '#0050A0')
 
-draw_oval(ax, WX, 9.2, 4.5, 1.0, 'Meeting\nEnds', '#27AE60', 'white', 11)
-arrow(ax, DF - 2.8, 9.2, WX + 2.5, 9.2, '#333333')
-arrow(ax, WX, 8.65, WX, 8.0)
+draw_oval(ax, WX, 9.5, 4.5, 1.0, 'Meeting\nEnds', '#27AE60', 'white', 11)
+arrow(ax, DF - 2.8, 10.0, WX + 2.5, 9.5, '#333333')
+arrow(ax, WX, 8.95, WX, 8.3)
 
-draw_rect(ax, WX, 7.4, 5.5, 1.0,
+draw_rect(ax, WX, 7.7, 5.5, 1.0,
           'Unanswered Q Detection\nIdentify deferred questions\nfrom transcript + predicted Q&A', '#1A5276', 'white', 9)
-arrow(ax, WX, 6.85, WX, 6.2)
+arrow(ax, WX, 7.15, WX, 6.5)
 
-draw_rect(ax, WX, 5.6, 5.5, 1.0,
+draw_rect(ax, WX, 5.9, 5.5, 1.0,
           'AI Drafts Follow-Up Answers\nOwner reviews, edits, approves\nMulti-channel delivery', '#0070C0', 'white', 9)
-arrow(ax, WX, 5.05, WX, 4.4)
+arrow(ax, WX, 5.35, WX, 4.7)
 
-draw_rect(ax, WX, 3.8, 5.5, 1.0,
+draw_rect(ax, WX, 4.1, 5.5, 1.0,
           'Q&A Tracker Dashboard\nWeekly digest to participants\nResolution rate monitoring', '#0070C0', 'white', 9)
 
-arrow(ax, WX + 2.8, 7.4, DF - 2.5, 7.4, '#333333')
-draw_cyl(ax, DF, 7.4, 5.0, 1.2,
+arrow(ax, WX + 2.8, 7.7, DF - 2.5, 7.7, '#333333')
+draw_cyl(ax, DF, 7.7, 5.0, 1.2,
          'Splunk Observability\nFollow-up completion tracking\nSLA monitoring + alerts', '#8E44AD', 'white', 9)
 
-arrow(ax, WX + 2.8, 5.6, TP - 2.5, 5.6, '#333333')
-draw_rect(ax, TP, 5.6, 5.0, 1.0,
+arrow(ax, WX + 2.8, 5.9, TP - 2.5, 5.9, '#333333')
+draw_rect(ax, TP, 5.9, 5.0, 1.0,
           'Deliver Answers via\nWebex Spaces / Email /\nIntegrated Chat Tools', '#D35400', 'white', 9)
 
-arrow(ax, WX, 3.25, WX, 2.6)
-draw_oval(ax, WX, 2.0, 4.5, 0.9, 'END\nAll Loops Closed')
+arrow(ax, WX, 3.55, WX, 3.0)
+draw_oval(ax, WX, 2.5, 4.5, 0.9, 'END\nAll Loops Closed')
 
-mr = mpatches.FancyBboxPatch((0.3, 1.0), 21.4, 0.6, boxstyle='round,pad=0.05',
+mr = mpatches.FancyBboxPatch((0.3, 0.5), 21.4, 1.2, boxstyle='round,pad=0.05',
                                facecolor='#002060', edgecolor='black', linewidth=2)
 ax.add_patch(mr)
-ax.text(11, 1.3, 'IMPACT: 15 min saved/meeting  |  25% meeting-to-action  |  '
+ax.text(11, 1.1, 'IMPACT: 15 min saved/meeting  |  25% meeting-to-action  |  '
         '40% workflow automation  |  85% task accuracy  |  90%+ Q&A resolution',
         ha='center', va='center', fontsize=9, fontweight='bold', color='white')
 
@@ -352,10 +354,10 @@ ax.text(10.9, 50.6, '+ 90 more via Neural Machine Translation', ha='center', fon
 draw_oval(ax, 11, 49.2, 7.0, 0.9, 'START - USER JOINS WEBEX MEETING', '#002060', 'white', 12)
 arrow(ax, 11, 48.7, 11, 48.1)
 
-p_onb = mpatches.FancyBboxPatch((2.0, 42.5), 18.0, 5.4, boxstyle="round,pad=0.15",
+p_onb = mpatches.FancyBboxPatch((2.0, 42.5), 18.0, 6.2, boxstyle="round,pad=0.15",
                                   facecolor='#1A5276', edgecolor='#1A5276', linewidth=2, alpha=0.08)
 ax.add_patch(p_onb)
-ax.text(2.5, 47.5, 'A: USER ENTRY & ONBOARDING', fontsize=13, fontweight='bold', color='#1A5276')
+ax.text(2.5, 48.3, 'A: USER ENTRY & ONBOARDING', fontsize=13, fontweight='bold', color='#1A5276', zorder=10)
 
 draw_rect(ax, 11, 47.4, 12.0, 0.9,
           '1. User Enables VIBE in Meeting Controls  |  Toggle appears in controls bar  |  Zero configuration required', '#1A5276', 'white', 10)
@@ -388,10 +390,10 @@ ax.text(17.5, 42.7, 'TYPING', fontsize=12, fontweight='bold', color='#0070C0', h
 arrow(ax, 11 + 1.1, 42.7, 16.8, 42.7, '#0070C0', 2.5)
 arrow(ax, 16.8, 42.7, 16.8, 41.8)
 
-p_speak = mpatches.FancyBboxPatch((0.5, 28.0), 10.0, 13.6, boxstyle="round,pad=0.15",
+p_speak = mpatches.FancyBboxPatch((0.5, 28.0), 10.0, 14.2, boxstyle="round,pad=0.15",
                                     facecolor='#27AE60', edgecolor='#27AE60', linewidth=2, alpha=0.08)
 ax.add_patch(p_speak)
-ax.text(1.0, 41.2, 'B: LIVE AUDIO SPEAK PATH', fontsize=13, fontweight='bold', color='#27AE60')
+ax.text(1.0, 41.8, 'B: LIVE AUDIO SPEAK PATH', fontsize=13, fontweight='bold', color='#27AE60', zorder=10)
 
 draw_para(ax, 5.2, 41.0, 6.0, 0.9,
           '1. Microphone Audio Captured\nPer-speaker separation via AI Codec', '#2C3E50', 'white', 9)
@@ -420,10 +422,10 @@ arrow(ax, 5.2, 30.75, 5.2, 30.1)
 draw_para(ax, 5.2, 29.4, 6.0, 1.2,
           '7. Delivered to All Participants\nCleaned + boosted + translated voice\nPer-user captions in their language\nEach attendee controls own caption', '#2C3E50', 'white', 9)
 
-p_type = mpatches.FancyBboxPatch((11.5, 33.0), 10.0, 8.6, boxstyle="round,pad=0.15",
+p_type = mpatches.FancyBboxPatch((11.5, 33.0), 10.0, 9.2, boxstyle="round,pad=0.15",
                                    facecolor='#0070C0', edgecolor='#0070C0', linewidth=2, alpha=0.08)
 ax.add_patch(p_type)
-ax.text(12.0, 41.2, 'C: TYPE-TO-SPEAK PATH', fontsize=13, fontweight='bold', color='#0070C0')
+ax.text(12.0, 41.8, 'C: TYPE-TO-SPEAK PATH', fontsize=13, fontweight='bold', color='#0070C0', zorder=10)
 
 draw_rect(ax, 16.8, 41.0, 6.0, 0.9,
           '1. User Switches to Type-to-Speak\nTrigger: muted / noisy / mic issue / shy', '#0070C0', 'white', 9)
@@ -449,10 +451,10 @@ arrow(ax, 16.8, 33.05, 16.8, 27.8)
 arrow(ax, 16.8, 27.8, 11.5, 27.3, '#333333')
 arrow(ax, 5.2, 27.8, 10.5, 27.3, '#333333')
 
-p_qa = mpatches.FancyBboxPatch((0.5, 18.5), 21.0, 8.5, boxstyle="round,pad=0.15",
+p_qa = mpatches.FancyBboxPatch((0.5, 18.5), 21.0, 9.3, boxstyle="round,pad=0.15",
                                  facecolor='#8E44AD', edgecolor='#8E44AD', linewidth=2, alpha=0.08)
 ax.add_patch(p_qa)
-ax.text(1.0, 26.6, 'D: Q&A CLOSE-LOOP (NON-NATIVE / NON-TECH USERS)', fontsize=13, fontweight='bold', color='#8E44AD')
+ax.text(1.0, 27.4, 'D: Q&A CLOSE-LOOP (NON-NATIVE / NON-TECH USERS)', fontsize=13, fontweight='bold', color='#8E44AD', zorder=10)
 
 draw_rect(ax, 5.5, 26.4, 6.0, 1.0,
           '1. User Asks in Own Language\nVoice or Type-to-Speak - any language\ne.g. Hindi, Spanish, Mandarin', '#8E44AD', 'white', 10)
@@ -483,10 +485,10 @@ arrow(ax, 16.5, 19.15, 16.5, 18.3)
 arrow(ax, 5.5, 18.3, 10.5, 17.7, '#333333')
 arrow(ax, 16.5, 18.3, 11.5, 17.7, '#333333')
 
-p_end = mpatches.FancyBboxPatch((0.5, 10.5), 21.0, 7.0, boxstyle="round,pad=0.15",
+p_end = mpatches.FancyBboxPatch((0.5, 10.5), 21.0, 7.8, boxstyle="round,pad=0.15",
                                   facecolor='#D35400', edgecolor='#D35400', linewidth=2, alpha=0.08)
 ax.add_patch(p_end)
-ax.text(1.0, 17.1, 'E: END & LOGGING', fontsize=13, fontweight='bold', color='#D35400')
+ax.text(1.0, 17.9, 'E: END & LOGGING', fontsize=13, fontweight='bold', color='#D35400', zorder=10)
 
 draw_oval(ax, 11, 17.0, 5.0, 0.8, 'MEETING ENDS', '#D35400', 'white', 12)
 arrow(ax, 11, 16.55, 11, 15.8)
@@ -557,17 +559,17 @@ print("Flowchart 2 (VIBE) created")
 # FLOWCHART 3: Secure AI Agent Marketplace - 3-Lane Architecture
 # Developer Journey | Admin Journey | User Journey + Splunk
 # ============================================================
-fig, ax = plt.subplots(figsize=(22, 56))
+fig, ax = plt.subplots(figsize=(22, 58))
 ax.set_xlim(0, 22)
-ax.set_ylim(0, 56)
+ax.set_ylim(0, 58)
 ax.axis('off')
 
-ax.text(11, 55.3, 'Solution 3: Webex Secure AI Agent Marketplace',
+ax.text(11, 57.3, 'Solution 3: Webex Secure AI Agent Marketplace',
         ha='center', fontsize=21, fontweight='bold', color='#002060')
-ax.text(11, 54.7, 'Build \u2192 Certify \u2192 Deploy \u2192 Monitor  |  Three-Lane Architecture  |  100s of Third-Party Integrations',
+ax.text(11, 56.7, 'Build \u2192 Certify \u2192 Deploy \u2192 Monitor  |  Three-Lane Architecture  |  100s of Third-Party Integrations',
         ha='center', fontsize=12, color='#555555')
 
-draw_symbol_directory(ax, 0.3, 49.5, 6.5, 4.8)
+draw_symbol_directory(ax, 7.5, 51.0, 6.5, 4.8)
 
 DX = 3.8
 AX = 11.0
