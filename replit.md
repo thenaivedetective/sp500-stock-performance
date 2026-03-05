@@ -155,11 +155,15 @@ Academic project repository for SSIE-605 (Applied Multivariate Data Analysis) at
 
 ## Cisco Case Competition
 - **Deliverable 1:** cisco_case/Deliverable1_Lana_Jalal_Gidan.pdf
-- **Problems & Solutions Document:** cisco_case/Cisco_Problems_Solutions.pdf (16 pages, 3 problems, 3 solutions, 3 flowcharts)
+- **Problems & Solutions Document:** cisco_case/Cisco_Problems_Solutions.pdf (25 pages, 3 problems, 3 solutions, 3 flowcharts + feasibility & risk assessments)
 - **Presentation:** cisco_case/Cisco_Webex_AI_Presentation.pptx
-- **Flowcharts:** cisco_case/figures/flowchart_1_agentic_ai.png, flowchart_2_meeting_to_action.png, flowchart_3_marketplace.png
+- **Flowcharts:** cisco_case/figures/flowchart_1_agentic_ai.png (Prepare-Perceive-Reason-Act-Follow-Up), flowchart_2_vibe.png (VIBE Voice & Language Intelligence), flowchart_3_marketplace.png (AI Agent Marketplace)
 - **Script:** cisco_case/create_problems_solutions.py
 - **Team:** Lana Jalal Gidan, Krishianjan Lanka, Nur Ali, Zoe Zimmermann
+- **Solution 1:** AI Meeting Prep & Workflow Orchestrator (Prepare-Perceive-Reason-Act-Follow-Up architecture)
+- **Solution 2:** VIBE - Voice & Language Intelligence Layer (Voice Boost, Live Translation, Type-to-Speak, Simple Mode)
+- **Solution 3:** Secure AI Agent Marketplace (Build-Certify-Deploy-Monitor lifecycle, 100s of third-party integrations)
+- **Assessment Sections:** Technical Feasibility/Constraints/Scalability + Implementation Risks/Trade-Offs (outside flowcharts)
 
 ## System Architecture
 - **Language**: Python 3.11
