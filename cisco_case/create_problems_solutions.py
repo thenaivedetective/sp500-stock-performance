@@ -502,43 +502,51 @@ draw_rect(ax, 11, 14.5, 5.5, 1.2,
 draw_rect(ax, 16.5, 14.5, 5.5, 1.2,
           'Session Analytics\nVoice clarity score trend\nTranslation accuracy log\nQ&A resolution rate\nVIBE usage breakdown', '#D35400', 'white', 8)
 
-arrow(ax, 5.5, 13.85, 5.5, 13.0)
-arrow(ax, 11, 13.85, 11, 13.0)
-arrow(ax, 16.5, 13.85, 16.5, 13.0)
-arrow(ax, 5.5, 13.0, 10.5, 12.5, '#333333')
-arrow(ax, 16.5, 13.0, 11.5, 12.5, '#333333')
+arrow(ax, 5.5, 13.85, 5.5, 13.2)
+arrow(ax, 11, 13.85, 11, 13.2)
+arrow(ax, 16.5, 13.85, 16.5, 13.2)
 
-draw_cyl(ax, 11, 11.8, 10.0, 1.5,
+splunk_vibe = mpatches.FancyBboxPatch((0.8, 12.0), 20.4, 1.5, boxstyle="round,pad=0.1",
+                                        facecolor='#002060', edgecolor='black', linewidth=2.5, alpha=0.95)
+ax.add_patch(splunk_vibe)
+ax.text(11, 13.1, 'SPLUNK OBSERVABILITY & GOVERNANCE FOR VIBE',
+        ha='center', fontsize=11, fontweight='bold', color='#FFD700')
+ax.text(11, 12.4, 'Voice quality metrics per session  |  Translation accuracy tracking  |  TTS usage audit trail  |  Q&A resolution analytics  |  Anomaly detection on VIBE actions',
+        ha='center', fontsize=8, fontweight='bold', color='white')
+
+arrow(ax, 11, 11.95, 11, 11.3)
+
+draw_cyl(ax, 11, 10.5, 10.0, 1.5,
          'PRIVACY GUARANTEE: Transparency & Trust Layer - Always Active\n"Spoken by VIBE for [User]" on every TTS | Full audit trail | Zero data retention option\nVIBE never impersonates: voice persona is distinct from user\'s actual voice', '#002060', 'white', 9)
 
-arrow(ax, 11, 10.95, 11, 10.3)
-draw_oval(ax, 11, 9.8, 6.0, 0.9, 'END - VIBE SESSION COMPLETE', '#002060', 'white', 12)
+arrow(ax, 11, 9.65, 11, 9.1)
+draw_oval(ax, 11, 8.6, 6.0, 0.9, 'END - VIBE SESSION COMPLETE', '#002060', 'white', 12)
 
-comp_box = mpatches.FancyBboxPatch((0.5, 1.5), 21.0, 7.8, boxstyle="round,pad=0.1",
+comp_box = mpatches.FancyBboxPatch((0.5, 0.5), 21.0, 7.8, boxstyle="round,pad=0.1",
                                      facecolor='#F8F9FA', edgecolor='#002060', linewidth=2.5)
 ax.add_patch(comp_box)
-ax.text(11, 8.9, 'VIBE / VEL - COMPONENT ARCHITECTURE OVERVIEW', ha='center',
+ax.text(11, 7.9, 'VIBE / VEL - COMPONENT ARCHITECTURE OVERVIEW', ha='center',
         fontsize=13, fontweight='bold', color='#002060')
 
 col_w = 4.8
 col_h = 5.5
 col_x = [1.0, 6.0, 11.0, 16.0]
-col_titles = ['Audio Layer', 'AI / NLP Layer', 'Type-to-Speak Layer', 'Output & Logging']
+col_titles = ['Audio Layer', 'AI / NLP Layer', 'Type-to-Speak Layer', 'Output & Splunk Logging']
 col_colors = ['#27AE60', '#0070C0', '#1A5276', '#D35400']
 col_items = [
     ['Webex AI Codec', 'DNN Noise Removal', 'Echo Cancellation', 'Auto Gain Control', 'Voice Boost EQ', 'Per-Speaker Separation'],
     ['ASR (Whisper/Cisco)', 'Neural Machine Translation', 'Jargon Simplification LLM', 'Intent & Domain Detection', 'Neural TTS Synthesis', 'VIBE Persona Voice Model'],
     ['Text Input Panel (UI)', 'Language Detection', 'Polish / Simplify Mode', 'TTS Agent Voice', 'Caption + Chat Sync', '"via VIBE" Tag'],
-    ['Per-User Caption Stream', 'VIBE Transcript (3 layers)', 'VIBE Summary Download', 'Session Analytics', 'Audit Log (all actions)', 'Zero-Retention Option'],
+    ['Per-User Caption Stream', 'VIBE Transcript (3 layers)', 'Splunk VIBE Dashboard', 'Session Analytics to Splunk', 'Audit Log (all actions)', 'Zero-Retention Option'],
 ]
 
 for cx_off, title, color, items in zip(col_x, col_titles, col_colors, col_items):
-    cb = mpatches.FancyBboxPatch((cx_off, 2.0), col_w, col_h + 0.5, boxstyle="round,pad=0.08",
+    cb = mpatches.FancyBboxPatch((cx_off, 1.0), col_w, col_h + 0.5, boxstyle="round,pad=0.08",
                                    facecolor=color, edgecolor='black', linewidth=1.5, alpha=0.15)
     ax.add_patch(cb)
-    ax.text(cx_off + col_w/2, 7.8, title, ha='center', fontsize=10, fontweight='bold', color=color)
+    ax.text(cx_off + col_w/2, 6.8, title, ha='center', fontsize=10, fontweight='bold', color=color)
     for j, item in enumerate(items):
-        ax.text(cx_off + col_w/2, 7.0 - j * 0.75, item, ha='center', fontsize=8, color='#333333')
+        ax.text(cx_off + col_w/2, 6.0 - j * 0.75, item, ha='center', fontsize=8, color='#333333')
 
 plt.tight_layout()
 plt.savefig('cisco_case/figures/flowchart_2_vibe.png', dpi=200, bbox_inches='tight')
@@ -1076,18 +1084,19 @@ pdf.ln(1)
 body_bold(pdf, 'E: End & Logging')
 bullet(pdf, 'VIBE Transcript: Original language layer, English translation layer, simplified text layer, timestamps + speaker IDs, Type-to-Speak logs marked.')
 bullet(pdf, 'VIBE Summary Pack: Key Q&A in native language with simple explanations, downloadable per-user, shareable via Webex/email.')
-bullet(pdf, 'Session Analytics: Voice clarity score trend, translation accuracy log, Q&A resolution rate, VIBE usage breakdown.')
+bullet(pdf, 'Session Analytics (Splunk-Powered): Voice clarity score trend, translation accuracy log, Q&A resolution rate, VIBE usage breakdown. All session data flows into Splunk for enterprise-wide observability, anomaly detection, and compliance reporting.')
 pdf.ln(1)
 
 body_bold(pdf, 'Privacy Guarantee: Transparency & Trust Layer')
 bullet(pdf, 'Every VIBE-synthesized voice is labeled: "Spoken by VIBE for [User]." No hidden AI speech.')
-bullet(pdf, 'Full audit trail: every VIBE action logged with user consent timestamps.')
+bullet(pdf, 'Full audit trail: every VIBE action (boost, translate, TTS, simplify) logged with user consent timestamps and streamed to Splunk for centralized governance.')
+bullet(pdf, 'Splunk VIBE Dashboard: Enterprise IT teams monitor voice quality metrics, translation accuracy, TTS usage patterns, and anomalous VIBE behavior across all meetings in real-time.')
 bullet(pdf, 'Zero data retention option: transcript deleted on meeting end if user opts out.')
 bullet(pdf, 'VIBE never impersonates: voice persona is distinct from user\'s actual voice.')
 pdf.ln(1)
 
 subheading(pdf, 'Why This Solution Wins')
-body(pdf, 'No collaboration platform today offers a unified, real-time voice and language intelligence layer. Teams and Zoom provide basic captions and translation as passive overlays. VIBE goes far beyond by actively improving voice quality, translating with TTS delivery, simplifying jargon with analogies, and enabling silent users to speak through AI. Combined with Cisco\'s AI Codec technology, VIBE creates a participation experience that makes every meeting truly inclusive.')
+body(pdf, 'No collaboration platform today offers a unified, real-time voice and language intelligence layer. Teams and Zoom provide basic captions and translation as passive overlays. VIBE goes far beyond by actively improving voice quality, translating with TTS delivery, simplifying jargon with analogies, and enabling silent users to speak through AI. Combined with Cisco\'s AI Codec technology and Splunk-powered observability for enterprise-wide monitoring of voice quality, translation accuracy, and compliance, VIBE creates a participation experience that makes every meeting truly inclusive and governable at scale.')
 
 subheading(pdf, 'Expected Impact')
 bullet(pdf, 'Noise reduction effectiveness: 95%+ across 150+ noise types')
@@ -1240,6 +1249,7 @@ bullet(pdf, 'Bandwidth: Per-user VIBE audio streams increase requirements. Mitig
 body_bold(pdf, 'Scalability')
 bullet(pdf, 'VIBE processing is per-user and per-meeting, naturally parallelizable.')
 bullet(pdf, 'Neural machine translation models deploy as auto-scaling microservices.')
+bullet(pdf, 'Splunk ingests VIBE telemetry (voice quality, translation accuracy, TTS events) across all meetings for centralized analytics and anomaly detection at enterprise scale.')
 bullet(pdf, 'Zero data retention option simplifies storage scalability.')
 pdf.ln(2)
 
