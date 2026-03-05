@@ -1,0 +1,474 @@
+Repositioning Cisco Webex for the Next Phase of Hybrid Work
+Three Strategic Problems & Solutions
+Spring 2026 Cisco x WiB x SWE Case Competition
+
+Team Members:
+Lana Jalal Gidan
+Krishianjan Lanka
+Nur Ali
+Zoe Zimmermann
+
+Watson College of Engineering and Applied Science
+Binghamton University
+March 5, 2026
+
+Page 1
+
+Executive Summary
+Cisco Webex faces three critical strategic problems that prevent it from competing effectively
+against Microsoft Teams and Zoom in the next phase of hybrid work. This document identifies
+each problem with specificity, proposes a targeted solution backed by Cisco's existing
+capabilities, and provides a detailed technical flowchart showing how each solution operates
+end-to-end.
+The three problems and their corresponding solutions are:
+- Problem 1: Webex AI is passive and cannot execute tasks. Competitors' AI tools draft
+documents, automate workflows, and take action. Webex AI only summarizes and
+transcribes. Solution: Deploy the Webex Agentic AI Workflow Orchestrator, a
+Perceive-Reason-Act system that autonomously executes multi-step business tasks during
+live meetings.
+- Problem 2: Meeting outcomes are lost. 73% of action items discussed in meetings are
+never completed because there is no automated system to capture, classify, route, and
+track them. Solution: Build the Intelligent Meeting-to-Action Engine that automatically
+extracts action items, creates tickets, schedules follow-ups, and tracks completion.
+- Problem 3: Webex has a weak developer and integration ecosystem. Teams has 2,000+
+integrations, Zoom has 2,500+, and Webex lags behind with no AI agent development
+platform. Solution: Launch the Secure AI Agent Marketplace with a developer SDK,
+Cisco security certification pipeline, and enterprise deployment infrastructure.
+Each solution leverages Cisco's existing competitive advantages: the $7.98 billion R&D budget,
+the $28 billion Splunk acquisition for enterprise data observability, FedRAMP/HIPAA/SOC 2
+Type II security certifications, and the Webex AI Codec's proven ML engineering capabilities.
+
+Page 2
+
+Problem 1: Webex AI Cannot Execute Tasks
+Problem Definition
+The Webex AI Assistant is limited to passive capabilities: meeting summaries, real-time
+transcription, and language translation. While these features are technically competent, they
+represent the minimum baseline that every collaboration platform now offers. The AI tells users
+what happened in a meeting but cannot act on that information.
+This creates a measurable productivity gap. When a manager says "Create a Jira ticket for the
+login bug Sarah found" during a Webex meeting, nothing happens automatically. The manager
+must manually open Jira after the meeting, recall the details, type the ticket, assign it, set the
+priority, and link it to the correct sprint. This process takes an average of 8-12 minutes per task
+and introduces errors from memory decay.
+Competitive Gap Analysis
+Microsoft Teams with Copilot ($30/user/month) can draft Word documents from meeting
+context, create PowerPoint presentations, generate Excel formulas, and build Power Automate
+workflows. Copilot connects to the Microsoft Graph, which indexes all enterprise data across
+emails, files, calendar, and chats, enabling personalized AI responses with full organizational
+context.
+Zoom AI Companion 2.0 includes early agentic features: it drafts documents in Zoom Docs,
+automatically generates action items with assignees, updates CRM records through Zoom
+Revenue Accelerator, and offers a built-in workflow automation engine. Zoom provides these
+capabilities free to all paid users.
+Webex offers none of these action-oriented capabilities. The gap is not incremental; it is
+categorical. Competitors have AI that does work. Webex has AI that describes work that
+humans must still do manually.
+Business Impact of the Problem
+- User engagement stagnation: Users spend less daily time in Webex because the platform
+does not help them complete post-meeting work. This reduces stickiness and increases
+churn risk.
+- Enterprise deal losses: In competitive evaluations, IT decision-makers increasingly
+weight AI task execution capabilities. Webex loses deals to Teams and Zoom when
+buyers compare AI feature matrices.
+- Revenue ceiling: Without differentiated AI capabilities, Webex's collaboration revenue
+(~$4.2B in FY2024) faces a growth ceiling as the market shifts toward AI-powered
+platforms.
+Solution 1: Webex Agentic AI Workflow Orchestrator
+Transform the Webex AI Assistant from a passive tool into an agentic AI system that
+autonomously detects task intent from live conversations, retrieves relevant context from
+enterprise systems, drafts complete task artifacts, and executes approved actions across
+third-party platforms. The system operates on a Perceive-Reason-Act architecture with
+mandatory human-in-the-loop verification for all external actions.
+PERCEIVE Phase: Webex AI Codec ML Pipeline
+The existing Webex AI Codec serves as the perception layer. During a live meeting, raw audio
+and video streams pass through a multi-stage ML pipeline:
+- Deep Neural Network (DNN) Noise Removal: Processes audio in real-time to remove
+
+Page 3
+
+150+ background noise types (keyboard typing, dog barking, construction, etc.) using
+Cisco's proprietary neural network trained on millions of noise samples.
+- Neural Speech Synthesis Codec: Compresses cleaned audio to approximately 1 kbps
+using neural speech synthesis, compared to 32 kbps for traditional codecs. This enables
+high-quality audio even on low-bandwidth connections.
+- Real-Time Media Models (RMM): AI upscales low-resolution video (super resolution),
+separates individual speakers from overlapping audio (voice isolation), and detects hand
+gestures and reactions (gesture recognition).
+- NLP Engine: Converts processed audio to text with real-time transcription and
+translation across 100+ languages. The NLP engine performs contextual understanding to
+identify task-related statements, decisions, and commitments.
+REASON Phase: Context Retrieval and Planning
+When the NLP engine detects a task intent (e.g., "We need to create a ticket for this bug"), the
+system activates the reasoning phase:
+- Agent-to-Agent (A2A) Protocol: The Webex agent communicates with external system
+agents (Jira, Salesforce, SAP, GitHub, ServiceNow) using standardized A2A protocols to
+retrieve project context, user profiles, recent activity, and system-specific metadata.
+- Cisco Secure Data Fabric: All data retrieval passes through Cisco's zero-trust identity
+layer, with Splunk observability monitoring every API call for anomalies, unauthorized
+access attempts, and performance degradation.
+- LLM-Based Task Planning: A large language model synthesizes the conversation
+context, retrieved system data, and organizational rules to generate a complete task draft
+(e.g., a fully populated Jira ticket with title, description, assignee, priority, sprint, and
+labels).
+ACT Phase: Human Verification and Execution
+The system presents the drafted task to the meeting participant via an in-meeting approval card:
+- On-Screen Draft: The user sees the complete task artifact (e.g., Jira ticket) overlaid in
+the Webex interface without switching tabs or applications.
+- Approval Options: The user can Approve (execute immediately), Edit (modify fields
+before execution), or Reject (discard the draft).
+- Secure Execution: Upon approval, the agent pushes the data to the target system via
+authenticated API calls. Splunk logs the entire execution chain for audit compliance.
+- Confirmation: Webex posts a confirmation message to the meeting chat (e.g., "Jira ticket
+WEBAPP-2026-347 created successfully. Assigned to Sarah Chen. Priority: High.").
+Why This Solution Wins
+This solution directly addresses the core competitive gap. Microsoft Copilot assists across
+Office applications but does not autonomously execute cross-platform workflows from live
+conversation context. Zoom AI Companion 2.0 has early agentic features but lacks the
+enterprise data infrastructure (Splunk) and security certifications (FedRAMP, HIPAA) required
+for autonomous AI execution in regulated industries. Webex becomes the only platform where
+AI agents can securely execute tasks in government, healthcare, and financial services
+environments.
+Expected Impact
+- Reduces manual post-meeting data entry by 15 minutes per meeting
+- 25% meeting-to-action conversion rate (vs. current ~5% industry average)
+- 40% workflow automation rate within 12 months of deployment
+
+Page 4
+
+- 85% task completion accuracy with human-in-the-loop verification
+- 35% increase in daily active Webex usage as the platform becomes a productivity hub
+Sources: Cisco FY2024 10-K; Webex AI Codec documentation; MarketsandMarkets Agentic AI Market
+Report 2024; Microsoft Copilot & Zoom AI Companion product documentation.
+
+Solution 1 Flowchart: Agentic AI Workflow Orchestrator
+The following flowchart details the complete technical architecture of the Perceive-Reason-Act
+system, including the Webex AI Codec ML pipeline, data fabric integration, human-in-the-loop
+verification, and cross-platform task execution.
+
+Page 5
+
+Page 6
+
+Problem 2: Meeting Outcomes Are Lost
+Problem Definition
+Enterprise organizations conduct an average of 62 meetings per employee per month (Microsoft
+Work Trend Index, 2024). Despite this massive investment of time, research shows that 73% of
+action items discussed in meetings are never completed (Otter.ai Workplace Productivity
+Report, 2024). The primary reason is not that employees are unwilling to follow through; it is
+that the bridge between discussion and execution is entirely manual.
+After a meeting ends, participants must individually recall what was discussed, manually create
+tasks in project management tools, schedule follow-up meetings by hand, draft meeting minutes
+from memory, and track completion status across disconnected systems. This manual follow-up
+process takes an average of 45 minutes per meeting and is error-prone due to memory decay,
+context loss, and competing priorities.
+Why Current AI Summaries Are Insufficient
+All three major platforms (Webex, Teams, Zoom) now offer AI-generated meeting summaries.
+However, summaries address only 20% of the follow-up problem. A summary tells you what
+happened; it does not execute the actions that need to happen next. An AI summary that says
+"The team agreed to create three Jira tickets for the authentication bugs" is useless if no one
+actually creates those tickets.
+The gap between "summary" and "action" is where enterprise productivity dies. This gap
+represents an estimated $37 billion in lost productivity annually across the global knowledge
+workforce (McKinsey, 2024), based on the time spent on manual meeting follow-up multiplied
+by average knowledge worker compensation.
+Business Impact of the Problem
+- Project delays: Critical action items fall through the cracks, causing downstream delays
+in product launches, customer deliverables, and strategic initiatives.
+- Accountability gaps: Without automated tracking, it is difficult to identify which action
+items are overdue and who is responsible.
+- Meeting fatigue amplification: When follow-up fails, teams schedule additional
+meetings to revisit the same topics, compounding the meeting overload problem.
+- Customer impact: In customer-facing meetings, lost action items directly translate to
+slower response times, missed commitments, and reduced customer satisfaction scores.
+Solution 2: Intelligent Meeting-to-Action Engine
+Build an end-to-end automated pipeline that transforms every Webex meeting into a structured
+set of tracked, executed, and monitored actions. The engine operates in four phases: Capture,
+Classify, Route & Execute, and Track & Report.
+Phase 1: Capture
+As the meeting progresses (or immediately after it ends), the engine processes the complete
+meeting recording through an advanced NLP pipeline:
+- Speaker Diarization: ML models identify which participant said which statement,
+enabling accurate assignment of action items to the correct person.
+- Sentiment Analysis: Real-time sentiment scoring detects urgency, frustration, and
+emphasis in speaker tone, which influences priority classification of extracted items.
+- Topic Segmentation: The engine automatically segments the meeting into topical
+clusters (e.g., "Q2 budget discussion," "authentication bug review," "hiring update"),
+providing context for each extracted action item.
+
+Page 7
+
+- Action Item Extraction: NLP models trained on enterprise meeting data identify five
+categories of extractable items: tasks (things to do), decisions (things agreed upon),
+deadlines (time commitments), assignees (responsible parties), and dependencies (what
+blocks what). Each extracted item receives a confidence score.
+Phase 2: Classify & Prioritize
+Extracted items pass through a classification engine that determines priority and routing:
+- P1-Critical: Items with explicit deadlines within 24 hours or flagged as blockers by the
+speaker.
+- P2-High: Items with deadlines within one week or associated with customer-facing
+commitments.
+- P3-Medium: Items with deadlines within two weeks or internal team deliverables.
+- P4-Low: Items with no explicit deadline or categorized as "nice-to-have" discussions.
+- Confidence Threshold: Items with confidence scores below 85% are flagged for human
+review rather than auto-processed, preventing false positive actions.
+Phase 3: Route & Execute
+Based on the item type and priority, the engine automatically routes to the appropriate system:
+- Task/Issue Items: Auto-creates Jira tickets, GitHub issues, or ServiceNow incidents with
+title, description, assignee, priority, sprint assignment, and labels populated from meeting
+context.
+- Document Items: Generates meeting minutes, decision logs, or status reports in Webex
+Docs or connected document systems, formatted with speaker attribution and topic
+headers.
+- Calendar/Follow-up Items: Schedules follow-up meetings with pre-populated agendas
+derived from the current meeting's unresolved items, invites the relevant participants, and
+sets reminders.
+- High-risk actions (e.g., creating customer-facing tickets, modifying production systems)
+require explicit human approval via an in-Webex approval card before execution.
+Phase 4: Track & Report
+All executed actions are tracked in the Webex Action Tracker Dashboard:
+- Real-time Status: Each action item shows its current state (Pending, In Progress,
+Complete, Overdue) with links to the created artifacts in external systems.
+- Automated Reminders: The engine sends reminders before deadlines and escalation
+notifications for overdue items to both the assignee and the meeting organizer.
+- Weekly Digest: Every Monday, participants receive an automated summary of the
+previous week's meeting outcomes: tasks completed, tasks overdue, time saved through
+automation, and meeting-to-action conversion rate.
+- Splunk Observability: All engine operations are monitored through Splunk dashboards,
+providing enterprise IT teams with visibility into automation performance, error rates, and
+system health.
+Why This Solution Wins
+No collaboration platform currently offers end-to-end meeting-to-action automation at this
+level. Teams Copilot can extract action items but does not automatically create tickets in
+external systems or track completion. Zoom AI Companion generates action items but does not
+route them to project management tools with full context. This solution makes Webex the only
+platform where meetings directly produce completed, tracked work items without any manual
+intervention.
+
+Page 8
+
+Expected Impact
+- 73% of action items auto-completed (vs. industry average of 27% completion rate)
+- Meeting follow-up time reduced from 45 minutes to 5 minutes per meeting
+- 92% on-time task completion rate with automated reminders and escalation
+- 60% reduction in "follow-up meetings" scheduled to revisit incomplete action items
+- Estimated productivity savings of $4,200 per knowledge worker per year
+Sources: Microsoft Work Trend Index 2024; Otter.ai Workplace Productivity Report 2024; McKinsey
+Future of Work Report 2024; Cisco FY2024 10-K.
+
+Solution 2 Flowchart: Intelligent Meeting-to-Action Engine
+The following flowchart details the four-phase pipeline from meeting capture through action
+tracking, including the classification engine, multi-path routing logic, human approval gates,
+and Splunk-powered tracking dashboard.
+
+Page 9
+
+Page 10
+
+Problem 3: Weak Developer & Integration Ecosystem
+Problem Definition
+Microsoft Teams offers over 2,000 third-party integrations through its app marketplace. Zoom
+offers over 2,500 integrations through the Zoom App Marketplace. Webex's integration
+ecosystem, while growing, remains significantly smaller and lacks the critical mass needed to
+compete for daily user engagement.
+More importantly, neither Teams nor Zoom has launched a dedicated AI agent development
+platform. The current integration model across all platforms is based on point-to-point
+connectors: static plugins that perform single functions (e.g., "send a Slack message when a Jira
+ticket is updated"). The next competitive frontier is intelligent agents: AI-powered integrations
+that understand context, make decisions, and execute multi-step workflows autonomously.
+Webex has an opportunity to leapfrog the connector model entirely by building the industry's
+first enterprise-grade AI agent marketplace. However, achieving this requires solving a trust
+problem that no other platform has addressed: How do you allow third-party AI agents to
+operate autonomously within enterprise environments while maintaining security, compliance,
+and data governance?
+Why This Problem Matters More Than Feature Parity
+Integration ecosystems create self-reinforcing network effects. More integrations attract more
+users. More users attract more developers. More developers build more integrations. This
+flywheel is the primary reason Teams and Zoom maintain their market positions even when
+individual features are comparable to Webex.
+Breaking into this cycle with a "me too" approach (building more basic connectors) will not
+work. Webex needs a fundamentally different value proposition for developers: the ability to
+build, certify, and monetize AI agents that no other platform supports. This transforms the
+ecosystem question from "who has more plugins?" to "who has the most intelligent, trusted, and
+profitable agent marketplace?"
+Business Impact of the Problem
+- Reduced daily utility: Users who cannot connect their daily tools (CRM, project
+management, HR systems) to Webex treat it as a "meetings-only" platform, reducing
+engagement and stickiness.
+- Developer disinterest: Developers prioritize platforms with larger user bases. Without a
+compelling differentiator, developer investment flows to Teams and Zoom.
+- Enterprise adoption friction: Large organizations evaluate collaboration platforms partly
+on integration breadth. A smaller ecosystem creates friction in enterprise procurement
+decisions.
+- Revenue limitation: Without marketplace revenue (transaction fees, premium agent
+subscriptions), Webex relies solely on seat-based licensing, which limits growth potential.
+Solution 3: Secure AI Agent Marketplace & Developer Platform
+Launch the industry's first enterprise-grade AI agent marketplace, built on Cisco's security
+infrastructure, that enables developers to build, certify, deploy, and monetize AI agents within
+the Webex ecosystem. The platform operates on a four-stage lifecycle: Build, Certify, Deploy,
+and Monitor.
+Stage 1: BUILD - Developer SDK and Tools
+Provide developers with a comprehensive SDK and development environment:
+
+Page 11
+
+- Agent SDK: Available in Python and JavaScript, the SDK provides pre-built
+components for common agent patterns (meeting listeners, task executors, data retrievers,
+notification senders). Developers can build agents in hours rather than weeks.
+- Agent Templates: Ready-to-customize templates for common use cases (CRM updater,
+ticket creator, document generator, calendar scheduler) reduce development time by 60%.
+- Sandbox Environment: A cloud-based testing environment that simulates real Webex
+meetings, API connections, and data flows without requiring production access.
+Developers can test agents against mock meetings with realistic conversation data.
+- API Documentation: Comprehensive API docs covering the Webex meeting lifecycle,
+real-time transcription feeds, user context data, and A2A protocol specifications.
+Stage 2: CERTIFY - Cisco Security Certification Pipeline
+Every agent must pass Cisco's security certification before listing in the marketplace. This is the
+critical differentiator that no other platform offers:
+- Static Code Analysis: Automated scanning for vulnerabilities, backdoors, data
+exfiltration patterns, and insecure API usage.
+- Permission Review: Verification that the agent's declared data scopes match its actual
+code behavior. Zero-trust policy enforcement ensures agents can only access the
+minimum data necessary for their function.
+- Performance Testing: Latency benchmarking (<200ms response time), load testing
+(1,000+ concurrent users), memory/CPU profiling, and failure recovery validation.
+- Compliance Validation: Automated checks against SOC 2, HIPAA, FedRAMP, and
+GDPR requirements based on the agent's declared data handling practices.
+- Cisco Trust Badge: Agents that pass all certification stages receive the "Cisco Verified
+Agent" badge, signaling to enterprise buyers that the agent meets Cisco's security
+standards.
+Stage 3: DEPLOY - Enterprise Administration and Activation
+Enterprise IT administrators control agent deployment through a centralized management
+console:
+- Marketplace Discovery: Admins browse certified agents by industry vertical (healthcare,
+finance, government, manufacturing), use case category (productivity, compliance, sales,
+HR), and security certification level.
+- Configuration & Scoping: Admins set which teams can use each agent, what data the
+agent can access, what approval workflows are required, and usage limits/budgets.
+- Sandboxed Execution: Deployed agents run in isolated containers within Webex Cloud,
+with strict resource limits and network policies that prevent agents from accessing
+unauthorized systems or data.
+- Gradual Rollout: Admins can deploy agents to pilot groups before organization-wide
+activation, with A/B testing capabilities to measure productivity impact.
+Stage 4: MONITOR - Continuous Observability with Splunk
+Splunk provides enterprise-grade monitoring for all deployed agents:
+- Real-Time Dashboards: Agent performance metrics (response time, success rate, error
+rate), usage analytics (active users, invocations per day), and resource consumption (CPU,
+memory, API calls).
+- Anomaly Detection: ML-powered anomaly detection identifies unusual agent behavior
+(unexpected data access patterns, performance degradation, security policy violations)
+and triggers automated alerts.
+- Kill Switch: Enterprise admins can immediately deactivate any agent that triggers a
+
+Page 12
+
+security alert or exhibits anomalous behavior, with full audit trail preservation.
+- Usage Analytics & Billing: Per-agent usage tracking enables pay-per-use or
+subscription-based billing models, with revenue sharing between Cisco and agent
+developers (70/30 split favoring developers to incentivize ecosystem growth).
+Why This Solution Wins
+The security certification pipeline is the decisive competitive advantage. Enterprise IT
+departments will not deploy autonomous AI agents unless they trust the platform's security
+governance. Cisco's existing security certifications (FedRAMP High, HIPAA, SOC 2 Type II)
+and the Splunk observability platform create a trust layer that neither Microsoft nor Zoom can
+replicate. This makes Webex the only platform where regulated industries can safely deploy
+third-party AI agents.
+The marketplace model also transforms Webex's business economics. Instead of relying solely
+on per-seat licensing, Cisco earns marketplace transaction fees and premium agent
+subscriptions. This creates a new, high-margin revenue stream with strong network effects:
+more agents attract more users, which attract more developers, which produce more agents.
+Expected Impact
+- 500+ certified AI agents in the marketplace within Year 1
+- $150 million marketplace gross merchandise value (GMV) by FY2028
+- 3x growth in Webex developer ecosystem within 18 months
+- 85% enterprise customer renewal rate (driven by agent-specific stickiness)
+- New revenue stream: estimated $50M annual marketplace commission revenue by
+FY2029
+Sources: Cisco FY2024 10-K; Splunk platform documentation; Salesforce AppExchange economics
+model; Apple App Store developer revenue sharing framework; MarketsandMarkets Agentic AI Market
+Report 2024.
+
+Solution 3 Flowchart: Secure AI Agent Marketplace
+The following flowchart details the complete Build-Certify-Deploy-Monitor lifecycle, including
+the Cisco security certification pipeline, enterprise admin deployment controls, Splunk-powered
+monitoring, and example marketplace agents across five industry verticals.
+
+Page 13
+
+Page 14
+
+Integrated Strategy: How the Three Solutions Work Together
+The three solutions are designed as an integrated system, not independent initiatives. Together,
+they create a comprehensive competitive moat:
+- Solution 1 (Agentic AI Orchestrator) provides the core intelligence: AI that can perceive
+meeting context, reason about tasks, and execute actions across enterprise systems.
+- Solution 2 (Meeting-to-Action Engine) applies that intelligence to the highest-value use
+case: converting meetings from time sinks into productivity engines with automated
+follow-through.
+- Solution 3 (AI Agent Marketplace) scales the intelligence: instead of Cisco building
+every agent, the marketplace enables thousands of developers to build vertical-specific
+agents for healthcare, finance, government, manufacturing, and more.
+The combined impact makes Webex indispensable rather than interchangeable. Users stay on
+Webex not because the video quality is marginally better, but because leaving means losing
+their AI agents, their automated workflows, and the productivity gains that accumulate over
+time.
+Combined Projected Impact
+Metric
+Projected Value
+Daily Active Usage Increase
++35% within 12 months of full deployment
+Meeting-to-Action Conversion
+25% (vs. current ~5% industry average)
+Post-Meeting Follow-Up Time
+Reduced from 45 min to 5 min per meeting
+Action Item Completion Rate
+92% on-time (vs. 27% industry baseline)
+Marketplace Certified Agents
+500+ in Year 1, 2,000+ by Year 3
+Developer Ecosystem Growth
+3x within 18 months
+Enterprise Renewal Rate
+85% (driven by agent-specific stickiness)
+Incremental Collaboration ARR
++$2.1 billion by FY2029
+Marketplace Commission Revenue
+$50M annually by FY2029
+Productivity Savings per Worker
+$4,200 per knowledge worker per year
+Sources: IDC UC&C Market Tracker 2024; MarketsandMarkets Agentic AI Report; Cisco FY2024
+10-K; Microsoft Work Trend Index 2024; McKinsey Future of Work Report 2024.
+
+Page 15
+
+References
+1. Cisco Systems. (2024). Annual Report (Form 10-K), Fiscal Year 2024. SEC Filing. Retrieved
+from https://investor.cisco.com
+2. Microsoft Corporation. (2024). Annual Report (Form 10-K), Fiscal Year 2024. SEC Filing.
+Retrieved from https://www.microsoft.com/en-us/investor
+3. Zoom Video Communications. (2025). Annual Report (Form 10-K), Fiscal Year 2025. SEC
+Filing. Retrieved from https://investors.zoom.us
+4. IDC. (2024). Worldwide Unified Communications & Collaboration Market Tracker.
+International Data Corporation.
+5. Gartner. (2024). Future of Work Survey: Hybrid Work Trends. Gartner Research.
+6. McKinsey & Company. (2024). Future of Work Report: Meeting Productivity and
+Knowledge Worker Efficiency. McKinsey Global Institute.
+7. MarketsandMarkets. (2024). Agentic AI Market Report: Global Forecast to 2030.
+MarketsandMarkets Research.
+8. Microsoft. (2024). Work Trend Index: Annual Report on Workplace Trends and Meeting
+Culture. Microsoft Research.
+9. Otter.ai. (2024). Workplace Productivity Report: Meeting Follow-Up and Action Item
+Completion Rates.
+10. Cisco Webex. (2025). Webex AI Assistant and AI Codec Technical Documentation.
+Retrieved from https://www.webex.com/ai
+11. Microsoft. (2025). Microsoft 365 Copilot Product Documentation. Retrieved from
+https://www.microsoft.com/copilot
+12. Zoom. (2025). Zoom AI Companion 2.0 Product Documentation. Retrieved from
+https://zoom.us/ai-assistant
+13. G2. (2025). Video Conferencing Software Reviews and Ratings. Retrieved from
+https://www.g2.com/categories/video-conferencing
+14. Salesforce. (2024). AppExchange Marketplace Economics and Developer Revenue Sharing
+Model. Salesforce Documentation.
+
+Page 16
+
+

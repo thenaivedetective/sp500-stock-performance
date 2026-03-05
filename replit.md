@@ -155,8 +155,10 @@ Academic project repository for SSIE-605 (Applied Multivariate Data Analysis) at
 
 ## Cisco Case Competition
 - **Deliverable 1:** cisco_case/Deliverable1_Lana_Jalal_Gidan.pdf
+- **Problems & Solutions Document:** cisco_case/Cisco_Problems_Solutions.pdf (16 pages, 3 problems, 3 solutions, 3 flowcharts)
 - **Presentation:** cisco_case/Cisco_Webex_AI_Presentation.pptx
-- **Flowchart:** cisco_case/figures/flowchart.png
+- **Flowcharts:** cisco_case/figures/flowchart_1_agentic_ai.png, flowchart_2_meeting_to_action.png, flowchart_3_marketplace.png
+- **Script:** cisco_case/create_problems_solutions.py
 - **Team:** Lana Jalal Gidan, Krishianjan Lanka, Nur Ali, Zoe Zimmermann
 
 ## System Architecture
