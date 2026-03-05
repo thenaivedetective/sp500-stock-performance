@@ -519,8 +519,8 @@ arrow(ax, 11, 11.95, 11, 11.3)
 draw_cyl(ax, 11, 10.5, 10.0, 1.5,
          'PRIVACY GUARANTEE: Transparency & Trust Layer - Always Active\n"Spoken by VIBE for [User]" on every TTS | Full audit trail | Zero data retention option\nVIBE never impersonates: voice persona is distinct from user\'s actual voice', '#002060', 'white', 9)
 
-arrow(ax, 11, 9.65, 11, 9.1)
-draw_oval(ax, 11, 8.6, 6.0, 0.9, 'END - VIBE SESSION COMPLETE', '#002060', 'white', 12)
+arrow(ax, 11, 9.65, 11, 9.5)
+draw_oval(ax, 11, 9.0, 6.0, 0.9, 'END - VIBE SESSION COMPLETE', '#002060', 'white', 12)
 
 comp_box = mpatches.FancyBboxPatch((0.5, 0.5), 21.0, 7.8, boxstyle="round,pad=0.1",
                                      facecolor='#F8F9FA', edgecolor='#002060', linewidth=2.5)
@@ -888,6 +888,32 @@ def source_note(pdf, text):
     pdf.multi_cell(0, LH, text)
     pdf.ln(1)
 
+def insert_large_image(pdf, img_path, margin, content_w):
+    from PIL import Image as PILImage
+    img = PILImage.open(img_path)
+    iw, ih = img.size
+    scale_w = content_w / iw
+    total_h_mm = ih * scale_w
+    page_h = 279.4
+    top_margin = 20.0
+    bottom_margin = 20.0
+    avail_h = page_h - top_margin - bottom_margin
+    avail_h_px = avail_h / scale_w
+    n_sections = max(1, int(np.ceil(ih / avail_h_px)))
+    for i in range(n_sections):
+        if i > 0:
+            pdf.add_page()
+            pdf.set_y(top_margin)
+        top_px = int(i * avail_h_px)
+        bottom_px = min(int((i + 1) * avail_h_px), ih)
+        if top_px >= ih:
+            break
+        section = img.crop((0, top_px, iw, bottom_px))
+        section_path = f'/tmp/fc_section_{i}.png'
+        section.save(section_path, dpi=(200, 200))
+        section_h_mm = (bottom_px - top_px) * scale_w
+        pdf.image(section_path, x=margin, w=content_w, h=section_h_mm)
+
 # ============================================================
 # COVER PAGE
 # ============================================================
@@ -1020,7 +1046,7 @@ body(pdf, 'The following flowchart details the complete five-phase architecture 
 pdf.ln(2)
 
 img_w = W
-pdf.image('cisco_case/figures/flowchart_1_agentic_ai.png', x=pdf.l_margin, w=img_w)
+insert_large_image(pdf, 'cisco_case/figures/flowchart_1_agentic_ai.png', pdf.l_margin, img_w)
 
 # ============================================================
 # PROBLEM 2: VIBE
@@ -1112,7 +1138,7 @@ subheading(pdf, 'Solution 2 Flowchart: VIBE - Voice & Language Intelligence Laye
 body(pdf, 'The following flowchart details the complete VIBE architecture including user onboarding, the live audio speak path, type-to-speak path, cross-language Q&A close-loop, session logging, privacy guarantee, tech stack, KPIs, and component architecture overview.')
 pdf.ln(2)
 
-pdf.image('cisco_case/figures/flowchart_2_vibe.png', x=pdf.l_margin, w=img_w)
+insert_large_image(pdf, 'cisco_case/figures/flowchart_2_vibe.png', pdf.l_margin, img_w)
 
 # ============================================================
 # PROBLEM 3
@@ -1204,7 +1230,7 @@ subheading(pdf, 'Solution 3 Flowchart: Secure AI Agent Marketplace')
 body(pdf, 'The following flowchart details the three-lane architecture (Developer Journey, Admin Journey, User Journey), the Cisco certification pipeline, Splunk observability layer, agent examples, industry coverage, and platform architecture stack.')
 pdf.ln(2)
 
-pdf.image('cisco_case/figures/flowchart_3_marketplace.png', x=pdf.l_margin, w=img_w)
+insert_large_image(pdf, 'cisco_case/figures/flowchart_3_marketplace.png', pdf.l_margin, img_w)
 
 # ============================================================
 # TECHNICAL FEASIBILITY, CONSTRAINTS & SCALABILITY ASSESSMENT
