@@ -458,34 +458,36 @@ draw_rect(ax, CX, 7.8, 8.0, 1.0,
 arrow(ax, CX, 7.25, CX, 6.6)
 
 # === PHASE 4: MONITOR ===
-p4 = mpatches.FancyBboxPatch((0.5, 3.8), 17.0, 2.6, boxstyle="round,pad=0.15",
+p4 = mpatches.FancyBboxPatch((0.5, 2.5), 17.0, 4.3, boxstyle="round,pad=0.15",
                                facecolor='#8E44AD', edgecolor='#8E44AD', linewidth=2, alpha=0.08)
 ax.add_patch(p4)
-ax.text(1.2, 6.0, 'PHASE 4: MONITOR (Splunk Observability)', fontsize=14, fontweight='bold', color='#8E44AD')
+ax.text(1.2, 6.4, 'PHASE 4: MONITOR', fontsize=14, fontweight='bold', color='#8E44AD')
 
 draw_rect(ax, CX, 6.0, 8.0, 1.0,
           'Splunk monitors: agent performance, error rates, anomalies\nUsage analytics, ROI dashboards, automated alerts', '#8E44AD', 'white', 11)
-arrow(ax, CX, 5.45, CX, 4.8)
+arrow(ax, CX, 5.45, CX, 4.6)
 
-draw_diamond(ax, CX, 3.8, 2.0, 'Alert\nTriggered?', '#F39C12', 'black', 11)
+draw_diamond(ax, CX, 3.6, 2.0, 'Alert\nTriggered?', '#F39C12', 'black', 11)
 
-ax.text(CX + 2.5, 4.5, 'YES: Kill Switch\n(auto-disable agent)', fontsize=10, fontweight='bold', color='#E74C3C',
+ax.text(CX + 2.8, 3.6, 'YES: Kill Switch\n(auto-disable agent)', fontsize=10, fontweight='bold', color='#E74C3C',
+        ha='left', va='center',
         bbox=dict(boxstyle='round,pad=0.2', facecolor='#FADBD8', edgecolor='#E74C3C', linewidth=1.5))
-arrow(ax, CX + 1.0, 3.8, CX + 2.0, 3.8, '#E74C3C', 2)
+arrow(ax, CX + 1.0, 3.6, CX + 2.3, 3.6, '#E74C3C', 2)
 
-ax.text(CX - 2.5, 4.5, 'NO: Continue\nmonitoring', fontsize=10, fontweight='bold', color='#27AE60',
+ax.text(CX - 2.8, 3.6, 'NO: Continue\nmonitoring', fontsize=10, fontweight='bold', color='#27AE60',
+        ha='right', va='center',
         bbox=dict(boxstyle='round,pad=0.2', facecolor='#D5F5E3', edgecolor='#27AE60', linewidth=1.5))
-arrow(ax, CX - 1.0, 3.8, CX - 1.8, 3.8, '#27AE60', 2)
+arrow(ax, CX - 1.0, 3.6, CX - 2.0, 3.6, '#27AE60', 2)
 
-arrow(ax, CX, 2.8, CX, 2.2)
+arrow(ax, CX, 2.6, CX, 2.0)
 
-draw_oval(ax, CX, 1.6, 8.0, 0.9, 'Billing & Revenue Share (70/30 developer split)\nAgent runs continuously in Webex', '#002060', 'white', 10)
+draw_oval(ax, CX, 1.4, 8.0, 0.9, 'Billing & Revenue Share (70/30 developer split)\nAgent runs continuously in Webex', '#002060', 'white', 10)
 
 # === IMPACT BAR ===
-mr = mpatches.FancyBboxPatch((0.5, 0.3), 17.0, 0.9, boxstyle='round,pad=0.1',
+mr = mpatches.FancyBboxPatch((0.5, 0.1), 17.0, 0.8, boxstyle='round,pad=0.1',
                                facecolor='#002060', edgecolor='black', linewidth=2)
 ax.add_patch(mr)
-ax.text(9, 0.75, 'IMPACT: 500+ certified agents Year 1  |  $150M GMV by FY2028  |  '
+ax.text(9, 0.5, 'IMPACT: 500+ certified agents Year 1  |  $150M GMV by FY2028  |  '
         '3x ecosystem growth  |  85% renewal rate',
         ha='center', va='center', fontsize=11, fontweight='bold', color='white')
 
