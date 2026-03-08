@@ -20,12 +20,12 @@ ORANGE = '#D35400'
 PURPLE = '#8E44AD'
 
 # TEXT STYLES
-TITLE_FS = 20
-SUBTITLE_FS = 11
-BLOCK_FS = 9
-MINI_BLOCK_FS = 8
-ARROW_TEXT_FS = 9
-IMPACT_FS = 11
+TITLE_FS = 24
+SUBTITLE_FS = 14
+BLOCK_FS = 12
+MINI_BLOCK_FS = 11
+ARROW_TEXT_FS = 12
+IMPACT_FS = 14
 
 def draw_box(x, y, w, h, text, fc, fs=BLOCK_FS, tc='white'):
     b = mpatches.FancyBboxPatch((x-w/2, y-h/2), w, h, boxstyle="round,pad=0.08",
@@ -81,27 +81,27 @@ ax.text(16.5, 11.8, 'Real-Time Voice + Language AI  |  DNN Audio Pipeline  |�
 r1y = 9.8
 
 # Start oval
-draw_oval(1.5, r1y, 2.2, 1.2, 'VIBE\nToggle ON', DARK_BLUE, fs=9)
+draw_oval(1.5, r1y, 2.2, 1.2, 'VIBE\nToggle ON', DARK_BLUE, fs=BLOCK_FS)
 arr(2.6, r1y, 3.4, r1y)
 
 # Mode Select
-draw_box(4.5, r1y, 1.8, 1.2, 'Mode\nSelect', DARK_BLUE, fs=9)
+draw_box(4.5, r1y, 1.8, 1.2, 'Mode\nSelect', DARK_BLUE, fs=BLOCK_FS)
 arr(5.4, r1y, 6.2, r1y)
 
 # Mic Audio Capture
-draw_box(7.5, r1y, 2.2, 1.2, 'Mic Audio\nCapture', CISCO_BLUE, fs=9)
+draw_box(7.5, r1y, 2.2, 1.2, 'Mic Audio\nCapture', CISCO_BLUE, fs=BLOCK_FS)
 arr(8.6, r1y, 9.5, r1y)
 
 # DNN Noise Removal
-draw_box(10.8, r1y, 2.2, 1.2, 'DNN Noise\nRemoval\n150+ types', DARK_BLUE, fs=8)
+draw_box(10.8, r1y, 2.2, 1.2, 'DNN Noise\nRemoval\n150+ types', DARK_BLUE, fs=MINI_BLOCK_FS)
 arr(11.9, r1y, 12.8, r1y)
 
 # Voice Boost
-draw_box(14, r1y, 2.0, 1.2, 'Voice\nBoost\n+ EQ', CISCO_BLUE, fs=9)
+draw_box(14, r1y, 2.0, 1.2, 'Voice\nBoost\n+ EQ', CISCO_BLUE, fs=BLOCK_FS)
 arr(15, r1y, 15.8, r1y)
 
 # ASR Transcription
-draw_box(17, r1y, 2.2, 1.2, 'ASR\nMulti-Accent\nTranscription', DARK_BLUE, fs=8)
+draw_box(17, r1y, 2.2, 1.2, 'ASR\nMulti-Accent\nTranscription', DARK_BLUE, fs=MINI_BLOCK_FS)
 arr(18.1, r1y, 18.8, r1y)
 
 # Translate diamond
@@ -109,15 +109,15 @@ draw_diamond(20, r1y, 1.5, 'Translate\n?', '#F39C12', 'black', ARROW_TEXT_FS)
 
 # YES arrow + Jargon box
 arr(20.75, r1y, 22.2, r1y, GREEN, text='YES', text_color=GREEN, text_align=0.2)
-draw_box(23.8, r1y, 2.8, 1.2, 'Translate\n+ Simple Mode\n(jargon\u2192plain)', ORANGE, fs=8)
+draw_box(23.8, r1y, 2.8, 1.2, 'Translate\n+ Simple Mode\n(jargon\u2192plain)', ORANGE, fs=MINI_BLOCK_FS)
 arr(25.2, r1y, 26.0, r1y)
 
 # Neural TTS box
-draw_box(27.2, r1y, 2.0, 1.2, 'Neural\nTTS\n3 Personas', PURPLE, fs=8)
+draw_box(27.2, r1y, 2.0, 1.2, 'Neural\nTTS\n3 Personas', PURPLE, fs=MINI_BLOCK_FS)
 arr(28.2, r1y, 29.0, r1y)
 
 # Delivered box
-draw_box(30.2, r1y, 2.0, 1.2, 'Delivered\nto All\nUsers', GREEN, fs=9)
+draw_box(30.2, r1y, 2.0, 1.2, 'Delivered\nto All\nUsers', GREEN, fs=BLOCK_FS)
 
 # NO arrow going down
 arr(20, r1y-0.75, 20, r1y-1.8, '#CC0000', text='NO', text_color='#CC0000', text_align=-0.5)
@@ -218,6 +218,6 @@ ax.text(16.5, 1.5, 'IMPACT:  95%+ noise reduction  |  98% ASR accuracy  |  
 
 plt.tight_layout()
 # bbox_inches='tight' helps ensure the legend doesn't get clipped in the final file
-plt.savefig('fc2_slide.png', dpi=200, bbox_inches='tight', facecolor='white')
+plt.savefig('cisco_case/figures/fc2_slide.png', dpi=200, bbox_inches='tight', facecolor='white')
 plt.close()
 print("fc2_slide.png created successfully with corrected legend and label position")
