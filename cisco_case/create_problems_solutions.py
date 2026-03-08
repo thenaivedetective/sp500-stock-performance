@@ -309,7 +309,7 @@ ax.text(11, 57.3, 'Solution 2: VIBE - Voice & Language Intelligence Layer',
 ax.text(11, 56.7, 'Voice Boost | Live Translation | Type-to-Speak | Simple Mode  |  Real-Time In-Meeting AI',
         ha='center', fontsize=13, color='#555555')
 
-draw_symbol_directory(ax, 0.3, 51.5, 6.5, 4.8)
+draw_symbol_directory(ax, 0.5, 39.5, 5.5, 4.8)
 
 ts_box = mpatches.FancyBboxPatch((15.2, 50.2), 6.5, 6.5, boxstyle="round,pad=0.1",
                                    facecolor='#E8F4FD', edgecolor='#002060', linewidth=2.5)
@@ -549,6 +549,16 @@ for cx_off, title, color, items in zip(col_x, col_titles, col_colors, col_items)
     ax.text(cx_off + col_w/2, 6.8, title, ha='center', fontsize=10, fontweight='bold', color=color)
     for j, item in enumerate(items):
         ax.text(cx_off + col_w/2, 6.0 - j * 0.75, item, ha='center', fontsize=8, color='#333333')
+
+mr = mpatches.FancyBboxPatch((0.3, 1.0), 21.4, 1.2,
+                             boxstyle='round,pad=0.05',
+                             facecolor='#002060', edgecolor='black', linewidth=2)
+ax.add_patch(mr)
+
+ax.text(11, 1.6,
+        'IMPACT: 15 min saved/meeting  |  25% meeting-to-action  |  '
+        '40% workflow automation  |  85% task accuracy  |  90%+ Q&A resolution',
+        ha='center', va='center', fontsize=9, fontweight='bold', color='white')
 
 plt.tight_layout()
 plt.savefig('cisco_case/figures/flowchart_2_vibe.png', dpi=200, bbox_inches='tight')
