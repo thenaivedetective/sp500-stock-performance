@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "9Q67DE3lyhBvLP7q4rR8m"
+uri = "file://homework/SSIE553_Homework5_Lana_Jalal_Gidan.pdf"
+type = "pdf"
+title = "SSIE 553 Homework 5 – Lana Jalal Gidan"
