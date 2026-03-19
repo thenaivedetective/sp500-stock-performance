@@ -12,3 +12,9 @@ id = "RoNr95DbOBFQInpWqC-pM"
 uri = "file://multivariate_homework_lana_gidan.pdf"
 type = "pdf"
 title = "Multivariate Homework — Lana Gidan"
+
+[[outputs]]
+id = "4ygdeFTWz3I_W3776V8q2"
+uri = "file://sas_homework_lana_gidan.zip"
+type = "unspecified"
+title = "SAS Source Files — Lana Gidan Homework"
