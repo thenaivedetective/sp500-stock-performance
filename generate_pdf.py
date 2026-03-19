@@ -1,4 +1,4 @@
-import textwrap, numpy as np, pandas as pd
+import subprocess, textwrap, numpy as np, pandas as pd
 from scipy import stats
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
@@ -6,6 +6,9 @@ from scipy.cluster.hierarchy import linkage
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import confusion_matrix
 import warnings; warnings.filterwarnings('ignore')
+
+# Generate SAS-equivalent figures (white academic style)
+subprocess.run(['python', 'generate_sas_figures.py'], check=True)
 
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
@@ -47,6 +50,7 @@ calc_st    = S('CA',fontName='Courier',      fontSize=8.5, textColor=BLACK, back
 code_lbl   = S('CD',fontName='Times-Bold',   fontSize=10, textColor=BLACK, spaceBefore=10, spaceAfter=4)
 code_st    = S('CO',fontName='Courier',      fontSize=7,  textColor=BLACK, backColor=CODE_BG, leading=10, spaceAfter=0, spaceBefore=0, leftIndent=4, rightIndent=4)
 cap_st     = S('CP',fontName='Times-Italic', fontSize=9,  textColor=GRAY, alignment=TA_CENTER, spaceBefore=3, spaceAfter=8)
+sas_lbl    = S('SL',fontName='Times-Bold',   fontSize=10, textColor=colors.HexColor('#1a4a7a'), spaceBefore=10, spaceAfter=3)
 
 def thin_hr():
     return HRFlowable(width='100%', thickness=0.5, color=LGRAY, spaceAfter=6, spaceBefore=4)
@@ -351,6 +355,23 @@ story.append(embed_image('q8_7_discriminant_analysis.png'))
 story.append(Paragraph(
     'Figure 8.7 — Group means, discriminant score distributions, and model comparison.',
     cap_st))
+
+story.append(Paragraph('SAS Output — Discriminant Scores (Part a: INCOME and EDUCAT)', sas_lbl))
+story.append(embed_image('sas_q87_scores_a.png', max_width=13*cm, max_height=8*cm))
+story.append(Paragraph(
+    'SAS Figure 8.7a — PROC DISCRIM discriminant score histogram by depression group '
+    '(INCOME and EDUCAT predictors). Normal and depressed distributions show modest overlap, '
+    'consistent with Wilks\' Λ = 0.9724.',
+    cap_st))
+
+story.append(Paragraph('SAS Output — Key Predictors by Group (Parts b and c)', sas_lbl))
+story.append(embed_image('sas_q87_boxplots.png', max_width=15*cm, max_height=9*cm))
+story.append(Paragraph(
+    'SAS Figure 8.7b — PROC SGPLOT box plots of the four stepwise-selected variables '
+    '(HEALTH, BEDDAYS, ACUTEILL, CHRONILL) by depression group. '
+    'Depressed individuals show markedly worse health outcomes across all four measures.',
+    cap_st))
+
 story.append(Paragraph('Code — Question 8.7', code_lbl))
 story += code_block('hw_q8_7.py')
 story.append(PageBreak())
@@ -431,6 +452,22 @@ story.append(Paragraph(
     'Figure 7.5 / 8.8 — Dendrogram, elbow plot, cluster profiles, and discriminant results.',
     cap_st))
 
+story.append(Paragraph('SAS Output — Ward Hierarchical Dendrogram (PROC CLUSTER / PROC TREE)', sas_lbl))
+story.append(embed_image('sas_q75_dendrogram.png', max_width=15*cm, max_height=9*cm))
+story.append(Paragraph(
+    'SAS Figure 7.5a — Ward\'s hierarchical clustering dendrogram (PROC CLUSTER METHOD=WARD). '
+    'The largest merge-distance gap occurs between k=1 and k=2, confirming a two-cluster '
+    'solution. The dashed red line shows the cut point.',
+    cap_st))
+
+story.append(Paragraph('SAS Output — Cluster Mean Usage Profiles (PROC FASTCLUS)', sas_lbl))
+story.append(embed_image('sas_q75_profile.png', max_width=15*cm, max_height=8*cm))
+story.append(Paragraph(
+    'SAS Figure 7.5b — K-Means cluster mean usage scores across gas price increase levels '
+    '(PROC FASTCLUS, k=2). Users (blue) consistently score higher at every price level; '
+    'Non-users (orange) remain near 1 throughout, indicating inelastic non-adoption.',
+    cap_st))
+
 # =============================================================================
 # Q 8.8
 # =============================================================================
@@ -470,6 +507,14 @@ story += calc_block([
     f'{df_disc.loc[y88==1,v].mean()-df_disc.loc[y88==0,v].mean():>10.3f}'
     for v in ['V1','V2','V3','V4','V5','V6','V7','V10','V14','V18']
 ])
+
+story.append(Paragraph('SAS Output — Discriminant Scores (PROC DISCRIM, Users vs Non-users)', sas_lbl))
+story.append(embed_image('sas_q88_scores.png', max_width=13*cm, max_height=8*cm))
+story.append(Paragraph(
+    'SAS Figure 8.8 — PROC DISCRIM discriminant score histogram (V1–V18 predictors). '
+    'Users and Non-users are almost perfectly separated (Wilks\' Λ = 0.1706, accuracy = 97.3%), '
+    'confirming the clusters are well-defined and highly distinct groups.',
+    cap_st))
 
 story.append(Paragraph('Code — Questions 7.5 and 8.8', code_lbl))
 story += code_block('hw_q7_5_and_q8_8.py')
@@ -547,6 +592,23 @@ story.append(Paragraph(
     'Figure 9.8 — Group means, discriminant score scatter, structure matrix, '
     'and classification accuracy.',
     cap_st))
+
+story.append(Paragraph('SAS Output — Canonical Discriminant Score Plot (PROC CANDISC)', sas_lbl))
+story.append(embed_image('sas_q98_scatter.png', max_width=13*cm, max_height=9*cm))
+story.append(Paragraph(
+    'SAS Figure 9.8a — PROC CANDISC two-function canonical score scatter. '
+    'Diamond markers indicate group centroids. Function 1 (horizontal) provides '
+    'the dominant separation, with 3-phone households clearly right of 1-phone households.',
+    cap_st))
+
+story.append(Paragraph('SAS Output — Mean Attitude Scores by Phone Group (PROC SGPLOT)', sas_lbl))
+story.append(embed_image('sas_q98_groupmeans.png', max_width=15*cm, max_height=9*cm))
+story.append(Paragraph(
+    'SAS Figure 9.8b — PROC SGPLOT clustered bar chart of mean attitude scores (A1–A6) '
+    'by phone ownership group. A3 ("more phones worth the cost") rises with group; '
+    'A5 ("more phones = waste") declines, matching the canonical function structure.',
+    cap_st))
+
 story.append(Paragraph('Code — Question 9.8', code_lbl))
 story += code_block('hw_q9_8.py')
 story.append(PageBreak())
@@ -658,6 +720,25 @@ story.append(Paragraph(
     'Figure 9.9 — GPA vs GMAT scatter, discriminant score distributions, '
     'standardised coefficients, and classification accuracy.',
     cap_st))
+
+story.append(Paragraph('SAS Output — GPA vs GMAT Scatter by Admission Group (PROC SGPLOT)', sas_lbl))
+story.append(embed_image('sas_q99_scatter.png', max_width=13*cm, max_height=9*cm))
+story.append(Paragraph(
+    'SAS Figure 9.9a — PROC SGPLOT scatter of GPA vs GMAT coloured by admission status. '
+    'Reference lines at GPA = 3.30 and GMAT = 500 approximate the discriminant boundaries. '
+    'Admitted applicants (blue) cluster upper-right; Not Admitted (orange) lower-left; '
+    'Borderline (green) occupies the intermediate region.',
+    cap_st))
+
+story.append(Paragraph('SAS Output — Canonical Discriminant Score Plot (PROC CANDISC)', sas_lbl))
+story.append(embed_image('sas_q99_canonical.png', max_width=13*cm, max_height=9*cm))
+story.append(Paragraph(
+    'SAS Figure 9.9b — PROC CANDISC two-function canonical score scatter. '
+    'Function 1 (96.7% of variance) cleanly separates Admitted from Not Admitted. '
+    'Borderline applicants sit between the two primary clusters along Function 1, '
+    'confirming that Function 2 adds little additional discrimination.',
+    cap_st))
+
 story.append(Paragraph('Code — Question 9.9', code_lbl))
 story += code_block('hw_q9_9.py')
 
