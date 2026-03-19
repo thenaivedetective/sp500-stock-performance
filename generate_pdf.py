@@ -7,7 +7,7 @@ from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, PageBreak,
     HRFlowable, Image as RLImage
 )
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
+from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
 
 OUTPUT = 'multivariate_homework_lana_gidan.pdf'
 W, H = A4
@@ -48,6 +48,10 @@ q_heading = ParagraphStyle('QHeading',
 part_heading = ParagraphStyle('PartHeading',
     fontName='Times-Bold', fontSize=11,
     textColor=BLACK, spaceBefore=8, spaceAfter=3)
+
+code_heading = ParagraphStyle('CodeHeading',
+    fontName='Times-Bold', fontSize=10,
+    textColor=BLACK, spaceBefore=10, spaceAfter=4)
 
 body_style = ParagraphStyle('Body',
     fontName='Times-Roman', fontSize=10.5,
@@ -150,9 +154,12 @@ story.append(Paragraph(
     'Figure 8.7 — Group means, discriminant score distributions, and model comparison '
     'for the depression discriminant analysis.',
     fig_caption))
+
+story.append(Paragraph('Code — Question 8.7', code_heading))
+story += code_block('hw_q8_7.py')
 story.append(PageBreak())
 
-# ── Q 7.5 ─────────────────────────────────────────────────────────────────────
+# ── Q 7.5 + Q 8.8 ─────────────────────────────────────────────────────────────
 story.append(Paragraph('Question 7.5 — Cluster Analysis (MASST.DAT)', q_heading))
 story.append(thin_hr())
 
@@ -172,9 +179,7 @@ story.append(Paragraph(
     'economic one. These groups form the dependent variable for Question 8.8.',
     body_style))
 
-story.append(Spacer(1, 0.5*cm))
-
-# ── Q 8.8 ─────────────────────────────────────────────────────────────────────
+story.append(Spacer(1, 0.4*cm))
 story.append(Paragraph('Question 8.8 — Discriminant Analysis: Users vs Non-users (MASST.DAT)', q_heading))
 story.append(thin_hr())
 
@@ -201,6 +206,9 @@ story.append(Paragraph(
     'Figure 7.5 / 8.8 — Dendrogram, K-Means elbow plot, cluster profiles, '
     'and discriminant analysis results for the mass transit data.',
     fig_caption))
+
+story.append(Paragraph('Code — Questions 7.5 and 8.8', code_heading))
+story += code_block('hw_q7_5_and_q8_8.py')
 story.append(PageBreak())
 
 # ── Q 9.8 ─────────────────────────────────────────────────────────────────────
@@ -237,6 +245,9 @@ story.append(Paragraph(
     'Figure 9.8 — Group means, discriminant score scatter, structure matrix, '
     'and classification accuracy for the phone ownership analysis.',
     fig_caption))
+
+story.append(Paragraph('Code — Question 9.8', code_heading))
+story += code_block('hw_q9_8.py')
 story.append(PageBreak())
 
 # ── Q 9.9 ─────────────────────────────────────────────────────────────────────
@@ -284,19 +295,11 @@ story.append(Paragraph(
     'Figure 9.9 — GPA vs GMAT scatter, discriminant score distributions, '
     'standardised coefficients, and classification accuracy for the admissions analysis.',
     fig_caption))
-story.append(PageBreak())
 
-# ── Code listing ───────────────────────────────────────────────────────────────
-story.append(Paragraph('Python Code', q_heading))
-story.append(thin_hr())
-story.append(Paragraph(
-    'The complete self-contained script below reproduces all analyses and figures. '
-    'Data files should be placed in the attached_assets/ folder.',
-    body_style))
-story.append(Spacer(1, 0.2*cm))
-story += code_block('multivariate_homework_lana_gidan.py')
+story.append(Paragraph('Code — Question 9.9', code_heading))
+story += code_block('hw_q9_9.py')
 
-# ── Page template ──────────────────────────────────────────────────────────────
+# ── Page footer ────────────────────────────────────────────────────────────────
 def on_page(canvas, doc):
     canvas.saveState()
     canvas.setFont('Times-Roman', 8)
