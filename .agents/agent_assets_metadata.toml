@@ -24,3 +24,9 @@ id = "rOj-flhFRbmvJfgiRTf0J"
 uri = "file://Factor_Analysis_Work_Engagement_Enhanced.pdf"
 type = "pdf"
 title = "Factor Analysis of Work Engagement — Enhanced (EFA Math Focus)"
+
+[[outputs]]
+id = "8IeRW6zLvLj_Rz7d_CP6h"
+uri = "file://Factor_Analysis_Work_Engagement_Enhanced.pptx"
+type = "slides"
+title = "Factor Analysis of Work Engagement — Enhanced PowerPoint (21 Slides)"
