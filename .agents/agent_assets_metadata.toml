@@ -18,3 +18,9 @@ id = "4ygdeFTWz3I_W3776V8q2"
 uri = "file://sas_homework_lana_gidan.zip"
 type = "unspecified"
 title = "SAS Source Files — Lana Gidan Homework"
+
+[[outputs]]
+id = "rOj-flhFRbmvJfgiRTf0J"
+uri = "file://Factor_Analysis_Work_Engagement_Enhanced.pdf"
+type = "pdf"
+title = "Factor Analysis of Work Engagement — Enhanced (EFA Math Focus)"
