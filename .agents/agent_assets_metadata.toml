@@ -30,3 +30,15 @@ id = "8IeRW6zLvLj_Rz7d_CP6h"
 uri = "file://Factor_Analysis_Work_Engagement_Enhanced.pptx"
 type = "slides"
 title = "Factor Analysis of Work Engagement — Enhanced PowerPoint (21 Slides)"
+
+[[outputs]]
+id = "AZn8lUswQPWzvK_76TxyP"
+uri = "file://MASST_Dataset.xlsx"
+type = "table"
+title = "MASST Dataset — Excel (598 rows x 53 variables)"
+
+[[outputs]]
+id = "UxF6HHIdJUWP--3geXzRk"
+uri = "file://MASST_Dataset.csv"
+type = "table"
+title = "MASST Dataset — CSV (598 rows x 53 variables)"
