@@ -21,7 +21,7 @@ D = [35000,50000,30000,60000] # Demand for each Quarter
 I0 = 10000 #Starting or initial Inventory
 cost_Regular = 200 # Cost of Regular Production
 cost_OT = 250 # Cost of Overtime Production
-cost_Inventory = 50 # Cost of Inventory holding cost/quarter
+cost_Inventory = 100 # Cost of Inventory holding cost/quarter
 UB_RP = 40000 # Upper Bound in Regular Production
 
 #Step 3: Setup Indices for Decision Variables
