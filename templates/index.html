@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credit Risk ML Presentation</title>
+<style>
+/* ── Reset & Base ─────────────────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#0d1b2e; --navy2:#1a2f4a; --blue:#2563eb; --lblue:#60a5fa;
+  --gold:#f59e0b; --green:#10b981; --red:#ef4444; --orange:#f97316;
+  --white:#f8fafc; --grey:#94a3b8; --dgrey:#334155;
+  --slide-w:100vw; --slide-h:100vh;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Segoe UI',system-ui,sans-serif;}
+
+/* ── Deck ────────────────────────────────────────────────── */
+#deck{position:relative;width:100vw;height:100vh;overflow:hidden;}
+.slide{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  background:var(--navy);color:var(--white);
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transition:opacity .45s ease, transform .45s ease;
+  transform:translateX(60px);
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide.exit-left{opacity:0;transform:translateX(-60px);}
+
+/* ── Top bar ─────────────────────────────────────────────── */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 28px;background:rgba(13,27,46,.88);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(96,165,250,.15);
+}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.logo{font-size:13px;font-weight:700;color:var(--lblue);letter-spacing:.06em;text-transform:uppercase;}
+.slide-title-bar{font-size:12px;color:var(--grey);}
+.topbar-right{display:flex;align-items:center;gap:20px;}
+#slide-counter{font-size:12px;color:var(--grey);}
+.nav-btn{
+  background:rgba(37,99,235,.18);border:1px solid rgba(96,165,250,.3);
+  color:var(--lblue);border-radius:8px;padding:6px 14px;cursor:pointer;
+  font-size:13px;transition:all .2s;
+}
+.nav-btn:hover{background:rgba(37,99,235,.4);}
+.nav-btn:disabled{opacity:.3;cursor:default;}
+
+/* ── Progress bar ────────────────────────────────────────── */
+#progress{
+  position:fixed;bottom:0;left:0;height:3px;background:var(--blue);
+  transition:width .35s ease;z-index:100;
+}
+
+/* ── Slide dot nav ───────────────────────────────────────── */
+#dots{
+  position:fixed;bottom:12px;left:50%;transform:translateX(-50%);
+  display:flex;gap:7px;z-index:100;
+}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--dgrey);cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--blue);transform:scale(1.3);}
+
+/* ── Slide layout helpers ────────────────────────────────── */
+.slide-body{flex:1;padding:80px 72px 48px;display:flex;flex-direction:column;justify-content:center;}
+.slide-body.top{justify-content:flex-start;padding-top:88px;}
+.slide-body.wide{padding:80px 48px 48px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;flex:1;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px;}
+.flex-row{display:flex;gap:32px;align-items:flex-start;}
+
+/* ── Typography ─────────────────────────────────────────── */
+.slide-tag{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--lblue);margin-bottom:14px;}
+h1{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.12;color:var(--white);}
+h1 span{color:var(--lblue);}
+h2{font-size:clamp(1.4rem,2.5vw,2rem);font-weight:700;color:var(--white);margin-bottom:18px;}
+h2 span{color:var(--lblue);}
+h3{font-size:1.05rem;font-weight:700;color:var(--lblue);margin-bottom:8px;}
+p{font-size:.97rem;line-height:1.65;color:#cbd5e1;}
+.big-stat{font-size:clamp(2.4rem,5vw,4rem);font-weight:800;color:var(--blue);line-height:1;}
+.stat-label{font-size:.85rem;color:var(--grey);margin-top:4px;}
+
+/* ── Cards ───────────────────────────────────────────────── */
+.card{background:var(--navy2);border:1px solid rgba(96,165,250,.12);border-radius:14px;padding:22px 24px;}
+.card.gold{border-color:rgba(245,158,11,.25);}
+.card.green{border-color:rgba(16,185,129,.25);}
+.card.red{border-color:rgba(239,68,68,.25);}
+
+/* ── Step list ───────────────────────────────────────────── */
+.step-list{display:flex;flex-direction:column;gap:12px;margin-top:8px;}
+.step{display:flex;align-items:flex-start;gap:16px;}
+.step-num{
+  min-width:32px;height:32px;border-radius:50%;
+  background:var(--blue);color:#fff;font-weight:700;font-size:.85rem;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.step-text{font-size:.93rem;color:#cbd5e1;line-height:1.5;padding-top:6px;}
+.step-text strong{color:var(--white);}
+
+/* ── Bullet list ─────────────────────────────────────────── */
+.bullet-list{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
+.bullet{display:flex;gap:12px;align-items:flex-start;font-size:.93rem;color:#cbd5e1;line-height:1.5;}
+.bullet::before{content:"▹";color:var(--blue);flex-shrink:0;padding-top:1px;}
+.bullet strong{color:var(--white);}
+
+/* ── Table ───────────────────────────────────────────────── */
+.data-table{width:100%;border-collapse:collapse;font-size:.88rem;}
+.data-table th{background:var(--blue);color:#fff;padding:9px 14px;text-align:left;font-weight:600;}
+.data-table td{padding:8px 14px;border-bottom:1px solid rgba(96,165,250,.08);color:#cbd5e1;}
+.data-table tr:nth-child(even) td{background:rgba(255,255,255,.03);}
+.data-table td.num{color:var(--gold);font-weight:700;}
+.data-table td.good{color:var(--green);font-weight:700;}
+
+/* ── Chart image ─────────────────────────────────────────── */
+.chart-wrap{
+  background:rgba(255,255,255,.97);border-radius:12px;padding:10px;
+  display:flex;align-items:center;justify-content:center;
+  max-height:380px;overflow:hidden;
+}
+.chart-wrap img{max-width:100%;max-height:360px;object-fit:contain;}
+.chart-label{font-size:.78rem;color:var(--grey);text-align:center;margin-top:8px;}
+
+/* ── Title slide ─────────────────────────────────────────── */
+#s0{
+  background:linear-gradient(135deg,#0d1b2e 0%,#0f2d52 50%,#0d1b2e 100%);
+  position:relative;overflow:hidden;
+}
+#s0::before{
+  content:'';position:absolute;top:-40%;left:-20%;
+  width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,.18) 0%,transparent 70%);
+  pointer-events:none;
+}
+.title-content{
+  flex:1;display:flex;flex-direction:column;justify-content:center;
+  padding:60px 80px;
+}
+.title-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(37,99,235,.2);border:1px solid rgba(96,165,250,.3);
+  border-radius:20px;padding:6px 16px;font-size:.8rem;font-weight:600;
+  color:var(--lblue);letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:28px;width:fit-content;
+}
+.title-badge::before{content:'●';font-size:.55rem;color:var(--green);}
+.title-content h1{font-size:clamp(2rem,4.5vw,3.6rem);margin-bottom:20px;}
+.title-content p{font-size:1.1rem;max-width:600px;color:#94a3b8;}
+.title-meta{
+  display:flex;gap:40px;margin-top:48px;padding-top:32px;
+  border-top:1px solid rgba(96,165,250,.15);
+}
+.meta-item{display:flex;flex-direction:column;gap:4px;}
+.meta-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--grey);}
+.meta-value{font-size:.95rem;font-weight:600;color:var(--white);}
+
+/* ── Agenda slide ────────────────────────────────────────── */
+.agenda-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;
+}
+.agenda-item{
+  display:flex;align-items:center;gap:16px;
+  background:var(--navy2);border:1px solid rgba(96,165,250,.1);
+  border-radius:12px;padding:16px 20px;cursor:pointer;
+  transition:all .2s;
+}
+.agenda-item:hover{border-color:rgba(96,165,250,.4);background:rgba(37,99,235,.1);}
+.agenda-num{
+  min-width:36px;height:36px;border-radius:10px;background:var(--blue);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.9rem;color:#fff;flex-shrink:0;
+}
+.agenda-text{font-size:.92rem;color:var(--white);font-weight:600;}
+.agenda-sub{font-size:.78rem;color:var(--grey);margin-top:2px;}
+
+/* ── Factor loadings table ───────────────────────────────── */
+.loading-bar{height:8px;border-radius:4px;margin-top:4px;}
+.loading-pos{background:linear-gradient(90deg,var(--blue),var(--lblue));}
+.loading-neg{background:linear-gradient(90deg,var(--red),#fca5a5);}
+
+/* ── Risk meter ──────────────────────────────────────────── */
+.risk-meter{
+  position:relative;width:100%;height:28px;border-radius:14px;
+  background:linear-gradient(90deg,#10b981,#f59e0b,#ef4444);
+  overflow:visible;margin:12px 0;
+}
+.risk-needle{
+  position:absolute;top:50%;width:4px;height:42px;border-radius:2px;
+  background:#fff;transform:translate(-50%,-50%);
+  box-shadow:0 0 8px rgba(255,255,255,.6);
+  transition:left .6s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ── PREDICTOR SLIDE ─────────────────────────────────────── */
+#predictor-slide{background:linear-gradient(135deg,#0d1b2e 0%,#0f2040 100%);}
+.predictor-grid{
+  display:grid;grid-template-columns:1.1fr 1fr;
+  gap:32px;flex:1;align-items:start;
+  padding:0;
+}
+.form-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  margin-bottom:16px;
+}
+.field-group{display:flex;flex-direction:column;gap:4px;}
+.field-label{
+  font-size:.75rem;font-weight:600;color:var(--lblue);
+  text-transform:uppercase;letter-spacing:.06em;
+}
+.field-input{
+  background:rgba(255,255,255,.06);border:1px solid rgba(96,165,250,.2);
+  border-radius:8px;padding:9px 12px;color:var(--white);font-size:.9rem;
+  outline:none;transition:border-color .2s;width:100%;
+}
+.field-input:focus{border-color:var(--blue);}
+.field-hint{font-size:.7rem;color:var(--grey);}
+
+.model-toggle{display:flex;gap:10px;margin-bottom:14px;}
+.model-btn{
+  flex:1;padding:9px;border-radius:8px;border:1px solid rgba(96,165,250,.2);
+  background:rgba(255,255,255,.04);color:var(--grey);cursor:pointer;
+  font-size:.85rem;font-weight:600;transition:all .2s;text-align:center;
+}
+.model-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+
+.predict-btn{
+  width:100%;padding:13px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,var(--blue),#1d4ed8);
+  color:#fff;font-size:1rem;font-weight:700;cursor:pointer;
+  transition:all .2s;letter-spacing:.04em;
+}
+.predict-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(37,99,235,.4);}
+.predict-btn:active{transform:translateY(0);}
+
+/* Result panel */
+.result-panel{
+  background:var(--navy2);border:1px solid rgba(96,165,250,.15);
+  border-radius:16px;padding:28px;min-height:420px;
+  display:flex;flex-direction:column;
+}
+.result-idle{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;color:var(--grey);text-align:center;gap:12px;
+}
+.result-idle .idle-icon{font-size:3rem;opacity:.4;}
+.result-active{display:none;flex-direction:column;gap:18px;}
+.result-active.show{display:flex;}
+
+.verdict{
+  text-align:center;padding:18px;border-radius:12px;
+  font-size:2rem;font-weight:800;letter-spacing:.04em;
+}
+.verdict.repay{background:rgba(16,185,129,.15);color:var(--green);border:2px solid rgba(16,185,129,.3);}
+.verdict.default{background:rgba(239,68,68,.15);color:var(--red);border:2px solid rgba(239,68,68,.3);}
+
+.prob-bars{display:flex;flex-direction:column;gap:8px;}
+.prob-row{display:flex;flex-direction:column;gap:4px;}
+.prob-label-row{display:flex;justify-content:space-between;font-size:.82rem;}
+.prob-label{color:var(--grey);}
+.prob-val{font-weight:700;}
+.prob-track{height:10px;background:rgba(255,255,255,.07);border-radius:5px;overflow:hidden;}
+.prob-fill{height:100%;border-radius:5px;transition:width .7s cubic-bezier(.34,1.56,.64,1);}
+.fill-green{background:linear-gradient(90deg,var(--green),#6ee7b7);}
+.fill-red{background:linear-gradient(90deg,var(--red),#fca5a5);}
+
+.drivers-section h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.1em;color:var(--grey);margin-bottom:10px;}
+.driver-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 12px;background:rgba(255,255,255,.04);border-radius:8px;margin-bottom:6px;
+}
+.driver-feat{font-size:.82rem;font-weight:600;color:var(--white);flex:1;}
+.driver-val{font-size:.8rem;color:var(--grey);}
+.driver-dir{
+  font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:10px;
+}
+.dir-up{background:rgba(239,68,68,.15);color:var(--red);}
+.dir-down{background:rgba(16,185,129,.15);color:var(--green);}
+
+.model-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(37,99,235,.15);border:1px solid rgba(96,165,250,.2);
+  border-radius:20px;padding:4px 12px;font-size:.78rem;color:var(--lblue);
+  margin-bottom:6px;
+}
+
+/* ── Presets ─────────────────────────────────────────────── */
+.preset-row{display:flex;gap:8px;margin-bottom:12px;}
+.preset-btn{
+  flex:1;padding:7px 6px;border-radius:7px;border:1px solid rgba(96,165,250,.2);
+  background:rgba(255,255,255,.04);color:var(--grey);cursor:pointer;
+  font-size:.76rem;font-weight:600;transition:all .2s;text-align:center;
+}
+.preset-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ── Comparison slide ────────────────────────────────────── */
+.metric-card{
+  text-align:center;padding:24px 16px;
+  background:var(--navy2);border:1px solid rgba(96,165,250,.12);border-radius:14px;
+}
+.metric-val{font-size:2.4rem;font-weight:800;margin-bottom:4px;}
+.metric-name{font-size:.8rem;color:var(--grey);text-transform:uppercase;letter-spacing:.08em;}
+
+/* ── Limitation slide ────────────────────────────────────── */
+.leak-item{
+  display:flex;gap:14px;padding:12px 16px;border-radius:10px;
+  background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);
+  margin-bottom:10px;
+}
+.leak-icon{font-size:1.2rem;flex-shrink:0;}
+.leak-text strong{color:var(--red);font-size:.9rem;}
+.leak-text p{font-size:.83rem;color:#94a3b8;margin-top:2px;}
+
+/* ── Conclusion slide ────────────────────────────────────── */
+.conclusion-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:24px;}
+.conclusion-card{
+  background:var(--navy2);border-radius:14px;padding:22px;
+  border:1px solid rgba(96,165,250,.12);text-align:center;
+}
+.conclusion-icon{font-size:2rem;margin-bottom:12px;}
+.conclusion-card h3{color:var(--lblue);font-size:.95rem;margin-bottom:8px;}
+.conclusion-card p{font-size:.83rem;color:#94a3b8;line-height:1.5;}
+
+/* ── Keyboard hint ───────────────────────────────────────── */
+.key-hint{
+  position:fixed;bottom:24px;right:28px;
+  font-size:.72rem;color:var(--dgrey);z-index:100;
+  display:flex;align-items:center;gap:6px;
+}
+.key{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:5px;
+  background:var(--dgrey);color:var(--white);font-size:.7rem;font-weight:700;
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="logo">BU · SSIE</span>
+    <span class="slide-title-bar" id="top-title">Credit Risk Classification</span>
+  </div>
+  <div class="topbar-right">
+    <span id="slide-counter">1 / 14</span>
+    <button class="nav-btn" id="btn-prev" onclick="changeSlide(-1)">&#8592; Prev</button>
+    <button class="nav-btn" id="btn-next" onclick="changeSlide(1)">Next &#8594;</button>
+  </div>
+</div>
+
+<div id="deck">
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 0 — TITLE
+═══════════════════════════════════════════════════ -->
+<div class="slide active" id="s0">
+  <div class="title-content">
+    <div class="title-badge">Multivariate Statistics · Binghamton University</div>
+    <h1>Credit Risk <span>Classification</span><br>Using ML Techniques</h1>
+    <p>Applying Factor Analysis, Linear Discriminant Analysis, and Logistic Regression to 500,000 real LendingClub loan records to predict borrower default.</p>
+    <div class="title-meta">
+      <div class="meta-item"><span class="meta-label">Author</span><span class="meta-value">Lana Jalal Gidan</span></div>
+      <div class="meta-item"><span class="meta-label">Department</span><span class="meta-value">Systems Science &amp; Industrial Engineering</span></div>
+      <div class="meta-item"><span class="meta-label">Dataset</span><span class="meta-value">LendingClub · 500,000 Loans</span></div>
+      <div class="meta-item"><span class="meta-label">Models</span><span class="meta-value">LDA &amp; Logistic Regression</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 1 — AGENDA
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s1">
+  <div class="slide-body">
+    <div class="slide-tag">Roadmap</div>
+    <h2>What We'll Cover</h2>
+    <div class="agenda-grid">
+      <div class="agenda-item" onclick="goTo(2)">
+        <div class="agenda-num">1</div>
+        <div><div class="agenda-text">The Problem</div><div class="agenda-sub">What is credit risk?</div></div>
+      </div>
+      <div class="agenda-item" onclick="goTo(3)">
+        <div class="agenda-num">2</div>
+        <div><div class="agenda-text">The Dataset</div><div class="agenda-sub">LendingClub · 500k real loans</div></div>
+      </div>
+      <div class="agenda-item" onclick="goTo(4)">
+        <div class="agenda-num">3</div>
+        <div><div class="agenda-text">Data Cleaning</div><div class="agenda-sub">From 151 messy columns to 76 clean features</div></div>
+      </div>
+      <div class="agenda-item" onclick="goTo(5)">
+        <div class="agenda-num">4</div>
+        <div><div class="agenda-text">Factor Analysis</div><div class="agenda-sub">Interdependence technique</div></div>
+      </div>
+      <div class="agenda-item" onclick="goTo(7)">
+        <div class="agenda-num">5</div>
+        <div><div class="agenda-text">LDA</div><div class="agenda-sub">Linear Discriminant Analysis</div></div>
+      </div>
+      <div class="agenda-item" onclick="goTo(9)">
+        <div class="agenda-num">6</div>
+        <div><div class="agenda-text">Logistic Regression</div><div class="agenda-sub">Probability-based classification</div></div>
+      </div>
+      <div class="agenda-item" onclick="goTo(11)">
+        <div class="agenda-num">7</div>
+        <div><div class="agenda-text">Model Comparison</div><div class="agenda-sub">ROC · Accuracy · AUC</div></div>
+      </div>
+      <div class="agenda-item" onclick="goTo(12)" style="border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.07);">
+        <div class="agenda-num" style="background:var(--gold);">★</div>
+        <div><div class="agenda-text" style="color:var(--gold);">Live Predictor</div><div class="agenda-sub">Enter real values → get prediction</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 2 — THE PROBLEM
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="slide-body">
+    <div class="slide-tag">Context</div>
+    <h2>What Is <span>Credit Risk?</span></h2>
+    <div class="two-col" style="margin-top:20px;">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="card">
+          <h3>💳 The Loan</h3>
+          <p>A bank lends you money today. You promise to repay it over time — with interest on top. The bank earns interest; you get capital.</p>
+        </div>
+        <div class="card gold">
+          <h3>⚠️ The Risk</h3>
+          <p>The borrower might <strong style="color:var(--gold)">default</strong> — stop paying. Banks lend billions, so even a small default rate means massive losses.</p>
+        </div>
+        <div class="card green">
+          <h3>🎯 The Goal</h3>
+          <p>Before lending, predict: <em>Will this person repay?</em> A good model lets banks charge fair rates and avoid bad loans.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;justify-content:center;">
+        <div class="card" style="text-align:center;">
+          <div class="big-stat">$82B+</div>
+          <div class="stat-label">US consumer loan losses per year from defaults</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div class="big-stat" style="color:var(--green);">~71%</div>
+          <div class="stat-label">Accuracy our model achieves using only data known at application time</div>
+        </div>
+        <div class="card" style="padding:16px 20px;">
+          <h3>Why Multivariate Statistics?</h3>
+          <p>A FICO score is just one number. Default risk depends on <em>dozens</em> of factors interacting. Multivariate methods see the full picture.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 3 — DATASET
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="slide-body">
+    <div class="slide-tag">Data</div>
+    <h2>The <span>LendingClub</span> Dataset</h2>
+    <div class="three-col" style="margin-bottom:24px;margin-top:18px;">
+      <div class="card" style="text-align:center;">
+        <div class="big-stat">500K</div>
+        <div class="stat-label">Real loan records</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="big-stat">151</div>
+        <div class="stat-label">Features per loan</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="big-stat" style="color:var(--red);">20.9%</div>
+        <div class="stat-label">Default rate in data</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <h3>What Each Row Contains</h3>
+        <div class="bullet-list">
+          <div class="bullet"><strong>Loan info:</strong> amount, term, interest rate, monthly installment</div>
+          <div class="bullet"><strong>Borrower info:</strong> income, employment, debt-to-income ratio</div>
+          <div class="bullet"><strong>Credit history:</strong> FICO score, open accounts, delinquencies</div>
+          <div class="bullet"><strong>LendingClub grade:</strong> A (safest) → G (riskiest)</div>
+          <div class="bullet"><strong>Outcome:</strong> Did they pay back or default?</div>
+        </div>
+      </div>
+      <div>
+        <h3>Loan Status Breakdown</h3>
+        <table class="data-table">
+          <thead><tr><th>Status</th><th>Count</th><th>Label</th></tr></thead>
+          <tbody>
+            <tr><td>Fully Paid</td><td class="num">312,340</td><td class="good">✓ Good (0)</td></tr>
+            <tr><td>Charged Off</td><td class="num">78,824</td><td style="color:var(--red);">✗ Default (1)</td></tr>
+            <tr><td>Late 31–120 days</td><td class="num">2,977</td><td style="color:var(--red);">✗ Default (1)</td></tr>
+            <tr><td>Current</td><td class="num">104,240</td><td style="color:var(--grey);">— Excluded</td></tr>
+            <tr><td>In Grace Period</td><td class="num">1,046</td><td style="color:var(--grey);">— Excluded</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 4 — DATA CLEANING
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="slide-body">
+    <div class="slide-tag">Preprocessing</div>
+    <h2>Data Cleaning <span>Pipeline</span></h2>
+    <div class="two-col" style="margin-top:16px;">
+      <div>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Dropped 58 columns</strong> with &gt;40% missing values — hardship/settlement fields that rarely appear.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Dropped 17 irrelevant columns</strong> — loan IDs, URLs, free-text descriptions.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Engineered target variable</strong> — coded loan_status into binary: 0 = paid, 1 = default.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Parsed text fields</strong> — "13.5%" → 13.5, "36 months" → 36, "10+ years" → 10.</div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Label-encoded</strong> categorical columns (grade, home_ownership, purpose…).</div></div>
+          <div class="step"><div class="step-num">6</div><div class="step-text"><strong>Removed outliers</strong> — cut top/bottom 1% of income, loan amount, revolving balance.</div></div>
+          <div class="step"><div class="step-num">7</div><div class="step-text"><strong>Dropped remaining NaN rows</strong> — listwise deletion for clean analysis.</div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;justify-content:center;">
+        <div class="card" style="text-align:center;">
+          <div style="font-size:.85rem;color:var(--grey);margin-bottom:8px;">Before → After</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:20px;">
+            <div><div class="big-stat" style="font-size:2rem;color:var(--grey);">500K × 151</div><div class="stat-label">Raw</div></div>
+            <div style="font-size:2rem;color:var(--blue);">→</div>
+            <div><div class="big-stat" style="font-size:2rem;">292K × 76</div><div class="stat-label">Clean</div></div>
+          </div>
+        </div>
+        <div class="card gold">
+          <h3>Why does this matter?</h3>
+          <p>Statistical methods assume clean, complete data. Missing values, wrong data types, and extreme outliers will produce garbage results. <em>"Garbage in, garbage out."</em></p>
+        </div>
+        <div class="card green">
+          <h3>Class Imbalance Handling</h3>
+          <p>79% good loans vs 21% defaults. We balanced training data at <strong style="color:var(--green)">2:1 ratio</strong> (undersampling) so the model learns real patterns, not just "predict good for everything."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 5 — FACTOR ANALYSIS METHOD
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="slide-body">
+    <div class="slide-tag">Interdependence Technique</div>
+    <h2>Factor <span>Analysis</span></h2>
+    <div class="two-col" style="margin-top:16px;">
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="card">
+          <h3>🔍 What It Does</h3>
+          <p>Groups many correlated variables into a smaller number of <strong>hidden (latent) factors</strong>. No outcome variable — purely about structure in the data.</p>
+        </div>
+        <div class="card gold">
+          <h3>💡 The Analogy</h3>
+          <p>You can't directly measure "intelligence" — but you see it reflected in test scores across math, reading, and logic. Factor Analysis finds that hidden dimension automatically.</p>
+        </div>
+        <div class="card green">
+          <h3>✅ Bartlett's Test — PASSED</h3>
+          <p><strong style="color:var(--green)">χ² = 657,867 &nbsp;|&nbsp; p &lt; 0.001</strong><br>Variables are significantly correlated. Factor Analysis is appropriate.</p>
+        </div>
+        <div class="card">
+          <h3>📏 Kaiser Criterion</h3>
+          <p>Keep factors with <strong>eigenvalue &gt; 1</strong>. A factor must explain more variance than a single original variable to be worth keeping.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <h3>The 6 Factors Found</h3>
+        <table class="data-table">
+          <thead><tr><th>Factor</th><th>Name</th><th>Var%</th></tr></thead>
+          <tbody>
+            <tr><td><strong>F1</strong></td><td>Loan Size &amp; Cost</td><td class="num">14.6%</td></tr>
+            <tr><td><strong>F2</strong></td><td>Credit Risk Pricing</td><td class="num">13.7%</td></tr>
+            <tr><td><strong>F3</strong></td><td>Credit Utilization</td><td class="num">10.0%</td></tr>
+            <tr><td><strong>F4</strong></td><td>Credit Breadth</td><td class="num">9.4%</td></tr>
+            <tr><td><strong>F5</strong></td><td>Credit Limit Stress</td><td class="num">3.9%</td></tr>
+            <tr><td><strong>F6</strong></td><td>Wealth &amp; Assets</td><td class="num">4.8%</td></tr>
+            <tr><td colspan="2"><strong>Total Explained</strong></td><td class="good">56.5%</td></tr>
+          </tbody>
+        </table>
+        <div class="card" style="padding:14px 18px;">
+          <p>Input: <strong style="color:var(--white)">20 financial variables</strong><br>
+          Output: <strong style="color:var(--blue)">6 interpretable factors</strong> explaining <strong style="color:var(--green)">56.5%</strong> of total variance</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 6 — FACTOR ANALYSIS CHARTS
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="slide-body wide">
+    <div class="slide-tag">Interdependence Technique · Results</div>
+    <h2>Factor Analysis — <span>Visual Results</span></h2>
+    <div class="two-col" style="margin-top:18px;align-items:start;">
+      <div>
+        <h3 style="margin-bottom:10px;">Scree Plot — How Many Factors?</h3>
+        <div class="chart-wrap">
+          <img src="/results/fa_scree_plot.png" alt="Scree Plot">
+        </div>
+        <div class="chart-label">Eigenvalues drop off after factor 6. The "elbow" at 6 confirms our choice.</div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:10px;">Factor Loadings Heatmap</h3>
+        <div class="chart-wrap" style="max-height:340px;">
+          <img src="/results/fa_loadings_heatmap.png" alt="Loadings" style="max-height:320px;">
+        </div>
+        <div class="chart-label">Dark blue = strong positive link. Dark red = strong negative link. Each column is one factor.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 7 — LDA METHOD
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="slide-body">
+    <div class="slide-tag">Dependence Technique 1</div>
+    <h2>Linear Discriminant <span>Analysis (LDA)</span></h2>
+    <div class="two-col" style="margin-top:16px;">
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="card">
+          <h3>🎯 What It Does</h3>
+          <p>Finds the <strong>linear combination of variables</strong> that maximally separates two groups — Good Borrowers vs. Defaulters. Produces one "discriminant score" per person.</p>
+        </div>
+        <div class="card gold">
+          <h3>💡 The Intuition</h3>
+          <p>Imagine all borrowers as dots in a multi-dimensional space. LDA finds the <em>single direction</em> where — if you projected all dots onto it — the blue (good) and red (default) groups overlap as little as possible.</p>
+        </div>
+        <div class="card">
+          <h3>📋 Assumptions</h3>
+          <div class="bullet-list" style="margin-top:4px;">
+            <div class="bullet">Variables roughly normally distributed within each class</div>
+            <div class="bullet">Equal covariance across both classes</div>
+            <div class="bullet">Linear boundary between classes</div>
+          </div>
+        </div>
+        <div class="card green">
+          <h3>⚖️ Training Setup</h3>
+          <p>15 origination features · Z-score standardized · 2:1 balanced sample · 70/30 train-test split</p>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:10px;">LDA Projection — Separation of Classes</h3>
+        <div class="chart-wrap">
+          <img src="/results/lda_projection.png" alt="LDA Projection">
+        </div>
+        <div class="chart-label">The two peaks show how well the discriminant axis separates good borrowers (blue) from defaulters (red).</div>
+        <div class="card" style="margin-top:14px;">
+          <h3>Top Discriminant Variables</h3>
+          <div class="bullet-list" style="margin-top:4px;">
+            <div class="bullet"><strong>FICO Score</strong> — single most powerful separator</div>
+            <div class="bullet"><strong>Interest Rate</strong> — encodes risk level</div>
+            <div class="bullet"><strong>Debt Settlement Flag</strong> — red flag indicator</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 8 — LDA RESULTS
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="slide-body wide">
+    <div class="slide-tag">Dependence Technique 1 · Results</div>
+    <h2>LDA — <span>Performance Results</span></h2>
+    <div class="two-col" style="margin-top:16px;align-items:start;">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="three-col">
+          <div class="metric-card"><div class="metric-val" style="color:var(--blue);">97.3%</div><div class="metric-name">Accuracy</div></div>
+          <div class="metric-card"><div class="metric-val" style="color:var(--green);">0.997</div><div class="metric-name">AUC-ROC</div></div>
+          <div class="metric-card"><div class="metric-val" style="color:var(--gold);">0.975</div><div class="metric-name">Precision</div></div>
+        </div>
+        <div>
+          <h3 style="margin-bottom:8px;">Classification Report</h3>
+          <table class="data-table">
+            <thead><tr><th>Class</th><th>Precision</th><th>Recall</th><th>F1</th><th>Support</th></tr></thead>
+            <tbody>
+              <tr><td>✓ Good (0)</td><td class="good">0.97</td><td class="good">0.99</td><td class="good">0.98</td><td>37,397</td></tr>
+              <tr><td>✗ Default (1)</td><td class="good">0.98</td><td class="good">0.93</td><td class="good">0.96</td><td>18,699</td></tr>
+              <tr><td><strong>Overall</strong></td><td colspan="2"></td><td class="num">0.97</td><td>56,096</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>📝 Note on These Numbers</h3>
+          <p>This model was trained with all 75 features including some post-outcome variables. The <strong>live predictor</strong> uses only 15 origination-time features — more realistic but lower accuracy (~71%).</p>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:10px;">Confusion Matrix</h3>
+        <div class="chart-wrap">
+          <img src="/results/lda_confusion_matrix.png" alt="LDA Confusion Matrix">
+        </div>
+        <div class="chart-label">Diagonal = correct predictions. Off-diagonal = errors. Very few errors visible.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 9 — LOGISTIC REGRESSION METHOD
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="slide-body">
+    <div class="slide-tag">Dependence Technique 2</div>
+    <h2>Logistic <span>Regression</span></h2>
+    <div class="two-col" style="margin-top:16px;">
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="card">
+          <h3>📊 What It Does</h3>
+          <p>Predicts the <strong>probability</strong> of default — a number between 0% and 100%. Uses the S-shaped sigmoid function to keep outputs as probabilities. If probability &gt; 50% → predict Default.</p>
+        </div>
+        <div class="card gold">
+          <h3>🆚 How It Differs from LDA</h3>
+          <table class="data-table" style="margin-top:8px;">
+            <thead><tr><th>LDA</th><th>Logistic Regression</th></tr></thead>
+            <tbody>
+              <tr><td>Assumes normality</td><td>No assumption</td></tr>
+              <tr><td>Maximizes separation</td><td>Maximizes likelihood</td></tr>
+              <tr><td>Discriminant score</td><td>Probability (0–1)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card green">
+          <h3>✅ Why LR Wins Here</h3>
+          <p>Financial variables are NOT normally distributed — incomes, balances, and rates are right-skewed. LR's weaker assumptions make it more robust and it outperforms LDA here.</p>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:10px;">Top Coefficients — What Drives Default?</h3>
+        <div class="chart-wrap">
+          <img src="/results/lr_coefficients.png" alt="LR Coefficients">
+        </div>
+        <div class="chart-label">Blue bars = lower default probability. Red bars = higher default probability.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 10 — LR RESULTS
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="slide-body wide">
+    <div class="slide-tag">Dependence Technique 2 · Results</div>
+    <h2>Logistic Regression — <span>Performance Results</span></h2>
+    <div class="two-col" style="margin-top:16px;align-items:start;">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="three-col">
+          <div class="metric-card"><div class="metric-val" style="color:var(--blue);">99.6%</div><div class="metric-name">Accuracy</div></div>
+          <div class="metric-card"><div class="metric-val" style="color:var(--green);">0.9997</div><div class="metric-name">AUC-ROC</div></div>
+          <div class="metric-card"><div class="metric-val" style="color:var(--gold);">0.998</div><div class="metric-name">Precision</div></div>
+        </div>
+        <div>
+          <h3 style="margin-bottom:8px;">Classification Report</h3>
+          <table class="data-table">
+            <thead><tr><th>Class</th><th>Precision</th><th>Recall</th><th>F1</th><th>Support</th></tr></thead>
+            <tbody>
+              <tr><td>✓ Good (0)</td><td class="good">0.99</td><td class="good">1.00</td><td class="good">1.00</td><td>37,397</td></tr>
+              <tr><td>✗ Default (1)</td><td class="good">1.00</td><td class="good">0.99</td><td class="good">0.99</td><td>18,699</td></tr>
+              <tr><td><strong>Overall</strong></td><td colspan="2"></td><td class="num">1.00</td><td>56,096</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card gold">
+          <h3>⭐ LR Outperforms LDA</h3>
+          <p>LR beats LDA by 2.3% accuracy and 0.003 AUC — consistent with theory: LDA's normality assumptions are violated by skewed financial data.</p>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:10px;">Confusion Matrix</h3>
+        <div class="chart-wrap">
+          <img src="/results/lr_confusion_matrix.png" alt="LR Confusion Matrix">
+        </div>
+        <div class="chart-label">Near-perfect classification — almost all predictions land on the diagonal.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 11 — ROC COMPARISON
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="slide-body wide">
+    <div class="slide-tag">Model Comparison</div>
+    <h2>LDA vs Logistic Regression — <span>ROC Comparison</span></h2>
+    <div class="two-col" style="margin-top:16px;align-items:center;">
+      <div>
+        <div class="chart-wrap">
+          <img src="/results/roc_comparison.png" alt="ROC Comparison">
+        </div>
+        <div class="chart-label">Both curves hug the top-left corner — near-perfect discrimination. AUC = area under the curve.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="card">
+          <h3>📈 What is the ROC Curve?</h3>
+          <p>It plots <strong>True Positive Rate</strong> (catching actual defaults) vs. <strong>False Positive Rate</strong> (wrongly flagging good loans) at every possible decision threshold. A perfect model goes straight to the top-left corner.</p>
+        </div>
+        <div class="card">
+          <h3>📐 AUC — Area Under the Curve</h3>
+          <p>AUC = 1.0 is perfect. AUC = 0.5 is random guessing (the diagonal line).</p>
+          <table class="data-table" style="margin-top:10px;">
+            <thead><tr><th>Model</th><th>Accuracy</th><th>AUC</th></tr></thead>
+            <tbody>
+              <tr><td>LDA</td><td>97.3%</td><td class="good">0.997</td></tr>
+              <tr><td>Logistic Reg.</td><td>99.6%</td><td class="good">0.9997</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card gold" style="text-align:center;cursor:pointer;" onclick="goTo(12)">
+          <div style="font-size:1.5rem;margin-bottom:6px;">★</div>
+          <h3 style="color:var(--gold);">See it in action</h3>
+          <p>Next slide: Enter real loan values and watch the model predict live →</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 12 — LIVE PREDICTOR
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s12" id="predictor-slide">
+  <div class="slide-body wide" style="padding-top:76px;">
+    <div class="slide-tag">★ Interactive Demo</div>
+    <h2 style="margin-bottom:16px;">Live Credit Risk <span>Predictor</span></h2>
+
+    <!-- model toggle -->
+    <div class="model-toggle" style="margin-bottom:12px;">
+      <button class="model-btn active" id="btn-lr"  onclick="selectModel('lr')">📊 Logistic Regression</button>
+      <button class="model-btn"        id="btn-lda" onclick="selectModel('lda')">📐 Linear Discriminant Analysis</button>
+    </div>
+
+    <!-- preset profiles -->
+    <div class="preset-row">
+      <button class="preset-btn" onclick="loadPreset('ideal')">✅ Ideal Borrower</button>
+      <button class="preset-btn" onclick="loadPreset('average')">⚖️ Average Borrower</button>
+      <button class="preset-btn" onclick="loadPreset('risky')">⚠️ Risky Borrower</button>
+      <button class="preset-btn" onclick="loadPreset('verybad')">🚨 Very High Risk</button>
+    </div>
+
+    <div class="predictor-grid">
+      <!-- Left: inputs -->
+      <div>
+        <div class="form-grid" id="form-grid">
+          <!-- injected by JS -->
+        </div>
+        <button class="predict-btn" onclick="runPredict()">⚡ Predict Default Risk</button>
+      </div>
+
+      <!-- Right: result -->
+      <div class="result-panel">
+        <div class="result-idle" id="result-idle">
+          <div class="idle-icon">🤖</div>
+          <p>Fill in the loan details on the left<br>and click <strong>Predict</strong> to see the model's decision.</p>
+        </div>
+        <div class="result-active" id="result-active">
+          <div class="model-badge" id="model-badge">📊 Logistic Regression</div>
+          <div class="verdict" id="verdict">—</div>
+          <div class="prob-bars">
+            <div class="prob-row">
+              <div class="prob-label-row">
+                <span class="prob-label">Probability of Repaying</span>
+                <span class="prob-val good" id="prob-good-val">—</span>
+              </div>
+              <div class="prob-track"><div class="prob-fill fill-green" id="bar-good" style="width:0%"></div></div>
+            </div>
+            <div class="prob-row">
+              <div class="prob-label-row">
+                <span class="prob-label">Probability of Defaulting</span>
+                <span class="prob-val" style="color:var(--red);" id="prob-default-val">—</span>
+              </div>
+              <div class="prob-track"><div class="prob-fill fill-red" id="bar-default" style="width:0%"></div></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:.82rem;color:var(--grey);">Risk Tier:</span>
+            <span id="tier-label" style="font-weight:700;font-size:.95rem;">—</span>
+          </div>
+          <div class="drivers-section">
+            <h4>Top 3 Risk Drivers</h4>
+            <div id="drivers-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 13 — LIMITATION
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="slide-body">
+    <div class="slide-tag">Critical Analysis</div>
+    <h2>Key Limitation: <span>Data Leakage</span></h2>
+    <div class="two-col" style="margin-top:20px;">
+      <div>
+        <p style="margin-bottom:16px;">The full dataset models (97–99% accuracy) include variables that are only known <strong style="color:var(--red)">AFTER</strong> the loan has been resolved. This is called <strong style="color:var(--red)">data leakage</strong> — the model is cheating.</p>
+        <div class="leak-item">
+          <div class="leak-icon">🔴</div>
+          <div class="leak-text"><strong>total_rec_prncp</strong><p>Total principal recovered — only exists after the loan ends</p></div>
+        </div>
+        <div class="leak-item">
+          <div class="leak-icon">🔴</div>
+          <div class="leak-text"><strong>recoveries</strong><p>Money recovered post-default — only populated IF there was a default</p></div>
+        </div>
+        <div class="leak-item">
+          <div class="leak-icon">🔴</div>
+          <div class="leak-text"><strong>collection_recovery_fee</strong><p>Fee charged to recover defaulted funds — post-event only</p></div>
+        </div>
+        <div class="leak-item">
+          <div class="leak-icon">🔴</div>
+          <div class="leak-text"><strong>last_pymnt_amnt</strong><p>Last payment made — known only after payment history unfolds</p></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="card gold">
+          <h3>💡 The Analogy</h3>
+          <p>Trying to predict if a student will fail — and using their final exam score as one of your predictors. Of course the model is perfect. You're using the answer to predict the answer.</p>
+        </div>
+        <div class="card green">
+          <h3>✅ Our Live Predictor Fixes This</h3>
+          <p>The interactive predictor on the previous slide uses <strong style="color:var(--green)">only 15 origination-time features</strong> — variables known at loan application. That's why its accuracy is ~71%, not 99%. That's honest and realistic.</p>
+        </div>
+        <div class="card">
+          <h3>📚 What Real Banks Do</h3>
+          <div class="bullet-list" style="margin-top:6px;">
+            <div class="bullet">Only use application-time data (FICO, income, DTI)</div>
+            <div class="bullet">Must comply with ECOA &amp; fair lending laws</div>
+            <div class="bullet">Models are audited for discriminatory patterns</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 14 — CONCLUSION
+═══════════════════════════════════════════════════ -->
+<div class="slide" id="s14">
+  <div class="slide-body">
+    <div class="slide-tag">Conclusion</div>
+    <h2>Summary &amp; <span>Takeaways</span></h2>
+    <div class="conclusion-grid">
+      <div class="conclusion-card">
+        <div class="conclusion-icon">🧹</div>
+        <h3>Real Data, Real Cleaning</h3>
+        <p>Transformed 500K raw, messy loan records into a clean 292K-row dataset through a rigorous 7-step pipeline.</p>
+      </div>
+      <div class="conclusion-card">
+        <div class="conclusion-icon">🔬</div>
+        <h3>Factor Analysis</h3>
+        <p>Discovered 6 hidden financial dimensions — Loan Cost, Risk Pricing, Utilization, Breadth, Stress, and Wealth — explaining 56.5% of variance.</p>
+      </div>
+      <div class="conclusion-card">
+        <div class="conclusion-icon">📐</div>
+        <h3>LDA</h3>
+        <p>Linear Discriminant Analysis separated good from default borrowers with 97.3% accuracy and AUC of 0.997.</p>
+      </div>
+      <div class="conclusion-card">
+        <div class="conclusion-icon">📊</div>
+        <h3>Logistic Regression</h3>
+        <p>Outperformed LDA at 99.6% accuracy — as expected since LR's weaker assumptions fit financial data better.</p>
+      </div>
+      <div class="conclusion-card" style="border-color:rgba(239,68,68,.25);">
+        <div class="conclusion-icon">⚠️</div>
+        <h3>Data Leakage</h3>
+        <p>High accuracy in the full model is partially due to post-outcome variables. Origination-only model gives honest ~71% accuracy.</p>
+      </div>
+      <div class="conclusion-card" style="border-color:rgba(245,158,11,.25);cursor:pointer;" onclick="goTo(12)">
+        <div class="conclusion-icon">⚡</div>
+        <h3 style="color:var(--gold);">Try It Yourself</h3>
+        <p>Go back to the Live Predictor slide to enter your own loan values and see the model decide in real time.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px;display:flex;gap:40px;justify-content:center;text-align:center;">
+      <div><div class="big-stat" style="font-size:2rem;">292K</div><div class="stat-label">Clean Records</div></div>
+      <div><div class="big-stat" style="font-size:2rem;">6</div><div class="stat-label">Latent Factors</div></div>
+      <div><div class="big-stat" style="font-size:2rem;">56.5%</div><div class="stat-label">Variance Explained</div></div>
+      <div><div class="big-stat" style="font-size:2rem;">0.997</div><div class="stat-label">LDA AUC</div></div>
+      <div><div class="big-stat" style="font-size:2rem;">0.9997</div><div class="stat-label">LR AUC</div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- Progress & Dots -->
+<div id="progress" style="width:7.14%"></div>
+<div id="dots"></div>
+<div class="key-hint"><span class="key">←</span><span class="key">→</span> Arrow keys to navigate</div>
+
+<script>
+const TOTAL = 15;
+let current = 0;
+let selectedModel = 'lr';
+
+const slideNames = [
+  'Title','Agenda','The Problem','Dataset','Data Cleaning',
+  'Factor Analysis','FA Results','LDA Method','LDA Results',
+  'Logistic Regression','LR Results','Model Comparison',
+  '★ Live Predictor','Limitation','Conclusion'
+];
+
+// ── Feature definitions for the form ─────────────────────────
+const FIELDS = [
+  {key:'loan_amnt',      label:'Loan Amount ($)',    min:1000,   max:40000,  step:500,  val:15000, hint:'e.g. 15000'},
+  {key:'term',           label:'Term (months)',      min:36,     max:60,     step:24,   val:36,    hint:'36 or 60'},
+  {key:'int_rate',       label:'Interest Rate (%)',  min:5,      max:30,     step:0.5,  val:13.5,  hint:'e.g. 13.5'},
+  {key:'installment',    label:'Monthly Payment ($)',min:30,     max:2000,   step:10,   val:350,   hint:'e.g. 350'},
+  {key:'grade',          label:'Grade (0=A … 6=G)',  min:0,      max:6,      step:1,    val:2,     hint:'0=A, 1=B, 2=C … 6=G'},
+  {key:'emp_length',     label:'Employment (yrs)',   min:0,      max:10,     step:1,    val:5,     hint:'0–10'},
+  {key:'annual_inc',     label:'Annual Income ($)',  min:10000,  max:300000, step:5000, val:65000, hint:'e.g. 65000'},
+  {key:'dti',            label:'Debt-to-Income Ratio',min:0,    max:40,     step:0.5,  val:18,    hint:'e.g. 18.5'},
+  {key:'fico_range_low', label:'FICO Score',         min:550,    max:850,    step:5,    val:700,   hint:'300–850'},
+  {key:'inq_last_6mths', label:'Inquiries (6mo)',    min:0,      max:10,     step:1,    val:1,     hint:'recent credit inquiries'},
+  {key:'open_acc',       label:'Open Accounts',      min:1,      max:40,     step:1,    val:10,    hint:'number of open accounts'},
+  {key:'pub_rec',        label:'Public Records',     min:0,      max:5,      step:1,    val:0,     hint:'derogatory public records'},
+  {key:'revol_util',     label:'Revolving Util (%)', min:0,      max:100,    step:1,    val:45,    hint:'% of credit card limit used'},
+  {key:'total_acc',      label:'Total Accounts',     min:1,      max:80,     step:1,    val:22,    hint:'all credit accounts ever'},
+  {key:'delinq_2yrs',    label:'Delinquencies (2yr)',min:0,      max:10,     step:1,    val:0,     hint:'missed payments in 2 years'},
+];
+
+const PRESETS = {
+  ideal:   {loan_amnt:10000,term:36,int_rate:6.5, installment:305, grade:0,emp_length:10,annual_inc:120000,dti:8,  fico_range_low:790,inq_last_6mths:0,open_acc:8, pub_rec:0,revol_util:12,total_acc:25,delinq_2yrs:0},
+  average: {loan_amnt:15000,term:36,int_rate:13.5,installment:350, grade:2,emp_length:5, annual_inc:65000, dti:18, fico_range_low:700,inq_last_6mths:1,open_acc:10,pub_rec:0,revol_util:45,total_acc:20,delinq_2yrs:0},
+  risky:   {loan_amnt:25000,term:60,int_rate:22.5,installment:710, grade:4,emp_length:2, annual_inc:42000, dti:32, fico_range_low:620,inq_last_6mths:4,open_acc:15,pub_rec:1,revol_util:78,total_acc:18,delinq_2yrs:2},
+  verybad: {loan_amnt:35000,term:60,int_rate:28.5,installment:1030,grade:6,emp_length:0, annual_inc:28000, dti:40, fico_range_low:560,inq_last_6mths:8,open_acc:22,pub_rec:3,revol_util:95,total_acc:30,delinq_2yrs:5},
+};
+
+// Build form
+function buildForm() {
+  const grid = document.getElementById('form-grid');
+  grid.innerHTML = '';
+  FIELDS.forEach(f => {
+    const g = document.createElement('div');
+    g.className = 'field-group';
+    g.innerHTML = `
+      <label class="field-label" for="f_${f.key}">${f.label}</label>
+      <input class="field-input" type="number" id="f_${f.key}"
+             min="${f.min}" max="${f.max}" step="${f.step}" value="${f.val}">
+      <span class="field-hint">${f.hint}</span>`;
+    grid.appendChild(g);
+  });
+}
+
+function loadPreset(name) {
+  const p = PRESETS[name];
+  FIELDS.forEach(f => {
+    const el = document.getElementById('f_'+f.key);
+    if(el && p[f.key] !== undefined) el.value = p[f.key];
+  });
+}
+
+function selectModel(m) {
+  selectedModel = m;
+  document.getElementById('btn-lr').classList.toggle('active',  m === 'lr');
+  document.getElementById('btn-lda').classList.toggle('active', m === 'lda');
+}
+
+async function runPredict() {
+  const payload = {model: selectedModel};
+  FIELDS.forEach(f => {
+    const el = document.getElementById('f_'+f.key);
+    payload[f.key] = el ? parseFloat(el.value) || 0 : 0;
+  });
+
+  const btn = document.querySelector('.predict-btn');
+  btn.textContent = '⏳ Running Model…';
+  btn.disabled = true;
+
+  try {
+    const res  = await fetch('/predict', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+    const data = await res.json();
+    if(data.error){alert('Error: '+data.error); return;}
+
+    document.getElementById('result-idle').style.display   = 'none';
+    document.getElementById('result-active').style.display = 'flex';
+    document.getElementById('result-active').classList.add('show');
+
+    const v = document.getElementById('verdict');
+    v.textContent = data.label;
+    v.className = 'verdict ' + (data.prediction === 1 ? 'default' : 'repay');
+
+    document.getElementById('prob-good-val').textContent    = data.prob_good    + '%';
+    document.getElementById('prob-default-val').textContent = data.prob_default + '%';
+    document.getElementById('model-badge').textContent = '🤖 ' + data.model_used;
+
+    setTimeout(()=>{
+      document.getElementById('bar-good').style.width    = data.prob_good    + '%';
+      document.getElementById('bar-default').style.width = data.prob_default + '%';
+    }, 50);
+
+    const tier = document.getElementById('tier-label');
+    tier.textContent  = data.tier;
+    tier.style.color  = data.tier_color;
+
+    const dl = document.getElementById('drivers-list');
+    dl.innerHTML = '';
+    data.drivers.forEach(d => {
+      const isUp = d.direction === 'increases';
+      dl.innerHTML += `
+        <div class="driver-item">
+          <span class="driver-feat">${d.feature}</span>
+          <span class="driver-val">${d.value}</span>
+          <span class="driver-dir ${isUp?'dir-up':'dir-down'}">${isUp?'↑ Risk':'↓ Risk'}</span>
+        </div>`;
+    });
+  } catch(e) {
+    alert('Prediction failed: ' + e);
+  } finally {
+    btn.textContent = '⚡ Predict Default Risk';
+    btn.disabled = false;
+  }
+}
+
+// ── Slide navigation ──────────────────────────────────────────
+function updateUI() {
+  document.querySelectorAll('.slide').forEach((s,i)=>{
+    s.classList.toggle('active', i === current);
+    s.classList.toggle('exit-left', i < current);
+  });
+  document.getElementById('slide-counter').textContent = `${current+1} / ${TOTAL}`;
+  document.getElementById('top-title').textContent = slideNames[current] || '';
+  document.getElementById('progress').style.width = ((current+1)/TOTAL*100)+'%';
+  document.getElementById('btn-prev').disabled = current === 0;
+  document.getElementById('btn-next').disabled = current === TOTAL-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));
+}
+
+function changeSlide(dir) {
+  const next = current + dir;
+  if(next < 0 || next >= TOTAL) return;
+  current = next;
+  updateUI();
+}
+
+function goTo(n) {
+  if(n < 0 || n >= TOTAL) return;
+  current = n;
+  updateUI();
+}
+
+// ── Keyboard ──────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if(e.target.tagName === 'INPUT') return;
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown')  changeSlide(1);
+  if(e.key === 'ArrowLeft'  || e.key === 'ArrowUp')    changeSlide(-1);
+});
+
+// ── Build dots ────────────────────────────────────────────────
+const dotsEl = document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' active':'');
+  d.onclick = ()=>goTo(i);
+  dotsEl.appendChild(d);
+}
+
+// ── Init ──────────────────────────────────────────────────────
+buildForm();
+updateUI();
+</script>
+</body>
+</html>
