@@ -48,3 +48,9 @@ id = "ndDPufp8OMhHbfpSyIlgJ"
 uri = "file://LendingClub_Analysis_Report.pdf"
 type = "pdf"
 title = "LendingClub Credit Risk Analysis — Full Report"
+
+[[outputs]]
+id = "dWnzm1UnuXJQf8mv7uNAw"
+uri = "file://Gidan_LendingClub_CreditRisk_Paper.docx"
+type = "word_document"
+title = "Official Conference Paper — Gidan_LendingClub_CreditRisk_Paper.docx"
