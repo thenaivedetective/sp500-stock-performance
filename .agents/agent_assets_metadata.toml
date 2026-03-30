@@ -60,3 +60,9 @@ id = "uhx8Ixr7k24yvCirvCVGz"
 uri = "file://Gidan_CreditRisk_Presentation.pptx"
 type = "slides"
 title = "Credit Risk Presentation — PowerPoint"
+
+[[outputs]]
+id = "EjzgzwgEVFjBOt4NjKf9A"
+uri = "file://Gidan_CreditRisk_Presentation.pdf"
+type = "pdf"
+title = "Credit Risk Presentation — PDF (15 slides)"
