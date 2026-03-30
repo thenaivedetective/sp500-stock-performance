@@ -42,3 +42,9 @@ id = "UxF6HHIdJUWP--3geXzRk"
 uri = "file://MASST_Dataset.csv"
 type = "table"
 title = "MASST Dataset — CSV (598 rows x 53 variables)"
+
+[[outputs]]
+id = "ndDPufp8OMhHbfpSyIlgJ"
+uri = "file://LendingClub_Analysis_Report.pdf"
+type = "pdf"
+title = "LendingClub Credit Risk Analysis — Full Report"
