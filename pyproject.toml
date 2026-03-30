@@ -8,6 +8,7 @@ dependencies = [
     "factor-analyzer>=0.5.1",
     "fpdf2>=2.8.6",
     "gurobipy>=13.0.1",
+    "kagglehub>=1.0.0",
     "lxml>=6.0.2",
     "matplotlib>=3.10.7",
     "numpy>=2.3.4",
