@@ -54,3 +54,9 @@ id = "dWnzm1UnuXJQf8mv7uNAw"
 uri = "file://Gidan_LendingClub_CreditRisk_Paper.docx"
 type = "word_document"
 title = "Official Conference Paper (Corrected) — Gidan_LendingClub_CreditRisk_Paper.docx"
+
+[[outputs]]
+id = "uhx8Ixr7k24yvCirvCVGz"
+uri = "file://Gidan_CreditRisk_Presentation.pptx"
+type = "slides"
+title = "Credit Risk Presentation — PowerPoint"
