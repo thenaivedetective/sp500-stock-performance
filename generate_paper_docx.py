@@ -219,14 +219,14 @@ add_run(p_abs,
 
 blank(doc, 10)
 
-# Index Terms
+# Index Terms — must be alphabetical order per template
 p_idx = doc.add_paragraph()
 p_idx.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
 set_single(p_idx)
 add_run(p_idx, "Index Terms", italic=True, size=10)
 add_run(p_idx,
-    " - Credit Risk, Factor Analysis, Linear Discriminant Analysis, "
-    "Logistic Regression, LendingClub.",
+    " - Credit Risk, Factor Analysis, LendingClub, "
+    "Linear Discriminant Analysis, Logistic Regression.",
     size=10)
 
 blank(doc, 10)
@@ -722,23 +722,36 @@ body_para(doc,
 section_heading(doc, "", "References")
 
 refs = [
-    "[1] D. W. Hosmer and S. Lemeshow, Applied Logistic Regression, 2nd ed. New York, NY, USA: Wiley, 2000.",
-    "[2] L. Breiman, \"Random Forests,\" Machine Learning, vol. 45, no. 1, pp. 5-32, Oct. 2001.",
-    "[3] C. F. Tsai, Y. H. Hsu, and C. Yen, \"A Comparative Study of Classifier Ensembles for Bankruptcy Prediction,\" Applied Soft Computing, vol. 24, pp. 977-984, Nov. 2014.",
-    "[4] M. Malekipirbazari and V. Aksakalli, \"Risk Assessment in Social Lending via Random Forests,\" Expert Systems with Applications, vol. 42, no. 10, pp. 4621-4631, Jun. 2015.",
-    "[5] R. A. Johnson and D. W. Wichern, Applied Multivariate Statistical Analysis, 6th ed. Upper Saddle River, NJ, USA: Pearson, 2007.",
-    "[6] J. F. Hair, W. C. Black, B. J. Babin, and R. E. Anderson, Multivariate Data Analysis, 7th ed. Upper Saddle River, NJ, USA: Pearson, 2010.",
-    "[7] LendingClub Loan Data, Kaggle, 2018. [Online]. Available: https://www.kaggle.com/datasets/wordsforthewise/lending-club",
+    "[1]\tHosmer, David W. and Lemeshow, Stanley. 2000. Applied Logistic Regression, 2nd ed. New York, NY: Wiley.",
+    "[2]\tBreiman, Leo. 2001. \"Random Forests.\" Machine Learning, vol. 45, no. 1, pp. 5-32.",
+    "[3]\tTsai, Chih-Fong, Hsu, Yu-Feng, and Yen, David C. 2014. \"A Comparative Study of Classifier Ensembles for Bankruptcy Prediction.\" Applied Soft Computing, vol. 24, pp. 977-984.",
+    "[4]\tMalekipirbazari, Milad and Aksakalli, Vural. 2015. \"Risk Assessment in Social Lending via Random Forests.\" Expert Systems with Applications, vol. 42, no. 10, pp. 4621-4631.",
+    "[5]\tJohnson, Richard A. and Wichern, Dean W. 2007. Applied Multivariate Statistical Analysis, 6th ed. Upper Saddle River, NJ: Pearson.",
+    "[6]\tHair, Joseph F., Black, William C., Babin, Barry J., and Anderson, Rolph E. 2010. Multivariate Data Analysis, 7th ed. Upper Saddle River, NJ: Pearson.",
+    "[7]\tWordsforthewise. 2018. LendingClub Loan Data. Kaggle. kaggle.com/datasets/wordsforthewise/lending-club. Accessed: March 2026.",
 ]
 
 for ref in refs:
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
     set_single(p)
-    p.paragraph_format.left_indent       = Inches(0.25)
-    p.paragraph_format.first_line_indent = Inches(-0.25)
-    p.paragraph_format.space_after       = Pt(4)
+    p.paragraph_format.left_indent       = Inches(0.35)
+    p.paragraph_format.first_line_indent = Inches(-0.35)
+    p.paragraph_format.space_after       = Pt(0)
     add_run(p, ref, size=8)
+
+# ═══════════════════════════════════════════════════════════════════
+# AUTHOR INFORMATION
+# ═══════════════════════════════════════════════════════════════════
+section_heading(doc, "", "Author Information")
+
+body_para(doc,
+    "Lana Jalal Gidan is a graduate student in the Department of Systems Science and "
+    "Industrial Engineering at Binghamton University, State University of New York. "
+    "Her academic interests include applied statistics, machine learning, and data-driven "
+    "decision making in financial and operational contexts. "
+    "Contact: lgidan@binghamton.edu.",
+    first=True)
 
 # ── Save ──────────────────────────────────────────────────────────
 OUTPUT = "Gidan_LendingClub_CreditRisk_Paper.docx"
