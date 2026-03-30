@@ -5,6 +5,7 @@ description = ""
 authors = ["Your Name <you@example.com>"]
 requires-python = ">=3.11"
 dependencies = [
+    "factor-analyzer>=0.5.1",
     "fpdf2>=2.8.6",
     "gurobipy>=13.0.1",
     "lxml>=6.0.2",

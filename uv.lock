@@ -189,6 +189,18 @@ wheels = [
 ]
 
 [[package]]
+name = "factor-analyzer"
+version = "0.5.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "pandas" },
+    { name = "scikit-learn" },
+    { name = "scipy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/28/19/089a65c4cf7ea407ab001846989b44cf83bc488a6e1fe68e950607251720/factor_analyzer-0.5.1.tar.gz", hash = "sha256:03703cd128ee9f91c9bd191a452b06e4a28296b5a24d11823ebb5d8250e8fdf6", size = 42824, upload-time = "2024-02-08T15:10:54.279Z" }
+
+[[package]]
 name = "fonttools"
 version = "4.60.1"
 source = { registry = "https://pypi.org/simple" }
@@ -833,6 +845,7 @@ name = "python-template"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "factor-analyzer" },
     { name = "fpdf2" },
     { name = "gurobipy" },
     { name = "lxml" },
@@ -850,6 +863,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "factor-analyzer", specifier = ">=0.5.1" },
     { name = "fpdf2", specifier = ">=2.8.6" },
     { name = "gurobipy", specifier = ">=13.0.1" },
     { name = "lxml", specifier = ">=6.0.2" },
