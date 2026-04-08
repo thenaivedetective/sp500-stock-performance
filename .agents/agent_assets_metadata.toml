@@ -66,3 +66,9 @@ id = "EjzgzwgEVFjBOt4NjKf9A"
 uri = "file://Gidan_CreditRisk_Presentation.pdf"
 type = "pdf"
 title = "Credit Risk Presentation — PDF (15 slides)"
+
+[[outputs]]
+id = "Ed55-RosCEbVW2p0To9lS"
+uri = "file://sp500_financial_data.csv"
+type = "table"
+title = "S&P 500 Financial Data — Yahoo Finance"
