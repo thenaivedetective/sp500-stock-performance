@@ -90,3 +90,9 @@ id = "Kfy5P1Q7lxxY-KO3hDFvo"
 uri = "file://homework_python.zip"
 type = "unspecified"
 title = "Python Code — homework_analysis.py (zipped)"
+
+[[outputs]]
+id = "4HmggvIUdP_rlyLrhGkkG"
+uri = "file://q116_solutions.zip"
+type = "unspecified"
+title = "Q11.6 Complete Package — PDF + Python + SAS"
