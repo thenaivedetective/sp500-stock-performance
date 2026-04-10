@@ -72,3 +72,21 @@ id = "Ed55-RosCEbVW2p0To9lS"
 uri = "file://sp500_financial_data.csv"
 type = "table"
 title = "S&P 500 Financial Data — Yahoo Finance"
+
+[[outputs]]
+id = "kSKp6uOdOzG4W8HtvZbhB"
+uri = "file://Homework_Solutions.pdf"
+type = "pdf"
+title = "Homework Solutions PDF — Q10.4, 10.5, 10.6, 11.5"
+
+[[outputs]]
+id = "K2b4XK2qzndN_s_2Bm-m6"
+uri = "file://homework_sas.zip"
+type = "unspecified"
+title = "SAS Code — homework_analysis.sas (zipped)"
+
+[[outputs]]
+id = "Kfy5P1Q7lxxY-KO3hDFvo"
+uri = "file://homework_python.zip"
+type = "unspecified"
+title = "Python Code — homework_analysis.py (zipped)"
