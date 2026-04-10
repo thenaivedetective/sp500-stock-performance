@@ -1,13 +1,4 @@
-"""
-Yahoo Finance data fetcher for S&P 500 stock outperformer analysis.
-Replicates the variable set from the Ananthakumar & Sarkar (2017) paper
-but applied to S&P 500 equities.
-
-Pulls:
-  - Fundamental financial ratios (from yfinance .info)
-  - 1-year price returns (to build the outperformer target variable)
-  - Index (SPY) return for benchmarking
-"""
+ 
 
 import yfinance as yf
 import pandas as pd
@@ -16,8 +7,7 @@ import json
 import warnings
 warnings.filterwarnings("ignore")
 
-# ── 1. Representative S&P 500 tickers across all GICS sectors ─────
-# 60 large-caps covering every sector — expand as needed
+
 UNIVERSE = {
     "Information Technology": [
         "AAPL","MSFT","NVDA","AVGO","ORCL","CRM","AMD","INTC","QCOM","TXN"],
@@ -50,40 +40,38 @@ for sector, tickers in UNIVERSE.items():
         all_tickers.append(t)
         sectors[t] = sector
 
-sample_tickers = all_tickers  # all 110 tickers
+sample_tickers = all_tickers  
 print(f"Universe: {len(sample_tickers)} tickers across {len(UNIVERSE)} sectors")
 
-# ── 2. Fundamental ratios from yfinance ───────────────────────────
-# Variables chosen to mirror the paper's financial ratio categories:
-#   Profitability, Leverage, Liquidity, Valuation, Growth
+
 RATIO_FIELDS = {
-    # Valuation
+    
     "pe_ratio":           "trailingPE",
     "forward_pe":         "forwardPE",
     "price_to_book":      "priceToBook",
     "price_to_sales":     "priceToSalesTrailing12Months",
     "ev_to_ebitda":       "enterpriseToEbitda",
-    # Profitability
+    
     "roe":                "returnOnEquity",
     "roa":                "returnOnAssets",
     "gross_margin":       "grossMargins",
     "operating_margin":   "operatingMargins",
     "net_margin":         "profitMargins",
-    # Leverage / Solvency
+    
     "debt_to_equity":     "debtToEquity",
     "total_debt":         "totalDebt",
-    # Liquidity
+    
     "current_ratio":      "currentRatio",
     "quick_ratio":        "quickRatio",
-    # Growth
+    
     "revenue_growth":     "revenueGrowth",
     "earnings_growth":    "earningsGrowth",
-    # Per-share / Size
+    
     "eps_trailing":       "trailingEps",
     "eps_forward":        "forwardEps",
     "market_cap":         "marketCap",
     "beta":               "beta",
-    # Dividend
+    
     "dividend_yield":     "dividendYield",
 }
 
@@ -98,12 +86,12 @@ for i, ticker in enumerate(sample_tickers, 1):
 
         row = {"ticker": ticker, "sector": sectors.get(ticker, "Unknown")}
 
-        # Financial ratios
+        
         for col, key in RATIO_FIELDS.items():
             val = info.get(key)
             row[col] = round(float(val), 4) if val is not None else np.nan
 
-        # Company name
+        
         row["name"] = info.get("shortName", ticker)
 
         rows.append(row)
@@ -115,10 +103,10 @@ for i, ticker in enumerate(sample_tickers, 1):
 
 df = pd.DataFrame(rows)
 
-# ── 3. 1-year price returns ────────────────────────────────────────
+
 print("\nFetching 1-year price history for return calculation...")
 
-# SPY = S&P 500 ETF benchmark
+
 spy  = yf.download("SPY", period="1y", progress=False)
 spy_ret = float((spy["Close"].iloc[-1] / spy["Close"].iloc[0]) - 1)
 print(f"  SPY (index) 1-year return: {spy_ret*100:.2f}%")
@@ -139,12 +127,9 @@ for ticker in valid_tickers:
 df["return_1y"]   = df["ticker"].map(returns)
 df["spy_return"]  = spy_ret
 
-# ── 4. Target variable — OUTPERFORMER ─────────────────────────────
-# 1 = stock beat the S&P 500 index return (outperformer)
-# 0 = stock lagged behind (underperformer)
 df["outperformer"] = (df["return_1y"] > spy_ret).astype(int)
 
-# ── 5. Save & report ──────────────────────────────────────────────
+
 out_csv  = "sp500_financial_data.csv"
 out_json = "sp500_fetch_summary.json"
 
