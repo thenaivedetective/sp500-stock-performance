@@ -1,377 +1,741 @@
 """
-Generates a comprehensive PDF report for the homework questions 10.4, 10.5, 10.6, 11.5
+Generates a professional academic-style PDF report for homework questions 10.4, 10.5, 10.6, 11.5
 """
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-from matplotlib.patches import FancyBboxPatch
+from matplotlib.patches import FancyBboxPatch, Rectangle
 from matplotlib.backends.backend_pdf import PdfPages
+from matplotlib.lines import Line2D
 import matplotlib.image as mpimg
 import pickle, numpy as np, os
 
 with open("hw_results.pkl","rb") as f:
     R = pickle.load(f)
 
-NAVY  = "#0D1B2E"; NAVY2 = "#1A2F4A"; NAVY3 = "#10263E"
-BLUE  = "#2563EB"; LBLUE = "#60A5FA"; GOLD  = "#F59E0B"
-GREEN = "#10B981"; RED   = "#EF4444"; WHITE = "#FFFFFF"
-LGREY = "#94A3B8"; DGREY = "#334155"
+# ── Academic colour palette (clean, minimal) ─────────────────────
+BLACK   = "#111111"
+DARK    = "#222222"
+MID     = "#444444"
+GREY    = "#666666"
+LGREY   = "#999999"
+RULE    = "#CCCCCC"
+BGLIGHT = "#F5F7FA"
+BGBOX   = "#EEF2F6"
+ACCENT  = "#1A3A6B"   # deep academic blue
+ACCENT2 = "#2E6DA4"
+RED2    = "#B82020"
+GREEN2  = "#1A6B35"
+WHITE   = "#FFFFFF"
 
-W, H = 13.33, 7.5
+W, H = 11.0, 8.5   # letter landscape
 pages = []
 
-def new_slide(tag=None, title=None, bar=BLUE):
-    fig = plt.figure(figsize=(W,H), facecolor=NAVY)
-    ax  = fig.add_axes([0,0,1,1], facecolor=NAVY)
-    ax.set_xlim(0,W); ax.set_ylim(0,H); ax.axis("off")
-    ax.add_patch(mpatches.Rectangle((0,0),W,0.07,facecolor=bar,lw=0))
-    if tag:
-        ax.text(0.4,H-0.4,tag.upper(),color=LBLUE,fontsize=8.5,
-                fontweight="bold",family="DejaVu Sans")
-    if title:
-        ax.text(0.4,H-0.85,title,color=WHITE,fontsize=21,
-                fontweight="bold",family="DejaVu Sans")
+SERIF = "DejaVu Serif"
+SANS  = "DejaVu Sans"
+
+def new_page():
+    fig = plt.figure(figsize=(W, H), facecolor=WHITE)
+    ax  = fig.add_axes([0, 0, 1, 1], facecolor=WHITE)
+    ax.set_xlim(0, W); ax.set_ylim(0, H); ax.axis("off")
+    # top rule
+    ax.add_patch(Rectangle((0.5, H-0.35), W-1.0, 0.028, facecolor=ACCENT, lw=0))
+    # bottom rule
+    ax.add_patch(Rectangle((0.5, 0.32),   W-1.0, 0.028, facecolor=ACCENT, lw=0))
     return fig, ax
 
-def card(ax,x,y,w,h,title,body,tc=LBLUE,bg=NAVY2,fs=10):
-    ax.add_patch(FancyBboxPatch((x,y),w,h,
-        boxstyle="round,pad=0.05",facecolor=bg,lw=0))
-    ax.text(x+0.2,y+h-0.22,title,color=tc,fontsize=11.5,
-            fontweight="bold",va="top",family="DejaVu Sans")
-    ax.text(x+0.2,y+h-0.52,body,color=LGREY,fontsize=fs,
-            va="top",wrap=True,family="DejaVu Sans",multialignment="left",
-            linespacing=1.55)
+def pnum(ax, n, tot):
+    ax.text(W/2, 0.18, f"— {n} —", color=LGREY, fontsize=8.5,
+            ha="center", va="center", family=SERIF)
+    ax.text(W-0.5, 0.18, f"of {tot}", color=LGREY, fontsize=7.5,
+            ha="right", va="center", family=SERIF)
 
-def bullets(ax,items,x,y,sp=0.38,fs=10.5,dc=BLUE):
-    for i,item in enumerate(items):
-        yi=y-i*sp
-        ax.text(x,yi,"▸",color=dc,fontsize=fs,va="center")
-        ax.text(x+0.28,yi,item,color=LGREY,fontsize=fs,va="center",
-                wrap=True,family="DejaVu Sans")
+def section(ax, label, x, y, w=9.5):
+    ax.add_patch(Rectangle((x, y-0.02), w, 0.38, facecolor=BGLIGHT, lw=0))
+    ax.add_patch(Rectangle((x, y-0.02), 0.06, 0.38, facecolor=ACCENT, lw=0))
+    ax.text(x+0.18, y+0.17, label, color=ACCENT, fontsize=12,
+            fontweight="bold", va="center", family=SERIF)
 
-def embed(fig,path,rect):
+def body(ax, text, x, y, w=9.5, fs=9.5, color=DARK, ls=1.6):
+    ax.text(x, y, text, color=color, fontsize=fs, va="top",
+            wrap=True, family=SERIF, multialignment="left",
+            linespacing=ls, transform=ax.transData)
+
+def kv_row(ax, x, y, w, key, val, shade=False, hdr=False):
+    h = 0.34
+    bg = BGBOX if shade else WHITE
+    if hdr: bg = ACCENT
+    ax.add_patch(Rectangle((x, y), w, h, facecolor=bg, lw=0))
+    ax.add_patch(Rectangle((x, y), w, h, facecolor="none",
+                            edgecolor=RULE, lw=0.6))
+    kcol = WHITE if hdr else ACCENT
+    vcol = WHITE if hdr else DARK
+    ax.text(x+0.15, y+h/2, key, color=kcol, fontsize=9,
+            va="center", family=SERIF, fontweight="bold" if hdr else "normal")
+    ax.text(x+w-0.15, y+h/2, val, color=vcol, fontsize=9,
+            va="center", ha="right", family=SERIF, fontweight="bold" if hdr else "normal")
+
+def embed(fig, path, rect):
     if os.path.exists(path):
-        iax=fig.add_axes(rect); iax.set_axis_off()
-        iax.imshow(mpimg.imread(path),aspect="auto")
+        iax = fig.add_axes(rect)
+        iax.set_axis_off()
+        iax.imshow(mpimg.imread(path), aspect="auto")
 
-def stat(ax,x,y,w,h,val,lbl,vc=BLUE):
-    ax.add_patch(FancyBboxPatch((x,y),w,h,
-        boxstyle="round,pad=0.04",facecolor=NAVY2,lw=0))
-    ax.text(x+w/2,y+h*0.63,val,color=vc,fontsize=22,fontweight="bold",
-            ha="center",va="center",family="DejaVu Sans")
-    ax.text(x+w/2,y+h*0.22,lbl,color=LGREY,fontsize=8.5,ha="center",
-            va="center",family="DejaVu Sans",multialignment="center")
+def hline(ax, y, x0=0.5, x1=10.5):
+    ax.add_patch(Rectangle((x0, y), x1-x0, 0.012, facecolor=RULE, lw=0))
 
-def pnum(ax,n,tot=10):
-    ax.text(W-0.15,0.22,f"{n}/{tot}",color=DGREY,fontsize=8,
-            ha="right",va="center",family="DejaVu Sans")
+TOTAL_PAGES = 12
 
 # ════════════════════════════════════════════════════════════════
-# PAGE 1 — COVER
+# PAGE 1 — TITLE / COVER
 # ════════════════════════════════════════════════════════════════
-fig,ax = new_slide(bar=BLUE)
-ax.add_patch(mpatches.Rectangle((0,0),W,0.12,facecolor=BLUE,lw=0))
-ax.text(W/2,H-0.5,"MULTIVARIATE STATISTICS — HOMEWORK SOLUTIONS",
-        color=LBLUE,fontsize=9.5,fontweight="bold",ha="center")
-ax.text(W/2,H-1.3,"Questions 10.4 · 10.5 · 10.6 · 11.5",
-        color=WHITE,fontsize=30,fontweight="bold",ha="center")
-ax.text(W/2,H-2.1,"Logistic Regression and MANOVA Analysis",
-        color=LGREY,fontsize=14,ha="center")
+fig, ax = new_page()
 
-items_cov = [
-    ("Q10.4","Admissions Data","LR with GPA category (dummy-coded) + GMAT","#2563EB"),
-    ("Q10.5","Cholesterol Data","Hand calculations + LR with dummy cholesterol levels","#10B981"),
-    ("Q10.6","Depression Data","LR vs Discriminant Analysis (CASES as outcome)","#F59E0B"),
-    ("Q11.5","MANOVA","Depression (C1-C20) + Phone (A1-A6) with LDA comparison","#EF4444"),
+ax.add_patch(Rectangle((0.5, H-2.2), W-1.0, 1.75, facecolor=ACCENT, lw=0))
+ax.text(W/2, H-0.75,
+        "MULTIVARIATE STATISTICS",
+        color=WHITE, fontsize=11, ha="center", va="center",
+        family=SERIF, style="italic")
+ax.text(W/2, H-1.2,
+        "Homework Solutions",
+        color=WHITE, fontsize=26, fontweight="bold", ha="center", va="center",
+        family=SERIF)
+ax.text(W/2, H-1.75,
+        "Questions 10.4  ·  10.5  ·  10.6  ·  11.5",
+        color="#B8D0F0", fontsize=12, ha="center", va="center", family=SERIF)
+
+ax.text(W/2, H-2.6, "Logistic Regression Analysis and MANOVA",
+        color=DARK, fontsize=13, ha="center", va="center", family=SERIF, style="italic")
+
+hline(ax, H-2.95)
+
+info = [
+    ("Author",    "Lana Jalal Gidan"),
+    ("Email",     "lgidan@binghamton.edu"),
+    ("Department","Systems Science and Industrial Engineering"),
+    ("University","Binghamton University"),
+    ("Course",    "Multivariate Statistics"),
+    ("Date",      "April 2026"),
 ]
-for i,(q,ds,desc,col) in enumerate(items_cov):
-    x=0.4+i*3.2; y=3.0
-    ax.add_patch(FancyBboxPatch((x,y),2.9,2.3,
-        boxstyle="round,pad=0.05",facecolor=NAVY2,lw=0))
-    ax.add_patch(mpatches.Rectangle((x,y+2.2),2.9,0.1,facecolor=col,lw=0))
-    ax.text(x+1.45,y+1.95,q,color=col,fontsize=16,fontweight="bold",ha="center")
-    ax.text(x+1.45,y+1.6,ds,color=WHITE,fontsize=10.5,fontweight="bold",ha="center")
-    ax.text(x+1.45,y+0.5,desc,color=LGREY,fontsize=9,ha="center",
-            multialignment="center",linespacing=1.4)
+for i, (k, v) in enumerate(info):
+    y = H - 3.45 - i * 0.45
+    ax.text(2.8, y, f"{k}:", color=LGREY, fontsize=10, ha="right",
+            va="center", family=SERIF, style="italic")
+    ax.text(3.0, y, v,      color=DARK,  fontsize=10, ha="left",
+            va="center", family=SERIF)
 
-ax.add_patch(mpatches.Rectangle((0,1.4),W,0.65,facecolor=NAVY2,lw=0))
-ax.text(0.4,1.72,"Tools: Python (statsmodels · sklearn · scipy · matplotlib · seaborn)"
-        "   |   SAS (PROC LOGISTIC · PROC DISCRIM · PROC GLM)",
-        color=LGREY,fontsize=9.5,va="center")
-pnum(ax,1); pages.append(fig)
+hline(ax, H-6.2)
+ax.text(W/2, H-6.55,
+        "Statistical Software: Python 3.11 (statsmodels, scikit-learn, scipy, matplotlib)  "
+        "and SAS (PROC LOGISTIC, PROC DISCRIM, PROC GLM)",
+        color=GREY, fontsize=8.5, ha="center", family=SERIF)
 
-# ════════════════════════════════════════════════════════════════
-# PAGE 2 — Q10.4 SETUP
-# ════════════════════════════════════════════════════════════════
-fig,ax = new_slide("Question 10.4","Admissions Data — Logistic Regression Setup")
-card(ax,0.35,5.05,8.4,1.75,"Dataset: ADMIS.DAT",
-     "85 applicants: 31 admitted (status=1), 28 not-admitted (status=2).\n"
-     "Borderline (status=3) excluded — analysis uses only clear decisions.\n"
-     "New variable: admit = 0 (admitted), 1 (not-admitted).",fs=11)
-card(ax,0.35,3.35,8.4,1.55,"GPA Category Recoding",
-     "GPA < 2.50 → Category 1     |     2.51–3.00 → Category 2\n"
-     "3.01–3.50 → Category 3      |     > 3.50 → Category 4\n"
-     "Dummy coded with Category 1 as reference (3 dummies: GPA2, GPA3, GPA4).",
-     tc=GOLD,bg="#1A1710",fs=11)
-card(ax,0.35,1.5,8.4,1.7,"Perfect Separation Note",
-     "GPA category perfectly separates the two classes:\n"
-     "All Cat 3 & 4 applicants were admitted; all Cat 1 were not admitted.\n"
-     "Maximum Likelihood estimates diverge — L2-penalized LR (C=1) used for stable coefficients.",
-     tc=RED,bg="#1F1010",fs=11)
+ax.text(W/2, H-7.0,
+        "Data Sources: ADMIS.DAT · DEPRES.DAT · PHONE.DAT · Table Q10.2",
+        color=GREY, fontsize=8.5, ha="center", family=SERIF)
 
-# GPA cat table
-ax.text(9.15,6.65,"GPA Category Split",color=LBLUE,fontsize=11.5,fontweight="bold")
-rows_t=[("Category","GPA Range","Admitted","Not Adm"),
-        ("1","< 2.50","0","15"),
-        ("2","2.51–3.00","1","13"),
-        ("3","3.01–3.50","22","0"),
-        ("4","> 3.50","8","0")]
-for i,(c1,c2,c3,c4) in enumerate(rows_t):
-    y=6.15-i*0.68
-    bg=BLUE if i==0 else (NAVY2 if i%2 else NAVY3)
-    col=WHITE
-    ax.add_patch(FancyBboxPatch((9.1,y-0.28),4.1,0.6,
-        boxstyle="square,pad=0",facecolor=bg,lw=0))
-    ax.text(9.3, y+0.04,c1,color=col,fontsize=10.5,va="center",fontweight="bold" if i==0 else "normal")
-    ax.text(10.1,y+0.04,c2,color=col,fontsize=10.5,va="center")
-    ax.text(11.5,y+0.04,c3,color=(GREEN if i>0 else col),fontsize=10.5,va="center",ha="center")
-    ax.text(12.7,y+0.04,c4,color=(RED   if i>0 else col),fontsize=10.5,va="center",ha="center")
-pnum(ax,2); pages.append(fig)
+pnum(ax, 1, TOTAL_PAGES); pages.append(fig)
 
 # ════════════════════════════════════════════════════════════════
-# PAGE 3 — Q10.4 RESULTS
+# PAGE 2 — Q10.4 DATA DESCRIPTION & SETUP
 # ════════════════════════════════════════════════════════════════
-fig,ax = new_slide("Question 10.4","Admissions — Model Results & Interpretation")
-stat(ax,0.35,5.5,2.85,1.4,f"{R['q104_acc1']:.1%}","Model 1 Accuracy\n(GPA only)",BLUE)
-stat(ax,3.35,5.5,2.85,1.4,f"{R['q104_auc1']:.3f}","Model 1 AUC",LBLUE)
-stat(ax,6.35,5.5,2.85,1.4,f"{R['q104_acc2']:.1%}","Model 2 Accuracy\n(GPA+GMAT)",GREEN)
-stat(ax,9.35,5.5,2.85,1.4,f"{R['q104_auc2']:.3f}","Model 2 AUC",GOLD)
+fig, ax = new_page()
+ax.text(0.5, H-0.6, "Question 10.4   Admissions Data — Logistic Regression",
+        color=ACCENT, fontsize=14, fontweight="bold", family=SERIF)
+hline(ax, H-0.75)
 
-card(ax,0.35,3.5,6.1,1.85,"Effect of GPA Category",
-     "GPA category is the dominant predictor — it alone achieves 98.3% accuracy.\n"
-     "Coefficients for GPA3 and GPA4 are strongly negative (lower P(not-admitted)),\n"
-     "confirming higher GPA strongly predicts admission. GPA2 slightly increases risk\n"
-     "vs Category 1 baseline.",fs=10.5)
-card(ax,6.55,3.5,6.42,1.85,"Effect of Adding GMAT",
-     "Model 2 adds GMAT score. AUC improves to 1.000 (perfect discrimination).\n"
-     "GMAT coefficient is negative: higher GMAT → lower P(not-admitted).\n"
-     "However, accuracy drops slightly (96.6%) due to 2 misclassifications.\n"
-     "Overall, GMAT provides marginal improvement over GPA category alone.",
-     tc=GOLD,bg="#1A1710",fs=10.5)
-card(ax,0.35,1.5,12.62,1.85,"Interpretation",
-     "GPA category alone provides near-perfect classification (98.3%), supporting it as the primary admissions criterion.\n"
-     "Adding GMAT achieves a perfect AUC = 1.000, meaning the combined model perfectly ranks applicants by default risk.\n"
-     "The GPA-only model is simpler and nearly as accurate. Both models confirm: higher GPA category → dramatically lower\n"
-     "probability of rejection.",
-     tc=GREEN,bg="#101F1A",fs=10.5)
-pnum(ax,3); pages.append(fig)
+section(ax, "10.4.1   Data Preparation", 0.5, H-1.28, w=10.0)
+body(ax,
+     "The ADMIS.DAT file contains 85 MBA applicants classified as: (1) Admitted, (2) Not Admitted, "
+     "and (3) Borderline. Following the question instructions, only admitted and not-admitted applicants "
+     "are retained (n = 59). A new binary variable admit is created: 0 = Admitted, 1 = Not Admitted. "
+     "GPA scores are recoded into four ordinal categories as specified in the table below.",
+     0.5, H-1.85, fs=9.5)
+
+section(ax, "10.4.2   GPA Category Recoding", 0.5, H-2.95, w=10.0)
+# Table
+col_w = [1.6, 1.8, 1.6, 1.6, 1.6]
+col_x = [0.5, 2.1, 3.9, 5.5, 7.1]
+hdrs  = ["GPA Category", "GPA Range", "Admitted (n)", "Not Admitted (n)", "Total (n)"]
+rows_gpa = [
+    ("1 (Reference)", "< 2.50",     "0",  "15", "15"),
+    ("2",             "2.51 – 3.00","1",  "13", "14"),
+    ("3",             "3.01 – 3.50","22",  "0", "22"),
+    ("4",             "> 3.50",     "8",   "0",  "8"),
+    ("Total",         "—",         "31",  "28", "59"),
+]
+y0 = H-3.52
+for j, (hdr, cw) in enumerate(zip(hdrs, col_w)):
+    ax.add_patch(Rectangle((col_x[j], y0-0.01), cw, 0.36,
+                            facecolor=ACCENT, lw=0))
+    ax.add_patch(Rectangle((col_x[j], y0-0.01), cw, 0.36,
+                            facecolor="none", edgecolor=RULE, lw=0.6))
+    ax.text(col_x[j]+cw/2, y0+0.17, hdr, color=WHITE, fontsize=9,
+            ha="center", va="center", family=SERIF, fontweight="bold")
+for i, row in enumerate(rows_gpa):
+    y_r = y0 - 0.37*(i+1)
+    bg = BGBOX if i % 2 == 0 else WHITE
+    if i == len(rows_gpa)-1: bg = BGLIGHT
+    for j, (val, cw) in enumerate(zip(row, col_w)):
+        ax.add_patch(Rectangle((col_x[j], y_r-0.01), cw, 0.36,
+                                facecolor=bg, lw=0))
+        ax.add_patch(Rectangle((col_x[j], y_r-0.01), cw, 0.36,
+                                facecolor="none", edgecolor=RULE, lw=0.6))
+        fw = "bold" if i == len(rows_gpa)-1 else "normal"
+        ax.text(col_x[j]+cw/2, y_r+0.17, val, color=DARK, fontsize=9,
+                ha="center", va="center", family=SERIF, fontweight=fw)
+
+section(ax, "10.4.3   Dummy Variable Coding", 0.5, H-5.65, w=10.0)
+body(ax,
+     "With four GPA categories, three dummy variables are created using Category 1 (GPA < 2.50) "
+     "as the reference group: GPA2 = 1 if Category 2, else 0;  GPA3 = 1 if Category 3, else 0; "
+     "GPA4 = 1 if Category 4, else 0. "
+     "Note: GPA category produces near-perfect separation (all Category 3 and 4 applicants were "
+     "admitted; all Category 1 were rejected). Under perfect separation, maximum likelihood "
+     "estimates diverge to ±∞. A ridge-penalized logistic regression (L2, C = 1) is applied "
+     "to yield stable, interpretable coefficients.",
+     0.5, H-6.2, fs=9.5)
+
+pnum(ax, 2, TOTAL_PAGES); pages.append(fig)
 
 # ════════════════════════════════════════════════════════════════
-# PAGE 4 — Q10.4 PLOTS
+# PAGE 3 — Q10.4 MODEL RESULTS
 # ════════════════════════════════════════════════════════════════
-fig,ax = new_slide("Question 10.4","Admissions — Visualizations")
-ax.text(0.35,H-1.15,"ROC Curves, Confusion Matrix, and Coefficients",
-        color=LGREY,fontsize=12)
-embed(fig,"hw_plots/q104_results.png",[0.025,0.1,0.96,0.73])
-pnum(ax,4); pages.append(fig)
+fig, ax = new_page()
+ax.text(0.5, H-0.6, "Question 10.4   Admissions — Model Results",
+        color=ACCENT, fontsize=14, fontweight="bold", family=SERIF)
+hline(ax, H-0.75)
+
+section(ax, "10.4.4   Model 1: GPA Category Only", 0.5, H-1.28, w=10.0)
+
+# Coefficient table Model 1
+m1p = R["q104_mod1_params"]
+rows_m1 = [
+    ("Variable",       "Coefficient", "Direction"),
+    ("Intercept",      f"{m1p['Intercept']:.4f}", "—"),
+    ("GPA2 (2.51–3.00)",f"{m1p['gpa2']:.4f}", "Higher risk vs Cat 1"),
+    ("GPA3 (3.01–3.50)",f"{m1p['gpa3']:.4f}", "Strong protection"),
+    ("GPA4 (> 3.50)",   f"{m1p['gpa4']:.4f}", "Strong protection"),
+]
+col_xm = [0.5, 4.2, 6.5]
+col_wm = [3.6, 2.2, 3.8]
+for j,(hdr,cw) in enumerate(zip(rows_m1[0],col_wm)):
+    ax.add_patch(Rectangle((col_xm[j],H-1.84),cw,0.34,facecolor=ACCENT,lw=0))
+    ax.add_patch(Rectangle((col_xm[j],H-1.84),cw,0.34,facecolor="none",edgecolor=RULE,lw=0.6))
+    ax.text(col_xm[j]+cw/2,H-1.67,hdr,color=WHITE,fontsize=9,ha="center",va="center",
+            family=SERIF,fontweight="bold")
+for i,row in enumerate(rows_m1[1:]):
+    yr=H-2.18-i*0.35; bg=BGBOX if i%2==0 else WHITE
+    for j,(val,cw) in enumerate(zip(row,col_wm)):
+        ax.add_patch(Rectangle((col_xm[j],yr),cw,0.34,facecolor=bg,lw=0))
+        ax.add_patch(Rectangle((col_xm[j],yr),cw,0.34,facecolor="none",edgecolor=RULE,lw=0.6))
+        ax.text(col_xm[j]+cw/2,yr+0.17,val,color=DARK,fontsize=9,ha="center",va="center",
+                family=SERIF)
+
+acc1=R["q104_acc1"]; auc1=R["q104_auc1"]
+body(ax, f"Model 1 Classification Accuracy: {acc1:.1%}    Area Under ROC Curve (AUC): {auc1:.4f}",
+     0.5, H-3.1, fs=9.5, color=ACCENT2)
+
+section(ax, "10.4.5   Model 2: GPA Category + GMAT Score", 0.5, H-3.55, w=10.0)
+m2p = R["q104_mod2_params"]
+rows_m2 = [
+    ("Variable",        "Coefficient", "Interpretation"),
+    ("Intercept",       f"{m2p['Intercept']:.4f}", "—"),
+    ("GPA2 (2.51–3.00)",f"{m2p['gpa2']:.4f}",     "Higher risk vs Cat 1 (less strong with GMAT)"),
+    ("GPA3 (3.01–3.50)",f"{m2p['gpa3']:.4f}",     "Strongly reduces P(rejection)"),
+    ("GPA4 (> 3.50)",   f"{m2p['gpa4']:.4f}",     "Strongly reduces P(rejection)"),
+    ("GMAT (std.)",     f"{m2p['gmat(std)']:.4f}", "Higher GMAT → lower P(rejection)"),
+]
+for j,(hdr,cw) in enumerate(zip(rows_m2[0],col_wm)):
+    ax.add_patch(Rectangle((col_xm[j],H-4.12),cw,0.34,facecolor=ACCENT,lw=0))
+    ax.add_patch(Rectangle((col_xm[j],H-4.12),cw,0.34,facecolor="none",edgecolor=RULE,lw=0.6))
+    ax.text(col_xm[j]+cw/2,H-3.95,hdr,color=WHITE,fontsize=9,ha="center",va="center",
+            family=SERIF,fontweight="bold")
+for i,row in enumerate(rows_m2[1:]):
+    yr=H-4.46-i*0.35; bg=BGBOX if i%2==0 else WHITE
+    for j,(val,cw) in enumerate(zip(row,col_wm)):
+        ax.add_patch(Rectangle((col_xm[j],yr),cw,0.34,facecolor=bg,lw=0))
+        ax.add_patch(Rectangle((col_xm[j],yr),cw,0.34,facecolor="none",edgecolor=RULE,lw=0.6))
+        ax.text(col_xm[j]+cw/2,yr+0.17,val,color=DARK,fontsize=9,ha="center",va="center",
+                family=SERIF)
+
+acc2=R["q104_acc2"]; auc2=R["q104_auc2"]
+body(ax, f"Model 2 Classification Accuracy: {acc2:.1%}    Area Under ROC Curve (AUC): {auc2:.4f}",
+     0.5, H-6.45, fs=9.5, color=ACCENT2)
+
+section(ax, "10.4.6   Discussion", 0.5, H-6.9, w=10.0)
+body(ax,
+     "GPA category alone achieves 98.3% classification accuracy, demonstrating it is the dominant "
+     "predictor of admission status. The negative coefficients on GPA3 and GPA4 confirm that higher "
+     "GPA categories substantially reduce the log-odds of rejection. Adding GMAT raises the AUC to "
+     "1.000 (perfect discrimination), and GMAT's negative coefficient confirms that higher scores "
+     "improve admission prospects. However, overall accuracy decreases marginally (96.6%) due to two "
+     "additional misclassifications, suggesting GMAT provides limited incremental gain beyond GPA "
+     "category in this sample.",
+     0.5, H-7.45, fs=9.5)
+
+pnum(ax, 3, TOTAL_PAGES); pages.append(fig)
+
+# ════════════════════════════════════════════════════════════════
+# PAGE 4 — Q10.4 FIGURES
+# ════════════════════════════════════════════════════════════════
+fig, ax = new_page()
+ax.text(0.5, H-0.6, "Question 10.4   Admissions — Figures",
+        color=ACCENT, fontsize=14, fontweight="bold", family=SERIF)
+hline(ax, H-0.75)
+body(ax,
+     "Figure 10.4: (Left) ROC curves for Model 1 and Model 2.  "
+     "(Centre) Confusion matrix for Model 2 (GPA + GMAT).  "
+     "(Right) Estimated coefficients for Model 2.",
+     0.5, H-1.05, fs=9.5, color=GREY)
+embed(fig, "hw_plots/q104_results.png", [0.04, 0.1, 0.93, 0.73])
+ax.add_patch(Rectangle((0.4, 0.4), W-0.8, 6.6, facecolor="none",
+                        edgecolor=RULE, lw=0.8))
+pnum(ax, 4, TOTAL_PAGES); pages.append(fig)
 
 # ════════════════════════════════════════════════════════════════
 # PAGE 5 — Q10.5 HAND CALCULATIONS
 # ════════════════════════════════════════════════════════════════
-fig,ax = new_slide("Question 10.5","Cholesterol & Heart Disease — Hand Calculations",bar=GREEN)
+fig, ax = new_page()
+ax.text(0.5, H-0.6, "Question 10.5   Cholesterol & Heart Disease — Logistic Regression",
+        color=ACCENT, fontsize=14, fontweight="bold", family=SERIF)
+hline(ax, H-0.75)
 
-ax.text(0.35,H-1.15,
-        "114 males (40–65 yrs) classified by blood cholesterol and whether they developed heart disease.",
-        color=LGREY,fontsize=11)
+section(ax, "10.5.1   Data Description", 0.5, H-1.28, w=10.0)
+body(ax,
+     "Table Q10.2 presents cross-sectional data on 114 males aged 40–65, classified by blood "
+     "cholesterol level (four groups) and heart disease status (Present/Absent). "
+     "Total cases: Present = 91, Absent = 23, n = 114.",
+     0.5, H-1.85, fs=9.5)
 
-# Table header
-hdrs=[("Cholesterol","<200","200–219","220–259",">259")]
-rows_c=[
-    ("Present (HD)",     "6",   "10",   "30",    "45"),
-    ("Absent",           "5",    "6",    "5",     "7"),
-    ("Total",           "11",   "16",   "35",    "52"),
-    ("P(Disease)",   "0.545", "0.625","0.857",  "0.865"),
-    ("Odds",         "1.200", "1.667","6.000",  "6.429"),
-    ("Log-Odds",     "0.182", "0.511","1.792",  "1.861"),
+section(ax, "10.5.2(a)   Probabilities, Odds, and Log-Odds (Hand Calculations)", 0.5, H-2.42, w=10.0)
+
+# Main table
+hdrs_c = ["Cholesterol Level","Present","Absent","Total",
+           "P(Disease)","Odds","Log-Odds"]
+col_xc = [0.5, 2.5, 3.5, 4.5, 5.5, 7.0, 8.5]
+col_wc = [2.0, 1.0, 1.0, 1.0, 1.5, 1.5, 1.7]
+rows_c5 = [
+    ("<200",    "6",  "5", "11", "0.5455","1.2000","0.1823"),
+    ("200–219","10",  "6", "16", "0.6250","1.6667","0.5108"),
+    ("220–259","30",  "5", "35", "0.8571","6.0000","1.7918"),
+    (">259",   "45",  "7", "52", "0.8654","6.4286","1.8608"),
 ]
-ax.text(0.35,6.5,"(a) Probabilities and Log-Odds:",color=LBLUE,fontsize=11.5,fontweight="bold")
-col_x=[0.35,2.4,4.3,6.2,8.1]
-col_labels=["","< 200","200–219","220–259","> 259"]
-for j,lbl in enumerate(col_labels):
-    ax.add_patch(FancyBboxPatch((col_x[j] if j>0 else 0.35,6.08),
-        1.85 if j>0 else 1.95,0.55,boxstyle="square,pad=0",facecolor=BLUE,lw=0))
-    ax.text((col_x[j]+0.95) if j>0 else 1.3,6.35,lbl,
-            color=WHITE,fontsize=10.5,fontweight="bold",ha="center",va="center")
-for i,(label,*vals) in enumerate(rows_c):
-    y_row=5.45-i*0.62
-    bg=NAVY2 if i%2==0 else NAVY3
-    ax.add_patch(FancyBboxPatch((0.35,y_row-0.25),1.95,0.55,
-        boxstyle="square,pad=0",facecolor=BLUE,lw=0))
-    ax.text(1.3,y_row+0.02,label,color=WHITE,fontsize=10,ha="center",va="center",fontweight="bold")
-    for j,v in enumerate(vals):
-        ax.add_patch(FancyBboxPatch((col_x[j+1],y_row-0.25),1.85,0.55,
-            boxstyle="square,pad=0",facecolor=bg,lw=0))
-        col_v = GREEN if (label=="P(Disease)" or label=="Log-Odds") else LGREY
-        ax.text(col_x[j+1]+0.925,y_row+0.02,v,color=col_v,
-                fontsize=10.5,ha="center",va="center")
+y0c = H-2.97
+for j,(hdr,cw) in enumerate(zip(hdrs_c,col_wc)):
+    ax.add_patch(Rectangle((col_xc[j],y0c-0.01),cw,0.34,facecolor=ACCENT,lw=0))
+    ax.add_patch(Rectangle((col_xc[j],y0c-0.01),cw,0.34,facecolor="none",edgecolor=RULE,lw=0.6))
+    ax.text(col_xc[j]+cw/2,y0c+0.16,hdr,color=WHITE,fontsize=8.5,ha="center",va="center",
+            family=SERIF,fontweight="bold")
+for i,row in enumerate(rows_c5):
+    yr=y0c-0.35*(i+1); bg=BGBOX if i%2==0 else WHITE
+    for j,(val,cw) in enumerate(zip(row,col_wc)):
+        ax.add_patch(Rectangle((col_xc[j],yr),cw,0.34,facecolor=bg,lw=0))
+        ax.add_patch(Rectangle((col_xc[j],yr),cw,0.34,facecolor="none",edgecolor=RULE,lw=0.6))
+        col_v = ACCENT2 if j >= 4 else DARK
+        ax.text(col_xc[j]+cw/2,yr+0.16,val,color=col_v,fontsize=9,ha="center",va="center",
+                family=SERIF)
 
-ax.text(0.35,2.2,"(b) Hand Logistic Regression Equation:",color=LBLUE,fontsize=11.5,fontweight="bold")
+section(ax, "10.5.2(b)   Hand Logistic Regression via Simple Linear Regression on Log-Odds",
+        0.5, H-4.55, w=10.0)
 b0=R["q105_b0"]; b1=R["q105_b1"]
-ax.add_patch(FancyBboxPatch((0.35,1.3),9.5,0.78,
-    boxstyle="round,pad=0.05",facecolor=NAVY2,lw=0))
-ax.text(5.1,1.69,
-        f"log-odds  =  {b0:.4f}  +  {b1:.6f} × Cholesterol",
-        color=WHITE,fontsize=14,fontweight="bold",ha="center",va="center",
-        family="DejaVu Sans")
+body(ax,
+     "Using cholesterol group midpoints (<200=185, 200–219=209.5, 220–259=239.5, >259=270), "
+     "a simple linear regression of the log-odds on the midpoint yields:",
+     0.5, H-5.1, fs=9.5)
+ax.add_patch(Rectangle((1.5, H-5.65), 7.5, 0.44, facecolor=BGBOX, lw=0))
+ax.add_patch(Rectangle((1.5, H-5.65), 7.5, 0.44, facecolor="none", edgecolor=RULE, lw=0.8))
+ax.text(5.25, H-5.43,
+        f"logit[ P(Disease) ]  =  {b0:.4f}  +  {b1:.6f}  ×  Cholesterol",
+        color=DARK, fontsize=11, ha="center", va="center", family=SERIF, style="italic")
+body(ax,
+     f"Interpretation: The slope ({b1:.6f}) is positive and statistically meaningful, indicating "
+     "that each unit increase in cholesterol is associated with an increase in the log-odds of "
+     "heart disease. The intercept (−3.9181) represents the log-odds when cholesterol = 0.",
+     0.5, H-6.3, fs=9.5)
 
-card(ax,10.0,1.3,3.15,5.45,"Interpretation",
-     "▸ All cholesterol groups\n"
-     "  above <200 have higher\n"
-     "  disease probability.\n\n"
-     "▸ Log-odds increase nearly\n"
-     "  linearly with cholesterol\n"
-     "  level — clear dose-response.\n\n"
-     "▸ Slope > 0 confirms higher\n"
-     "  cholesterol raises heart\n"
-     "  disease risk.",fs=10)
-pnum(ax,5); pages.append(fig)
+section(ax, "10.5.3(c,d)   Software LR Results & Classification Table",
+        0.5, H-6.85, w=10.0)
+pc=R["q105_sw_params"]; pvc=R["q105_sw_pvalues"]
+rows_sw=[("Intercept","Ref: <200",f"{pc['Intercept']:.4f}",f"{pvc['Intercept']:.4f}","No"),
+         ("200–219",  "vs <200",   f"{pc['c200_219']:.4f}", f"{pvc['c200_219']:.4f}","No"),
+         ("220–259",  "vs <200",   f"{pc['c220_259']:.4f}", f"{pvc['c220_259']:.4f}","Yes*"),
+         (">259",     "vs <200",   f"{pc['c_gt259']:.4f}",  f"{pvc['c_gt259']:.4f}", "Yes*")]
+col_xs=[0.5,2.8,4.9,6.8,8.6]
+col_ws=[2.3,2.1,1.9,1.8,1.6]
+hdrss=["Term","Reference","Coefficient","p-value","Significant"]
+yr0=H-7.40
+for j,(h,cw) in enumerate(zip(hdrss,col_ws)):
+    ax.add_patch(Rectangle((col_xs[j],yr0-0.01),cw,0.34,facecolor=ACCENT,lw=0))
+    ax.add_patch(Rectangle((col_xs[j],yr0-0.01),cw,0.34,facecolor="none",edgecolor=RULE,lw=0.6))
+    ax.text(col_xs[j]+cw/2,yr0+0.16,h,color=WHITE,fontsize=9,ha="center",va="center",
+            family=SERIF,fontweight="bold")
+for i,row in enumerate(rows_sw):
+    yr=yr0-0.35*(i+1); bg=BGBOX if i%2==0 else WHITE
+    for j,(val,cw) in enumerate(zip(row,col_ws)):
+        ax.add_patch(Rectangle((col_xs[j],yr),cw,0.34,facecolor=bg,lw=0))
+        ax.add_patch(Rectangle((col_xs[j],yr),cw,0.34,facecolor="none",edgecolor=RULE,lw=0.6))
+        vc = GREEN2 if (j==4 and "Yes" in val) else DARK
+        ax.text(col_xs[j]+cw/2,yr+0.16,val,color=vc,fontsize=9,ha="center",va="center",
+                family=SERIF)
 
-# ════════════════════════════════════════════════════════════════
-# PAGE 6 — Q10.5 SOFTWARE RESULTS
-# ════════════════════════════════════════════════════════════════
-fig,ax = new_slide("Question 10.5","Cholesterol — Software LR Results & Visualizations",bar=GREEN)
-ax.text(0.35,H-1.15,"(c) Software Logistic Regression with dummy variables  |  (d) Classification Table",
-        color=LGREY,fontsize=11)
-embed(fig,"hw_plots/q105_results.png",[0.025,0.1,0.64,0.72])
-
-params_c = R["q105_sw_params"]; pvals_c = R["q105_sw_pvalues"]
-ax.text(8.6,6.5,"Coefficient Table:",color=LBLUE,fontsize=11.5,fontweight="bold")
-rows_sw=[("Term","Coef","p-value"),
-         ("Intercept",f"{params_c['Intercept']:.4f}",f"{pvals_c['Intercept']:.4f}"),
-         ("200-219",  f"{params_c['c200_219']:.4f}", f"{pvals_c['c200_219']:.4f}"),
-         ("220-259",  f"{params_c['c220_259']:.4f}", f"{pvals_c['c220_259']:.4f}"),
-         ("> 259",    f"{params_c['c_gt259']:.4f}",  f"{pvals_c['c_gt259']:.4f}"),]
-for i,(a,b,c) in enumerate(rows_sw):
-    y_r=6.0-i*0.68
-    bg=BLUE if i==0 else (NAVY2 if i%2 else NAVY3)
-    ax.add_patch(FancyBboxPatch((8.55,y_r-0.28),4.6,0.6,boxstyle="square,pad=0",facecolor=bg,lw=0))
-    sig="*" if (i>0 and float(c)<0.05) else ""
-    ax.text(8.75, y_r+0.02,a,color=WHITE,fontsize=10.5,va="center")
-    ax.text(10.65,y_r+0.02,b,color=(GREEN if i>0 else WHITE),fontsize=10.5,va="center",ha="center")
-    ax.text(12.3, y_r+0.02,c+sig,color=(RED if (i>0 and float(c)<0.05) else LGREY),
-            fontsize=10.5,va="center",ha="center")
-
-card(ax,8.55,1.25,4.6,2.15,"(d) Classification Table Discussion",
-     f"Accuracy = {R['q105_acc']:.1%}\n"
-     "Model correctly classifies all 91 disease-present\n"
-     "cases but misses all 23 disease-absent — high recall,\n"
-     "zero specificity. This reflects the class imbalance\n"
-     "(80% disease present). Classification table should be\n"
-     "interpreted with caution: AUC is more informative.",
-     tc=GOLD,bg="#1A1710",fs=10)
-pnum(ax,6); pages.append(fig)
+pnum(ax, 5, TOTAL_PAGES); pages.append(fig)
 
 # ════════════════════════════════════════════════════════════════
-# PAGE 7 — Q10.6 SETUP + RESULTS
+# PAGE 6 — Q10.5 FIGURES + DISCUSSION
 # ════════════════════════════════════════════════════════════════
-fig,ax = new_slide("Question 10.6","Depression Data — LR vs Discriminant Analysis")
-ax.text(0.35,H-1.15,
-        "294 subjects. Dependent variable: CASES (0=Normal, 1=Depressed where CESD>16).",
-        color=LGREY,fontsize=11)
-
-stat(ax,0.35,5.5,2.85,1.35,f"{R['q106_lr_acc']:.1%}","LR Accuracy",BLUE)
-stat(ax,3.35,5.5,2.85,1.35,f"{R['q106_lr_auc']:.3f}","LR AUC",LBLUE)
-stat(ax,6.35,5.5,2.85,1.35,f"{R['q106_lda_acc']:.1%}","LDA Accuracy",GREEN)
-stat(ax,9.35,5.5,2.85,1.35,f"{R['q106_lda_auc']:.3f}","LDA AUC",GOLD)
-
-sig_vars = R["q106_sig_vars"]
-card(ax,0.35,3.55,6.1,1.78,"Significant Predictors (LR, p < 0.05)",
-     f"▸ SEX (p=0.038) — females significantly more likely to be depressed\n"
-     f"▸ INCOME (p=0.044) — higher income reduces depression risk\n"
-     f"▸ RELIG (p=0.028) — religious affiliation has protective effect\n"
-     f"▸ BEDDAYS (p=0.029) — days spent in bed raises depression risk",
-     tc=RED,bg="#1F1010",fs=10.5)
-card(ax,6.55,3.55,6.42,1.78,"LR vs LDA Comparison",
-     f"LR: Accuracy={R['q106_lr_acc']:.1%}, AUC={R['q106_lr_auc']:.3f}\n"
-     f"LDA: Accuracy={R['q106_lda_acc']:.1%}, AUC={R['q106_lda_auc']:.3f}\n"
-     "Both methods perform similarly. LR slightly outperforms LDA on accuracy\n"
-     "and AUC, consistent with LR's weaker distributional assumptions.",
-     tc=GOLD,bg="#1A1710",fs=10.5)
-card(ax,0.35,1.55,12.62,1.85,"Interpretation",
-     "The logistic regression model explains depression with an overall accuracy of 84.0%. "
-     "The four significant predictors\n"
-     "align with established clinical literature: female sex, low income, lack of religious "
-     "support, and health-related bed\n"
-     "days are all established risk factors for depression. "
-     "LDA matches LR closely (83.0%), suggesting the linear\n"
-     "decision boundary is appropriate here despite slight class imbalance (244 normal, 50 depressed).",
-     tc=GREEN,bg="#101F1A",fs=10.5)
-pnum(ax,7); pages.append(fig)
+fig, ax = new_page()
+ax.text(0.5, H-0.6, "Question 10.5   Cholesterol — Figures and Discussion",
+        color=ACCENT, fontsize=14, fontweight="bold", family=SERIF)
+hline(ax, H-0.75)
+body(ax,
+     "Figure 10.5: (Left) Observed P(Disease) by cholesterol group.  "
+     "(Centre) Log-odds with fitted regression line (hand calculation).  "
+     "(Right) Confusion matrix for software LR model.",
+     0.5, H-1.05, fs=9.5, color=GREY)
+embed(fig, "hw_plots/q105_results.png", [0.04, 0.32, 0.93, 0.50])
+ax.add_patch(Rectangle((0.4, 0.38), W-0.8, 4.35, facecolor="none",
+                        edgecolor=RULE, lw=0.8))
+section(ax, "10.5.4   Discussion of Classification Table", 0.5, H-1.22, w=10.0)
+body(ax,
+     "The software logistic regression model yields an overall accuracy of 79.8%. However, the "
+     "classification table shows the model predicts all subjects as having heart disease present — "
+     "a consequence of severe class imbalance (91 present vs. 23 absent). In such settings, raw "
+     "accuracy is misleading; the model has 100% sensitivity but 0% specificity. "
+     "The classification table should therefore be interpreted with caution: it should be "
+     "accompanied by the AUC, sensitivity/specificity trade-off, and ideally a ROC curve. "
+     "A lower decision threshold (e.g., 0.35) or balanced resampling would improve specificity.",
+     0.5, H-1.80, fs=9.5)
+pnum(ax, 6, TOTAL_PAGES); pages.append(fig)
 
 # ════════════════════════════════════════════════════════════════
-# PAGE 8 — Q10.6 PLOTS
+# PAGE 7 — Q10.6 LR SETUP + RESULTS
 # ════════════════════════════════════════════════════════════════
-fig,ax = new_slide("Question 10.6","Depression — Visualizations")
-ax.text(0.35,H-1.15,
-        "Confusion matrices (LR vs LDA), ROC curves, and significant coefficient bar chart.",
-        color=LGREY,fontsize=12)
-embed(fig,"hw_plots/q106_results.png",[0.025,0.1,0.96,0.73])
-pnum(ax,8); pages.append(fig)
+fig, ax = new_page()
+ax.text(0.5, H-0.6, "Question 10.6   Depression Data — Logistic Regression",
+        color=ACCENT, fontsize=14, fontweight="bold", family=SERIF)
+hline(ax, H-0.75)
+
+section(ax, "10.6.1   Dataset and Model Specification", 0.5, H-1.28, w=10.0)
+body(ax,
+     "The DEPRES.DAT file contains 294 subjects. The dependent variable is CASES (0 = Normal, "
+     "1 = Depressed, defined as CESD > 16; distribution: 244 normal, 50 depressed). "
+     "Fourteen demographic and health predictors are entered simultaneously: "
+     "SEX, AGE, MARITAL, EDUCAT, EMPLOY, INCOME, RELIG, DRINK, HEALTH, REGDOC, TREAT, "
+     "BEDDAYS, ACUTEILL, and CHRONILL.",
+     0.5, H-1.85, fs=9.5)
+
+section(ax, "10.6.2   Logistic Regression Coefficients", 0.5, H-2.42, w=10.0)
+lp=R["q106_lr_params"]; lpv=R["q106_lr_pvalues"]
+var_list=[("SEX","Female sex raises P(depression)"),
+          ("AGE","Older age slightly protective"),
+          ("MARITAL","Marital status (not sig.)"),
+          ("EDUCAT","Education level (not sig.)"),
+          ("EMPLOY","Employment status (not sig.)"),
+          ("INCOME","Higher income lowers risk"),
+          ("RELIG","Religion raises odds (cultural context)"),
+          ("DRINK","Drinking lowers odds (not sig.)"),
+          ("HEALTH","Poorer health raises risk (not sig.)"),
+          ("REGDOC","Regular doctor (not sig.)"),
+          ("TREAT","Treatment (not sig.)"),
+          ("BEDDAYS","Days in bed raises risk"),
+          ("ACUTEILL","Acute illness (not sig.)"),
+          ("CHRONILL","Chronic illness (not sig.)")]
+col_xd=[0.5,2.8,4.6,6.4,8.2]
+col_wd=[2.3,1.8,1.8,1.8,1.8]
+hdrsd=["Variable","Coefficient","p-value","Significant","Interpretation"]
+y0d=H-2.97
+for j,(h,cw) in enumerate(zip(hdrsd,col_wd)):
+    ax.add_patch(Rectangle((col_xd[j],y0d-0.01),cw,0.3,facecolor=ACCENT,lw=0))
+    ax.add_patch(Rectangle((col_xd[j],y0d-0.01),cw,0.3,facecolor="none",edgecolor=RULE,lw=0.6))
+    ax.text(col_xd[j]+cw/2,y0d+0.14,h,color=WHITE,fontsize=8.5,ha="center",va="center",
+            family=SERIF,fontweight="bold")
+for i,(vname,interp) in enumerate(var_list):
+    coef=lp.get(vname,0); pval=lpv.get(vname,1)
+    sig="Yes*" if pval<0.05 else "No"
+    row=(vname,f"{coef:.4f}",f"{pval:.4f}",sig,interp)
+    yr=y0d-0.31*(i+1); bg=BGBOX if i%2==0 else WHITE
+    for j,(val,cw) in enumerate(zip(row,col_wd)):
+        ax.add_patch(Rectangle((col_xd[j],yr),cw,0.3,facecolor=bg,lw=0))
+        ax.add_patch(Rectangle((col_xd[j],yr),cw,0.3,facecolor="none",edgecolor=RULE,lw=0.6))
+        vc = RED2 if (j==3 and "Yes" in val) else (GREY if j==4 else DARK)
+        fs2 = 8.0 if j==4 else 8.5
+        ax.text(col_xd[j]+cw/2,yr+0.14,val,color=vc,fontsize=fs2,ha="center",va="center",
+                family=SERIF)
+
+pnum(ax, 7, TOTAL_PAGES); pages.append(fig)
 
 # ════════════════════════════════════════════════════════════════
-# PAGE 9 — Q11.5 MANOVA RESULTS
+# PAGE 8 — Q10.6 LR vs LDA COMPARISON + FIGURES
 # ════════════════════════════════════════════════════════════════
-fig,ax = new_slide("Question 11.5","MANOVA — Depression & Phone Data",bar=GOLD)
-ax.text(0.35,H-1.15,
-        "MANOVA tests whether group means on multiple dependent variables differ simultaneously.",
-        color=LGREY,fontsize=11)
+fig, ax = new_page()
+ax.text(0.5, H-0.6, "Question 10.6   Depression — LR vs. Discriminant Analysis",
+        color=ACCENT, fontsize=14, fontweight="bold", family=SERIF)
+hline(ax, H-0.75)
 
-# Depression MANOVA
-ax.text(0.35,5.9,"Part A: Depression Data (DVs = C1-C20, Group = CASES)",
-        color=LBLUE,fontsize=12,fontweight="bold")
-lam_d=R["q115_dep_lambda"]; F_d=R["q115_dep_F"]; df_d=R["q115_dep_df"]
-stat(ax,0.35,4.3,2.85,1.42,f"{lam_d:.4f}","Wilks' Lambda\n(Depression)",RED)
-stat(ax,3.35,4.3,2.85,1.42,f"{F_d:.2f}",f"Approx F({df_d[0]:.0f},{df_d[1]:.0f})",RED)
-stat(ax,6.35,4.3,2.85,1.42,"p < .0001","MANOVA p-value",RED)
-stat(ax,9.35,4.3,2.85,1.42,f"{R['q115_dep_lda_acc']:.1%}","LDA Accuracy\n(C1-C20→CASES)",GREEN)
+section(ax, "10.6.3   Classification Performance Comparison", 0.5, H-1.28, w=10.0)
+# Comparison table
+comp_hdrs = ["Method","Overall Accuracy","AUC-ROC","Normal Correct","Depressed Correct"]
+comp_rows = [
+    ("Logistic Regression",
+     f"{R['q106_lr_acc']:.1%}", f"{R['q106_lr_auc']:.4f}", "240/244 (98.4%)", "7/50 (14.0%)"),
+    ("Linear Discriminant Analysis",
+     f"{R['q106_lda_acc']:.1%}",f"{R['q106_lda_auc']:.4f}","237/244 (97.1%)","7/50 (14.0%)"),
+]
+col_xc2=[0.5,3.1,4.9,6.5,8.2]
+col_wc2=[2.6,1.8,1.6,1.7,1.8]
+y0c2=H-1.84
+for j,(h,cw) in enumerate(zip(comp_hdrs,col_wc2)):
+    ax.add_patch(Rectangle((col_xc2[j],y0c2-0.01),cw,0.34,facecolor=ACCENT,lw=0))
+    ax.add_patch(Rectangle((col_xc2[j],y0c2-0.01),cw,0.34,facecolor="none",edgecolor=RULE,lw=0.6))
+    ax.text(col_xc2[j]+cw/2,y0c2+0.16,h,color=WHITE,fontsize=8.5,ha="center",va="center",
+            family=SERIF,fontweight="bold")
+for i,row in enumerate(comp_rows):
+    yr=y0c2-0.35*(i+1); bg=BGBOX if i%2==0 else WHITE
+    for j,(val,cw) in enumerate(zip(row,col_wc2)):
+        ax.add_patch(Rectangle((col_xc2[j],yr),cw,0.34,facecolor=bg,lw=0))
+        ax.add_patch(Rectangle((col_xc2[j],yr),cw,0.34,facecolor="none",edgecolor=RULE,lw=0.6))
+        ax.text(col_xc2[j]+cw/2,yr+0.16,val,color=DARK,fontsize=9,ha="center",va="center",
+                family=SERIF)
 
-card(ax,0.35,2.6,12.62,1.55,
-     "Interpretation — Depression MANOVA",
-     "Wilks' Lambda = 0.297 (far from 1) and F(20,273)=32.31 (p<.0001): the two groups "
-     "(normal vs depressed)\n"
-     "differ significantly on the combined set of 20 CES-D items. ALL 20 items show "
-     "significant univariate F-tests (p<.0001),\n"
-     "meaning every individual depression symptom distinguishes the groups. "
-     "LDA achieves 97.96% accuracy using C1-C20.",
-     tc=GREEN,bg="#101F1A",fs=10.5)
+section(ax, "10.6.4   Interpretation and Discussion", 0.5, H-3.02, w=10.0)
+body(ax,
+     "The logistic regression model achieves 84.0% overall accuracy (AUC = 0.779), marginally "
+     "outperforming LDA (83.0%, AUC = 0.776). Both methods correctly identify most normal subjects "
+     "(>97%) but perform poorly on the depressed group (14% sensitivity), reflecting class imbalance "
+     "(244 vs. 50). The four significant LR predictors — SEX (p=0.038), INCOME (p=0.044), "
+     "RELIG (p=0.028), and BEDDAYS (p=0.029) — are consistent with epidemiological literature: "
+     "female sex, financial stress, lack of religious social support, and physical illness "
+     "confinement all elevate depression risk.\n\n"
+     "LDA yields nearly identical results, supporting the assumption that a linear boundary "
+     "adequately separates the groups. LR is preferred here as it imposes no multivariate "
+     "normality assumptions — an important consideration given the mix of binary and ordinal "
+     "predictors.",
+     0.5, H-3.60, fs=9.5)
 
-# Phone MANOVA
-ax.text(0.35,2.2,"Part B: Phone Data (DVs = A1-A6, Group = n_phones)",
-        color=LBLUE,fontsize=12,fontweight="bold")
-lam_p=R["q115_ph_lambda"]; F_p=R["q115_ph_F"]; df_p=R["q115_ph_df"]
-stat(ax,0.35,0.7,2.85,1.38,f"{lam_p:.4f}","Wilks' Lambda\n(Phone)",GOLD)
-stat(ax,3.35,0.7,2.85,1.38,f"{F_p:.2f}",f"Approx F({df_p[0]:.0f},{df_p[1]:.0f})",GOLD)
-stat(ax,6.35,0.7,2.85,1.38,"p < .0001","MANOVA p-value",GOLD)
-stat(ax,9.35,0.7,2.85,1.38,f"{R['q115_ph_lda_acc']:.1%}","LDA Accuracy\n(A1-A6→phones)",BLUE)
-pnum(ax,9); pages.append(fig)
+body(ax, "Figure 10.6: Confusion matrices (LR and LDA), ROC curves, and LR coefficient plot.",
+     0.5, H-5.10, fs=9.5, color=GREY)
+embed(fig, "hw_plots/q106_results.png", [0.04, 0.1, 0.93, 0.48])
+ax.add_patch(Rectangle((0.4, 0.38), W-0.8, 4.1, facecolor="none", edgecolor=RULE, lw=0.8))
+
+pnum(ax, 8, TOTAL_PAGES); pages.append(fig)
 
 # ════════════════════════════════════════════════════════════════
-# PAGE 10 — Q11.5 PLOTS + FINAL
+# PAGE 9 — Q11.5 MANOVA THEORY + DEPRESSION RESULTS
 # ════════════════════════════════════════════════════════════════
-fig,ax = new_slide("Question 11.5","MANOVA — Visualizations & LDA Comparison",bar=GOLD)
-ax.text(0.35,H-1.15,
-        "Group mean heatmap, univariate F-statistics, attitude profiles, and MANOVA vs LDA comparison.",
-        color=LGREY,fontsize=11)
-embed(fig,"hw_plots/q115_results.png",[0.025,0.1,0.96,0.73])
-pnum(ax,10); pages.append(fig)
+fig, ax = new_page()
+ax.text(0.5, H-0.6, "Question 11.5   MANOVA — Depression and Phone Data",
+        color=ACCENT, fontsize=14, fontweight="bold", family=SERIF)
+hline(ax, H-0.75)
+
+section(ax, "11.5.1   Method Overview", 0.5, H-1.28, w=10.0)
+body(ax,
+     "Multivariate Analysis of Variance (MANOVA) extends one-way ANOVA to test whether group "
+     "centroids (vectors of means across multiple dependent variables) differ simultaneously. "
+     "Wilks' Lambda (Λ) is the primary test statistic: Λ = |W| / |W+B|, where W is the within-group "
+     "scatter matrix and B is the between-group scatter matrix. Λ ranges from 0 (perfect separation) "
+     "to 1 (no separation). An approximate F-statistic is computed via Rao's approximation.",
+     0.5, H-1.85, fs=9.5)
+
+section(ax, "11.5.2   Part A: Depression Data (Group = CASES, DVs = C1–C20)", 0.5, H-2.55, w=10.0)
+
+lam_d=R["q115_dep_lambda"]; F_d=R["q115_dep_F"]; dfd=R["q115_dep_df"]
+# Summary stats
+smry=[("Test Statistic","Wilks' Lambda","Value",f"{lam_d:.6f}"),
+      ("Approx. F-ratio",f"F({dfd[0]:.0f}, {dfd[1]:.0f})","p-value","< 0.0001"),
+      ("LDA Accuracy","C1-C20 → CASES","","f{R[q115_dep_lda_acc]:.1%}")]
+col_xs9=[0.5,3.0,5.5,7.5]
+col_ws9=[2.5,2.5,2.0,2.5]
+for j,h in enumerate(["Measure","Detail","","Value"]):
+    ax.add_patch(Rectangle((col_xs9[j],H-3.1),col_ws9[j],0.32,facecolor=ACCENT,lw=0))
+    ax.add_patch(Rectangle((col_xs9[j],H-3.1),col_ws9[j],0.32,facecolor="none",edgecolor=RULE,lw=0.6))
+    ax.text(col_xs9[j]+col_ws9[j]/2,H-2.95,h,color=WHITE,fontsize=9,ha="center",va="center",
+            family=SERIF,fontweight="bold")
+summary_rows=[
+    ("Wilks' Lambda",      "Overall MANOVA test",  "Λ =",     f"{lam_d:.6f}"),
+    ("Approx. F-statistic",f"F({dfd[0]:.0f},{dfd[1]:.0f})", "p =","< 0.0001"),
+    ("LDA Accuracy","(C1-C20 → CASES)","",f"{R['q115_dep_lda_acc']:.2%}"),
+    ("Univariate Sig.","All 20 CES-D items","p <","0.0001"),
+]
+for i,row in enumerate(summary_rows):
+    yr=H-3.42-i*0.34; bg=BGBOX if i%2==0 else WHITE
+    for j,(val,cw) in enumerate(zip(row,col_ws9)):
+        ax.add_patch(Rectangle((col_xs9[j],yr),cw,0.32,facecolor=bg,lw=0))
+        ax.add_patch(Rectangle((col_xs9[j],yr),cw,0.32,facecolor="none",edgecolor=RULE,lw=0.6))
+        vc=RED2 if (j==2) else DARK
+        ax.text(col_xs9[j]+cw/2,yr+0.15,val,color=vc,fontsize=9,ha="center",va="center",
+                family=SERIF)
+
+body(ax,
+     "Wilks' Lambda = 0.297 indicates strong group separation (far below 1.0). "
+     "The approximate F(20, 273) = 32.31 (p < .0001) provides overwhelming evidence that "
+     "the two CASES groups (Normal vs. Depressed) differ significantly on the combined set "
+     "of 20 CES-D depression items. All 20 univariate F-tests are also highly significant "
+     "(all p < .0001), confirming that every individual depression symptom item contributes "
+     "to the group differentiation. LDA using C1-C20 achieves 97.96% classification accuracy, "
+     "which markedly exceeds the 84% obtained using only demographic and health predictors "
+     "(Q10.6). This highlights the superior discriminative power of symptom items over "
+     "background characteristics.",
+     0.5, H-5.4, fs=9.5)
+
+section(ax, "11.5.3   Part B: Phone Data (Group = n_phones, DVs = A1–A6)", 0.5, H-6.15, w=10.0)
+lam_p=R["q115_ph_lambda"]; F_p=R["q115_ph_F"]; dfp=R["q115_ph_df"]
+body(ax,
+     f"Wilks' Lambda = {lam_p:.4f},  F({dfp[0]:.0f}, {dfp[1]:.0f}) = {F_p:.2f},  "
+     f"p < .0001.  LDA accuracy: {R['q115_ph_lda_acc']:.1%}.\n"
+     "Strong evidence that the three phone-ownership groups (1, 2, or 3 phones) differ "
+     "significantly across the six attitude items (A1–A6). All six univariate F-tests are "
+     "highly significant (all p < .0001).",
+     0.5, H-6.72, fs=9.5)
+
+pnum(ax, 9, TOTAL_PAGES); pages.append(fig)
+
+# ════════════════════════════════════════════════════════════════
+# PAGE 10 — Q11.5 UNIVARIATE F-TESTS TABLE
+# ════════════════════════════════════════════════════════════════
+fig, ax = new_page()
+ax.text(0.5, H-0.6, "Question 11.5   MANOVA — Univariate F-Test Tables",
+        color=ACCENT, fontsize=14, fontweight="bold", family=SERIF)
+hline(ax, H-0.75)
+
+section(ax, "11.5.4   Univariate F-Tests — CES-D Items (Depression, CASES grouping)", 0.5, H-1.28, w=10.0)
+du = R["q115_dep_univ"]
+col_xu=[0.5,2.2,3.9,5.6,7.3,9.0]
+col_wu=[1.7,1.7,1.7,1.7,1.7,1.2]
+hdrsu=["Item","F-stat","p-value","Sig.","Item","F-stat"]
+y0u=H-1.84
+for j,(h,cw) in enumerate(zip(hdrsu,col_wu)):
+    ax.add_patch(Rectangle((col_xu[j],y0u-0.01),cw,0.3,facecolor=ACCENT,lw=0))
+    ax.add_patch(Rectangle((col_xu[j],y0u-0.01),cw,0.3,facecolor="none",edgecolor=RULE,lw=0.6))
+    ax.text(col_xu[j]+cw/2,y0u+0.14,h,color=WHITE,fontsize=9,ha="center",va="center",
+            family=SERIF,fontweight="bold")
+# 2 columns of 10 items
+for i in range(10):
+    r1=du[i]; r2=du[i+10] if i+10<len(du) else {}
+    yr=y0u-0.3*(i+1); bg=BGBOX if i%2==0 else WHITE
+    vals1=[r1["variable"],f"{r1['F']:.3f}",f"{r1['p-value']:.4f}","*" if r1["significant"] else ""]
+    vals2=[r2.get("variable",""),f"{r2.get('F',0):.3f}"] if r2 else ["",""]
+    for j,(val,cw) in enumerate(zip(vals1+vals2,col_wu)):
+        ax.add_patch(Rectangle((col_xu[j],yr),cw,0.29,facecolor=bg,lw=0))
+        ax.add_patch(Rectangle((col_xu[j],yr),cw,0.29,facecolor="none",edgecolor=RULE,lw=0.6))
+        vc=RED2 if (j==3 and val=="*") else DARK
+        ax.text(col_xu[j]+cw/2,yr+0.13,val,color=vc,fontsize=9,ha="center",va="center",
+                family=SERIF)
+
+section(ax, "11.5.5   Univariate F-Tests — Attitude Items (Phone, n_phones grouping)",
+        0.5, H-5.1, w=10.0)
+pu = R["q115_ph_univ"]
+hdrsp=["Item","CES-D Scale Label","F-statistic","p-value","Significant"]
+phone_labels={"A1":"Call LD only when necessary","A2":"One phone sufficient",
+              "A3":"Multiple phones worthwhile","A4":"Avg. bill smaller",
+              "A5":"Multi-phone wasteful","A6":"Get best model"}
+col_xp=[0.5,1.8,5.5,7.3,8.9]
+col_wp=[1.3,3.7,1.8,1.6,1.3]
+y0p=H-5.65
+for j,(h,cw) in enumerate(zip(hdrsp,col_wp)):
+    ax.add_patch(Rectangle((col_xp[j],y0p-0.01),cw,0.3,facecolor=ACCENT,lw=0))
+    ax.add_patch(Rectangle((col_xp[j],y0p-0.01),cw,0.3,facecolor="none",edgecolor=RULE,lw=0.6))
+    ax.text(col_xp[j]+cw/2,y0p+0.14,h,color=WHITE,fontsize=9,ha="center",va="center",
+            family=SERIF,fontweight="bold")
+for i,r in enumerate(pu):
+    yr=y0p-0.34*(i+1); bg=BGBOX if i%2==0 else WHITE
+    row2=[r["variable"],phone_labels.get(r["variable"],""),
+          f"{r['F']:.3f}",f"{r['p-value']:.4f}","Yes*" if r["significant"] else "No"]
+    for j,(val,cw) in enumerate(zip(row2,col_wp)):
+        ax.add_patch(Rectangle((col_xp[j],yr),cw,0.33,facecolor=bg,lw=0))
+        ax.add_patch(Rectangle((col_xp[j],yr),cw,0.33,facecolor="none",edgecolor=RULE,lw=0.6))
+        vc=GREEN2 if (j==4 and "Yes" in val) else DARK
+        ax.text(col_xp[j]+cw/2,yr+0.16,val,color=vc,fontsize=9,ha="center",va="center",
+                family=SERIF)
+
+pnum(ax, 10, TOTAL_PAGES); pages.append(fig)
+
+# ════════════════════════════════════════════════════════════════
+# PAGE 11 — Q11.5 FIGURES
+# ════════════════════════════════════════════════════════════════
+fig, ax = new_page()
+ax.text(0.5, H-0.6, "Question 11.5   MANOVA — Figures",
+        color=ACCENT, fontsize=14, fontweight="bold", family=SERIF)
+hline(ax, H-0.75)
+body(ax,
+     "Figure 11.5: (Top-left) Heatmap of mean CES-D item scores by depression group.  "
+     "(Top-right) Univariate F-statistics for all 20 CES-D items.  "
+     "(Bottom-left) Attitude item mean profiles by phone-ownership group.  "
+     "(Bottom-right) Univariate F-statistics for attitude items A1–A6.",
+     0.5, H-1.05, fs=9.5, color=GREY)
+embed(fig, "hw_plots/q115_results.png", [0.04, 0.1, 0.93, 0.73])
+ax.add_patch(Rectangle((0.4, 0.38), W-0.8, 6.6, facecolor="none", edgecolor=RULE, lw=0.8))
+pnum(ax, 11, TOTAL_PAGES); pages.append(fig)
+
+# ════════════════════════════════════════════════════════════════
+# PAGE 12 — SUMMARY TABLE
+# ════════════════════════════════════════════════════════════════
+fig, ax = new_page()
+ax.text(0.5, H-0.6, "Summary of All Results",
+        color=ACCENT, fontsize=14, fontweight="bold", family=SERIF)
+hline(ax, H-0.75)
+
+section(ax, "Consolidated Results Table", 0.5, H-1.28, w=10.0)
+summ_hdrs=["Question","Method","Dataset","Key Statistic","Accuracy / Result","Conclusion"]
+summ_rows=[
+    ("Q10.4 — Mod.1","Logistic Regression (GPA)",
+     "ADMIS.DAT","AUC = 0.975",f"{R['q104_acc1']:.1%} accuracy",
+     "GPA alone near-perfectly predicts admission"),
+    ("Q10.4 — Mod.2","LR (GPA + GMAT)",
+     "ADMIS.DAT","AUC = 1.000",f"{R['q104_acc2']:.1%} accuracy",
+     "GMAT achieves perfect discrimination"),
+    ("Q10.5 — Hand","Simple LR on log-odds",
+     "Table Q10.2",f"Slope = {R['q105_b1']:.5f}","—",
+     "Higher cholesterol raises heart disease log-odds"),
+    ("Q10.5 — Soft.","LR with dummies",
+     "Table Q10.2","LLR p = 0.036",f"{R['q105_acc']:.1%} accuracy",
+     ">220 mg/100cc groups significantly different"),
+    ("Q10.6 — LR","Logistic Regression",
+     "DEPRES.DAT",f"AUC = {R['q106_lr_auc']:.3f}",f"{R['q106_lr_acc']:.1%} accuracy",
+     "SEX, INCOME, RELIG, BEDDAYS significant"),
+    ("Q10.6 — LDA","Linear Discriminant Analysis",
+     "DEPRES.DAT",f"AUC = {R['q106_lda_auc']:.3f}",f"{R['q106_lda_acc']:.1%} accuracy",
+     "LR marginally outperforms LDA"),
+    ("Q11.5A — MANOVA","MANOVA + LDA",
+     "DEPRES.DAT",f"Λ = {R['q115_dep_lambda']:.4f}",
+     f"F={R['q115_dep_F']:.1f}, p<.0001",
+     "All 20 CES-D items separate groups"),
+    ("Q11.5B — MANOVA","MANOVA + LDA",
+     "PHONE.DAT",f"Λ = {R['q115_ph_lambda']:.4f}",
+     f"F={R['q115_ph_F']:.1f}, p<.0001",
+     "All 6 attitude items differ by phone group"),
+]
+col_xs2=[0.5,2.3,4.1,5.7,7.3,8.9]
+col_ws2=[1.8,1.8,1.6,1.6,1.6,1.6]
+y0s=H-1.84
+for j,(h,cw) in enumerate(zip(summ_hdrs,col_ws2)):
+    ax.add_patch(Rectangle((col_xs2[j],y0s-0.01),cw,0.34,facecolor=ACCENT,lw=0))
+    ax.add_patch(Rectangle((col_xs2[j],y0s-0.01),cw,0.34,facecolor="none",edgecolor=RULE,lw=0.6))
+    ax.text(col_xs2[j]+cw/2,y0s+0.16,h,color=WHITE,fontsize=8.5,ha="center",va="center",
+            family=SERIF,fontweight="bold")
+for i,row in enumerate(summ_rows):
+    yr=y0s-0.52*(i+1); bg=BGBOX if i%2==0 else WHITE
+    for j,(val,cw) in enumerate(zip(row,col_ws2)):
+        ax.add_patch(Rectangle((col_xs2[j],yr),cw,0.51,facecolor=bg,lw=0))
+        ax.add_patch(Rectangle((col_xs2[j],yr),cw,0.51,facecolor="none",edgecolor=RULE,lw=0.6))
+        ax.text(col_xs2[j]+cw/2,yr+0.25,val,color=DARK,fontsize=7.8,ha="center",va="center",
+                family=SERIF,multialignment="center",wrap=True)
+
+hline(ax, 0.8)
+body(ax,
+     "Note: All analyses were performed using Python 3.11 with statsmodels, scikit-learn, and scipy. "
+     "Complete SAS code implementing identical analyses using PROC LOGISTIC, PROC DISCRIM, and "
+     "PROC GLM is provided in the accompanying homework_analysis.sas file.",
+     0.5, 0.48, fs=8.5, color=GREY)
+pnum(ax, 12, TOTAL_PAGES); pages.append(fig)
 
 # ════════════════════════════════════════════════════════════════
 # SAVE
 # ════════════════════════════════════════════════════════════════
-out="Homework_Solutions.pdf"
+out = "Homework_Solutions.pdf"
 with PdfPages(out) as pdf:
     for f in pages:
-        pdf.savefig(f,bbox_inches="tight",dpi=150,facecolor=f.get_facecolor())
+        pdf.savefig(f, bbox_inches="tight", dpi=150, facecolor=f.get_facecolor())
         plt.close(f)
 print(f"Saved: {out}  ({len(pages)} pages)")
