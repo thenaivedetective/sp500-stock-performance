@@ -114,3 +114,9 @@ id = "FXMDejSwgzHbzAhv2Ew8R"
 uri = "file://simfin_quarterly_financials.csv"
 type = "table"
 title = "SimFin Quarterly Financials — S&P 500 (1,556 rows × 71 columns)"
+
+[[outputs]]
+id = "dny-ksVXCjLr-H4DLuPUp"
+uri = "file://Financial_Literacy_Guide.pdf"
+type = "pdf"
+title = "Financial Literacy Guide — Group 15"
