@@ -108,3 +108,9 @@ id = "xE1pvkmj8BN-dtD3IP1-x"
 uri = "file://Project_Publication_Roadmap.pdf"
 type = "pdf"
 title = "Project Publication Roadmap — 3 pages"
+
+[[outputs]]
+id = "FXMDejSwgzHbzAhv2Ew8R"
+uri = "file://simfin_quarterly_financials.csv"
+type = "table"
+title = "SimFin Quarterly Financials — S&P 500 (1,556 rows × 71 columns)"

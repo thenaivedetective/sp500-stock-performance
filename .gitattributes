@@ -1,2 +1,4 @@
 lending_club_raw.csv filter=lfs diff=lfs merge=lfs -text
 lending_club_clean.csv filter=lfs diff=lfs merge=lfs -text
+simfin_data/download/us-shareprices-daily.zip filter=lfs diff=lfs merge=lfs -text
+simfin_data/us-shareprices-daily.csv filter=lfs diff=lfs merge=lfs -text
