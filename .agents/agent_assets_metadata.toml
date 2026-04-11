@@ -102,3 +102,9 @@ id = "aNyxQJdQzSe5nKGrghDaV"
 uri = "file://sp500_quarterly_financials.csv"
 type = "table"
 title = "S&P 500 Quarterly Financials — SEC EDGAR"
+
+[[outputs]]
+id = "xE1pvkmj8BN-dtD3IP1-x"
+uri = "file://Project_Publication_Roadmap.pdf"
+type = "pdf"
+title = "Project Publication Roadmap — 3 pages"
