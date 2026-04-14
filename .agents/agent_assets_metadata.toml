@@ -120,3 +120,9 @@ id = "dny-ksVXCjLr-H4DLuPUp"
 uri = "file://Financial_Literacy_Guide.pdf"
 type = "pdf"
 title = "Financial Literacy Guide — Group 15"
+
+[[outputs]]
+id = "p75MVluWnfR4gLOglAL7g"
+uri = "file://Preliminary_Analysis_Global.pdf"
+type = "pdf"
+title = "Preliminary Global Analysis — Statistical Significance Report"
