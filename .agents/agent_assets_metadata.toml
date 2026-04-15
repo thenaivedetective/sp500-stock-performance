@@ -125,7 +125,7 @@ title = "Financial Literacy Guide — Group 15"
 id = "p75MVluWnfR4gLOglAL7g"
 uri = "file://Preliminary_Analysis_Global.pdf"
 type = "pdf"
-title = "Preliminary Global Analysis — Statistical Significance Report"
+title = "Preliminary Global Analysis — VIF + Logistic Regression"
 
 [[outputs]]
 id = "tJdep8fnmjs72JMkA8b_T"
