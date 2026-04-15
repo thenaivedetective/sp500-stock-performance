@@ -116,20 +116,47 @@ for var, v in zip(ratio_cols, vif_values):
     vif_rows.append([ratio_labels[var], f"{v:.2f}", flag])
 print(tabulate(vif_rows, headers=["Predictor","VIF","Assessment"], tablefmt="github"))
 
-print("\n── TABLE 4: COEFFICIENTS & INDIVIDUAL p-VALUES ───────────────")
+print("\n── TABLE 4: COEFFICIENTS, ODDS RATIOS & p-VALUES ────────────")
+conf = np.array(result.conf_int())
 coef_rows = []
 for i, var in enumerate(ratio_cols):
     coef = result.params[i+1]
     se   = result.bse[i+1]
     z    = result.tvalues[i+1]
     p    = result.pvalues[i+1]
+    OR   = np.exp(coef)
+    ci_lo = np.exp(conf[i+1, 0])
+    ci_hi = np.exp(conf[i+1, 1])
     if p < 0.01:   sig = "*** p<0.01"
     elif p < 0.05: sig = "**  p<0.05"
     elif p < 0.10: sig = "*   p<0.10"
     else:          sig = "No"
-    coef_rows.append([ratio_labels[var], f"{coef:+.4f}", f"{se:.4f}", f"{z:.3f}", f"{p:.4f}", sig])
+    coef_rows.append([
+        ratio_labels[var], f"{coef:+.4f}", f"{OR:.4f}",
+        f"[{ci_lo:.3f}, {ci_hi:.3f}]", f"{z:.3f}", f"{p:.4f}", sig
+    ])
 print(tabulate(coef_rows,
-    headers=["Predictor","Coeff","Std Err","Z-Stat","p-Value","Significant?"],
+    headers=["Predictor","Coeff","Odds Ratio","95% CI","Z-Stat","p-Value","Significant?"],
+    tablefmt="github"))
+
+print("\n── TABLE 5: ODDS RATIO INTERPRETATION ───────────────────────")
+print("  Odds Ratio > 1 → predictor increases probability of outperforming")
+print("  Odds Ratio < 1 → predictor decreases probability of outperforming")
+print("  Odds Ratio = 1 → no effect\n")
+or_interp = []
+for i, var in enumerate(ratio_cols):
+    coef = result.params[i+1]
+    p    = result.pvalues[i+1]
+    OR   = np.exp(coef)
+    if p >= 0.05:
+        direction = "No significant effect"
+    elif OR > 1:
+        direction = f"↑ {(OR-1)*100:.1f}% higher odds of outperforming"
+    else:
+        direction = f"↓ {(1-OR)*100:.1f}% lower odds of outperforming"
+    or_interp.append([ratio_labels[var], f"{OR:.4f}", f"{p:.4f}", direction])
+print(tabulate(or_interp,
+    headers=["Predictor","Odds Ratio","p-Value","Interpretation"],
     tablefmt="github"))
 
 print("\n── CONCLUSION ────────────────────────────────────────────────")
