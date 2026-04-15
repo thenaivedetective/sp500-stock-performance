@@ -38,6 +38,24 @@ def section(text):
 def bullet(text):
     return Paragraph(f"\u2022  {text}", bullet_style)
 
+def bullet_with_date(text, date):
+    date_style = ParagraphStyle('dateright', fontName='Helvetica', fontSize=9.5,
+        spaceAfter=2, leading=13, alignment=TA_RIGHT)
+    t = Table(
+        [[Paragraph(f"\u2022  {text}", bullet_style), Paragraph(date, date_style)]],
+        colWidths=[4.3*inch, 2.7*inch]
+    )
+    t.setStyle(TableStyle([
+        ('ALIGN', (0, 0), (0, 0), 'LEFT'),
+        ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 0),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+    ]))
+    return t
+
 def row(left_text, right_text, left_bold=True):
     left_style = bold_body_style if left_bold else body_style
     t = Table(
@@ -105,10 +123,9 @@ story.append(bullet(
 
 story += section("Academic Projects")
 
-story.append(row("Predicting S&amp;P 500 Stock Outperformers using Multivariate Data Analysis", "April 2026 – Present", left_bold=False))
-story.append(bullet(
-    "Predicted S&amp;P 500 stock outperformers using sector-specific logistic regression and 15 years of "
-    "Compustat/CRSP data, with portfolio backtesting across multiple market regimes."))
+story.append(bullet_with_date(
+    "Using multivariate data analysis techniques to predict stock outperformers in S&amp;P",
+    "April 2026 – Present"))
 story.append(Spacer(1, 4))
 
 story.append(bullet(
