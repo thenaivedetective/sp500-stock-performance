@@ -126,3 +126,9 @@ id = "p75MVluWnfR4gLOglAL7g"
 uri = "file://Preliminary_Analysis_Global.pdf"
 type = "pdf"
 title = "Preliminary Global Analysis — Statistical Significance Report"
+
+[[outputs]]
+id = "tJdep8fnmjs72JMkA8b_T"
+uri = "file://Lana_Gidan_CV.pdf"
+type = "pdf"
+title = "Lana Gidan — Updated CV"
