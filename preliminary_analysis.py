@@ -13,6 +13,7 @@ warnings.filterwarnings('ignore')
 comp      = pd.read_csv('wrds_compustat_quarterly.csv', low_memory=False)
 crsp      = pd.read_csv('wrds_crsp_quarterly.csv', low_memory=False)
 sp500hist = pd.read_csv('wrds_sp500_history.csv', low_memory=False)
+macro     = pd.read_csv('wrds_fred_macro.csv', low_memory=False)
 
 sp500hist['start_date'] = pd.to_datetime(sp500hist['start_date'])
 sp500hist['end_date']   = pd.to_datetime(sp500hist['end_date'])
@@ -20,6 +21,7 @@ sp500hist['end_date']   = pd.to_datetime(sp500hist['end_date'])
 comp['datadate'] = pd.to_datetime(comp['datadate'])
 comp['quarter']  = pd.PeriodIndex(comp['quarter'], freq='Q')
 crsp['quarter']  = pd.PeriodIndex(crsp['quarter_str'], freq='Q')
+macro['quarter'] = pd.PeriodIndex(macro['quarter'], freq='Q')
 
 numeric_cols = ['revtq','cogsq','xsgaq','xrdq','oibdpq','oiadpq','niq','ibq',
                 'piq','atq','ceqq','teqq','dlttq','dlcq','actq','lctq',
@@ -46,7 +48,7 @@ comp['book_to_market'] = comp['ceqq']   / comp['mkvaltq'].replace(0, np.nan)
 
 ratio_cols = ['roa','roe','gross_margin','op_margin','net_margin','asset_turnover',
               'current_ratio','debt_to_equity','rev_growth','ni_growth',
-              'pe_ratio','book_to_market']
+              'pe_ratio','book_to_market','gdp_growth','inflation']
 
 ratio_labels = {
     'roa':'Return on Assets (ROA)', 'roe':'Return on Equity (ROE)',
@@ -56,6 +58,8 @@ ratio_labels = {
     'rev_growth':'Revenue Growth (QoQ)',
     'ni_growth':'Net Income Growth (QoQ)', 'pe_ratio':'P/E Ratio',
     'book_to_market':'Book-to-Market',
+    'gdp_growth':'GDP Growth (Quarterly)',
+    'inflation':'CPI Inflation (Quarterly)',
 }
 
 merged = comp.merge(
@@ -74,6 +78,7 @@ constituent_panel = pd.DataFrame(constituent_rows)
 
 merged['gvkey'] = merged['gvkey'].astype(str)
 merged = merged.merge(constituent_panel, on=['gvkey','quarter'], how='inner').reset_index(drop=True)
+merged = merged.merge(macro[['quarter','gdp_growth','inflation']], on='quarter', how='left')
 
 for col in ratio_cols:
     lo = merged[col].quantile(0.01)
@@ -147,7 +152,7 @@ overview = [
     ["Outperformers (Y=1)",  f"{int(y.sum()):,}  ({y.mean()*100:.1f}%)"],
     ["Underperformers (Y=0)",f"{int((y==0).sum()):,}  ({(1-y.mean())*100:.1f}%)"],
     ["Date Range",           "Q1 2010 – Q4 2024"],
-    ["Initial Predictors",   "12 financial ratios"],
+    ["Initial Predictors",   "12 financial ratios + 2 macro variables"],
     ["Predictors after VIF", f"{len(kept)}"],
     ["PCA Components",       f"{n_comp}  (explaining ≥ 80% variance)"],
 ]
