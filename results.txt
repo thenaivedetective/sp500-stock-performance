@@ -1,0 +1,443 @@
+
+=================================================================
+  PRELIMINARY GLOBAL LOGISTIC REGRESSION — NO SEGMENTATION
+  S&P 500 | Q1 2010 – Q4 2024 | WRDS (lanagidan9790)
+  Predicting: NEXT quarter outperformance using CURRENT quarter ratios
+  Reference: Ananthakumar & Sarkar (2017) — VIF cutoff=2.5, PCA ≥80%
+=================================================================
+
+── TABLE 1: SAMPLE OVERVIEW ──────────────────────────────────
+| Parameter             | Value                                         |
+|-----------------------|-----------------------------------------------|
+| Observations          | 16,640                                        |
+| Outperformers (Y=1)   | 8,493  (51.0%)                                |
+| Underperformers (Y=0) | 8,147  (49.0%)                                |
+| Date Range            | Q1 2010 – Q4 2024                             |
+| Prediction Horizon    | 1 quarter ahead (Q[t] ratios → Q[t+1] return) |
+| Initial Predictors    | 12 financial ratios + 2 macro variables       |
+| Predictors after VIF  | 13                                            |
+| PCA Components        | 8  (explaining ≥ 80% variance)                |
+
+── TABLE 2: VIF — ALL PREDICTORS (cutoff = 2.5) ─────────────
+| Predictor                 |   Initial VIF | Final VIF   | Decision   |
+|---------------------------|---------------|-------------|------------|
+| Return on Assets (ROA)    |          4.06 | 2.45        | ✓ Kept     |
+| Return on Equity (ROE)    |          2.15 | 2.13        | ✓ Kept     |
+| Gross Profit Margin       |          2.04 | 2.04        | ✓ Kept     |
+| Operating Margin          |          3.16 | 2.33        | ✓ Kept     |
+| Net Profit Margin         |          4.89 | removed     | ✗ Removed  |
+| Asset Turnover            |          2.06 | 1.93        | ✓ Kept     |
+| Current Ratio             |          1.18 | 1.17        | ✓ Kept     |
+| Debt-to-Equity            |          1.98 | 1.97        | ✓ Kept     |
+| Revenue Growth (QoQ)      |          1.13 | 1.12        | ✓ Kept     |
+| Net Income Growth (QoQ)   |          1.23 | 1.15        | ✓ Kept     |
+| P/E Ratio                 |          1.03 | 1.03        | ✓ Kept     |
+| Book-to-Market            |          1.44 | 1.41        | ✓ Kept     |
+| GDP Growth (Quarterly)    |          1.12 | 1.12        | ✓ Kept     |
+| CPI Inflation (Quarterly) |          1.11 | 1.11        | ✓ Kept     |
+  All kept predictors have Final VIF ≤ 2.5  ✓
+
+  Predictors kept (13): Return on Assets (ROA), Return on Equity (ROE), Gross Profit Margin, Operating Margin, Asset Turnover, Current Ratio, Debt-to-Equity, Revenue Growth (QoQ), Net Income Growth (QoQ), P/E Ratio, Book-to-Market, GDP Growth (Quarterly), CPI Inflation (Quarterly)
+
+── TABLE 3: PCA — EXPLAINED VARIANCE ─────────────────────────
+| Component   | Variance Explained   | Cumulative   |
+|-------------|----------------------|--------------|
+| PC1         | 18.8%                | 18.8%        |
+| PC2         | 13.4%                | 32.2%        |
+| PC3         | 11.7%                | 43.9%        |
+| PC4         | 10.6%                | 54.5%        |
+| PC5         | 8.7%                 | 63.2%        |
+| PC6         | 7.8%                 | 71.0%        |
+| PC7         | 6.9%                 | 77.8%        |
+| PC8         | 6.0%                 | 83.8%        |
+  → 8 components retained (explaining ≥ 80% of variance)
+
+── TABLE 4: OPTIMAL PROBABILITY CUTOFF ───────────────────────
+|   Cutoff | Accuracy   | Sensitivity   | Specificity   |          |
+|----------|------------|---------------|---------------|----------|
+|     0.3  | 51.0%      | 100.0%        | 0.0%          |          |
+|     0.35 | 51.0%      | 100.0%        | 0.0%          |          |
+|     0.4  | 51.1%      | 99.9%         | 0.2%          |          |
+|     0.45 | 51.4%      | 96.7%         | 4.2%          |          |
+|     0.5  | 53.0%      | 65.3%         | 40.1%         | ← CHOSEN |
+|     0.55 | 50.3%      | 12.1%         | 90.1%         |          |
+|     0.6  | 49.1%      | 1.0%          | 99.2%         |          |
+|     0.65 | 49.0%      | 0.1%          | 100.0%        |          |
+|     0.7  | 49.0%      | 0.0%          | 100.0%        |          |
+
+── TABLE 5: MODEL FIT & OVERALL SIGNIFICANCE ─────────────────
+| Metric             | Value   | Threshold                 | Verdict       |
+|--------------------|---------|---------------------------|---------------|
+| LR p-value         | 0.0000  | < 0.05                    | ✓ SIGNIFICANT |
+| LR Statistic       | 76.63   | Higher better             | —             |
+| McFadden Pseudo R² | 0.0033  | ≥ 0.20 good               | Very Weak     |
+| AUC                | 0.5397  | ≥ 0.70 good               | Near-Random   |
+| Probability Cutoff | 0.5     | Trial & Error             | Chosen        |
+| Overall Accuracy   | 53.0%   | ≥ 71.2% (paper benchmark) | ✗ Below Paper |
+| Sensitivity        | 65.3%   | Higher better             | —             |
+| Specificity        | 40.1%   | Higher better             | —             |
+
+── TABLE 6: PCA COMPONENT COEFFICIENTS & SIGNIFICANCE ────────
+| Component   |   Coeff |   Odds Ratio | 95% CI        |   Z-Stat |   p-Value | Significant?   |
+|-------------|---------|--------------|---------------|----------|-----------|----------------|
+| PC1         |  0.0453 |       1.0463 | [1.026,1.067] |    4.539 |    0      | *** p<0.01     |
+| PC2         |  0.0298 |       1.0303 | [1.007,1.054] |    2.527 |    0.0115 | **  p<0.05     |
+| PC3         | -0.052  |       0.9493 | [0.926,0.973] |   -4.122 |    0      | *** p<0.01     |
+| PC4         | -0.0191 |       0.9811 | [0.956,1.007] |   -1.442 |    0.1494 | No             |
+| PC5         |  0.0699 |       1.0724 | [1.042,1.104] |    4.76  |    0      | *** p<0.01     |
+| PC6         | -0.0168 |       0.9833 | [0.954,1.014] |   -1.085 |    0.2778 | No             |
+| PC7         |  0.0149 |       1.015  | [0.983,1.048] |    0.905 |    0.3657 | No             |
+| PC8         |  0.0428 |       1.0437 | [1.008,1.080] |    2.422 |    0.0154 | **  p<0.05     |
+
+── TABLE 7: TOP RATIO LOADINGS PER PCA COMPONENT ────────────
+  PC1: Operating Margin, Gross Profit Margin, Return on Assets (ROA)
+  PC2: Return on Equity (ROE), Debt-to-Equity, Asset Turnover
+  PC3: Debt-to-Equity, Asset Turnover, Return on Equity (ROE)
+  PC4: GDP Growth (Quarterly), CPI Inflation (Quarterly), Revenue Growth (QoQ)
+  PC5: Net Income Growth (QoQ), CPI Inflation (Quarterly), Revenue Growth (QoQ)
+  PC6: P/E Ratio, Net Income Growth (QoQ), Current Ratio
+  PC7: Current Ratio, Book-to-Market, P/E Ratio
+  PC8: Revenue Growth (QoQ), Net Income Growth (QoQ), CPI Inflation (Quarterly)
+
+── CONCLUSION ────────────────────────────────────────────────
+  Prediction    : Q[t] ratios → Q[t+1] outperformance (forward-looking)
+  Overall model : ✓ SIGNIFICANT
+  AUC           : 0.5397  →  barely above random chance (0.50)
+  Pseudo R²     : 0.0033  →  <1% of variance explained
+  Significant PCA components (5/8): PC1, PC2, PC3, PC5, PC8
+=================================================================
+
+
+=================================================================
+  MARKET CAP SEGMENTATION ANALYSIS
+  S&P 500 | Q1 2010 – Q4 2024 | WRDS (lanagidan9790)
+  Predicting: NEXT quarter outperformance using CURRENT quarter ratios
+  Reference: Ananthakumar & Sarkar (2017) — VIF cutoff=2.5, Cutoff by trial & error
+=================================================================
+
+── MARKET CAP SEGMENTATION THRESHOLDS ───────────────────────
+| Group     | Market Cap Range   | Observations   |
+|-----------|--------------------|----------------|
+| Small Cap | < $18B             | 7,048  obs     |
+| Mid Cap   | $18B – $43B        | 7,225  obs     |
+| Large Cap | > $43B             | 7,012  obs     |
+
+=================================================================
+  LARGE CAP  (N=5,660 | Next-Q Outperformers=49.1%)
+  Predicting: Q[t] ratios → Q[t+1] outperformance
+=================================================================
+
+── VIF — ALL PREDICTORS (cutoff = 2.5) ───────────────────────
+| Predictor                 |   Initial VIF | Final VIF   | Decision   |
+|---------------------------|---------------|-------------|------------|
+| Return on Assets (ROA)    |          4.23 | 2.13        | ✓ Kept     |
+| Return on Equity (ROE)    |          3.67 | removed     | ✗ Removed  |
+| Gross Profit Margin       |          2.22 | 2.21        | ✓ Kept     |
+| Operating Margin          |          3.36 | 2.47        | ✓ Kept     |
+| Net Profit Margin         |          5.08 | removed     | ✗ Removed  |
+| Asset Turnover            |          2.29 | 2.10        | ✓ Kept     |
+| Current Ratio             |          1.25 | 1.25        | ✓ Kept     |
+| Debt-to-Equity            |          3.4  | 1.01        | ✓ Kept     |
+| Revenue Growth (QoQ)      |          1.1  | 1.09        | ✓ Kept     |
+| Net Income Growth (QoQ)   |          1.19 | 1.11        | ✓ Kept     |
+| P/E Ratio                 |          1.06 | 1.06        | ✓ Kept     |
+| Book-to-Market            |          1.46 | 1.42        | ✓ Kept     |
+| GDP Growth (Quarterly)    |          1.11 | 1.11        | ✓ Kept     |
+| CPI Inflation (Quarterly) |          1.1  | 1.10        | ✓ Kept     |
+  All kept predictors have Final VIF ≤ 2.5  ✓
+
+  Predictors kept (12): Return on Assets (ROA), Gross Profit Margin, Operating Margin, Asset Turnover, Current Ratio, Debt-to-Equity, Revenue Growth (QoQ), Net Income Growth (QoQ), P/E Ratio, Book-to-Market, GDP Growth (Quarterly), CPI Inflation (Quarterly)
+
+── PCA — EXPLAINED VARIANCE ──────────────────────────────────
+| Component   | Variance Explained   | Cumulative   |
+|-------------|----------------------|--------------|
+| PC1         | 20.5%                | 20.5%        |
+| PC2         | 13.6%                | 34.1%        |
+| PC3         | 11.3%                | 45.3%        |
+| PC4         | 9.1%                 | 54.5%        |
+| PC5         | 8.9%                 | 63.4%        |
+| PC6         | 8.3%                 | 71.7%        |
+| PC7         | 7.0%                 | 78.7%        |
+| PC8         | 6.7%                 | 85.4%        |
+  → 8 components retained (explaining ≥ 80% of variance)
+
+── OPTIMAL PROBABILITY CUTOFF ────────────────────────────────
+|   Cutoff | Accuracy   | Sensitivity   | Specificity   |          |
+|----------|------------|---------------|---------------|----------|
+|     0.3  | 49.1%      | 100.0%        | 0.0%          |          |
+|     0.35 | 49.2%      | 99.9%         | 0.2%          |          |
+|     0.4  | 49.5%      | 98.0%         | 2.6%          |          |
+|     0.45 | 51.8%      | 84.7%         | 20.1%         |          |
+|     0.5  | 54.4%      | 44.6%         | 63.7%         | ← CHOSEN |
+|     0.55 | 52.0%      | 11.4%         | 91.2%         |          |
+|     0.6  | 51.5%      | 2.2%          | 98.9%         |          |
+|     0.65 | 51.1%      | 0.5%          | 99.9%         |          |
+|     0.7  | 51.0%      | 0.1%          | 100.0%        |          |
+
+── MODEL FIT & OVERALL SIGNIFICANCE ─────────────────────────
+| Metric             | Value   | Threshold                 | Verdict       |
+|--------------------|---------|---------------------------|---------------|
+| LR p-value         | 0.0000  | < 0.05                    | SIGNIFICANT   |
+| LR Statistic       | 51.11   | Higher better             | —             |
+| McFadden Pseudo R² | 0.0065  | ≥ 0.20 good               | Very Weak     |
+| AUC                | 0.5547  | ≥ 0.70 good               | Near-Random   |
+| Probability Cutoff | 0.5     | Trial & Error             | Chosen        |
+| Overall Accuracy   | 54.4%   | ≥ 71.2% (paper benchmark) | ✗ Below Paper |
+| Sensitivity        | 44.6%   | Higher better             | —             |
+| Specificity        | 63.7%   | Higher better             | —             |
+
+── PCA COMPONENT COEFFICIENTS & SIGNIFICANCE ─────────────────
+| Component   |   Coeff |   Odds Ratio | 95% CI        |   Z-Stat |   p-Value | Significant?   |
+|-------------|---------|--------------|---------------|----------|-----------|----------------|
+| PC1         |  0.0616 |       1.0635 | [1.028,1.100] |    3.605 |    0.0003 | *** p<0.01     |
+| PC2         |  0.0775 |       1.0806 | [1.037,1.126] |    3.69  |    0.0002 | *** p<0.01     |
+| PC3         | -0.0749 |       0.9279 | [0.887,0.971] |   -3.248 |    0.0012 | *** p<0.01     |
+| PC4         | -0.0752 |       0.9275 | [0.882,0.975] |   -2.934 |    0.0033 | *** p<0.01     |
+| PC5         |  0.0488 |       1.05   | [0.998,1.105] |    1.875 |    0.0607 | *   p<0.10     |
+| PC6         | -0.0016 |       0.9984 | [0.947,1.052] |   -0.058 |    0.9537 | No             |
+| PC7         |  0.0211 |       1.0213 | [0.965,1.081] |    0.723 |    0.4698 | No             |
+| PC8         | -0.0339 |       0.9667 | [0.912,1.025] |   -1.136 |    0.2561 | No             |
+
+── TOP RATIO LOADINGS PER PCA COMPONENT ──────────────────────
+  PC1: Operating Margin, Gross Profit Margin, Return on Assets (ROA)
+  PC2: Asset Turnover, Return on Assets (ROA), Book-to-Market
+  PC3: GDP Growth (Quarterly), CPI Inflation (Quarterly), Revenue Growth (QoQ)
+  PC4: P/E Ratio, Book-to-Market, Revenue Growth (QoQ)
+  PC5: Net Income Growth (QoQ), P/E Ratio, CPI Inflation (Quarterly)
+  PC6: Debt-to-Equity, P/E Ratio, Operating Margin
+  PC7: Revenue Growth (QoQ), Current Ratio, Net Income Growth (QoQ)
+  PC8: Current Ratio, Revenue Growth (QoQ), Net Income Growth (QoQ)
+
+=================================================================
+  MID CAP  (N=5,629 | Next-Q Outperformers=50.5%)
+  Predicting: Q[t] ratios → Q[t+1] outperformance
+=================================================================
+
+── VIF — ALL PREDICTORS (cutoff = 2.5) ───────────────────────
+| Predictor                 |   Initial VIF | Final VIF   | Decision   |
+|---------------------------|---------------|-------------|------------|
+| Return on Assets (ROA)    |          3.78 | 2.28        | ✓ Kept     |
+| Return on Equity (ROE)    |          2.14 | 2.12        | ✓ Kept     |
+| Gross Profit Margin       |          1.97 | 1.97        | ✓ Kept     |
+| Operating Margin          |          2.87 | 2.19        | ✓ Kept     |
+| Net Profit Margin         |          4.37 | removed     | ✗ Removed  |
+| Asset Turnover            |          1.97 | 1.87        | ✓ Kept     |
+| Current Ratio             |          1.16 | 1.16        | ✓ Kept     |
+| Debt-to-Equity            |          1.97 | 1.96        | ✓ Kept     |
+| Revenue Growth (QoQ)      |          1.13 | 1.12        | ✓ Kept     |
+| Net Income Growth (QoQ)   |          1.23 | 1.14        | ✓ Kept     |
+| P/E Ratio                 |          1.03 | 1.02        | ✓ Kept     |
+| Book-to-Market            |          1.42 | 1.38        | ✓ Kept     |
+| GDP Growth (Quarterly)    |          1.13 | 1.12        | ✓ Kept     |
+| CPI Inflation (Quarterly) |          1.12 | 1.12        | ✓ Kept     |
+  All kept predictors have Final VIF ≤ 2.5  ✓
+
+  Predictors kept (13): Return on Assets (ROA), Return on Equity (ROE), Gross Profit Margin, Operating Margin, Asset Turnover, Current Ratio, Debt-to-Equity, Revenue Growth (QoQ), Net Income Growth (QoQ), P/E Ratio, Book-to-Market, GDP Growth (Quarterly), CPI Inflation (Quarterly)
+
+── PCA — EXPLAINED VARIANCE ──────────────────────────────────
+| Component   | Variance Explained   | Cumulative   |
+|-------------|----------------------|--------------|
+| PC1         | 18.1%                | 18.1%        |
+| PC2         | 13.8%                | 31.9%        |
+| PC3         | 11.7%                | 43.6%        |
+| PC4         | 10.8%                | 54.4%        |
+| PC5         | 8.3%                 | 62.7%        |
+| PC6         | 7.5%                 | 70.3%        |
+| PC7         | 6.9%                 | 77.2%        |
+| PC8         | 6.1%                 | 83.3%        |
+  → 8 components retained (explaining ≥ 80% of variance)
+
+── OPTIMAL PROBABILITY CUTOFF ────────────────────────────────
+|   Cutoff | Accuracy   | Sensitivity   | Specificity   |          |
+|----------|------------|---------------|---------------|----------|
+|     0.3  | 50.5%      | 100.0%        | 0.0%          |          |
+|     0.35 | 50.5%      | 100.0%        | 0.0%          |          |
+|     0.4  | 50.6%      | 99.5%         | 0.7%          |          |
+|     0.45 | 51.7%      | 94.1%         | 8.6%          |          |
+|     0.5  | 53.5%      | 59.5%         | 47.3%         | ← CHOSEN |
+|     0.55 | 50.6%      | 11.3%         | 90.6%         |          |
+|     0.6  | 49.5%      | 1.0%          | 99.0%         |          |
+|     0.65 | 49.5%      | 0.1%          | 99.9%         |          |
+|     0.7  | 49.5%      | 0.1%          | 100.0%        |          |
+
+── MODEL FIT & OVERALL SIGNIFICANCE ─────────────────────────
+| Metric             | Value   | Threshold                 | Verdict       |
+|--------------------|---------|---------------------------|---------------|
+| LR p-value         | 0.0001  | < 0.05                    | SIGNIFICANT   |
+| LR Statistic       | 32.09   | Higher better             | —             |
+| McFadden Pseudo R² | 0.0041  | ≥ 0.20 good               | Very Weak     |
+| AUC                | 0.5476  | ≥ 0.70 good               | Near-Random   |
+| Probability Cutoff | 0.5     | Trial & Error             | Chosen        |
+| Overall Accuracy   | 53.5%   | ≥ 71.2% (paper benchmark) | ✗ Below Paper |
+| Sensitivity        | 59.5%   | Higher better             | —             |
+| Specificity        | 47.3%   | Higher better             | —             |
+
+── PCA COMPONENT COEFFICIENTS & SIGNIFICANCE ─────────────────
+| Component   |   Coeff |   Odds Ratio | 95% CI        |   Z-Stat |   p-Value | Significant?   |
+|-------------|---------|--------------|---------------|----------|-----------|----------------|
+| PC1         |  0.0532 |       1.0546 | [1.019,1.091] |    3.037 |    0.0024 | *** p<0.01     |
+| PC2         |  0.036  |       1.0367 | [0.997,1.078] |    1.799 |    0.072  | *   p<0.10     |
+| PC3         | -0.0496 |       0.9516 | [0.912,0.993] |   -2.282 |    0.0225 | **  p<0.05     |
+| PC4         | -0.0116 |       0.9885 | [0.946,1.033] |   -0.513 |    0.6079 | No             |
+| PC5         |  0.0592 |       1.061  | [1.009,1.116] |    2.299 |    0.0215 | **  p<0.05     |
+| PC6         | -0.0031 |       0.9969 | [0.945,1.051] |   -0.116 |    0.9076 | No             |
+| PC7         | -0.0471 |       0.954  | [0.903,1.008] |   -1.672 |    0.0945 | *   p<0.10     |
+| PC8         |  0.0744 |       1.0772 | [1.015,1.143] |    2.468 |    0.0136 | **  p<0.05     |
+
+── TOP RATIO LOADINGS PER PCA COMPONENT ──────────────────────
+  PC1: Operating Margin, Gross Profit Margin, Return on Assets (ROA)
+  PC2: Return on Equity (ROE), Debt-to-Equity, Asset Turnover
+  PC3: Debt-to-Equity, Asset Turnover, Return on Equity (ROE)
+  PC4: GDP Growth (Quarterly), CPI Inflation (Quarterly), Revenue Growth (QoQ)
+  PC5: Net Income Growth (QoQ), CPI Inflation (Quarterly), Revenue Growth (QoQ)
+  PC6: P/E Ratio, Net Income Growth (QoQ), CPI Inflation (Quarterly)
+  PC7: Current Ratio, Book-to-Market, Operating Margin
+  PC8: Revenue Growth (QoQ), CPI Inflation (Quarterly), Net Income Growth (QoQ)
+
+=================================================================
+  SMALL CAP  (N=5,351 | Next-Q Outperformers=53.7%)
+  Predicting: Q[t] ratios → Q[t+1] outperformance
+=================================================================
+
+── VIF — ALL PREDICTORS (cutoff = 2.5) ───────────────────────
+| Predictor                 |   Initial VIF | Final VIF   | Decision   |
+|---------------------------|---------------|-------------|------------|
+| Return on Assets (ROA)    |          4.45 | removed     | ✗ Removed  |
+| Return on Equity (ROE)    |          1.53 | 1.39        | ✓ Kept     |
+| Gross Profit Margin       |          1.84 | 1.83        | ✓ Kept     |
+| Operating Margin          |          2.92 | 1.63        | ✓ Kept     |
+| Net Profit Margin         |          4.96 | removed     | ✗ Removed  |
+| Asset Turnover            |          2.14 | 1.52        | ✓ Kept     |
+| Current Ratio             |          1.2  | 1.13        | ✓ Kept     |
+| Debt-to-Equity            |          1.44 | 1.37        | ✓ Kept     |
+| Revenue Growth (QoQ)      |          1.19 | 1.16        | ✓ Kept     |
+| Net Income Growth (QoQ)   |          1.3  | 1.12        | ✓ Kept     |
+| P/E Ratio                 |          1.02 | 1.02        | ✓ Kept     |
+| Book-to-Market            |          1.41 | 1.31        | ✓ Kept     |
+| GDP Growth (Quarterly)    |          1.12 | 1.11        | ✓ Kept     |
+| CPI Inflation (Quarterly) |          1.1  | 1.10        | ✓ Kept     |
+  All kept predictors have Final VIF ≤ 2.5  ✓
+
+  Predictors kept (12): Return on Equity (ROE), Gross Profit Margin, Operating Margin, Asset Turnover, Current Ratio, Debt-to-Equity, Revenue Growth (QoQ), Net Income Growth (QoQ), P/E Ratio, Book-to-Market, GDP Growth (Quarterly), CPI Inflation (Quarterly)
+
+── PCA — EXPLAINED VARIANCE ──────────────────────────────────
+| Component   | Variance Explained   | Cumulative   |
+|-------------|----------------------|--------------|
+| PC1         | 16.9%                | 16.9%        |
+| PC2         | 13.0%                | 29.9%        |
+| PC3         | 11.5%                | 41.4%        |
+| PC4         | 11.1%                | 52.5%        |
+| PC5         | 9.7%                 | 62.2%        |
+| PC6         | 8.3%                 | 70.5%        |
+| PC7         | 7.1%                 | 77.6%        |
+| PC8         | 6.0%                 | 83.7%        |
+  → 8 components retained (explaining ≥ 80% of variance)
+
+── OPTIMAL PROBABILITY CUTOFF ────────────────────────────────
+|   Cutoff | Accuracy   | Sensitivity   | Specificity   |          |
+|----------|------------|---------------|---------------|----------|
+|     0.3  | 53.7%      | 100.0%        | 0.0%          |          |
+|     0.35 | 53.7%      | 100.0%        | 0.0%          |          |
+|     0.4  | 53.7%      | 100.0%        | 0.0%          |          |
+|     0.45 | 53.8%      | 99.7%         | 0.6%          |          |
+|     0.5  | 54.0%      | 93.0%         | 8.8%          | ← CHOSEN |
+|     0.55 | 49.7%      | 30.0%         | 72.5%         |          |
+|     0.6  | 46.8%      | 1.9%          | 98.8%         |          |
+|     0.65 | 46.3%      | 0.0%          | 100.0%        |          |
+|     0.7  | 46.3%      | 0.0%          | 100.0%        |          |
+
+── MODEL FIT & OVERALL SIGNIFICANCE ─────────────────────────
+| Metric             | Value   | Threshold                 | Verdict       |
+|--------------------|---------|---------------------------|---------------|
+| LR p-value         | 0.0369  | < 0.05                    | SIGNIFICANT   |
+| LR Statistic       | 16.41   | Higher better             | —             |
+| McFadden Pseudo R² | 0.0022  | ≥ 0.20 good               | Very Weak     |
+| AUC                | 0.5322  | ≥ 0.70 good               | Near-Random   |
+| Probability Cutoff | 0.5     | Trial & Error             | Chosen        |
+| Overall Accuracy   | 54.0%   | ≥ 71.2% (paper benchmark) | ✗ Below Paper |
+| Sensitivity        | 93.0%   | Higher better             | —             |
+| Specificity        | 8.8%    | Higher better             | —             |
+
+── PCA COMPONENT COEFFICIENTS & SIGNIFICANCE ─────────────────
+| Component   |   Coeff |   Odds Ratio | 95% CI        |   Z-Stat |   p-Value | Significant?   |
+|-------------|---------|--------------|---------------|----------|-----------|----------------|
+| PC1         |  0.0395 |       1.0403 | [1.002,1.081] |    2.04  |    0.0413 | **  p<0.05     |
+| PC2         |  0.0156 |       1.0158 | [0.973,1.060] |    0.711 |    0.4768 | No             |
+| PC3         |  0.0595 |       1.0613 | [1.014,1.111] |    2.536 |    0.0112 | **  p<0.05     |
+| PC4         | -0.0069 |       0.9932 | [0.948,1.041] |   -0.288 |    0.7732 | No             |
+| PC5         |  0.0275 |       1.0279 | [0.978,1.081] |    1.08  |    0.2802 | No             |
+| PC6         | -0.0474 |       0.9537 | [0.904,1.007] |   -1.722 |    0.085  | *   p<0.10     |
+| PC7         |  0.03   |       1.0305 | [0.972,1.092] |    1.009 |    0.3128 | No             |
+| PC8         | -0.0075 |       0.9926 | [0.932,1.057] |   -0.231 |    0.8172 | No             |
+
+── TOP RATIO LOADINGS PER PCA COMPONENT ──────────────────────
+  PC1: Gross Profit Margin, Operating Margin, Asset Turnover
+  PC2: Return on Equity (ROE), Debt-to-Equity, Net Income Growth (QoQ)
+  PC3: Asset Turnover, Debt-to-Equity, Book-to-Market
+  PC4: Book-to-Market, Asset Turnover, Return on Equity (ROE)
+  PC5: Net Income Growth (QoQ), CPI Inflation (Quarterly), Revenue Growth (QoQ)
+  PC6: P/E Ratio, Net Income Growth (QoQ), Current Ratio
+  PC7: Current Ratio, Book-to-Market, GDP Growth (Quarterly)
+  PC8: CPI Inflation (Quarterly), Net Income Growth (QoQ), Revenue Growth (QoQ)
+
+=================================================================
+  ANALYSIS COMPLETE
+=================================================================
+
+
+=================================================================
+  S&P 500 STOCK OUTPERFORMER PREDICTION
+  Multivariate Financial Analysis | Q1 2010 – Q4 2024
+  WRDS Account: lanagidan9790
+  Reference: Ananthakumar & Sarkar (2017)
+=================================================================
+
+── DATA PULL STATUS ──────────────────────────────────────────
+  ✓ S&P 500 Historical Constituents          (cached: wrds_sp500_history.csv, 14 KB)
+  ✓ Compustat Quarterly Financials           (cached: wrds_compustat_quarterly.csv, 7349 KB)
+  ✓ CRSP Monthly Returns                     (cached: wrds_crsp_quarterly.csv, 2532 KB)
+  ✓ FRED Macro Data (GDP + CPI)              (cached: wrds_fred_macro.csv, 3 KB)
+  ✓ GICS Sector Codes                        (cached: wrds_gics_sectors.csv, 25 KB)
+
+=================================================================
+  STEP 1 — S&P 500 Historical Constituents
+=================================================================
+  CSV already exists — skipping pull.
+  To re-pull fresh data, delete 'wrds_sp500_history.csv' and re-run.
+
+=================================================================
+  STEP 2 — Compustat Quarterly Financials
+=================================================================
+  CSV already exists — skipping pull.
+  To re-pull fresh data, delete 'wrds_compustat_quarterly.csv' and re-run.
+
+=================================================================
+  STEP 3 — CRSP Monthly Returns
+=================================================================
+  CSV already exists — skipping pull.
+  To re-pull fresh data, delete 'wrds_crsp_quarterly.csv' and re-run.
+
+=================================================================
+  STEP 4 — FRED Macro Data (GDP + CPI)
+=================================================================
+  CSV already exists — skipping pull.
+  To re-pull fresh data, delete 'wrds_fred_macro.csv' and re-run.
+
+=================================================================
+  STEP 5 — GICS Sector Codes
+=================================================================
+  CSV already exists — skipping pull.
+  To re-pull fresh data, delete 'wrds_gics_sectors.csv' and re-run.
+
+=================================================================
+  STEP 6 — Preliminary Global Analysis
+=================================================================
+
+=================================================================
+  STEP 7 — Market Cap Segmentation Analysis
+=================================================================
+
+=================================================================
+  PIPELINE COMPLETE
+=================================================================
+
