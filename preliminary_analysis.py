@@ -41,7 +41,7 @@ comp['pe_ratio']       = comp['prccq']  / (comp['ibq'] / comp['cshoq'].replace(0
 comp['book_to_market'] = comp['ceqq']   / comp['mkvaltq'].replace(0, np.nan)
 
 ratio_cols = ['roa','roe','gross_margin','op_margin','net_margin','asset_turnover',
-              'current_ratio','debt_to_equity','rd_intensity','rev_growth','ni_growth',
+              'current_ratio','debt_to_equity','rev_growth','ni_growth',
               'pe_ratio','book_to_market']
 
 merged = comp.merge(
@@ -77,7 +77,7 @@ ratio_labels = {
     'gross_margin':'Gross Profit Margin', 'op_margin':'Operating Margin',
     'net_margin':'Net Profit Margin', 'asset_turnover':'Asset Turnover',
     'current_ratio':'Current Ratio', 'debt_to_equity':'Debt-to-Equity',
-    'rd_intensity':'R&D Intensity', 'rev_growth':'Revenue Growth (QoQ)',
+    'rev_growth':'Revenue Growth (QoQ)',
     'ni_growth':'Net Income Growth (QoQ)', 'pe_ratio':'P/E Ratio',
     'book_to_market':'Book-to-Market',
 }
@@ -93,7 +93,7 @@ overview = [
     ["Outperformers (Y=1)",  f"{int(y.sum()):,}  ({y.mean()*100:.1f}%)"],
     ["Underperformers (Y=0)",f"{int((y==0).sum()):,}  ({(1-y.mean())*100:.1f}%)"],
     ["Date Range",           "Q1 2010 – Q4 2024"],
-    ["Predictors",           "13 financial ratios"],
+    ["Predictors",           "12 financial ratios"],
 ]
 print(tabulate(overview, headers=["Parameter","Value"], tablefmt="github"))
 
@@ -164,5 +164,5 @@ print(f"  Overall model : {overall_sig}")
 print(f"  AUC           : {auc:.4f}  →  barely above random chance (0.50)")
 print(f"  Pseudo R²     : {pseudo_r2:.4f}  →  <1% of variance explained")
 sig_vars = [ratio_labels[ratio_cols[i]] for i in range(len(ratio_cols)) if result.pvalues[i+1] < 0.05]
-print(f"  Significant predictors ({len(sig_vars)}/13): {', '.join(sig_vars)}")
+print(f"  Significant predictors ({len(sig_vars)}/12): {', '.join(sig_vars)}")
 print("="*65 + "\n")

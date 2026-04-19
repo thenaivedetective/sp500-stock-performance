@@ -48,7 +48,7 @@ comp['gvkey']  = comp['gvkey'].astype(str)
 comp = comp.merge(gics[['gvkey','gsector','sector_name','sic']], on='gvkey', how='left')
 
 ratio_cols = ['roa','roe','gross_margin','op_margin','net_margin','asset_turnover',
-              'current_ratio','debt_to_equity','rd_intensity','rev_growth','ni_growth',
+              'current_ratio','debt_to_equity','rev_growth','ni_growth',
               'pe_ratio','book_to_market','gdp_growth','inflation']
 
 macro['quarter'] = pd.PeriodIndex(macro['quarter'], freq='Q')
@@ -79,7 +79,7 @@ ratio_labels = {
     'gross_margin':'Gross Profit Margin', 'op_margin':'Operating Margin',
     'net_margin':'Net Profit Margin', 'asset_turnover':'Asset Turnover',
     'current_ratio':'Current Ratio', 'debt_to_equity':'Debt-to-Equity',
-    'rd_intensity':'R&D Intensity', 'rev_growth':'Revenue Growth (QoQ)',
+    'rev_growth':'Revenue Growth (QoQ)',
     'ni_growth':'Net Income Growth (QoQ)', 'pe_ratio':'P/E Ratio',
     'book_to_market':'Book-to-Market',
     'gdp_growth':'GDP Growth (Quarterly)',
