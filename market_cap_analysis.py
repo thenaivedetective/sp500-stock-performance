@@ -10,9 +10,10 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 import statsmodels.api as sm
 warnings.filterwarnings('ignore')
 
-comp = pd.read_csv('wrds_compustat_quarterly.csv', low_memory=False)
-crsp = pd.read_csv('wrds_crsp_quarterly.csv', low_memory=False)
-gics = pd.read_csv('wrds_gics_sectors.csv', low_memory=False)
+comp  = pd.read_csv('wrds_compustat_quarterly.csv', low_memory=False)
+crsp  = pd.read_csv('wrds_crsp_quarterly.csv', low_memory=False)
+gics  = pd.read_csv('wrds_gics_sectors.csv', low_memory=False)
+macro = pd.read_csv('wrds_fred_macro.csv', low_memory=False)
 
 comp['datadate']  = pd.to_datetime(comp['datadate'])
 comp['cal_quarter'] = comp['datadate'].dt.to_period('Q')
@@ -48,12 +49,15 @@ comp = comp.merge(gics[['gvkey','gsector','sector_name','sic']], on='gvkey', how
 
 ratio_cols = ['roa','roe','gross_margin','op_margin','net_margin','asset_turnover',
               'current_ratio','debt_to_equity','rd_intensity','rev_growth','ni_growth',
-              'pe_ratio','book_to_market']
+              'pe_ratio','book_to_market','gdp_growth','inflation']
+
+macro['quarter'] = pd.PeriodIndex(macro['quarter'], freq='Q')
 
 merged = comp.merge(
     crsp[['ticker','quarter','quarterly_return','spy_quarterly_return','outperformer_quarterly']],
     left_on=['tic','cal_quarter'], right_on=['ticker','quarter'], how='inner'
 )
+merged = merged.merge(macro, left_on='cal_quarter', right_on='quarter', how='left')
 
 for col in ratio_cols:
     lo = merged[col].quantile(0.01)
@@ -78,6 +82,8 @@ ratio_labels = {
     'rd_intensity':'R&D Intensity', 'rev_growth':'Revenue Growth (QoQ)',
     'ni_growth':'Net Income Growth (QoQ)', 'pe_ratio':'P/E Ratio',
     'book_to_market':'Book-to-Market',
+    'gdp_growth':'GDP Growth (Quarterly)',
+    'inflation':'CPI Inflation (Quarterly)',
 }
 
 def vif_filter(X_df, cutoff=2.5):
