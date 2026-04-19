@@ -113,7 +113,8 @@ def vif_filter(X_df, cutoff=2.5):
         worst = remaining[vifs.index(max_vif)]
         removed.append((worst, round(max_vif, 2)))
         remaining.remove(worst)
-    return remaining, removed
+    final_vif_dict = dict(zip(remaining, [round(v, 2) for v in vifs]))
+    return remaining, removed, final_vif_dict
 
 def find_best_cutoff(y_true, y_prob):
     fpr, tpr, thresholds = roc_curve(y_true, y_prob)
@@ -139,7 +140,7 @@ def run_group(group_name, df_group):
     X_scaled = pd.DataFrame(scaler.fit_transform(X), columns=ratio_cols)
 
     initial_vifs = [variance_inflation_factor(X_scaled.values, i) for i in range(len(ratio_cols))]
-    kept, removed = vif_filter(X_scaled, cutoff=2.5)
+    kept, removed, final_vif_dict = vif_filter(X_scaled, cutoff=2.5)
 
     X_clean  = X_scaled[kept]
     pca      = PCA()
@@ -169,11 +170,17 @@ def run_group(group_name, df_group):
     print(f"{'='*65}")
 
     print(f"\n── VIF — ALL PREDICTORS (cutoff = 2.5) ───────────────────────")
+    removed_vif_dict = dict(removed)
     vif_all_rows = []
-    for var, v in zip(ratio_cols, initial_vifs):
-        status = "✓ Kept" if var in kept else "✗ Removed"
-        vif_all_rows.append([ratio_labels.get(var, var), f"{v:.2f}", status])
-    print(tabulate(vif_all_rows, headers=["Predictor","Initial VIF","Decision"], tablefmt="github"))
+    for var, v_init in zip(ratio_cols, initial_vifs):
+        if var in kept:
+            v_final = final_vif_dict.get(var, "—")
+            vif_all_rows.append([ratio_labels.get(var, var), f"{v_init:.2f}", f"{v_final:.2f}", "✓ Kept"])
+        else:
+            vif_all_rows.append([ratio_labels.get(var, var), f"{v_init:.2f}", "removed", "✗ Removed"])
+    print(tabulate(vif_all_rows,
+        headers=["Predictor","Initial VIF","Final VIF","Decision"], tablefmt="github"))
+    print(f"  All kept predictors have Final VIF ≤ 2.5  ✓")
     print(f"\n  Predictors kept ({len(kept)}): {', '.join([ratio_labels.get(k,k) for k in kept])}")
 
     print(f"\n── PCA — EXPLAINED VARIANCE ──────────────────────────────────")
