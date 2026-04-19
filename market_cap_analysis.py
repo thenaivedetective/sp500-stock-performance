@@ -10,10 +10,14 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 import statsmodels.api as sm
 warnings.filterwarnings('ignore')
 
-comp  = pd.read_csv('wrds_compustat_quarterly.csv', low_memory=False)
-crsp  = pd.read_csv('wrds_crsp_quarterly.csv', low_memory=False)
-gics  = pd.read_csv('wrds_gics_sectors.csv', low_memory=False)
-macro = pd.read_csv('wrds_fred_macro.csv', low_memory=False)
+comp      = pd.read_csv('wrds_compustat_quarterly.csv', low_memory=False)
+crsp      = pd.read_csv('wrds_crsp_quarterly.csv', low_memory=False)
+gics      = pd.read_csv('wrds_gics_sectors.csv', low_memory=False)
+macro     = pd.read_csv('wrds_fred_macro.csv', low_memory=False)
+sp500hist = pd.read_csv('wrds_sp500_history.csv', low_memory=False)
+
+sp500hist['start_date'] = pd.to_datetime(sp500hist['start_date'])
+sp500hist['end_date']   = pd.to_datetime(sp500hist['end_date'])
 
 comp['datadate']  = pd.to_datetime(comp['datadate'])
 comp['cal_quarter'] = comp['datadate'].dt.to_period('Q')
@@ -58,6 +62,18 @@ merged = comp.merge(
     left_on=['tic','cal_quarter'], right_on=['ticker','quarter'], how='inner'
 )
 merged = merged.merge(macro, left_on='cal_quarter', right_on='quarter', how='left')
+
+all_quarters = pd.period_range('2010Q1', '2024Q4', freq='Q')
+constituent_rows = []
+for _, row in sp500hist.iterrows():
+    for q in all_quarters:
+        q_start = q.start_time
+        if row['start_date'] <= q_start <= row['end_date']:
+            constituent_rows.append({'gvkey': str(row['gvkey']), 'cal_quarter': q})
+constituent_panel = pd.DataFrame(constituent_rows)
+
+merged['gvkey'] = merged['gvkey'].astype(str)
+merged = merged.merge(constituent_panel, on=['gvkey','cal_quarter'], how='inner').reset_index(drop=True)
 
 for col in ratio_cols:
     lo = merged[col].quantile(0.01)

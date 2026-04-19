@@ -9,8 +9,12 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 import statsmodels.api as sm
 warnings.filterwarnings('ignore')
 
-comp = pd.read_csv('wrds_compustat_quarterly.csv', low_memory=False)
-crsp = pd.read_csv('wrds_crsp_quarterly.csv', low_memory=False)
+comp     = pd.read_csv('wrds_compustat_quarterly.csv', low_memory=False)
+crsp     = pd.read_csv('wrds_crsp_quarterly.csv', low_memory=False)
+sp500hist = pd.read_csv('wrds_sp500_history.csv', low_memory=False)
+
+sp500hist['start_date'] = pd.to_datetime(sp500hist['start_date'])
+sp500hist['end_date']   = pd.to_datetime(sp500hist['end_date'])
 
 comp['datadate'] = pd.to_datetime(comp['datadate'])
 comp['quarter'] = pd.PeriodIndex(comp['quarter'], freq='Q')
@@ -48,6 +52,18 @@ merged = comp.merge(
     crsp[['ticker','quarter','quarterly_return','spy_quarterly_return','outperformer_quarterly']],
     left_on=['tic','quarter'], right_on=['ticker','quarter'], how='inner'
 )
+
+all_quarters = pd.period_range('2010Q1', '2024Q4', freq='Q')
+constituent_rows = []
+for _, row in sp500hist.iterrows():
+    for q in all_quarters:
+        q_start = q.start_time
+        if row['start_date'] <= q_start <= row['end_date']:
+            constituent_rows.append({'gvkey': str(row['gvkey']), 'quarter': q})
+constituent_panel = pd.DataFrame(constituent_rows)
+
+merged['gvkey'] = merged['gvkey'].astype(str)
+merged = merged.merge(constituent_panel, on=['gvkey','quarter'], how='inner').reset_index(drop=True)
 
 for col in ratio_cols:
     lo = merged[col].quantile(0.01)
