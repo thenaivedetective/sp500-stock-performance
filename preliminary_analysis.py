@@ -80,14 +80,17 @@ merged['gvkey'] = merged['gvkey'].astype(str)
 merged = merged.merge(constituent_panel, on=['gvkey','quarter'], how='inner').reset_index(drop=True)
 merged = merged.merge(macro[['quarter','gdp_growth','inflation']], on='quarter', how='left')
 
+merged = merged.sort_values(['gvkey','quarter']).reset_index(drop=True)
+merged['outperformer_next'] = merged.groupby('gvkey')['outperformer_quarterly'].shift(-1)
+
 for col in ratio_cols:
     lo = merged[col].quantile(0.01)
     hi = merged[col].quantile(0.99)
     merged[col] = merged[col].clip(lo, hi)
 
-df = merged[ratio_cols + ['outperformer_quarterly']].dropna()
+df = merged[ratio_cols + ['outperformer_next']].dropna()
 X  = df[ratio_cols]
-y  = df['outperformer_quarterly']
+y  = df['outperformer_next']
 
 scaler   = StandardScaler()
 X_scaled = pd.DataFrame(scaler.fit_transform(X), columns=ratio_cols)
@@ -144,6 +147,7 @@ overall_sig = "✓ SIGNIFICANT" if result.llr_pvalue < 0.05 else "✗ NOT SIGNIF
 print("\n" + "="*65)
 print("  PRELIMINARY GLOBAL LOGISTIC REGRESSION — NO SEGMENTATION")
 print("  S&P 500 | Q1 2010 – Q4 2024 | WRDS (lanagidan9790)")
+print("  Predicting: NEXT quarter outperformance using CURRENT quarter ratios")
 print("  Reference: Ananthakumar & Sarkar (2017) — VIF cutoff=2.5, PCA ≥80%")
 print("="*65)
 
@@ -153,6 +157,7 @@ overview = [
     ["Outperformers (Y=1)",  f"{int(y.sum()):,}  ({y.mean()*100:.1f}%)"],
     ["Underperformers (Y=0)",f"{int((y==0).sum()):,}  ({(1-y.mean())*100:.1f}%)"],
     ["Date Range",           "Q1 2010 – Q4 2024"],
+    ["Prediction Horizon",   "1 quarter ahead (Q[t] ratios → Q[t+1] return)"],
     ["Initial Predictors",   "12 financial ratios + 2 macro variables"],
     ["Predictors after VIF", f"{len(kept)}"],
     ["PCA Components",       f"{n_comp}  (explaining ≥ 80% variance)"],
@@ -247,6 +252,7 @@ for comp_name in loadings.columns:
     print(f"  {comp_name}: {', '.join(top_named)}")
 
 print("\n── CONCLUSION ────────────────────────────────────────────────")
+print(f"  Prediction    : Q[t] ratios → Q[t+1] outperformance (forward-looking)")
 print(f"  Overall model : {overall_sig}")
 print(f"  AUC           : {auc:.4f}  →  {'barely above random chance (0.50)' if auc < 0.60 else 'moderate discriminatory power'}")
 print(f"  Pseudo R²     : {result.prsquared:.4f}  →  <1% of variance explained")

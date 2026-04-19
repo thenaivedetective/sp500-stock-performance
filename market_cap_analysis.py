@@ -75,6 +75,9 @@ constituent_panel = pd.DataFrame(constituent_rows)
 merged['gvkey'] = merged['gvkey'].astype(str)
 merged = merged.merge(constituent_panel, on=['gvkey','cal_quarter'], how='inner').reset_index(drop=True)
 
+merged = merged.sort_values(['gvkey','cal_quarter']).reset_index(drop=True)
+merged['outperformer_next'] = merged.groupby('gvkey')['outperformer_quarterly'].shift(-1)
+
 for col in ratio_cols:
     lo = merged[col].quantile(0.01)
     hi = merged[col].quantile(0.99)
@@ -128,13 +131,13 @@ def find_best_cutoff(y_true, y_prob):
     return round(best_cutoff, 2), round(best_acc * 100, 1)
 
 def run_group(group_name, df_group):
-    df = df_group[ratio_cols + ['outperformer_quarterly']].dropna()
+    df = df_group[ratio_cols + ['outperformer_next']].dropna()
     if len(df) < 100:
         print(f"\n  {group_name}: insufficient data ({len(df)} rows), skipping.")
         return
 
     X = df[ratio_cols]
-    y = df['outperformer_quarterly']
+    y = df['outperformer_next']
 
     scaler   = StandardScaler()
     X_scaled = pd.DataFrame(scaler.fit_transform(X), columns=ratio_cols)
@@ -166,7 +169,8 @@ def run_group(group_name, df_group):
     overall_sig = "SIGNIFICANT" if result.llr_pvalue < 0.05 else "NOT SIGNIFICANT"
 
     print(f"\n{'='*65}")
-    print(f"  {group_name.upper()}  (N={len(df):,} | Outperformers={y.mean()*100:.1f}%)")
+    print(f"  {group_name.upper()}  (N={len(df):,} | Next-Q Outperformers={y.mean()*100:.1f}%)")
+    print(f"  Predicting: Q[t] ratios → Q[t+1] outperformance")
     print(f"{'='*65}")
 
     print(f"\n── VIF — ALL PREDICTORS (cutoff = 2.5) ───────────────────────")
@@ -257,6 +261,7 @@ def run_group(group_name, df_group):
 print("\n" + "="*65)
 print("  MARKET CAP SEGMENTATION ANALYSIS")
 print("  S&P 500 | Q1 2010 – Q4 2024 | WRDS (lanagidan9790)")
+print("  Predicting: NEXT quarter outperformance using CURRENT quarter ratios")
 print("  Reference: Ananthakumar & Sarkar (2017) — VIF cutoff=2.5, Cutoff by trial & error")
 print("="*65)
 
