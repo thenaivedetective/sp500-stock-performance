@@ -138,6 +138,7 @@ def run_group(group_name, df_group):
     scaler   = StandardScaler()
     X_scaled = pd.DataFrame(scaler.fit_transform(X), columns=ratio_cols)
 
+    initial_vifs = [variance_inflation_factor(X_scaled.values, i) for i in range(len(ratio_cols))]
     kept, removed = vif_filter(X_scaled, cutoff=2.5)
 
     X_clean  = X_scaled[kept]
@@ -167,12 +168,12 @@ def run_group(group_name, df_group):
     print(f"  {group_name.upper()}  (N={len(df):,} | Outperformers={y.mean()*100:.1f}%)")
     print(f"{'='*65}")
 
-    print(f"\n── VIF FILTERING (cutoff = 2.5) ─────────────────────────────")
-    if removed:
-        rem_rows = [[ratio_labels.get(v,v), vif] for v,vif in removed]
-        print(tabulate(rem_rows, headers=["Removed Predictor","VIF at Removal"], tablefmt="github"))
-    else:
-        print("  No predictors removed — all VIF ≤ 2.5")
+    print(f"\n── VIF — ALL PREDICTORS (cutoff = 2.5) ───────────────────────")
+    vif_all_rows = []
+    for var, v in zip(ratio_cols, initial_vifs):
+        status = "✓ Kept" if var in kept else "✗ Removed"
+        vif_all_rows.append([ratio_labels.get(var, var), f"{v:.2f}", status])
+    print(tabulate(vif_all_rows, headers=["Predictor","Initial VIF","Decision"], tablefmt="github"))
     print(f"\n  Predictors kept ({len(kept)}): {', '.join([ratio_labels.get(k,k) for k in kept])}")
 
     print(f"\n── PCA — EXPLAINED VARIANCE ──────────────────────────────────")

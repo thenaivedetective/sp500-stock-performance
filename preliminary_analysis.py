@@ -100,6 +100,7 @@ def vif_filter(X_df, cutoff=2.5):
         remaining.remove(worst)
     return remaining, removed
 
+initial_vifs = [variance_inflation_factor(X_scaled.values, i) for i in range(len(ratio_cols))]
 kept, removed = vif_filter(X_scaled, cutoff=2.5)
 X_clean = X_scaled[kept]
 
@@ -152,12 +153,12 @@ overview = [
 ]
 print(tabulate(overview, headers=["Parameter","Value"], tablefmt="github"))
 
-print("\n── TABLE 2: VIF FILTERING (cutoff = 2.5) ─────────────────────")
-if removed:
-    rem_rows = [[ratio_labels.get(v,v), vif] for v,vif in removed]
-    print(tabulate(rem_rows, headers=["Removed Predictor","VIF at Removal"], tablefmt="github"))
-else:
-    print("  No predictors removed — all VIF ≤ 2.5")
+print("\n── TABLE 2: VIF — ALL PREDICTORS (cutoff = 2.5) ─────────────")
+vif_all_rows = []
+for var, v in zip(ratio_cols, initial_vifs):
+    status = "✓ Kept" if var in kept else "✗ Removed"
+    vif_all_rows.append([ratio_labels[var], f"{v:.2f}", status])
+print(tabulate(vif_all_rows, headers=["Predictor","Initial VIF","Decision"], tablefmt="github"))
 print(f"\n  Predictors kept ({len(kept)}): {', '.join([ratio_labels.get(k,k) for k in kept])}")
 
 print("\n── TABLE 3: PCA — EXPLAINED VARIANCE ─────────────────────────")
