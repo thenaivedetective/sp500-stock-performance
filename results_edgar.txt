@@ -1,0 +1,22 @@
+Configuration	Group	Train N	Test N	Train AUC	Test AUC	AUC Change	Train Acc	Test Acc	Acc Change	Verdict
+Market Cap	Large Cap	5708	33	0.5542	0.4174	-0.1368	54.1	45.5	-8.6	SIGNIFICANT DEGRADATION
+Market Cap	Mid Cap	5627	31	0.5477	0.5641	0.0164	53.5	51.6	-1.9	HOLDS UP
+Market Cap	Small Cap	5299	22	0.5338	0.6777	0.1439	54.0	50.0	-4.0	HOLDS UP
+Sector GICS	Consumer Discretionary	2380	11	0.5371	0.5357	-0.0014	54.3	27.3	-27.0	HOLDS UP
+Sector GICS	Health Care	1069	11	0.5922	0.3333	-0.2589	57.9	45.5	-12.4	SIGNIFICANT DEGRADATION
+Sector GICS	Industrials	3711	17	0.5491	0.6	0.0509	54.6	29.4	-25.2	HOLDS UP
+Sector GICS	Information Technology	2143	22	0.5479	0.381	-0.167	55.4	68.2	12.8	SIGNIFICANT DEGRADATION
+Sector GICS	Materials	2678	9	0.5807	0.7222	0.1415	55.8	55.6	-0.2	HOLDS UP
+Sector + MktCap	Consumer Discretionary [+MktCap]	2380	11	0.5521	0.5357	-0.0164	54.3	45.5	-8.8	HOLDS UP
+Sector + MktCap	Health Care [+MktCap]	1069	11	0.5912	0.4583	-0.1329	56.5	54.5	-2.0	SIGNIFICANT DEGRADATION
+Sector + MktCap	Industrials [+MktCap]	3711	17	0.5488	0.6667	0.1178	54.6	23.5	-31.1	HOLDS UP
+Sector + MktCap	Information Technology [+MktCap]	2143	22	0.5451	0.4	-0.1451	54.6	68.2	13.6	SIGNIFICANT DEGRADATION
+Sector + MktCap	Materials [+MktCap]	2678	9	0.5865	0.7222	0.1358	56.5	66.7	10.2	HOLDS UP
+Sector + Clustering (k=2)	Consumer Discretionary — Cluster 0	1039	5	0.5669	0.25	-0.3169	55.4	20.0	-35.4	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Consumer Discretionary — Cluster 1	1341	6	0.5495	0.2222	-0.3273	54.1	16.7	-37.4	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Health Care — Cluster 0	667	7	0.6047	0.25	-0.3547	56.5	42.9	-13.6	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Industrials — Cluster 0	1811	10	0.5594	0.5417	-0.0177	56.4	30.0	-26.4	HOLDS UP
+Sector + Clustering (k=2)	Industrials — Cluster 1	1900	7	0.5511	0.5	-0.0511	55.1	57.1	2.0	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Information Technology — Cluster 0	955	7	0.5779	0.4167	-0.1613	56.9	42.9	-14.0	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Information Technology — Cluster 1	1188	15	0.5379	0.6111	0.0732	54.8	80.0	25.2	HOLDS UP
+Sector + Clustering (k=2)	Materials — Cluster 1	1589	6	0.5971	0.5	-0.0971	57.2	50.0	-7.2	SIGNIFICANT DEGRADATION

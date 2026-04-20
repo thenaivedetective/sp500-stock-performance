@@ -1,0 +1,460 @@
+======================================================================
+  TRUE OUT-OF-SAMPLE VALIDATION — SEC EDGAR + yFINANCE 2025
+  Training : Q1 2010 – Q3 2024  (WRDS Compustat + CRSP)
+  Features : Q1 2025 financial ratios  (SEC EDGAR 10-Q filings)
+  Labels   : Q2 2025 outperformance    (yFinance Apr–Jun 2025)
+  All model parameters fitted on training data ONLY
+  Reference: Ananthakumar & Sarkar (2017)
+======================================================================
+
+[1/6] Loading WRDS training data...
+  Training rows: 20,811  (Q1 2010 – Q3 2024)
+
+[2/6] Pulling Q1 2025 macro data from FRED...
+  Q1 2025 GDP growth (quarterly): -0.0750%
+  Q1 2025 CPI inflation (quarterly): 0.7000%
+
+[3/6] Pulling Q1 2025 financial ratios from SEC EDGAR...
+  Loading cached EDGAR data from cache_edgar_q1_2025.csv...
+  Loaded 499 rows from cache.
+
+[4/6] Pulling Q2 2025 returns from yFinance...
+  SPY Q2 2025 return: +10.78%
+  Q2 2025 labels: 499 tickers
+  Q2 2025 outperformers: 162 / 499 (32.5%)
+
+[5/6] Building test set and computing EDGAR-based ratios...
+  Test set rows: 499
+  Sectors covered: 11
+  Rows with sector: 476
+
+[6/6] Fitting preprocessing on training data and running validations...
+
+
+======================================================================
+  CONFIGURATION 1: MARKET CAP SEGMENTATION
+======================================================================
+
+======================================================================
+  LARGE CAP  [Market Cap]
+  Train N=5,708 (WRDS 2010-24) | Test N=33 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5542                 | 0.4174                    | -0.1368  |
+| Accuracy    | 54.1%                  | 45.5%                     | -8.6%    |
+| Sensitivity | 44.6%                  | 27.3%                     | —        |
+| Specificity | 63.3%                  | 54.5%                     | —        |
+| N           | 5,708                  | 33                        | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+======================================================================
+  MID CAP  [Market Cap]
+  Train N=5,627 (WRDS 2010-24) | Test N=31 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5477                 | 0.5641                    | +0.0164  |
+| Accuracy    | 53.5%                  | 51.6%                     | -1.9%    |
+| Sensitivity | 59.0%                  | 53.8%                     | —        |
+| Specificity | 47.9%                  | 50.0%                     | —        |
+| N           | 5,627                  | 31                        | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: HOLDS UP
+
+======================================================================
+  SMALL CAP  [Market Cap]
+  Train N=5,299 (WRDS 2010-24) | Test N=22 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5338                 | 0.6777                    | +0.1439  |
+| Accuracy    | 54.0%                  | 50.0%                     | -4.0%    |
+| Sensitivity | 92.6%                  | 100.0%                    | —        |
+| Specificity | 9.1%                   | 0.0%                      | —        |
+| N           | 5,299                  | 22                        | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: HOLDS UP
+
+
+======================================================================
+  CONFIGURATION 2: SECTOR GICS
+======================================================================
+
+======================================================================
+  CONSUMER DISCRETIONARY  [Sector GICS]
+  Train N=2,380 (WRDS 2010-24) | Test N=11 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5371                 | 0.5357                    | -0.0014  |
+| Accuracy    | 54.3%                  | 27.3%                     | -27.0%   |
+| Sensitivity | 90.2%                  | 75.0%                     | —        |
+| Specificity | 12.5%                  | 0.0%                      | —        |
+| N           | 2,380                  | 11                        | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: HOLDS UP
+
+======================================================================
+  HEALTH CARE  [Sector GICS]
+  Train N=1,069 (WRDS 2010-24) | Test N=11 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5922                 | 0.3333                    | -0.2589  |
+| Accuracy    | 57.9%                  | 45.5%                     | -12.4%   |
+| Sensitivity | 74.5%                  | 66.7%                     | —        |
+| Specificity | 39.8%                  | 37.5%                     | —        |
+| N           | 1,069                  | 11                        | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 7                      | 7                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+======================================================================
+  INDUSTRIALS  [Sector GICS]
+  Train N=3,711 (WRDS 2010-24) | Test N=17 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5491                 | 0.6000                    | +0.0509  |
+| Accuracy    | 54.6%                  | 29.4%                     | -25.2%   |
+| Sensitivity | 86.6%                  | 80.0%                     | —        |
+| Specificity | 18.7%                  | 8.3%                      | —        |
+| N           | 3,711                  | 17                        | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: HOLDS UP
+
+======================================================================
+  INFORMATION TECHNOLOGY  [Sector GICS]
+  Train N=2,143 (WRDS 2010-24) | Test N=22 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5479                 | 0.3810                    | -0.1670  |
+| Accuracy    | 55.4%                  | 68.2%                     | +12.8%   |
+| Sensitivity | 96.9%                  | 100.0%                    | —        |
+| Specificity | 5.4%                   | 0.0%                      | —        |
+| N           | 2,143                  | 22                        | —        |
+| Cutoff      | 0.45                   | 0.45                      | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+======================================================================
+  MATERIALS  [Sector GICS]
+  Train N=2,678 (WRDS 2010-24) | Test N=9 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5807                 | 0.7222                    | +0.1415  |
+| Accuracy    | 55.8%                  | 55.6%                     | -0.2%    |
+| Sensitivity | 34.2%                  | 33.3%                     | —        |
+| Specificity | 75.1%                  | 66.7%                     | —        |
+| N           | 2,678                  | 9                         | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: HOLDS UP
+
+
+======================================================================
+  CONFIGURATION 3: SECTOR + MARKET CAP COVARIATE
+======================================================================
+
+======================================================================
+  CONSUMER DISCRETIONARY [+MKTCAP]  [Sector + MktCap]
+  Train N=2,380 (WRDS 2010-24) | Test N=11 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5521                 | 0.5357                    | -0.0164  |
+| Accuracy    | 54.3%                  | 45.5%                     | -8.8%    |
+| Sensitivity | 81.9%                  | 75.0%                     | —        |
+| Specificity | 22.3%                  | 28.6%                     | —        |
+| N           | 2,380                  | 11                        | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: HOLDS UP
+
+======================================================================
+  HEALTH CARE [+MKTCAP]  [Sector + MktCap]
+  Train N=1,069 (WRDS 2010-24) | Test N=11 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5912                 | 0.4583                    | -0.1329  |
+| Accuracy    | 56.5%                  | 54.5%                     | -2.0%    |
+| Sensitivity | 72.9%                  | 66.7%                     | —        |
+| Specificity | 38.7%                  | 50.0%                     | —        |
+| N           | 1,069                  | 11                        | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 7                      | 7                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+======================================================================
+  INDUSTRIALS [+MKTCAP]  [Sector + MktCap]
+  Train N=3,711 (WRDS 2010-24) | Test N=17 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5488                 | 0.6667                    | +0.1178  |
+| Accuracy    | 54.6%                  | 23.5%                     | -31.1%   |
+| Sensitivity | 85.2%                  | 80.0%                     | —        |
+| Specificity | 20.4%                  | 0.0%                      | —        |
+| N           | 3,711                  | 17                        | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: HOLDS UP
+
+======================================================================
+  INFORMATION TECHNOLOGY [+MKTCAP]  [Sector + MktCap]
+  Train N=2,143 (WRDS 2010-24) | Test N=22 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5451                 | 0.4000                    | -0.1451  |
+| Accuracy    | 54.6%                  | 68.2%                     | +13.6%   |
+| Sensitivity | 100.0%                 | 100.0%                    | —        |
+| Specificity | 0.0%                   | 0.0%                      | —        |
+| N           | 2,143                  | 22                        | —        |
+| Cutoff      | 0.3                    | 0.3                       | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+======================================================================
+  MATERIALS [+MKTCAP]  [Sector + MktCap]
+  Train N=2,678 (WRDS 2010-24) | Test N=9 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5865                 | 0.7222                    | +0.1358  |
+| Accuracy    | 56.5%                  | 66.7%                     | +10.2%   |
+| Sensitivity | 19.1%                  | 0.0%                      | —        |
+| Specificity | 89.6%                  | 100.0%                    | —        |
+| N           | 2,678                  | 9                         | —        |
+| Cutoff      | 0.55                   | 0.55                      | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: HOLDS UP
+
+
+======================================================================
+  CONFIGURATION 4: SECTOR + CLUSTERING (k=2)
+======================================================================
+
+======================================================================
+  CONSUMER DISCRETIONARY — CLUSTER 0  [Sector + Clustering (k=2)]
+  Train N=1,039 (WRDS 2010-24) | Test N=5 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5669                 | 0.2500                    | -0.3169  |
+| Accuracy    | 55.4%                  | 20.0%                     | -35.4%   |
+| Sensitivity | 97.9%                  | 100.0%                    | —        |
+| Specificity | 2.8%                   | 0.0%                      | —        |
+| N           | 1,039                  | 5                         | —        |
+| Cutoff      | 0.45                   | 0.45                      | —        |
+| PCA Comps   | 7                      | 7                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+======================================================================
+  CONSUMER DISCRETIONARY — CLUSTER 1  [Sector + Clustering (k=2)]
+  Train N=1,341 (WRDS 2010-24) | Test N=6 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5495                 | 0.2222                    | -0.3273  |
+| Accuracy    | 54.1%                  | 16.7%                     | -37.4%   |
+| Sensitivity | 76.6%                  | 33.3%                     | —        |
+| Specificity | 29.2%                  | 0.0%                      | —        |
+| N           | 1,341                  | 6                         | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+======================================================================
+  HEALTH CARE — CLUSTER 0  [Sector + Clustering (k=2)]
+  Train N=667 (WRDS 2010-24) | Test N=7 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.6047                 | 0.2500                    | -0.3547  |
+| Accuracy    | 56.5%                  | 42.9%                     | -13.6%   |
+| Sensitivity | 63.8%                  | 0.0%                      | —        |
+| Specificity | 49.1%                  | 75.0%                     | —        |
+| N           | 667                    | 7                         | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 7                      | 7                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+======================================================================
+  INDUSTRIALS — CLUSTER 0  [Sector + Clustering (k=2)]
+  Train N=1,811 (WRDS 2010-24) | Test N=10 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5594                 | 0.5417                    | -0.0177  |
+| Accuracy    | 56.4%                  | 30.0%                     | -26.4%   |
+| Sensitivity | 89.5%                  | 75.0%                     | —        |
+| Specificity | 16.8%                  | 0.0%                      | —        |
+| N           | 1,811                  | 10                        | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: HOLDS UP
+
+======================================================================
+  INDUSTRIALS — CLUSTER 1  [Sector + Clustering (k=2)]
+  Train N=1,900 (WRDS 2010-24) | Test N=7 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5511                 | 0.5000                    | -0.0511  |
+| Accuracy    | 55.1%                  | 57.1%                     | +2.0%    |
+| Sensitivity | 70.8%                  | 100.0%                    | —        |
+| Specificity | 38.4%                  | 50.0%                     | —        |
+| N           | 1,900                  | 7                         | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+======================================================================
+  INFORMATION TECHNOLOGY — CLUSTER 0  [Sector + Clustering (k=2)]
+  Train N=955 (WRDS 2010-24) | Test N=7 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5779                 | 0.4167                    | -0.1613  |
+| Accuracy    | 56.9%                  | 42.9%                     | -14.0%   |
+| Sensitivity | 82.2%                  | 100.0%                    | —        |
+| Specificity | 26.3%                  | 0.0%                      | —        |
+| N           | 955                    | 7                         | —        |
+| Cutoff      | 0.5                    | 0.5                       | —        |
+| PCA Comps   | 7                      | 7                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+======================================================================
+  INFORMATION TECHNOLOGY — CLUSTER 1  [Sector + Clustering (k=2)]
+  Train N=1,188 (WRDS 2010-24) | Test N=15 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5379                 | 0.6111                    | +0.0732  |
+| Accuracy    | 54.8%                  | 80.0%                     | +25.2%   |
+| Sensitivity | 99.7%                  | 100.0%                    | —        |
+| Specificity | 0.9%                   | 0.0%                      | —        |
+| N           | 1,188                  | 15                        | —        |
+| Cutoff      | 0.4                    | 0.4                       | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: HOLDS UP
+
+======================================================================
+  MATERIALS — CLUSTER 1  [Sector + Clustering (k=2)]
+  Train N=1,589 (WRDS 2010-24) | Test N=6 (EDGAR Q1 2025 → Q2 2025)
+======================================================================
+| Metric      | Train (WRDS 2010-24)   | Test (EDGAR Q1→Q2 2025)   | Change   |
+|-------------|------------------------|---------------------------|----------|
+| AUC         | 0.5971                 | 0.5000                    | -0.0971  |
+| Accuracy    | 57.2%                  | 50.0%                     | -7.2%    |
+| Sensitivity | 17.4%                  | 0.0%                      | —        |
+| Specificity | 90.7%                  | 75.0%                     | —        |
+| N           | 1,589                  | 6                         | —        |
+| Cutoff      | 0.55                   | 0.55                      | —        |
+| PCA Comps   | 8                      | 8                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+
+======================================================================
+  GRAND SUMMARY — TRUE OUT-OF-SAMPLE (EDGAR Q1 2025 → Q2 2025)
+  Q1 2025 financial ratios (10-Q filings) → Q2 2025 outperformance
+  All 4 configurations | All segments | Sorted by out-of-sample AUC
+======================================================================
+|   Rank | Config                    | Group                              |   Train N |   Test N |   Train AUC |   Test AUC |    ΔAUC |   Train Acc% |   Test Acc% | Verdict                 |
+|--------|---------------------------|------------------------------------|-----------|----------|-------------|------------|---------|--------------|-------------|-------------------------|
+|      1 | Sector GICS               | Materials                          |      2678 |        9 |      0.5807 |     0.7222 |  0.1415 |         55.8 |        55.6 | HOLDS UP                |
+|      2 | Sector + MktCap           | Materials [+MktCap]                |      2678 |        9 |      0.5865 |     0.7222 |  0.1358 |         56.5 |        66.7 | HOLDS UP                |
+|      3 | Market Cap                | Small Cap                          |      5299 |       22 |      0.5338 |     0.6777 |  0.1439 |         54   |        50   | HOLDS UP                |
+|      4 | Sector + MktCap           | Industrials [+MktCap]              |      3711 |       17 |      0.5488 |     0.6667 |  0.1178 |         54.6 |        23.5 | HOLDS UP                |
+|      5 | Sector + Clustering (k=2) | Information Technology — Cluster 1 |      1188 |       15 |      0.5379 |     0.6111 |  0.0732 |         54.8 |        80   | HOLDS UP                |
+|      6 | Sector GICS               | Industrials                        |      3711 |       17 |      0.5491 |     0.6    |  0.0509 |         54.6 |        29.4 | HOLDS UP                |
+|      7 | Market Cap                | Mid Cap                            |      5627 |       31 |      0.5477 |     0.5641 |  0.0164 |         53.5 |        51.6 | HOLDS UP                |
+|      8 | Sector + Clustering (k=2) | Industrials — Cluster 0            |      1811 |       10 |      0.5594 |     0.5417 | -0.0177 |         56.4 |        30   | HOLDS UP                |
+|      9 | Sector GICS               | Consumer Discretionary             |      2380 |       11 |      0.5371 |     0.5357 | -0.0014 |         54.3 |        27.3 | HOLDS UP                |
+|     10 | Sector + MktCap           | Consumer Discretionary [+MktCap]   |      2380 |       11 |      0.5521 |     0.5357 | -0.0164 |         54.3 |        45.5 | HOLDS UP                |
+|     11 | Sector + Clustering (k=2) | Industrials — Cluster 1            |      1900 |        7 |      0.5511 |     0.5    | -0.0511 |         55.1 |        57.1 | SIGNIFICANT DEGRADATION |
+|     12 | Sector + Clustering (k=2) | Materials — Cluster 1              |      1589 |        6 |      0.5971 |     0.5    | -0.0971 |         57.2 |        50   | SIGNIFICANT DEGRADATION |
+|     13 | Sector + MktCap           | Health Care [+MktCap]              |      1069 |       11 |      0.5912 |     0.4583 | -0.1329 |         56.5 |        54.5 | SIGNIFICANT DEGRADATION |
+|     14 | Market Cap                | Large Cap                          |      5708 |       33 |      0.5542 |     0.4174 | -0.1368 |         54.1 |        45.5 | SIGNIFICANT DEGRADATION |
+|     15 | Sector + Clustering (k=2) | Information Technology — Cluster 0 |       955 |        7 |      0.5779 |     0.4167 | -0.1613 |         56.9 |        42.9 | SIGNIFICANT DEGRADATION |
+|     16 | Sector + MktCap           | Information Technology [+MktCap]   |      2143 |       22 |      0.5451 |     0.4    | -0.1451 |         54.6 |        68.2 | SIGNIFICANT DEGRADATION |
+|     17 | Sector GICS               | Information Technology             |      2143 |       22 |      0.5479 |     0.381  | -0.167  |         55.4 |        68.2 | SIGNIFICANT DEGRADATION |
+|     18 | Sector GICS               | Health Care                        |      1069 |       11 |      0.5922 |     0.3333 | -0.2589 |         57.9 |        45.5 | SIGNIFICANT DEGRADATION |
+|     19 | Sector + Clustering (k=2) | Consumer Discretionary — Cluster 0 |      1039 |        5 |      0.5669 |     0.25   | -0.3169 |         55.4 |        20   | SIGNIFICANT DEGRADATION |
+|     20 | Sector + Clustering (k=2) | Health Care — Cluster 0            |       667 |        7 |      0.6047 |     0.25   | -0.3547 |         56.5 |        42.9 | SIGNIFICANT DEGRADATION |
+|     21 | Sector + Clustering (k=2) | Consumer Discretionary — Cluster 1 |      1341 |        6 |      0.5495 |     0.2222 | -0.3273 |         54.1 |        16.7 | SIGNIFICANT DEGRADATION |
+
+── CONFIGURATION-LEVEL SUMMARY ──────────────────────────────────────
+|   Rank | Configuration             |   Groups |   W.Train AUC |   W.Test AUC |    ΔAUC | Holds Up   |   Avg Train Acc% |   Avg Test Acc% |
+|--------|---------------------------|----------|---------------|--------------|---------|------------|------------------|-----------------|
+|      1 | Market Cap                |        3 |        0.5455 |       0.5369 | -0.0086 | 2/3        |             53.9 |            49   |
+|      2 | Sector + MktCap           |        5 |        0.561  |       0.5367 | -0.0243 | 3/5        |             55.3 |            51.7 |
+|      3 | Sector GICS               |        5 |        0.5574 |       0.4949 | -0.0625 | 3/5        |             55.6 |            45.2 |
+|      4 | Sector + Clustering (k=2) |        8 |        0.5652 |       0.4497 | -0.1155 | 2/8        |             55.8 |            42.4 |
+
+── OVERALL RESULTS ──────────────────────────────────────────────────
+|--------------------------------------------|----------------------------------------|
+| Total groups validated                     | 21                                     |
+| Feature quarter                            | Q1 2025 (Jan–Mar 2025, SEC EDGAR 10-Q) |
+| Label quarter                              | Q2 2025 (Apr–Jun 2025, yFinance)       |
+| SPY Q2 2025 return                         | +10.78%                                |
+| Q1 2025 GDP growth (quarterly)             | -0.0750%                               |
+| Q1 2025 CPI inflation (quarterly)          | 0.7000%                                |
+| Test set size                              | 499 stocks                             |
+| Avg in-sample AUC (2010-24)                | 0.5624                                 |
+| Avg out-of-sample AUC (Q2 2025)            | 0.4908                                 |
+| Avg AUC change                             | -0.0717                                |
+| Holds Up  (ΔAUC ≥ -0.02)                   | 10/21                                  |
+| Modest Degradation   (ΔAUC -0.02 to -0.05) | 0/21                                   |
+| Significant Degradation (ΔAUC < -0.05)     | 11/21                                  |
+| Best out-of-sample group                   | Materials                              |
+| Best out-of-sample AUC                     | 0.7222                                 |
+| Best out-of-sample accuracy                | 80.0%                                  |
+| Paper benchmark accuracy                   | 71.2%                                  |
+
+── METHODOLOGY NOTES ──────────────────────────────────────────────────
+  Overall generalization : OVERFITTING DETECTED
+  Training horizon       : Q1 2010 – Q3 2024 (WRDS Compustat + CRSP)
+  Feature source         : SEC EDGAR XBRL (data.sec.gov/api/xbrl/companyfacts)
+  Label source           : yFinance adjusted closing prices
+  Method                 : VIF≤2.5 → PCA≥80% → Logistic Regression
+  Winsorization          : 1st-99th percentile from training only
+  Cluster assignment     : KMeans fitted on 2010-24, applied to Q1 2025
+  Market cap thresholds  : Computed from training data only
+  Forward-looking        : Q[t] ratios → Q[t+1] outperformance
+  Note: rev_growth/ni_growth set to NaN (no Q4 2024 EDGAR baseline)
+======================================================================
+
+  Results saved to: results_edgar.txt
