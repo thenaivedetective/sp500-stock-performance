@@ -1,0 +1,40 @@
+Configuration	Group	Train N	Test N	Train AUC	Test AUC	AUC Change	Train Acc	Test Acc	Acc Change	Verdict
+Market Cap	Large Cap	5708	182	0.5542	0.4236	-0.1306	54.1	46.2	-7.9	SIGNIFICANT DEGRADATION
+Market Cap	Mid Cap	5627	141	0.5477	0.5053	-0.0425	53.5	52.5	-1.0	MODEST DEGRADATION
+Market Cap	Small Cap	5299	72	0.5338	0.4568	-0.077	54.0	61.1	7.1	SIGNIFICANT DEGRADATION
+Sector GICS	Communication Services	414	11	0.596	0.2222	-0.3737	57.5	18.2	-39.3	SIGNIFICANT DEGRADATION
+Sector GICS	Consumer Discretionary	2380	53	0.5371	0.6909	0.1538	54.3	66.0	11.7	HOLDS UP
+Sector GICS	Consumer Staples	991	20	0.5536	0.3889	-0.1647	54.7	25.0	-29.7	SIGNIFICANT DEGRADATION
+Sector GICS	Financials	816	20	0.5406	0.6275	0.0869	56.7	85.0	28.3	HOLDS UP
+Sector GICS	Health Care	1069	28	0.5922	0.3957	-0.1965	57.9	50.0	-7.9	SIGNIFICANT DEGRADATION
+Sector GICS	Industrials	3711	89	0.5491	0.4899	-0.0592	54.6	47.2	-7.4	SIGNIFICANT DEGRADATION
+Sector GICS	Information Technology	2143	57	0.5479	0.4763	-0.0717	55.4	43.9	-11.5	SIGNIFICANT DEGRADATION
+Sector GICS	Materials	2678	58	0.5807	0.3789	-0.2018	55.8	31.0	-24.8	SIGNIFICANT DEGRADATION
+Sector GICS	Real Estate	217	6	0.6205	0.2	-0.4205	58.5	33.3	-25.2	SIGNIFICANT DEGRADATION
+Sector GICS	Utilities	1698	34	0.5559	0.3862	-0.1697	58.1	17.6	-40.5	SIGNIFICANT DEGRADATION
+Sector + MktCap	Communication Services [+MktCap]	414	11	0.5904	0.2222	-0.3682	57.0	72.7	15.7	SIGNIFICANT DEGRADATION
+Sector + MktCap	Consumer Discretionary [+MktCap]	2380	53	0.5521	0.6939	0.1418	54.3	66.0	11.7	HOLDS UP
+Sector + MktCap	Consumer Staples [+MktCap]	991	20	0.5792	0.5278	-0.0514	58.2	50.0	-8.2	SIGNIFICANT DEGRADATION
+Sector + MktCap	Financials [+MktCap]	816	20	0.5543	0.4706	-0.0837	57.5	85.0	27.5	SIGNIFICANT DEGRADATION
+Sector + MktCap	Health Care [+MktCap]	1069	28	0.5912	0.4866	-0.1046	56.5	60.7	4.2	SIGNIFICANT DEGRADATION
+Sector + MktCap	Industrials [+MktCap]	3711	89	0.5488	0.5045	-0.0443	54.6	50.6	-4.0	MODEST DEGRADATION
+Sector + MktCap	Information Technology [+MktCap]	2143	57	0.5451	0.4875	-0.0576	54.6	43.9	-10.7	SIGNIFICANT DEGRADATION
+Sector + MktCap	Materials [+MktCap]	2678	58	0.5865	0.2987	-0.2878	56.5	32.8	-23.7	SIGNIFICANT DEGRADATION
+Sector + MktCap	Real Estate [+MktCap]	217	6	0.6387	0.6	-0.0387	61.3	50.0	-11.3	MODEST DEGRADATION
+Sector + MktCap	Utilities [+MktCap]	1698	34	0.5543	0.3586	-0.1957	57.6	17.6	-40.0	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Consumer Discretionary — Cluster 0	1039	24	0.5669	0.4357	-0.1312	55.4	58.3	2.9	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Consumer Discretionary — Cluster 1	1341	29	0.5495	0.5316	-0.018	54.1	58.6	4.5	HOLDS UP
+Sector + Clustering (k=2)	Consumer Staples — Cluster 0	661	15	0.5703	0.3571	-0.2132	54.9	86.7	31.8	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Consumer Staples — Cluster 1	330	5	0.5675	0.0	-0.5675	57.9	20.0	-37.9	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Financials — Cluster 0	405	12	0.5881	0.1	-0.4881	61.5	50.0	-11.5	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Financials — Cluster 1	411	8	0.5704	1.0	0.4296	56.4	87.5	31.1	HOLDS UP
+Sector + Clustering (k=2)	Health Care — Cluster 0	667	17	0.6047	0.2121	-0.3926	56.5	35.3	-21.2	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Health Care — Cluster 1	402	11	0.5908	0.2667	-0.3241	57.0	54.5	-2.5	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Industrials — Cluster 0	1811	54	0.5594	0.6055	0.0461	56.4	53.7	-2.7	HOLDS UP
+Sector + Clustering (k=2)	Industrials — Cluster 1	1900	35	0.5511	0.4333	-0.1178	55.1	42.9	-12.2	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Information Technology — Cluster 0	955	23	0.5779	0.3917	-0.1863	56.9	43.5	-13.4	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Information Technology — Cluster 1	1188	34	0.5379	0.5467	0.0088	54.8	50.0	-4.8	HOLDS UP
+Sector + Clustering (k=2)	Materials — Cluster 0	1089	20	0.5712	0.3867	-0.1846	55.7	40.0	-15.7	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Materials — Cluster 1	1589	38	0.5971	0.3884	-0.2087	57.2	34.2	-23.0	SIGNIFICANT DEGRADATION
+Sector + Clustering (k=2)	Utilities — Cluster 0	897	19	0.571	0.5294	-0.0416	58.6	15.8	-42.8	MODEST DEGRADATION
+Sector + Clustering (k=2)	Utilities — Cluster 1	801	15	0.564	0.3333	-0.2307	57.3	20.0	-37.3	SIGNIFICANT DEGRADATION
