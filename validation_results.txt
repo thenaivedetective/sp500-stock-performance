@@ -1,0 +1,452 @@
+=================================================================
+  OUT-OF-SAMPLE TEMPORAL VALIDATION
+  Training : Q1 2010 – Q4 2021  (12 years)
+  Test     : Q1 2022 – Q4 2024  (3 years)
+  Configuration: Sector + Clustering (k=2)  [WINNER]
+  All model parameters fitted on training data ONLY
+  Reference: Ananthakumar & Sarkar (2017)
+  Note: CRSP data ends Dec 2024; 2025 returns not yet in WRDS
+=================================================================
+
+[1/4] Loading and processing full dataset...
+
+[2/4] Splitting into train / test...
+  Training rows : 15,874 | With target: 15,874
+  Test rows     : 5,411  | With target: 4,943
+  Training period : 2010Q1 – 2021Q4
+  Test period     : 2022Q1  – 2024Q4
+
+[3/4] Fitting KMeans on training data → assigning test data...
+
+[4/4] Running validation pipeline...
+
+
+=================================================================
+  SECTOR + CLUSTERING (k=2) — OUT-OF-SAMPLE VALIDATION
+  Train: Q1 2010 – Q4 2021 | Test: Q1 2022 – Q4 2024
+  Predicting: Q[t] ratios → Q[t+1] outperformance
+=================================================================
+
+=================================================================
+  COMMUNICATION SERVICES — CLUSTER 0
+  Train N=217 (2010-21) | Test N=81 (2022-24)
+  Train outperformers: 53.9% | Test: 49.4%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.6624                | 0.4774                    | -0.1849  |
+| Accuracy    | 65.0%                 | 53.1%                     | -11.9%   |
+| Sensitivity | 64.1%                 | 30.0%                     | —        |
+| Specificity | 66.0%                 | 75.6%                     | —        |
+| N           | 217                   | 81                        | —        |
+| Cutoff      | 0.55                  | 0.55 (same)               | —        |
+| PCA Comps   | 7                     | 7 (same)                  | —        |
+| VIF Kept    | 12/14                 | —                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+  Communication Services — Cluster 1: insufficient training data (78 rows), skipping.
+
+=================================================================
+  CONSUMER DISCRETIONARY — CLUSTER 0
+  Train N=913 (2010-21) | Test N=282 (2022-24)
+  Train outperformers: 55.5% | Test: 53.5%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5743                | 0.5360                    | -0.0383  |
+| Accuracy    | 55.6%                 | 51.8%                     | -3.8%    |
+| Sensitivity | 66.3%                 | 37.1%                     | —        |
+| Specificity | 42.4%                 | 68.7%                     | —        |
+| N           | 913                   | 282                       | —        |
+| Cutoff      | 0.55                  | 0.55 (same)               | —        |
+| PCA Comps   | 7                     | 7 (same)                  | —        |
+| VIF Kept    | 11/14                 | —                         | —        |
+
+  Verdict: MODEST DEGRADATION
+
+=================================================================
+  CONSUMER DISCRETIONARY — CLUSTER 1
+  Train N=916 (2010-21) | Test N=270 (2022-24)
+  Train outperformers: 53.7% | Test: 48.1%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5497                | 0.5153                    | -0.0344  |
+| Accuracy    | 55.9%                 | 49.6%                     | -6.3%    |
+| Sensitivity | 90.9%                 | 83.8%                     | —        |
+| Specificity | 15.3%                 | 17.9%                     | —        |
+| N           | 916                   | 270                       | —        |
+| Cutoff      | 0.5                   | 0.5 (same)                | —        |
+| PCA Comps   | 8                     | 8 (same)                  | —        |
+| VIF Kept    | 12/14                 | —                         | —        |
+
+  Verdict: MODEST DEGRADATION
+
+=================================================================
+  CONSUMER STAPLES — CLUSTER 0
+  Train N=270 (2010-21) | Test N=69 (2022-24)
+  Train outperformers: 50.0% | Test: 34.8%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5715                | 0.4333                    | -0.1382  |
+| Accuracy    | 55.6%                 | 63.8%                     | +8.2%    |
+| Sensitivity | 17.8%                 | 0.0%                      | —        |
+| Specificity | 93.3%                 | 97.8%                     | —        |
+| N           | 270                   | 69                        | —        |
+| Cutoff      | 0.6                   | 0.6 (same)                | —        |
+| PCA Comps   | 6                     | 6 (same)                  | —        |
+| VIF Kept    | 10/14                 | —                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+=================================================================
+  CONSUMER STAPLES — CLUSTER 1
+  Train N=514 (2010-21) | Test N=139 (2022-24)
+  Train outperformers: 48.6% | Test: 33.8%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5777                | 0.4315                    | -0.1462  |
+| Accuracy    | 57.0%                 | 61.9%                     | +4.9%    |
+| Sensitivity | 48.0%                 | 19.1%                     | —        |
+| Specificity | 65.5%                 | 83.7%                     | —        |
+| N           | 514                   | 139                       | —        |
+| Cutoff      | 0.5                   | 0.5 (same)                | —        |
+| PCA Comps   | 7                     | 7 (same)                  | —        |
+| VIF Kept    | 12/14                 | —                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+=================================================================
+  ENERGY — CLUSTER 0
+  Train N=156 (2010-21) | Test N=59 (2022-24)
+  Train outperformers: 55.1% | Test: 50.8%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.6274                | 0.7782                    | +0.1508  |
+| Accuracy    | 61.5%                 | 69.5%                     | +8.0%    |
+| Sensitivity | 58.1%                 | 90.0%                     | —        |
+| Specificity | 65.7%                 | 48.3%                     | —        |
+| N           | 156                   | 59                        | —        |
+| Cutoff      | 0.55                  | 0.55 (same)               | —        |
+| PCA Comps   | 7                     | 7 (same)                  | —        |
+| VIF Kept    | 11/14                 | —                         | —        |
+
+  Verdict: HOLDS UP
+
+  Energy — Cluster 1: insufficient training data (33 rows), skipping.
+
+=================================================================
+  FINANCIALS — CLUSTER 0
+  Train N=292 (2010-21) | Test N=103 (2022-24)
+  Train outperformers: 60.3% | Test: 51.5%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5805                | 0.4881                    | -0.0924  |
+| Accuracy    | 63.7%                 | 54.4%                     | -9.3%    |
+| Sensitivity | 85.8%                 | 79.2%                     | —        |
+| Specificity | 30.2%                 | 28.0%                     | —        |
+| N           | 292                   | 103                       | —        |
+| Cutoff      | 0.55                  | 0.55 (same)               | —        |
+| PCA Comps   | 7                     | 7 (same)                  | —        |
+| VIF Kept    | 10/14                 | —                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+=================================================================
+  FINANCIALS — CLUSTER 1
+  Train N=318 (2010-21) | Test N=103 (2022-24)
+  Train outperformers: 55.0% | Test: 53.4%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5704                | 0.5826                    | +0.0121  |
+| Accuracy    | 59.7%                 | 50.5%                     | -9.2%    |
+| Sensitivity | 97.1%                 | 85.5%                     | —        |
+| Specificity | 14.0%                 | 10.4%                     | —        |
+| N           | 318                   | 103                       | —        |
+| Cutoff      | 0.45                  | 0.45 (same)               | —        |
+| PCA Comps   | 8                     | 8 (same)                  | —        |
+| VIF Kept    | 12/14                 | —                         | —        |
+
+  Verdict: HOLDS UP
+
+=================================================================
+  HEALTH CARE — CLUSTER 0
+  Train N=516 (2010-21) | Test N=188 (2022-24)
+  Train outperformers: 54.7% | Test: 39.9%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.6033                | 0.5293                    | -0.0740  |
+| Accuracy    | 57.0%                 | 54.8%                     | -2.2%    |
+| Sensitivity | 47.2%                 | 12.0%                     | —        |
+| Specificity | 68.8%                 | 83.2%                     | —        |
+| N           | 516                   | 188                       | —        |
+| Cutoff      | 0.55                  | 0.55 (same)               | —        |
+| PCA Comps   | 7                     | 7 (same)                  | —        |
+| VIF Kept    | 11/14                 | —                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+=================================================================
+  HEALTH CARE — CLUSTER 1
+  Train N=265 (2010-21) | Test N=100 (2022-24)
+  Train outperformers: 57.4% | Test: 48.0%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5821                | 0.4659                    | -0.1161  |
+| Accuracy    | 58.9%                 | 49.0%                     | -9.9%    |
+| Sensitivity | 90.8%                 | 72.9%                     | —        |
+| Specificity | 15.9%                 | 26.9%                     | —        |
+| N           | 265                   | 100                       | —        |
+| Cutoff      | 0.5                   | 0.5 (same)                | —        |
+| PCA Comps   | 7                     | 7 (same)                  | —        |
+| VIF Kept    | 12/14                 | —                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+=================================================================
+  INDUSTRIALS — CLUSTER 0
+  Train N=1,316 (2010-21) | Test N=541 (2022-24)
+  Train outperformers: 55.6% | Test: 51.8%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5788                | 0.4949                    | -0.0839  |
+| Accuracy    | 57.1%                 | 48.4%                     | -8.7%    |
+| Sensitivity | 89.2%                 | 86.1%                     | —        |
+| Specificity | 16.8%                 | 8.0%                      | —        |
+| N           | 1,316                 | 541                       | —        |
+| Cutoff      | 0.5                   | 0.5 (same)                | —        |
+| PCA Comps   | 8                     | 8 (same)                  | —        |
+| VIF Kept    | 12/14                 | —                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+=================================================================
+  INDUSTRIALS — CLUSTER 1
+  Train N=1,467 (2010-21) | Test N=387 (2022-24)
+  Train outperformers: 51.1% | Test: 51.7%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5511                | 0.5497                    | -0.0014  |
+| Accuracy    | 54.0%                 | 52.5%                     | -1.5%    |
+| Sensitivity | 62.1%                 | 54.5%                     | —        |
+| Specificity | 45.5%                 | 50.3%                     | —        |
+| N           | 1,467                 | 387                       | —        |
+| Cutoff      | 0.5                   | 0.5 (same)                | —        |
+| PCA Comps   | 8                     | 8 (same)                  | —        |
+| VIF Kept    | 13/14                 | —                         | —        |
+
+  Verdict: HOLDS UP
+
+=================================================================
+  INFORMATION TECHNOLOGY — CLUSTER 0
+  Train N=885 (2010-21) | Test N=323 (2022-24)
+  Train outperformers: 57.3% | Test: 47.7%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5394                | 0.5233                    | -0.0161  |
+| Accuracy    | 57.6%                 | 48.3%                     | -9.3%    |
+| Sensitivity | 98.2%                 | 98.1%                     | —        |
+| Specificity | 3.2%                  | 3.0%                      | —        |
+| N           | 885                   | 323                       | —        |
+| Cutoff      | 0.5                   | 0.5 (same)                | —        |
+| PCA Comps   | 8                     | 8 (same)                  | —        |
+| VIF Kept    | 13/14                 | —                         | —        |
+
+  Verdict: HOLDS UP
+
+=================================================================
+  INFORMATION TECHNOLOGY — CLUSTER 1
+  Train N=694 (2010-21) | Test N=242 (2022-24)
+  Train outperformers: 55.6% | Test: 51.2%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5611                | 0.6118                    | +0.0507  |
+| Accuracy    | 57.8%                 | 56.6%                     | -1.2%    |
+| Sensitivity | 94.3%                 | 92.7%                     | —        |
+| Specificity | 12.0%                 | 18.6%                     | —        |
+| N           | 694                   | 242                       | —        |
+| Cutoff      | 0.5                   | 0.5 (same)                | —        |
+| PCA Comps   | 7                     | 7 (same)                  | —        |
+| VIF Kept    | 11/14                 | —                         | —        |
+
+  Verdict: HOLDS UP
+
+=================================================================
+  MATERIALS — CLUSTER 0
+  Train N=911 (2010-21) | Test N=314 (2022-24)
+  Train outperformers: 51.8% | Test: 42.0%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5756                | 0.5124                    | -0.0632  |
+| Accuracy    | 55.5%                 | 54.5%                     | -1.0%    |
+| Sensitivity | 66.1%                 | 44.7%                     | —        |
+| Specificity | 44.2%                 | 61.5%                     | —        |
+| N           | 911                   | 314                       | —        |
+| Cutoff      | 0.5                   | 0.5 (same)                | —        |
+| PCA Comps   | 7                     | 7 (same)                  | —        |
+| VIF Kept    | 11/14                 | —                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+=================================================================
+  MATERIALS — CLUSTER 1
+  Train N=1,153 (2010-21) | Test N=300 (2022-24)
+  Train outperformers: 47.0% | Test: 37.7%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5954                | 0.5990                    | +0.0036  |
+| Accuracy    | 57.2%                 | 61.0%                     | +3.8%    |
+| Sensitivity | 43.2%                 | 41.6%                     | —        |
+| Specificity | 69.6%                 | 72.7%                     | —        |
+| N           | 1,153                 | 300                       | —        |
+| Cutoff      | 0.5                   | 0.5 (same)                | —        |
+| PCA Comps   | 8                     | 8 (same)                  | —        |
+| VIF Kept    | 12/14                 | —                         | —        |
+
+  Verdict: HOLDS UP
+
+  Real Estate — Cluster 0: insufficient training data (99 rows), skipping.
+
+  Real Estate — Cluster 1: insufficient training data (54 rows), skipping.
+
+=================================================================
+  UTILITIES — CLUSTER 0
+  Train N=686 (2010-21) | Test N=250 (2022-24)
+  Train outperformers: 45.5% | Test: 40.4%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.6016                | 0.4773                    | -0.1243  |
+| Accuracy    | 58.9%                 | 50.8%                     | -8.1%    |
+| Sensitivity | 38.1%                 | 35.6%                     | —        |
+| Specificity | 76.2%                 | 61.1%                     | —        |
+| N           | 686                   | 250                       | —        |
+| Cutoff      | 0.5                   | 0.5 (same)                | —        |
+| PCA Comps   | 7                     | 7 (same)                  | —        |
+| VIF Kept    | 11/14                 | —                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+=================================================================
+  UTILITIES — CLUSTER 1
+  Train N=661 (2010-21) | Test N=101 (2022-24)
+  Train outperformers: 47.2% | Test: 34.7%
+=================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────
+| Metric      | In-Sample (2010-21)   | Out-of-Sample (2022-24)   | Change   |
+|-------------|-----------------------|---------------------------|----------|
+| AUC         | 0.5603                | 0.5030                    | -0.0572  |
+| Accuracy    | 55.4%                 | 62.4%                     | +7.0%    |
+| Sensitivity | 8.3%                  | 17.1%                     | —        |
+| Specificity | 97.4%                 | 86.4%                     | —        |
+| N           | 661                   | 101                       | —        |
+| Cutoff      | 0.6                   | 0.6 (same)                | —        |
+| PCA Comps   | 8                     | 8 (same)                  | —        |
+| VIF Kept    | 12/14                 | —                         | —        |
+
+  Verdict: SIGNIFICANT DEGRADATION
+
+
+=================================================================
+  GRAND VALIDATION SUMMARY
+  In-Sample (2010-21) vs Out-of-Sample (2022-24)
+  Sorted by Out-of-Sample AUC  |  Config: Sector + Clustering (k=2)
+=================================================================
+|   Rank | Group                              |   Train N |   Test N |   Train AUC |   Test AUC |    ΔAUC |   Train Acc% |   Test Acc% | Verdict                 |
+|--------|------------------------------------|-----------|----------|-------------|------------|---------|--------------|-------------|-------------------------|
+|      1 | Energy — Cluster 0                 |       156 |       59 |      0.6274 |     0.7782 |  0.1508 |         61.5 |        69.5 | HOLDS UP                |
+|      2 | Information Technology — Cluster 1 |       694 |      242 |      0.5611 |     0.6118 |  0.0507 |         57.8 |        56.6 | HOLDS UP                |
+|      3 | Materials — Cluster 1              |      1153 |      300 |      0.5954 |     0.599  |  0.0036 |         57.2 |        61   | HOLDS UP                |
+|      4 | Financials — Cluster 1             |       318 |      103 |      0.5704 |     0.5826 |  0.0121 |         59.7 |        50.5 | HOLDS UP                |
+|      5 | Industrials — Cluster 1            |      1467 |      387 |      0.5511 |     0.5497 | -0.0014 |         54   |        52.5 | HOLDS UP                |
+|      6 | Consumer Discretionary — Cluster 0 |       913 |      282 |      0.5743 |     0.536  | -0.0383 |         55.6 |        51.8 | MODEST DEGRADATION      |
+|      7 | Health Care — Cluster 0            |       516 |      188 |      0.6033 |     0.5293 | -0.074  |         57   |        54.8 | SIGNIFICANT DEGRADATION |
+|      8 | Information Technology — Cluster 0 |       885 |      323 |      0.5394 |     0.5233 | -0.0161 |         57.6 |        48.3 | HOLDS UP                |
+|      9 | Consumer Discretionary — Cluster 1 |       916 |      270 |      0.5497 |     0.5153 | -0.0344 |         55.9 |        49.6 | MODEST DEGRADATION      |
+|     10 | Materials — Cluster 0              |       911 |      314 |      0.5756 |     0.5124 | -0.0632 |         55.5 |        54.5 | SIGNIFICANT DEGRADATION |
+|     11 | Utilities — Cluster 1              |       661 |      101 |      0.5603 |     0.503  | -0.0572 |         55.4 |        62.4 | SIGNIFICANT DEGRADATION |
+|     12 | Industrials — Cluster 0            |      1316 |      541 |      0.5788 |     0.4949 | -0.0839 |         57.1 |        48.4 | SIGNIFICANT DEGRADATION |
+|     13 | Financials — Cluster 0             |       292 |      103 |      0.5805 |     0.4881 | -0.0924 |         63.7 |        54.4 | SIGNIFICANT DEGRADATION |
+|     14 | Communication Services — Cluster 0 |       217 |       81 |      0.6624 |     0.4774 | -0.1849 |         65   |        53.1 | SIGNIFICANT DEGRADATION |
+|     15 | Utilities — Cluster 0              |       686 |      250 |      0.6016 |     0.4773 | -0.1243 |         58.9 |        50.8 | SIGNIFICANT DEGRADATION |
+|     16 | Health Care — Cluster 1            |       265 |      100 |      0.5821 |     0.4659 | -0.1161 |         58.9 |        49   | SIGNIFICANT DEGRADATION |
+|     17 | Consumer Staples — Cluster 0       |       270 |       69 |      0.5715 |     0.4333 | -0.1382 |         55.6 |        63.8 | SIGNIFICANT DEGRADATION |
+|     18 | Consumer Staples — Cluster 1       |       514 |      139 |      0.5777 |     0.4315 | -0.1462 |         57   |        61.9 | SIGNIFICANT DEGRADATION |
+
+── OVERALL VALIDATION SUMMARY ──────────────────────────────
+|-----------------------------------|---------------------------------|
+| Groups validated                  | 18                              |
+| Avg in-sample AUC    (2010-21)    | 0.5813                          |
+| Avg out-of-sample AUC (2022-24)   | 0.5283                          |
+| Avg AUC change                    | -0.0530                         |
+| Avg in-sample accuracy  (2010-21) | 58.0%                           |
+| Avg out-of-sample acc   (2022-24) | 55.2%                           |
+| Avg accuracy change               | -2.8%                           |
+| Holds Up  (ΔAUC ≥ -0.02)          | 6/18                            |
+| Modest Degradation                | 2/18                            |
+| Significant Degradation           | 10/18                           |
+| Best out-of-sample AUC group      | Energy — Cluster 0 (AUC=0.7782) |
+| Best out-of-sample accuracy group | Energy — Cluster 0 (69.5%)      |
+| Paper benchmark accuracy          | 71.2%                           |
+
+── INTERPRETATION ───────────────────────────────────────────
+  Generalization: OVERFITTING DETECTED — significant gap between train and test
+
+  Training horizon  : Q1 2010 – Q4 2021 (12 years)
+  Test horizon      : Q1 2022 – Q4 2024  (3 years, unseen)
+  Method            : VIF≤2.5 → PCA≥80% → Logistic Regression
+  Cluster assignment: KMeans fitted on 2010-21, applied to 2022-24
+  Winsorization     : 1st-99th percentile bounds from 2010-21 only
+  Predicting        : Q[t] ratios → Q[t+1] outperformance (shift=-1)
+  Note              : CRSP returns end Dec 2024; true 2025 test pending
+=================================================================
+
