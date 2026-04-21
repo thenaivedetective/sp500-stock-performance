@@ -1,0 +1,46 @@
+Rank	Configuration	Group	N	AUC	Accuracy	LR p-value	Significant	Sig Components	Sig
+1	Sector + Clustering (k=2)	Energy — Cluster 0	223	0.6616	62.8	0.0237	True	1/6	✓
+2	Sector + Market Cap Covariate	Energy [+MktCap]	253	0.6434	61.3	0.0097	True	1/7	✓
+3	Sector + Market Cap Covariate	Real Estate [+MktCap]	217	0.6388	61.3	0.1042	False	1/6	✗
+4	Sector + Clustering (k=2)	Real Estate — Cluster 0	181	0.6319	59.1	0.1406	False	1/7	✗
+5	Sector + Clustering (k=2)	Communication Services — Cluster 1	118	0.6249	63.6	0.2214	False	0/6	✗
+6	Sector GICS	Real Estate	217	0.6209	58.5	0.2288	False	1/7	✗
+7	Sector + Clustering (k=2)	Communication Services — Cluster 0	297	0.6133	57.9	0.1138	False	0/8	✗
+8	Sector GICS	Energy	253	0.6085	60.9	0.0494	True	1/6	✓
+9	Sector + Clustering (k=2)	Health Care — Cluster 1	667	0.6049	57.0	0.0043	True	2/7	✓
+10	Sector + Clustering (k=2)	Materials — Cluster 1	1575	0.5962	57.3	0.0	True	4/8	✓
+11	Sector GICS	Communication Services	415	0.5962	57.8	0.0934	False	1/7	✗
+12	Sector GICS	Health Care	1069	0.5923	57.9	0.001	True	1/7	✓
+13	Sector + Market Cap Covariate	Health Care [+MktCap]	1069	0.5913	56.4	0.0012	True	1/7	✓
+14	Sector + Clustering (k=2)	Health Care — Cluster 0	402	0.591	57.0	0.4032	False	0/7	✗
+15	Sector + Market Cap Covariate	Communication Services [+MktCap]	415	0.5904	57.1	0.1588	False	1/8	✗
+16	Sector + Clustering (k=2)	Financials — Cluster 0	405	0.5877	61.5	0.2945	False	1/7	✗
+17	Sector + Market Cap Covariate	Materials [+MktCap]	2678	0.5865	56.5	0.0	True	2/8	✓
+18	Sector GICS	Materials	2678	0.5808	55.8	0.0	True	4/8	✓
+19	Sector + Clustering (k=2)	Consumer Staples — Cluster 0	669	0.5806	57.4	0.2531	False	1/8	✗
+20	Sector + Market Cap Covariate	Consumer Staples [+MktCap]	992	0.5783	58.3	0.0264	True	2/8	✓
+21	Sector + Clustering (k=2)	Utilities — Cluster 0	891	0.5745	58.4	0.069	False	2/8	✗
+22	Sector + Clustering (k=2)	Consumer Staples — Cluster 1	323	0.5737	56.7	0.4274	False	0/6	✗
+23	Sector + Clustering (k=2)	Materials — Cluster 0	1103	0.5724	55.0	0.0032	True	3/7	✓
+24	Sector + Clustering (k=2)	Financials — Cluster 1	411	0.5699	56.4	0.6093	False	0/8	✗
+25	Sector + Clustering (k=2)	Information Technology — Cluster 1	936	0.5684	57.9	0.0218	True	2/7	✓
+26	Sector + Clustering (k=2)	Consumer Discretionary — Cluster 1	1033	0.5671	55.4	0.1716	False	0/7	✗
+27	Sector + Clustering (k=2)	Utilities — Cluster 1	807	0.567	56.6	0.0499	True	1/8	✓
+28	Sector + Clustering (k=2)	Industrials — Cluster 0	1808	0.5594	56.2	0.0335	True	1/8	✓
+29	Sector GICS	Utilities	1698	0.5558	58.0	0.0053	True	2/8	✓
+30	Market Cap Segmentation	Large Cap	5660	0.5547	54.4	0.0	True	4/8	✓
+31	Sector + Market Cap Covariate	Utilities [+MktCap]	1698	0.5543	57.7	0.0112	True	2/8	✓
+32	Sector + Market Cap Covariate	Financials [+MktCap]	816	0.5541	57.6	0.4321	False	0/8	✗
+33	Sector + Market Cap Covariate	Consumer Discretionary [+MktCap]	2381	0.5523	54.4	0.0127	True	2/8	✓
+34	Sector GICS	Consumer Staples	992	0.5522	54.8	0.2108	False	1/7	✗
+35	Sector + Clustering (k=2)	Industrials — Cluster 1	1903	0.5522	55.3	0.0693	False	1/8	✗
+36	Sector + Clustering (k=2)	Consumer Discretionary — Cluster 0	1348	0.5494	54.1	0.1564	False	0/8	✗
+37	Sector GICS	Industrials	3711	0.5491	54.6	0.0046	True	1/8	✓
+38	Sector + Market Cap Covariate	Industrials [+MktCap]	3711	0.5488	54.6	0.0067	True	2/8	✓
+39	Sector GICS	Information Technology	2144	0.5482	55.4	0.0168	True	2/8	✓
+40	Market Cap Segmentation	Mid Cap	5629	0.5476	53.5	0.0001	True	4/8	✓
+41	Sector + Market Cap Covariate	Information Technology [+MktCap]	2144	0.5447	54.6	0.2116	False	1/8	✗
+42	Sector GICS	Financials	816	0.5406	56.9	0.6548	False	0/7	✗
+43	Sector + Clustering (k=2)	Information Technology — Cluster 0	1208	0.5393	54.8	0.4523	False	0/8	✗
+44	Sector GICS	Consumer Discretionary	2381	0.5372	54.3	0.3577	False	0/8	✗
+45	Market Cap Segmentation	Small Cap	5351	0.5322	54.0	0.0369	True	2/8	✓

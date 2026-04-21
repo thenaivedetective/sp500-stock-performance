@@ -397,3 +397,6 @@ print(f"\n  Methodology   : VIF≤2.5 → PCA≥80% → Logistic Regression")
 print(f"  Horizon       : Q[t] ratios → Q[t+1] outperformance (shift=-1)")
 print(f"  Benchmark     : Ananthakumar & Sarkar (2017) — 71.2% accuracy")
 print("="*65 + "\n")
+
+df_all.to_csv('results_advanced.txt', sep='\t', index=False)
+print("  Results saved to: results_advanced.txt")
