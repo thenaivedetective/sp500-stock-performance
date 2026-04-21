@@ -46,26 +46,43 @@ comp['ni_growth']      = (comp['niq']   - comp['lag_niq'])   / comp['lag_niq'].a
 comp['pe_ratio']       = comp['prccq']  / (comp['ibq'] / comp['cshoq'].replace(0, np.nan)).replace(0, np.nan)
 comp['book_to_market'] = comp['ceqq']   / comp['mkvaltq'].replace(0, np.nan)
 
-ratio_cols = ['roa','roe','gross_margin','op_margin','net_margin','asset_turnover',
-              'current_ratio','debt_to_equity','rev_growth','ni_growth',
-              'pe_ratio','book_to_market','gdp_growth','inflation']
+delta_base = ['roa','roe','gross_margin','op_margin','net_margin',
+              'asset_turnover','current_ratio','debt_to_equity','pe_ratio','book_to_market']
+for col in delta_base:
+    comp[f'delta_{col}'] = comp.groupby('gvkey')[col].diff()
+delta_cols = [f'delta_{c}' for c in delta_base]
+
+base_ratio_cols = ['roa','roe','gross_margin','op_margin','net_margin','asset_turnover',
+                   'current_ratio','debt_to_equity','rev_growth','ni_growth',
+                   'pe_ratio','book_to_market','gdp_growth','inflation']
+ratio_cols = base_ratio_cols + delta_cols
 
 ratio_labels = {
     'roa':'Return on Assets (ROA)', 'roe':'Return on Equity (ROE)',
     'gross_margin':'Gross Profit Margin', 'op_margin':'Operating Margin',
     'net_margin':'Net Profit Margin', 'asset_turnover':'Asset Turnover',
     'current_ratio':'Current Ratio', 'debt_to_equity':'Debt-to-Equity',
-    'rev_growth':'Revenue Growth (QoQ)',
-    'ni_growth':'Net Income Growth (QoQ)', 'pe_ratio':'P/E Ratio',
-    'book_to_market':'Book-to-Market',
-    'gdp_growth':'GDP Growth (Quarterly)',
-    'inflation':'CPI Inflation (Quarterly)',
+    'rev_growth':'Revenue Growth (QoQ)', 'ni_growth':'Net Income Growth (QoQ)',
+    'pe_ratio':'P/E Ratio', 'book_to_market':'Book-to-Market',
+    'gdp_growth':'GDP Growth (Quarterly)', 'inflation':'CPI Inflation (Quarterly)',
+    'delta_roa':'ΔROA (QoQ)',
+    'delta_roe':'ΔROE (QoQ)',
+    'delta_gross_margin':'ΔGross Profit Margin (QoQ)',
+    'delta_op_margin':'ΔOperating Margin (QoQ)',
+    'delta_net_margin':'ΔNet Margin (QoQ)',
+    'delta_asset_turnover':'ΔAsset Turnover (QoQ)',
+    'delta_current_ratio':'ΔCurrent Ratio (QoQ)',
+    'delta_debt_to_equity':'ΔDebt-to-Equity (QoQ)',
+    'delta_pe_ratio':'ΔP/E Ratio (QoQ)',
+    'delta_book_to_market':'ΔBook-to-Market (QoQ)',
 }
 
 merged = comp.merge(
     crsp[['ticker','quarter','quarterly_return','spy_quarterly_return','outperformer_quarterly']],
     left_on=['tic','quarter'], right_on=['ticker','quarter'], how='inner'
 )
+
+merged = merged[merged['quarter'] <= pd.Period('2024Q4', 'Q')]
 
 all_quarters = pd.period_range('2010Q1', '2024Q4', freq='Q')
 constituent_rows = []
@@ -84,9 +101,10 @@ merged = merged.sort_values(['gvkey','quarter']).reset_index(drop=True)
 merged['outperformer_next'] = merged.groupby('gvkey')['outperformer_quarterly'].shift(-1)
 
 for col in ratio_cols:
-    lo = merged[col].quantile(0.01)
-    hi = merged[col].quantile(0.99)
-    merged[col] = merged[col].clip(lo, hi)
+    if col in merged.columns:
+        lo = merged[col].quantile(0.01)
+        hi = merged[col].quantile(0.99)
+        merged[col] = merged[col].clip(lo, hi)
 
 df = merged[ratio_cols + ['outperformer_next']].dropna()
 X  = df[ratio_cols]
@@ -145,22 +163,25 @@ specificity = tn / (tn + fp) if (tn + fp) > 0 else 0
 overall_sig = "✓ SIGNIFICANT" if result.llr_pvalue < 0.05 else "✗ NOT SIGNIFICANT"
 
 print("\n" + "="*65)
-print("  PRELIMINARY GLOBAL LOGISTIC REGRESSION — NO SEGMENTATION")
+print("  PRELIMINARY GLOBAL LOGISTIC REGRESSION — WITH DELTA FEATURES")
 print("  S&P 500 | Q1 2010 – Q4 2024 | WRDS (lanagidan9790)")
 print("  Predicting: NEXT quarter outperformance using CURRENT quarter ratios")
+print("  Features: 14 base ratios + 10 QoQ delta (momentum) features = 24 total")
 print("  Reference: Ananthakumar & Sarkar (2017) — VIF cutoff=2.5, PCA ≥80%")
 print("="*65)
 
 print("\n── TABLE 1: SAMPLE OVERVIEW ──────────────────────────────────")
 overview = [
-    ["Observations",         f"{len(df):,}"],
-    ["Outperformers (Y=1)",  f"{int(y.sum()):,}  ({y.mean()*100:.1f}%)"],
-    ["Underperformers (Y=0)",f"{int((y==0).sum()):,}  ({(1-y.mean())*100:.1f}%)"],
-    ["Date Range",           "Q1 2010 – Q4 2024"],
-    ["Prediction Horizon",   "1 quarter ahead (Q[t] ratios → Q[t+1] return)"],
-    ["Initial Predictors",   "12 financial ratios + 2 macro variables"],
-    ["Predictors after VIF", f"{len(kept)}"],
-    ["PCA Components",       f"{n_comp}  (explaining ≥ 80% variance)"],
+    ["Observations",             f"{len(df):,}"],
+    ["Outperformers (Y=1)",      f"{int(y.sum()):,}  ({y.mean()*100:.1f}%)"],
+    ["Underperformers (Y=0)",    f"{int((y==0).sum()):,}  ({(1-y.mean())*100:.1f}%)"],
+    ["Date Range",               "Q1 2010 – Q4 2024"],
+    ["Prediction Horizon",       "1 quarter ahead (Q[t] ratios → Q[t+1] return)"],
+    ["Base Predictors",          "12 financial ratios + 2 macro variables = 14"],
+    ["Delta Features Added",     "10 QoQ momentum features (ΔROA, ΔROE, etc.)"],
+    ["Total Initial Predictors", f"{len(ratio_cols)} (14 base + 10 delta)"],
+    ["Predictors after VIF",     f"{len(kept)}"],
+    ["PCA Components",           f"{n_comp}  (explaining ≥ 80% variance)"],
 ]
 print(tabulate(overview, headers=["Parameter","Value"], tablefmt="github"))
 
@@ -170,11 +191,9 @@ vif_all_rows = []
 for var, v_init in zip(ratio_cols, initial_vifs):
     if var in kept:
         v_final = final_vif_dict.get(var, "—")
-        status  = "✓ Kept"
-        vif_all_rows.append([ratio_labels[var], f"{v_init:.2f}", f"{v_final:.2f}", status])
+        vif_all_rows.append([ratio_labels.get(var, var), f"{v_init:.2f}", f"{v_final:.2f}", "✓ Kept"])
     else:
-        v_at_removal = removed_vif_dict.get(var, "—")
-        vif_all_rows.append([ratio_labels[var], f"{v_init:.2f}", "removed", "✗ Removed"])
+        vif_all_rows.append([ratio_labels.get(var, var), f"{v_init:.2f}", "removed", "✗ Removed"])
 print(tabulate(vif_all_rows,
     headers=["Predictor","Initial VIF","Final VIF","Decision"], tablefmt="github"))
 print(f"  All kept predictors have Final VIF ≤ 2.5  ✓")
@@ -189,7 +208,24 @@ for i, ev in enumerate(pca_final.explained_variance_ratio_):
 print(tabulate(pca_rows, headers=["Component","Variance Explained","Cumulative"], tablefmt="github"))
 print(f"  → {n_comp} components retained (explaining ≥ 80% of variance)")
 
-print("\n── TABLE 4: OPTIMAL PROBABILITY CUTOFF ───────────────────────")
+print("\n── TABLE 4: PCA COMPONENT LOADINGS (FORMULA) ─────────────────")
+loadings_df = pd.DataFrame(pca_final.components_.T, index=kept,
+                            columns=[f"PC{i+1}" for i in range(n_comp)])
+loading_rows = []
+for feat in kept:
+    row = [ratio_labels.get(feat, feat)]
+    for pc in loadings_df.columns:
+        val = loadings_df.loc[feat, pc]
+        row.append(f"{val:+.4f}")
+    loading_rows.append(row)
+print(tabulate(loading_rows,
+    headers=["Predictor"] + list(loadings_df.columns), tablefmt="github"))
+print(f"\n  Top 3 loadings per component:")
+for pc in loadings_df.columns:
+    top = loadings_df[pc].abs().nlargest(3).index.tolist()
+    print(f"  {pc}: {', '.join([ratio_labels.get(r, r) for r in top])}")
+
+print("\n── TABLE 5: OPTIMAL PROBABILITY CUTOFF ───────────────────────")
 cutoff_rows = []
 for thresh in np.arange(0.30, 0.75, 0.05):
     p      = (y_prob >= thresh).astype(int)
@@ -207,23 +243,33 @@ print(tabulate(cutoff_rows,
     headers=["Cutoff","Accuracy","Sensitivity","Specificity",""],
     tablefmt="github"))
 
-print("\n── TABLE 5: MODEL FIT & OVERALL SIGNIFICANCE ─────────────────")
+print("\n── TABLE 6: MODEL FIT & OVERALL SIGNIFICANCE ─────────────────")
 fit_rows = [
-    ["LR p-value",        f"{result.llr_pvalue:.4f}", "< 0.05",    overall_sig],
-    ["LR Statistic",      f"{result.llr:.2f}",        "Higher better", "—"],
-    ["McFadden Pseudo R²",f"{result.prsquared:.4f}",  "≥ 0.20 good",
+    ["LR p-value",         f"{result.llr_pvalue:.4f}",  "< 0.05",              overall_sig],
+    ["LR Statistic",       f"{result.llr:.2f}",          "Higher better",       "—"],
+    ["McFadden Pseudo R²", f"{result.prsquared:.4f}",    "≥ 0.20 good",
      "Very Weak" if result.prsquared < 0.05 else ("Weak" if result.prsquared < 0.10 else "Moderate")],
-    ["AUC",               f"{auc:.4f}",               "≥ 0.70 good",
+    ["AUC",                f"{auc:.4f}",                 "≥ 0.70 good",
      "Near-Random" if auc < 0.60 else ("Moderate" if auc < 0.70 else "Strong")],
-    ["Probability Cutoff",f"{best_cutoff}",            "Trial & Error", "Chosen"],
-    ["Overall Accuracy",  f"{best_acc}%",              "≥ 71.2% (paper benchmark)",
+    ["Probability Cutoff", f"{best_cutoff}",             "Trial & Error",       "Chosen"],
+    ["Overall Accuracy",   f"{best_acc}%",               "≥ 71.2% (paper)",
      "✓ Beats Paper" if best_acc >= 71.2 else "✗ Below Paper"],
-    ["Sensitivity",       f"{sensitivity*100:.1f}%",  "Higher better", "—"],
-    ["Specificity",       f"{specificity*100:.1f}%",  "Higher better", "—"],
+    ["Sensitivity",        f"{sensitivity*100:.1f}%",    "Higher better",       "—"],
+    ["Specificity",        f"{specificity*100:.1f}%",    "Higher better",       "—"],
 ]
 print(tabulate(fit_rows, headers=["Metric","Value","Threshold","Verdict"], tablefmt="github"))
 
-print("\n── TABLE 6: PCA COMPONENT COEFFICIENTS & SIGNIFICANCE ────────")
+print("\n── TABLE 7: CONFUSION MATRIX ─────────────────────────────────")
+print(f"  Cutoff = {best_cutoff}")
+print(f"\n  {'':30s}  Predicted: Under (0)  Predicted: Over (1)")
+print(f"  {'Actual: Underperformer (0)':30s}  TN={tn:<10,}       FP={fp:,}")
+print(f"  {'Actual: Outperformer  (1)':30s}  FN={fn:<10,}       TP={tp:,}")
+print(f"\n  Sensitivity (Recall)  : {sensitivity*100:.1f}%  → correctly identified outperformers")
+print(f"  Specificity           : {specificity*100:.1f}%  → correctly identified underperformers")
+print(f"  Precision             : {tp/(tp+fp)*100:.1f}%  → of predicted outperformers, truly so" if (tp+fp)>0 else "")
+print(f"  Overall Accuracy      : {best_acc}%")
+
+print("\n── TABLE 8: PCA COMPONENT COEFFICIENTS & SIGNIFICANCE ────────")
 conf      = np.array(result.conf_int())
 coef_rows = []
 for i in range(n_comp):
@@ -243,19 +289,12 @@ print(tabulate(coef_rows,
     headers=["Component","Coeff","Odds Ratio","95% CI","Z-Stat","p-Value","Significant?"],
     tablefmt="github"))
 
-print("\n── TABLE 7: TOP RATIO LOADINGS PER PCA COMPONENT ────────────")
-loadings = pd.DataFrame(pca_final.components_.T, index=kept,
-                        columns=[f"PC{i+1}" for i in range(n_comp)])
-for comp_name in loadings.columns:
-    top      = loadings[comp_name].abs().nlargest(3).index.tolist()
-    top_named = [ratio_labels.get(r, r) for r in top]
-    print(f"  {comp_name}: {', '.join(top_named)}")
-
 print("\n── CONCLUSION ────────────────────────────────────────────────")
 print(f"  Prediction    : Q[t] ratios → Q[t+1] outperformance (forward-looking)")
+print(f"  Feature set   : 14 base ratios + 10 QoQ delta features = 24 total")
 print(f"  Overall model : {overall_sig}")
-print(f"  AUC           : {auc:.4f}  →  {'barely above random chance (0.50)' if auc < 0.60 else 'moderate discriminatory power'}")
-print(f"  Pseudo R²     : {result.prsquared:.4f}  →  <1% of variance explained")
+print(f"  AUC           : {auc:.4f}")
+print(f"  Pseudo R²     : {result.prsquared:.4f}")
 sig_comps = [f"PC{i+1}" for i in range(n_comp) if result.pvalues[i+1] < 0.05]
 print(f"  Significant PCA components ({len(sig_comps)}/{n_comp}): {', '.join(sig_comps) if sig_comps else 'None'}")
 print("="*65 + "\n")
@@ -264,6 +303,9 @@ summary = {
     'N': len(df),
     'Outperformers': int(y.sum()),
     'Outperformer_Rate': round(y.mean()*100, 1),
+    'Total_Features': len(ratio_cols),
+    'Base_Features': len(base_ratio_cols),
+    'Delta_Features': len(delta_cols),
     'Predictors_After_VIF': len(kept),
     'PCA_Components': n_comp,
     'AUC': round(auc, 4),
@@ -271,6 +313,7 @@ summary = {
     'Cutoff': best_cutoff,
     'Sensitivity': round(sensitivity*100, 1),
     'Specificity': round(specificity*100, 1),
+    'TP': int(tp), 'TN': int(tn), 'FP': int(fp), 'FN': int(fn),
     'LR_pvalue': round(result.llr_pvalue, 4),
     'LR_Statistic': round(result.llr, 2),
     'McFadden_R2': round(result.prsquared, 4),

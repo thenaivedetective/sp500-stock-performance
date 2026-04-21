@@ -48,13 +48,20 @@ comp['ni_growth']      = (comp['niq']   - comp['lag_niq'])   / comp['lag_niq'].a
 comp['pe_ratio']       = comp['prccq']  / (comp['ibq'] / comp['cshoq'].replace(0, np.nan)).replace(0, np.nan)
 comp['book_to_market'] = comp['ceqq']   / comp['mkvaltq'].replace(0, np.nan)
 
+delta_base = ['roa','roe','gross_margin','op_margin','net_margin',
+              'asset_turnover','current_ratio','debt_to_equity','pe_ratio','book_to_market']
+for col in delta_base:
+    comp[f'delta_{col}'] = comp.groupby('gvkey')[col].diff()
+delta_cols = [f'delta_{c}' for c in delta_base]
+
 gics['gvkey'] = gics['gvkey'].astype(str)
 comp['gvkey']  = comp['gvkey'].astype(str)
 comp = comp.merge(gics[['gvkey','gsector','sector_name']], on='gvkey', how='left')
 
-ratio_cols = ['roa','roe','gross_margin','op_margin','net_margin','asset_turnover',
-              'current_ratio','debt_to_equity','rev_growth','ni_growth',
-              'pe_ratio','book_to_market','gdp_growth','inflation']
+base_ratio_cols = ['roa','roe','gross_margin','op_margin','net_margin','asset_turnover',
+                   'current_ratio','debt_to_equity','rev_growth','ni_growth',
+                   'pe_ratio','book_to_market','gdp_growth','inflation']
+ratio_cols = base_ratio_cols + delta_cols
 
 ratio_labels = {
     'roa':'Return on Assets (ROA)', 'roe':'Return on Equity (ROE)',
@@ -65,6 +72,16 @@ ratio_labels = {
     'pe_ratio':'P/E Ratio', 'book_to_market':'Book-to-Market',
     'gdp_growth':'GDP Growth (Quarterly)', 'inflation':'CPI Inflation (Quarterly)',
     'log_mkvalt':'Log Market Cap (Covariate)',
+    'delta_roa':'ΔROA (QoQ)',
+    'delta_roe':'ΔROE (QoQ)',
+    'delta_gross_margin':'ΔGross Profit Margin (QoQ)',
+    'delta_op_margin':'ΔOperating Margin (QoQ)',
+    'delta_net_margin':'ΔNet Margin (QoQ)',
+    'delta_asset_turnover':'ΔAsset Turnover (QoQ)',
+    'delta_current_ratio':'ΔCurrent Ratio (QoQ)',
+    'delta_debt_to_equity':'ΔDebt-to-Equity (QoQ)',
+    'delta_pe_ratio':'ΔP/E Ratio (QoQ)',
+    'delta_book_to_market':'ΔBook-to-Market (QoQ)',
 }
 
 merged = comp.merge(
@@ -72,6 +89,8 @@ merged = comp.merge(
     left_on=['tic','cal_quarter'], right_on=['ticker','quarter'], how='inner'
 )
 merged = merged.merge(macro, left_on='cal_quarter', right_on='quarter', how='left')
+
+merged = merged[merged['cal_quarter'] <= pd.Period('2024Q4', 'Q')]
 
 all_quarters = pd.period_range('2010Q1', '2024Q4', freq='Q')
 constituent_rows = []
@@ -88,9 +107,10 @@ merged = merged.sort_values(['gvkey','cal_quarter']).reset_index(drop=True)
 merged['outperformer_next'] = merged.groupby('gvkey')['outperformer_quarterly'].shift(-1)
 
 for col in ratio_cols:
-    lo = merged[col].quantile(0.01)
-    hi = merged[col].quantile(0.99)
-    merged[col] = merged[col].clip(lo, hi)
+    if col in merged.columns:
+        lo = merged[col].quantile(0.01)
+        hi = merged[col].quantile(0.99)
+        merged[col] = merged[col].clip(lo, hi)
 
 mkvalt_33 = merged['mkvaltq'].quantile(0.33)
 mkvalt_67 = merged['mkvaltq'].quantile(0.67)
@@ -210,6 +230,24 @@ def run_group(config_name, group_name, df_group, feature_cols=None):
     print(tabulate(pca_rows, headers=["Component","Variance Explained","Cumulative"], tablefmt="github"))
     print(f"  → {n_comp} components retained (explaining ≥ 80% of variance)")
 
+    print(f"\n── PCA COMPONENT LOADINGS (FORMULA) ──────────────────────────")
+    loadings_df = pd.DataFrame(pca_final.components_.T, index=kept,
+                                columns=[f"PC{i+1}" for i in range(n_comp)])
+    loading_rows = []
+    for feat in kept:
+        row = [ratio_labels.get(feat, feat)]
+        for pc in loadings_df.columns:
+            val = loadings_df.loc[feat, pc]
+            row.append(f"{val:+.4f}")
+        loading_rows.append(row)
+    print(tabulate(loading_rows,
+        headers=["Predictor"] + list(loadings_df.columns), tablefmt="github"))
+    print(f"\n  Top 3 loadings per component:")
+    for pc in loadings_df.columns:
+        top       = loadings_df[pc].abs().nlargest(3).index.tolist()
+        top_named = [ratio_labels.get(r, r) for r in top]
+        print(f"  {pc}: {', '.join(top_named)}")
+
     print(f"\n── OPTIMAL PROBABILITY CUTOFF ────────────────────────────────")
     cutoff_rows = []
     for thresh in np.arange(0.30, 0.75, 0.05):
@@ -229,19 +267,25 @@ def run_group(config_name, group_name, df_group, feature_cols=None):
 
     print(f"\n── MODEL FIT & OVERALL SIGNIFICANCE ─────────────────────────")
     fit_rows = [
-        ["LR p-value",        f"{result.llr_pvalue:.4f}", "< 0.05",    overall_sig],
-        ["LR Statistic",      f"{result.llr:.2f}",        "Higher better", "—"],
-        ["McFadden Pseudo R²",f"{result.prsquared:.4f}",  "≥ 0.20 good",
+        ["LR p-value",         f"{result.llr_pvalue:.4f}", "< 0.05",          overall_sig],
+        ["LR Statistic",       f"{result.llr:.2f}",        "Higher better",   "—"],
+        ["McFadden Pseudo R²", f"{result.prsquared:.4f}",  "≥ 0.20 good",
          "Very Weak" if result.prsquared < 0.05 else ("Weak" if result.prsquared < 0.10 else "Moderate")],
-        ["AUC",               f"{auc:.4f}",               "≥ 0.70 good",
+        ["AUC",                f"{auc:.4f}",               "≥ 0.70 good",
          "Near-Random" if auc < 0.60 else ("Moderate" if auc < 0.70 else "Strong")],
-        ["Probability Cutoff",f"{best_cut}",              "Trial & Error", "Chosen"],
-        ["Overall Accuracy",  f"{best_acc}%",             "≥ 71.2% (paper benchmark)",
+        ["Probability Cutoff", f"{best_cut}",              "Trial & Error",   "Chosen"],
+        ["Overall Accuracy",   f"{best_acc}%",             "≥ 71.2% (paper)",
          "✓ Beats Paper" if best_acc >= 71.2 else "✗ Below Paper"],
-        ["Sensitivity",       f"{sensitivity*100:.1f}%",  "Higher better", "—"],
-        ["Specificity",       f"{specificity*100:.1f}%",  "Higher better", "—"],
+        ["Sensitivity",        f"{sensitivity*100:.1f}%",  "Higher better",   "—"],
+        ["Specificity",        f"{specificity*100:.1f}%",  "Higher better",   "—"],
     ]
     print(tabulate(fit_rows, headers=["Metric","Value","Threshold","Verdict"], tablefmt="github"))
+
+    print(f"\n── CONFUSION MATRIX ──────────────────────────────────────────")
+    print(f"  Cutoff = {best_cut}")
+    print(f"\n  {'':30s}  Pred: Under (0)   Pred: Over (1)")
+    print(f"  {'Actual: Underperformer (0)':30s}  TN={tn:<12,}  FP={fp:,}")
+    print(f"  {'Actual: Outperformer  (1)':30s}  FN={fn:<12,}  TP={tp:,}")
 
     print(f"\n── PCA COMPONENT COEFFICIENTS & SIGNIFICANCE ─────────────────")
     conf      = np.array(result.conf_int())
@@ -263,14 +307,6 @@ def run_group(config_name, group_name, df_group, feature_cols=None):
         headers=["Component","Coeff","Odds Ratio","95% CI","Z-Stat","p-Value","Significant?"],
         tablefmt="github"))
 
-    print(f"\n── TOP RATIO LOADINGS PER PCA COMPONENT ──────────────────────")
-    loadings = pd.DataFrame(pca_final.components_.T, index=kept,
-                            columns=[f"PC{i+1}" for i in range(n_comp)])
-    for comp_name in loadings.columns:
-        top       = loadings[comp_name].abs().nlargest(3).index.tolist()
-        top_named = [ratio_labels.get(r, r) for r in top]
-        print(f"  {comp_name}: {', '.join(top_named)}")
-
     print(f"\n── GROUP CONCLUSION ──────────────────────────────────────────")
     print(f"  Group         : {group_name}")
     print(f"  Configuration : {config_name}")
@@ -285,16 +321,24 @@ def run_group(config_name, group_name, df_group, feature_cols=None):
         'N': len(df),
         'AUC': round(auc, 4),
         'Accuracy': best_acc,
+        'Sensitivity': round(sensitivity*100, 1),
+        'Specificity': round(specificity*100, 1),
+        'TP': int(tp), 'TN': int(tn), 'FP': int(fp), 'FN': int(fn),
         'LR p-value': round(result.llr_pvalue, 4),
+        'McFadden_R2': round(result.prsquared, 4),
         'Significant': result.llr_pvalue < 0.05,
         'Sig Components': f"{n_sig_comps}/{n_comp}",
+        'Cutoff': best_cut,
+        'PCA_Components': n_comp,
+        'Features_After_VIF': len(kept),
     })
 
 
 print("\n" + "="*65)
-print("  ADVANCED SEGMENTATION ANALYSIS")
+print("  ADVANCED SEGMENTATION ANALYSIS — WITH DELTA FEATURES")
 print("  S&P 500 | Q1 2010 – Q4 2024 | WRDS (lanagidan9790)")
 print("  Predicting: NEXT quarter outperformance using CURRENT quarter ratios")
+print("  Features: 14 base ratios + 10 QoQ delta features = 24 total")
 print("  Reference: Ananthakumar & Sarkar (2017) — VIF cutoff=2.5, PCA ≥80%")
 print("="*65)
 
@@ -367,10 +411,9 @@ print(tabulate(
 print("\n── CONFIGURATION-LEVEL SUMMARY ───────────────────────────────")
 config_summary = []
 for cfg in df_all['Configuration'].unique():
-    sub    = df_all[df_all['Configuration'] == cfg]
-    valid  = sub[sub['Sig'] == '✓']
-    w_auc  = (sub['AUC'] * sub['N']).sum() / sub['N'].sum()
-    n_sig  = sub['Significant'].sum()
+    sub   = df_all[df_all['Configuration'] == cfg]
+    w_auc = (sub['AUC'] * sub['N']).sum() / sub['N'].sum()
+    n_sig = sub['Significant'].sum()
     config_summary.append([cfg, len(sub), round(w_auc, 4),
                            f"{n_sig}/{len(sub)}", round(sub['Accuracy'].mean(), 1)])
 config_summary.sort(key=lambda x: x[2], reverse=True)
@@ -394,6 +437,7 @@ print(f"  AUC           : {best_group['AUC']:.4f}")
 print(f"  Accuracy      : {best_group['Accuracy']}%")
 print(f"  Sig Components: {best_group['Sig Components']}")
 print(f"\n  Methodology   : VIF≤2.5 → PCA≥80% → Logistic Regression")
+print(f"  Features      : 14 base ratios + 10 QoQ delta features = 24 total")
 print(f"  Horizon       : Q[t] ratios → Q[t+1] outperformance (shift=-1)")
 print(f"  Benchmark     : Ananthakumar & Sarkar (2017) — 71.2% accuracy")
 print("="*65 + "\n")
