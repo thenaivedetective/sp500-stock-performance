@@ -259,3 +259,24 @@ print(f"  Pseudo R²     : {result.prsquared:.4f}  →  <1% of variance explaine
 sig_comps = [f"PC{i+1}" for i in range(n_comp) if result.pvalues[i+1] < 0.05]
 print(f"  Significant PCA components ({len(sig_comps)}/{n_comp}): {', '.join(sig_comps) if sig_comps else 'None'}")
 print("="*65 + "\n")
+
+summary = {
+    'N': len(df),
+    'Outperformers': int(y.sum()),
+    'Outperformer_Rate': round(y.mean()*100, 1),
+    'Predictors_After_VIF': len(kept),
+    'PCA_Components': n_comp,
+    'AUC': round(auc, 4),
+    'Accuracy': best_acc,
+    'Cutoff': best_cutoff,
+    'Sensitivity': round(sensitivity*100, 1),
+    'Specificity': round(specificity*100, 1),
+    'LR_pvalue': round(result.llr_pvalue, 4),
+    'LR_Statistic': round(result.llr, 2),
+    'McFadden_R2': round(result.prsquared, 4),
+    'Significant': result.llr_pvalue < 0.05,
+    'Sig_Components': f"{len(sig_comps)}/{n_comp}",
+    'Kept_Predictors': ', '.join([ratio_labels.get(k,k) for k in kept]),
+}
+pd.DataFrame([summary]).to_csv('results_preliminary.txt', sep='\t', index=False)
+print("  Results saved to: results_preliminary.txt")
