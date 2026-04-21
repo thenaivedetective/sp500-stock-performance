@@ -29,8 +29,8 @@ msf = query(f"""
     FROM crsp.msf m
     JOIN crsp.msenames n
       ON m.permno = n.permno
-      AND m.date BETWEEN n.namedt AND COALESCE(n.nameendt, '2024-12-31')
-    WHERE m.date BETWEEN '2010-01-01' AND '2024-12-31'
+      AND m.date BETWEEN n.namedt AND COALESCE(n.nameendt, '2025-12-31')
+    WHERE m.date BETWEEN '2010-01-01' AND '2025-12-31'
     AND n.ticker IN {tickers}
     AND m.ret IS NOT NULL
     ORDER BY n.ticker, m.date

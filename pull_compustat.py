@@ -38,7 +38,7 @@ fundq = query(f"""
         actq, lctq, cheq, dpq, txtq
     FROM comp_na_daily_all.fundq
     WHERE gvkey IN {gvkeys}
-    AND datadate BETWEEN '2010-01-01' AND '2024-12-31'
+    AND datadate BETWEEN '2010-01-01' AND '2025-12-31'
     AND indfmt = 'INDL'
     AND datafmt = 'STD'
     AND popsrc = 'D'
