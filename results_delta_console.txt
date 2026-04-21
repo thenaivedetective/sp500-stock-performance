@@ -1,0 +1,2029 @@
+
+=================================================================
+  DELTA FEATURE ANALYSIS — LEVELS + QoQ CHANGES
+  S&P 500 | Q1 2010 – Q4 2024 | WRDS (lanagidan9790)
+  Features: 14 ratio levels + 10 delta (QoQ change) features
+  Predicting: Q[t] ratios+deltas → Q[t+1] outperformance
+  Reference: Ananthakumar & Sarkar (2017) — VIF cutoff=2.5, PCA ≥80%
+=================================================================
+
+
+=================================================================
+  CONFIGURATION 1: MARKET CAP SEGMENTATION
+=================================================================
+
+=================================================================
+  LARGE CAP
+  N=5,634 | Outperformers=49.2% | Config: Market Cap Segmentation
+  Levels kept: 11 | Delta features kept: 9/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5572  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5547  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0025 | > 0 = improved | SIMILAR       |
+| Accuracy          | 54.2%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0000  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0077  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 45.5%   | Higher better  | —             |
+| Specificity       | 62.5%   | Higher better  | —             |
+| PCA Components    | 11      | ≥80% variance  | —             |
+| Sig Components    | 4/11    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔOp Margin, ΔNet Margin, Rev Growth ← delta-driven
+  PC2: Gross Margin, Current Ratio, ROA
+  PC3: ΔROE, ΔDebt/Equity, Debt/Equity ← delta-driven
+  PC4: Book/Market, Asset Turnover, ΔGross Margin ← delta-driven
+  PC5: P/E Ratio, ΔP/E Ratio, ROA ← delta-driven
+  PC6: Asset Turnover, Gross Margin, Rev Growth
+  PC7: Inflation, GDP Growth, ΔAsset Turnover ← delta-driven
+  PC8: ΔBook/Market, ΔGross Margin, ΔOp Margin ← delta-driven
+  PC9: ΔCurrent Ratio, ΔBook/Market, Current Ratio ← delta-driven
+  PC10: ΔBook/Market, Debt/Equity, NI Growth ← delta-driven
+  PC11: Debt/Equity, ΔDebt/Equity, NI Growth ← delta-driven
+
+=================================================================
+  MID CAP
+  N=5,614 | Outperformers=50.5% | Config: Market Cap Segmentation
+  Levels kept: 12 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5420  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5476  | Levels only    | —             |
+| AUC Change (Δ)    | -0.0056 | > 0 = improved | DECLINED      |
+| Accuracy          | 52.8%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0013  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0041  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 59.6%   | Higher better  | —             |
+| Specificity       | 45.9%   | Higher better  | —             |
+| PCA Components    | 12      | ≥80% variance  | —             |
+| Sig Components    | 2/12    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ROA, ΔNet Margin, Op Margin ← delta-driven
+  PC2: Gross Margin, Op Margin, Rev Growth
+  PC3: ΔP/E Ratio, P/E Ratio, Asset Turnover ← delta-driven
+  PC4: ΔROE, ΔDebt/Equity, ΔAsset Turnover ← delta-driven
+  PC5: Asset Turnover, ROA, Book/Market
+  PC6: ΔDebt/Equity, NI Growth, Book/Market ← delta-driven
+  PC7: Inflation, GDP Growth, ΔAsset Turnover ← delta-driven
+  PC8: ΔCurrent Ratio, Current Ratio, Book/Market ← delta-driven
+  PC9: ΔBook/Market, ΔGross Margin, ΔCurrent Ratio ← delta-driven
+  PC10: Debt/Equity, ΔCurrent Ratio, ΔROE ← delta-driven
+  PC11: ΔGross Margin, Current Ratio, NI Growth ← delta-driven
+  PC12: Current Ratio, Debt/Equity, ΔCurrent Ratio ← delta-driven
+
+=================================================================
+  SMALL CAP
+  N=5,341 | Outperformers=53.7% | Config: Market Cap Segmentation
+  Levels kept: 12 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5353  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5322  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0031 | > 0 = improved | SIMILAR         |
+| Accuracy          | 54.5%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.0923  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0026  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 92.4%   | Higher better  | —               |
+| Specificity       | 10.7%   | Higher better  | —               |
+| PCA Components    | 12      | ≥80% variance  | —               |
+| Sig Components    | 3/12    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔNet Margin, Rev Growth, NI Growth ← delta-driven
+  PC2: Gross Margin, Op Margin, Current Ratio
+  PC3: ROE, Debt/Equity, ΔAsset Turnover ← delta-driven
+  PC4: ΔP/E Ratio, P/E Ratio, Asset Turnover ← delta-driven
+  PC5: Book/Market, Asset Turnover, ΔBook/Market ← delta-driven
+  PC6: Asset Turnover, Inflation, GDP Growth
+  PC7: Inflation, GDP Growth, ΔAsset Turnover ← delta-driven
+  PC8: ΔCurrent Ratio, ΔBook/Market, Current Ratio ← delta-driven
+  PC9: ΔBook/Market, ΔDebt/Equity, ΔCurrent Ratio ← delta-driven
+  PC10: ΔCurrent Ratio, ΔBook/Market, ΔDebt/Equity ← delta-driven
+  PC11: ΔBook/Market, ΔDebt/Equity, ΔGross Margin ← delta-driven
+  PC12: ΔGross Margin, NI Growth, Inflation ← delta-driven
+
+
+=================================================================
+  CONFIGURATION 2: SECTOR SEGMENTATION (GICS)
+=================================================================
+
+=================================================================
+  COMMUNICATION SERVICES
+  N=415 | Outperformers=53.7% | Config: Sector GICS
+  Levels kept: 11 | Delta features kept: 9/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.6197  | ≥ 0.70 good    | Moderate        |
+| Baseline AUC      | 0.5962  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0235 | > 0 = improved | IMPROVED        |
+| Accuracy          | 60.7%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.1831  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0262  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 61.4%   | Higher better  | —               |
+| Specificity       | 59.9%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 1/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROA
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔOp Margin, ΔROA, NI Growth ← delta-driven
+  PC2: ΔDebt/Equity, Asset Turnover, ΔAsset Turnover ← delta-driven
+  PC3: Gross Margin, Op Margin, Current Ratio
+  PC4: Book/Market, Asset Turnover, ROE
+  PC5: Inflation, Debt/Equity, GDP Growth
+  PC6: Debt/Equity, ΔAsset Turnover, GDP Growth ← delta-driven
+  PC7: ΔP/E Ratio, NI Growth, GDP Growth ← delta-driven
+  PC8: ΔBook/Market, ΔAsset Turnover, ΔP/E Ratio ← delta-driven
+  PC9: ΔCurrent Ratio, GDP Growth, ΔGross Margin ← delta-driven
+  PC10: Inflation, ΔROE, ΔDebt/Equity ← delta-driven
+  PC11: ΔDebt/Equity, Current Ratio, ΔGross Margin ← delta-driven
+
+=================================================================
+  CONSUMER DISCRETIONARY
+  N=2,364 | Outperformers=53.8% | Config: Sector GICS
+  Levels kept: 11 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5426  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5372  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0054 | > 0 = improved | IMPROVED        |
+| Accuracy          | 54.1%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.4917  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0032  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 89.0%   | Higher better  | —               |
+| Specificity       | 13.5%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 1/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROA
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔROA, NI Growth, ΔROE ← delta-driven
+  PC2: Debt/Equity, ROE, Gross Margin
+  PC3: Gross Margin, Current Ratio, ΔDebt/Equity ← delta-driven
+  PC4: P/E Ratio, ΔP/E Ratio, Asset Turnover ← delta-driven
+  PC5: Book/Market, ΔBook/Market, ΔDebt/Equity ← delta-driven
+  PC6: Inflation, GDP Growth, Asset Turnover
+  PC7: ROE, ΔROE, ΔDebt/Equity ← delta-driven
+  PC8: ΔCurrent Ratio, Debt/Equity, ΔGross Margin ← delta-driven
+  PC9: ΔBook/Market, ΔAsset Turnover, Current Ratio ← delta-driven
+  PC10: ΔGross Margin, ΔAsset Turnover, ΔBook/Market ← delta-driven
+  PC11: Inflation, Current Ratio, ΔGross Margin ← delta-driven
+
+=================================================================
+  CONSUMER STAPLES
+  N=991 | Outperformers=45.9% | Config: Sector GICS
+  Levels kept: 9 | Delta features kept: 9/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5616  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5522  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0094 | > 0 = improved | IMPROVED        |
+| Accuracy          | 55.4%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.1615  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0113  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 7.3%    | Higher better  | —               |
+| Specificity       | 96.3%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 1/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔNet Margin, NI Growth, Net Margin ← delta-driven
+  PC2: P/E Ratio, ΔP/E Ratio, ΔGross Margin ← delta-driven
+  PC3: ΔGross Margin, ΔOp Margin, ΔP/E Ratio ← delta-driven
+  PC4: Asset Turnover, Current Ratio, Book/Market
+  PC5: Debt/Equity, ΔDebt/Equity, Inflation ← delta-driven
+  PC6: ΔAsset Turnover, ΔCurrent Ratio, GDP Growth ← delta-driven
+  PC7: ΔDebt/Equity, GDP Growth, Inflation ← delta-driven
+  PC8: ΔAsset Turnover, ΔBook/Market, Book/Market ← delta-driven
+  PC9: ΔCurrent Ratio, ΔAsset Turnover, Asset Turnover ← delta-driven
+  PC10: ΔBook/Market, ΔDebt/Equity, Debt/Equity ← delta-driven
+  PC11: Debt/Equity, GDP Growth, Book/Market
+
+=================================================================
+  ENERGY
+  N=253 | Outperformers=56.1% | Config: Sector GICS
+  Levels kept: 9 | Delta features kept: 7/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.6242  | ≥ 0.70 good    | Moderate      |
+| Baseline AUC      | 0.6085  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0157 | > 0 = improved | IMPROVED      |
+| Accuracy          | 60.5%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0284  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0537  | ≥ 0.20 good    | Weak          |
+| Sensitivity       | 90.1%   | Higher better  | —             |
+| Specificity       | 22.5%   | Higher better  | —             |
+| PCA Components    | 9       | ≥80% variance  | —             |
+| Sig Components    | 3/9     | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔROE, NI Growth, ΔGross Margin ← delta-driven
+  PC2: Debt/Equity, P/E Ratio, Current Ratio
+  PC3: ΔAsset Turnover, GDP Growth, ΔCurrent Ratio ← delta-driven
+  PC4: Current Ratio, Asset Turnover, ΔP/E Ratio ← delta-driven
+  PC5: ΔP/E Ratio, GDP Growth, P/E Ratio ← delta-driven
+  PC6: ΔBook/Market, ΔCurrent Ratio, Asset Turnover ← delta-driven
+  PC7: Op Margin, Debt/Equity, ΔCurrent Ratio ← delta-driven
+  PC8: Book/Market, Op Margin, ΔBook/Market ← delta-driven
+  PC9: ΔGross Margin, GDP Growth, NI Growth ← delta-driven
+
+=================================================================
+  FINANCIALS
+  N=813 | Outperformers=56.5% | Config: Sector GICS
+  Levels kept: 11 | Delta features kept: 7/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5584  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5406  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0178 | > 0 = improved | IMPROVED        |
+| Accuracy          | 57.4%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.5235  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0090  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 92.8%   | Higher better  | —               |
+| Specificity       | 11.6%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 0/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ROA, Book/Market, Current Ratio
+  PC2: NI Growth, ΔNet Margin, P/E Ratio ← delta-driven
+  PC3: P/E Ratio, ΔP/E Ratio, NI Growth ← delta-driven
+  PC4: Asset Turnover, Gross Margin, Rev Growth
+  PC5: ΔP/E Ratio, Debt/Equity, Asset Turnover ← delta-driven
+  PC6: Inflation, GDP Growth, Asset Turnover
+  PC7: ΔCurrent Ratio, ΔROE, ΔNet Margin ← delta-driven
+  PC8: ΔBook/Market, Debt/Equity, ΔCurrent Ratio ← delta-driven
+  PC9: ΔBook/Market, ΔCurrent Ratio, Debt/Equity ← delta-driven
+  PC10: ΔGross Margin, Debt/Equity, ΔROE ← delta-driven
+  PC11: ΔGross Margin, GDP Growth, ΔROE ← delta-driven
+
+=================================================================
+  HEALTH CARE
+  N=1,063 | Outperformers=52.2% | Config: Sector GICS
+  Levels kept: 10 | Delta features kept: 9/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5883  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5923  | Levels only    | —             |
+| AUC Change (Δ)    | -0.0040 | > 0 = improved | SIMILAR       |
+| Accuracy          | 56.0%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0119  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0164  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 67.7%   | Higher better  | —             |
+| Specificity       | 43.1%   | Higher better  | —             |
+| PCA Components    | 11      | ≥80% variance  | —             |
+| Sig Components    | 1/11    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔOp Margin, Rev Growth, ΔAsset Turnover ← delta-driven
+  PC2: ΔROE, ΔAsset Turnover, Rev Growth ← delta-driven
+  PC3: Book/Market, ΔROE, Current Ratio ← delta-driven
+  PC4: ΔP/E Ratio, P/E Ratio, ΔDebt/Equity ← delta-driven
+  PC5: NI Growth, ΔP/E Ratio, ΔDebt/Equity ← delta-driven
+  PC6: Inflation, ΔGross Margin, Asset Turnover ← delta-driven
+  PC7: Asset Turnover, ΔCurrent Ratio, ΔBook/Market ← delta-driven
+  PC8: ΔGross Margin, ΔBook/Market, Inflation ← delta-driven
+  PC9: ΔCurrent Ratio, GDP Growth, Inflation ← delta-driven
+  PC10: ΔBook/Market, ΔGross Margin, NI Growth ← delta-driven
+  PC11: Debt/Equity, Asset Turnover, GDP Growth
+
+=================================================================
+  INDUSTRIALS
+  N=3,704 | Outperformers=52.8% | Config: Sector GICS
+  Levels kept: 11 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5538  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5491  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0047 | > 0 = improved | SIMILAR       |
+| Accuracy          | 53.6%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0049  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0052  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 82.6%   | Higher better  | —             |
+| Specificity       | 21.1%   | Higher better  | —             |
+| PCA Components    | 11      | ≥80% variance  | —             |
+| Sig Components    | 2/11    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: Rev Growth, ΔNet Margin, ΔAsset Turnover ← delta-driven
+  PC2: Gross Margin, P/E Ratio, Asset Turnover
+  PC3: ΔP/E Ratio, P/E Ratio, Gross Margin ← delta-driven
+  PC4: ΔDebt/Equity, Debt/Equity, ΔROE ← delta-driven
+  PC5: Asset Turnover, ΔAsset Turnover, Gross Margin ← delta-driven
+  PC6: Book/Market, ΔDebt/Equity, Inflation ← delta-driven
+  PC7: Current Ratio, Inflation, ΔCurrent Ratio ← delta-driven
+  PC8: GDP Growth, ΔCurrent Ratio, Inflation ← delta-driven
+  PC9: ΔBook/Market, ΔGross Margin, ΔCurrent Ratio ← delta-driven
+  PC10: Debt/Equity, ΔCurrent Ratio, ΔROE ← delta-driven
+  PC11: ΔGross Margin, NI Growth, ΔAsset Turnover ← delta-driven
+
+=================================================================
+  INFORMATION TECHNOLOGY
+  N=2,136 | Outperformers=54.6% | Config: Sector GICS
+  Levels kept: 10 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5483  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5482  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0001 | > 0 = improved | SIMILAR         |
+| Accuracy          | 54.7%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.3780  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0040  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 91.8%   | Higher better  | —               |
+| Specificity       | 10.1%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 0/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔNet Margin, NI Growth, ΔGross Margin ← delta-driven
+  PC2: Gross Margin, Asset Turnover, Op Margin
+  PC3: P/E Ratio, ΔP/E Ratio, Book/Market ← delta-driven
+  PC4: ΔDebt/Equity, Debt/Equity, ΔROE ← delta-driven
+  PC5: Inflation, GDP Growth, ΔP/E Ratio ← delta-driven
+  PC6: GDP Growth, Book/Market, Inflation
+  PC7: Current Ratio, ΔCurrent Ratio, Asset Turnover ← delta-driven
+  PC8: ΔBook/Market, Asset Turnover, Book/Market ← delta-driven
+  PC9: ΔAsset Turnover, ΔCurrent Ratio, Current Ratio ← delta-driven
+  PC10: ΔGross Margin, ΔAsset Turnover, ΔCurrent Ratio ← delta-driven
+  PC11: Debt/Equity, ΔAsset Turnover, ΔROE ← delta-driven
+
+=================================================================
+  MATERIALS
+  N=2,671 | Outperformers=47.0% | Config: Sector GICS
+  Levels kept: 11 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5818  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5808  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0010 | > 0 = improved | SIMILAR       |
+| Accuracy          | 56.3%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0000  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0149  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 35.1%   | Higher better  | —             |
+| Specificity       | 75.2%   | Higher better  | —             |
+| PCA Components    | 11      | ≥80% variance  | —             |
+| Sig Components    | 5/11    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔNet Margin, Net Margin, NI Growth ← delta-driven
+  PC2: P/E Ratio, ΔP/E Ratio, ΔAsset Turnover ← delta-driven
+  PC3: ΔDebt/Equity, ΔROE, Debt/Equity ← delta-driven
+  PC4: Asset Turnover, Book/Market, Current Ratio
+  PC5: ΔP/E Ratio, Book/Market, P/E Ratio ← delta-driven
+  PC6: Asset Turnover, Inflation, GDP Growth
+  PC7: GDP Growth, Inflation, ΔAsset Turnover ← delta-driven
+  PC8: ΔCurrent Ratio, Current Ratio, Asset Turnover ← delta-driven
+  PC9: ΔBook/Market, ΔCurrent Ratio, Inflation ← delta-driven
+  PC10: Debt/Equity, ΔROE, ΔGross Margin ← delta-driven
+  PC11: ΔGross Margin, NI Growth, GDP Growth ← delta-driven
+
+=================================================================
+  REAL ESTATE
+  N=217 | Outperformers=49.3% | Config: Sector GICS
+  Levels kept: 10 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.6260  | ≥ 0.70 good    | Moderate        |
+| Baseline AUC      | 0.6209  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0051 | > 0 = improved | IMPROVED        |
+| Accuracy          | 59.9%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.4053  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0346  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 61.7%   | Higher better  | —               |
+| Specificity       | 58.2%   | Higher better  | —               |
+| PCA Components    | 10      | ≥80% variance  | —               |
+| Sig Components    | 0/10    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ROA, ΔOp Margin, ΔROE ← delta-driven
+  PC2: Book/Market, Asset Turnover, ΔDebt/Equity ← delta-driven
+  PC3: P/E Ratio, ΔP/E Ratio, Rev Growth ← delta-driven
+  PC4: ΔCurrent Ratio, Rev Growth, ΔAsset Turnover ← delta-driven
+  PC5: ΔDebt/Equity, ΔBook/Market, ΔP/E Ratio ← delta-driven
+  PC6: Inflation, GDP Growth, Current Ratio
+  PC7: Debt/Equity, ΔBook/Market, ΔCurrent Ratio ← delta-driven
+  PC8: Debt/Equity, Book/Market, GDP Growth
+  PC9: Current Ratio, ΔROE, ΔP/E Ratio ← delta-driven
+  PC10: ΔCurrent Ratio, ΔDebt/Equity, Inflation ← delta-driven
+
+=================================================================
+  UTILITIES
+  N=1,697 | Outperformers=44.8% | Config: Sector GICS
+  Levels kept: 10 | Delta features kept: 7/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5672  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5558  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0114 | > 0 = improved | IMPROVED      |
+| Accuracy          | 57.6%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0218  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0096  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 19.2%   | Higher better  | —             |
+| Specificity       | 88.7%   | Higher better  | —             |
+| PCA Components    | 11      | ≥80% variance  | —             |
+| Sig Components    | 3/11    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: Net Margin, Gross Margin, ΔROE ← delta-driven
+  PC2: P/E Ratio, ΔP/E Ratio, Asset Turnover ← delta-driven
+  PC3: ΔP/E Ratio, P/E Ratio, Asset Turnover ← delta-driven
+  PC4: Current Ratio, Book/Market, Gross Margin
+  PC5: GDP Growth, Inflation, Debt/Equity
+  PC6: ΔCurrent Ratio, ΔDebt/Equity, Gross Margin ← delta-driven
+  PC7: ΔAsset Turnover, ΔBook/Market, Debt/Equity ← delta-driven
+  PC8: ΔDebt/Equity, Book/Market, NI Growth ← delta-driven
+  PC9: ΔBook/Market, ΔAsset Turnover, GDP Growth ← delta-driven
+  PC10: ΔGross Margin, ΔDebt/Equity, ΔBook/Market ← delta-driven
+  PC11: Inflation, GDP Growth, Debt/Equity
+
+
+=================================================================
+  CONFIGURATION 3: SECTOR + MARKET CAP COVARIATE
+=================================================================
+
+=================================================================
+  COMMUNICATION SERVICES [+MKTCAP]
+  N=415 | Outperformers=53.7% | Config: Sector + Market Cap Covariate
+  Levels kept: 11 | Delta features kept: 9/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.6193  | ≥ 0.70 good    | Moderate        |
+| Baseline AUC      | 0.5904  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0289 | > 0 = improved | IMPROVED        |
+| Accuracy          | 60.5%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.1269  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0286  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 80.3%   | Higher better  | —               |
+| Specificity       | 37.5%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 1/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROA
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔROA, ΔOp Margin, NI Growth ← delta-driven
+  PC2: Current Ratio, Log MktCap, Gross Margin
+  PC3: P/E Ratio, ΔDebt/Equity, Debt/Equity ← delta-driven
+  PC4: Book/Market, Asset Turnover, ROE
+  PC5: Inflation, GDP Growth, ΔCurrent Ratio ← delta-driven
+  PC6: Debt/Equity, ΔP/E Ratio, P/E Ratio ← delta-driven
+  PC7: ΔP/E Ratio, NI Growth, GDP Growth ← delta-driven
+  PC8: ΔBook/Market, ΔAsset Turnover, ΔP/E Ratio ← delta-driven
+  PC9: ΔCurrent Ratio, GDP Growth, ΔGross Margin ← delta-driven
+  PC10: Inflation, ΔDebt/Equity, ΔROE ← delta-driven
+  PC11: ΔAsset Turnover, NI Growth, GDP Growth ← delta-driven
+
+=================================================================
+  CONSUMER DISCRETIONARY [+MKTCAP]
+  N=2,364 | Outperformers=53.8% | Config: Sector + Market Cap Covariate
+  Levels kept: 12 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5567  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5523  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0044 | > 0 = improved | SIMILAR       |
+| Accuracy          | 54.9%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0279  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0070  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 80.8%   | Higher better  | —             |
+| Specificity       | 24.7%   | Higher better  | —             |
+| PCA Components    | 12      | ≥80% variance  | —             |
+| Sig Components    | 2/12    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROA
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔROA, NI Growth, Op Margin ← delta-driven
+  PC2: ROE, Debt/Equity, Gross Margin
+  PC3: Current Ratio, Log MktCap, ΔDebt/Equity ← delta-driven
+  PC4: P/E Ratio, ΔP/E Ratio, Book/Market ← delta-driven
+  PC5: Book/Market, ΔDebt/Equity, NI Growth ← delta-driven
+  PC6: Inflation, GDP Growth, Asset Turnover
+  PC7: ROE, ΔROE, ΔDebt/Equity ← delta-driven
+  PC8: ΔBook/Market, ΔCurrent Ratio, Log MktCap ← delta-driven
+  PC9: ΔCurrent Ratio, ΔBook/Market, Current Ratio ← delta-driven
+  PC10: ΔGross Margin, ΔBook/Market, ΔAsset Turnover ← delta-driven
+  PC11: ΔBook/Market, Asset Turnover, ΔGross Margin ← delta-driven
+  PC12: Inflation, NI Growth, ΔAsset Turnover ← delta-driven
+
+=================================================================
+  CONSUMER STAPLES [+MKTCAP]
+  N=991 | Outperformers=45.9% | Config: Sector + Market Cap Covariate
+  Levels kept: 10 | Delta features kept: 9/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5706  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5783  | Levels only    | —               |
+| AUC Change (Δ)    | -0.0077 | > 0 = improved | DECLINED        |
+| Accuracy          | 56.2%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.0950  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0128  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 21.5%   | Higher better  | —               |
+| Specificity       | 85.6%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 1/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: Net Margin, ΔNet Margin, NI Growth ← delta-driven
+  PC2: Log MktCap, Book/Market, Asset Turnover
+  PC3: P/E Ratio, ΔP/E Ratio, ΔNet Margin ← delta-driven
+  PC4: ΔGross Margin, ΔOp Margin, ΔP/E Ratio ← delta-driven
+  PC5: Debt/Equity, ΔDebt/Equity, ΔROE ← delta-driven
+  PC6: Inflation, GDP Growth, ΔCurrent Ratio ← delta-driven
+  PC7: ΔDebt/Equity, GDP Growth, Current Ratio ← delta-driven
+  PC8: ΔAsset Turnover, Asset Turnover, ΔBook/Market ← delta-driven
+  PC9: ΔCurrent Ratio, ΔAsset Turnover, ΔBook/Market ← delta-driven
+  PC10: ΔBook/Market, ΔDebt/Equity, ΔCurrent Ratio ← delta-driven
+  PC11: Debt/Equity, GDP Growth, ΔDebt/Equity ← delta-driven
+
+=================================================================
+  ENERGY [+MKTCAP]
+  N=253 | Outperformers=56.1% | Config: Sector + Market Cap Covariate
+  Levels kept: 10 | Delta features kept: 7/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.6727  | ≥ 0.70 good    | Moderate      |
+| Baseline AUC      | 0.6434  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0293 | > 0 = improved | IMPROVED      |
+| Accuracy          | 64.0%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0047  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0685  | ≥ 0.20 good    | Weak          |
+| Sensitivity       | 78.9%   | Higher better  | —             |
+| Specificity       | 45.0%   | Higher better  | —             |
+| PCA Components    | 9       | ≥80% variance  | —             |
+| Sig Components    | 1/9     | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔROE, NI Growth, ΔGross Margin ← delta-driven
+  PC2: Debt/Equity, Book/Market, P/E Ratio
+  PC3: ΔAsset Turnover, GDP Growth, ΔCurrent Ratio ← delta-driven
+  PC4: Log MktCap, Asset Turnover, Debt/Equity
+  PC5: Current Ratio, ΔCurrent Ratio, ΔP/E Ratio ← delta-driven
+  PC6: ΔP/E Ratio, GDP Growth, P/E Ratio ← delta-driven
+  PC7: ΔBook/Market, Asset Turnover, Inflation ← delta-driven
+  PC8: Book/Market, ΔCurrent Ratio, Asset Turnover ← delta-driven
+  PC9: Net Margin, Log MktCap, ΔAsset Turnover ← delta-driven
+
+=================================================================
+  FINANCIALS [+MKTCAP]
+  N=813 | Outperformers=56.5% | Config: Sector + Market Cap Covariate
+  Levels kept: 12 | Delta features kept: 7/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5605  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5541  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0064 | > 0 = improved | IMPROVED        |
+| Accuracy          | 58.1%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.4881  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0094  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 93.0%   | Higher better  | —               |
+| Specificity       | 12.7%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 0/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ROA, Book/Market, Gross Margin
+  PC2: NI Growth, ΔNet Margin, P/E Ratio ← delta-driven
+  PC3: P/E Ratio, ΔP/E Ratio, NI Growth ← delta-driven
+  PC4: Inflation, Log MktCap, GDP Growth
+  PC5: Asset Turnover, Gross Margin, Rev Growth
+  PC6: Debt/Equity, ΔP/E Ratio, ΔROE ← delta-driven
+  PC7: GDP Growth, Inflation, ΔCurrent Ratio ← delta-driven
+  PC8: ΔBook/Market, Debt/Equity, ΔCurrent Ratio ← delta-driven
+  PC9: ΔBook/Market, Debt/Equity, ΔGross Margin ← delta-driven
+  PC10: ΔCurrent Ratio, GDP Growth, ΔROE ← delta-driven
+  PC11: ΔGross Margin, ΔAsset Turnover, Debt/Equity ← delta-driven
+
+=================================================================
+  HEALTH CARE [+MKTCAP]
+  N=1,063 | Outperformers=52.2% | Config: Sector + Market Cap Covariate
+  Levels kept: 11 | Delta features kept: 9/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5854  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5913  | Levels only    | —             |
+| AUC Change (Δ)    | -0.0059 | > 0 = improved | DECLINED      |
+| Accuracy          | 56.4%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0176  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0156  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 67.9%   | Higher better  | —             |
+| Specificity       | 43.9%   | Higher better  | —             |
+| PCA Components    | 11      | ≥80% variance  | —             |
+| Sig Components    | 2/11    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔOp Margin, Rev Growth, ΔAsset Turnover ← delta-driven
+  PC2: ΔROE, ΔAsset Turnover, Rev Growth ← delta-driven
+  PC3: Book/Market, P/E Ratio, ΔROE ← delta-driven
+  PC4: ΔP/E Ratio, P/E Ratio, ΔDebt/Equity ← delta-driven
+  PC5: ΔP/E Ratio, NI Growth, ΔDebt/Equity ← delta-driven
+  PC6: Log MktCap, Inflation, Current Ratio
+  PC7: ΔGross Margin, Log MktCap, ΔBook/Market ← delta-driven
+  PC8: Asset Turnover, ΔCurrent Ratio, ΔBook/Market ← delta-driven
+  PC9: ΔCurrent Ratio, Inflation, GDP Growth ← delta-driven
+  PC10: Asset Turnover, Log MktCap, ΔCurrent Ratio ← delta-driven
+  PC11: ΔBook/Market, ΔGross Margin, NI Growth ← delta-driven
+
+=================================================================
+  INDUSTRIALS [+MKTCAP]
+  N=3,704 | Outperformers=52.8% | Config: Sector + Market Cap Covariate
+  Levels kept: 12 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5628  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5488  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0140 | > 0 = improved | IMPROVED      |
+| Accuracy          | 54.8%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0015  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0062  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 80.9%   | Higher better  | —             |
+| Specificity       | 25.6%   | Higher better  | —             |
+| PCA Components    | 12      | ≥80% variance  | —             |
+| Sig Components    | 4/12    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: Rev Growth, ΔNet Margin, ΔAsset Turnover ← delta-driven
+  PC2: Gross Margin, Asset Turnover, Log MktCap
+  PC3: ΔP/E Ratio, P/E Ratio, ROA ← delta-driven
+  PC4: ΔROE, Book/Market, ΔDebt/Equity ← delta-driven
+  PC5: Asset Turnover, ROA, ΔAsset Turnover ← delta-driven
+  PC6: ΔDebt/Equity, Book/Market, Debt/Equity ← delta-driven
+  PC7: Current Ratio, ΔDebt/Equity, ΔCurrent Ratio ← delta-driven
+  PC8: Inflation, GDP Growth, ΔAsset Turnover ← delta-driven
+  PC9: ΔBook/Market, ΔGross Margin, ΔCurrent Ratio ← delta-driven
+  PC10: ΔCurrent Ratio, Debt/Equity, ΔBook/Market ← delta-driven
+  PC11: ΔGross Margin, NI Growth, Log MktCap ← delta-driven
+  PC12: Debt/Equity, Log MktCap, ΔGross Margin ← delta-driven
+
+=================================================================
+  INFORMATION TECHNOLOGY [+MKTCAP]
+  N=2,136 | Outperformers=54.6% | Config: Sector + Market Cap Covariate
+  Levels kept: 11 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5491  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5447  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0044 | > 0 = improved | SIMILAR         |
+| Accuracy          | 55.1%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.4001  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0043  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 92.0%   | Higher better  | —               |
+| Specificity       | 10.6%   | Higher better  | —               |
+| PCA Components    | 12      | ≥80% variance  | —               |
+| Sig Components    | 0/12    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔNet Margin, NI Growth, ΔGross Margin ← delta-driven
+  PC2: Gross Margin, Asset Turnover, Op Margin
+  PC3: P/E Ratio, ΔP/E Ratio, Current Ratio ← delta-driven
+  PC4: ΔDebt/Equity, Debt/Equity, ΔROE ← delta-driven
+  PC5: ΔP/E Ratio, Inflation, P/E Ratio ← delta-driven
+  PC6: GDP Growth, Book/Market, Inflation
+  PC7: Current Ratio, ΔCurrent Ratio, Asset Turnover ← delta-driven
+  PC8: ΔBook/Market, Log MktCap, GDP Growth ← delta-driven
+  PC9: ΔBook/Market, ΔCurrent Ratio, ΔAsset Turnover ← delta-driven
+  PC10: Log MktCap, Debt/Equity, ΔAsset Turnover ← delta-driven
+  PC11: ΔGross Margin, ΔAsset Turnover, ΔCurrent Ratio ← delta-driven
+  PC12: Debt/Equity, Log MktCap, ΔAsset Turnover ← delta-driven
+
+=================================================================
+  MATERIALS [+MKTCAP]
+  N=2,671 | Outperformers=47.0% | Config: Sector + Market Cap Covariate
+  Levels kept: 12 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5880  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5865  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0015 | > 0 = improved | SIMILAR       |
+| Accuracy          | 56.3%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0000  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0171  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 19.0%   | Higher better  | —             |
+| Specificity       | 89.4%   | Higher better  | —             |
+| PCA Components    | 11      | ≥80% variance  | —             |
+| Sig Components    | 5/11    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔNet Margin, Net Margin, NI Growth ← delta-driven
+  PC2: P/E Ratio, Gross Margin, ΔP/E Ratio ← delta-driven
+  PC3: ΔROE, ΔDebt/Equity, Book/Market ← delta-driven
+  PC4: Asset Turnover, Book/Market, Debt/Equity
+  PC5: ΔP/E Ratio, P/E Ratio, Gross Margin ← delta-driven
+  PC6: Asset Turnover, Book/Market, GDP Growth
+  PC7: GDP Growth, Inflation, Current Ratio
+  PC8: Current Ratio, ΔCurrent Ratio, GDP Growth ← delta-driven
+  PC9: ΔBook/Market, Inflation, ΔGross Margin ← delta-driven
+  PC10: ΔCurrent Ratio, Debt/Equity, Current Ratio ← delta-driven
+  PC11: Debt/Equity, ΔCurrent Ratio, Log MktCap ← delta-driven
+
+=================================================================
+  REAL ESTATE [+MKTCAP]
+  N=217 | Outperformers=49.3% | Config: Sector + Market Cap Covariate
+  Levels kept: 9 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.6255  | ≥ 0.70 good    | Moderate        |
+| Baseline AUC      | 0.6388  | Levels only    | —               |
+| AUC Change (Δ)    | -0.0133 | > 0 = improved | DECLINED        |
+| Accuracy          | 59.4%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.2671  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0408  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 62.6%   | Higher better  | —               |
+| Specificity       | 56.4%   | Higher better  | —               |
+| PCA Components    | 10      | ≥80% variance  | —               |
+| Sig Components    | 0/10    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔOp Margin, ΔGross Margin, ΔROE ← delta-driven
+  PC2: P/E Ratio, ΔP/E Ratio, Rev Growth ← delta-driven
+  PC3: ΔBook/Market, ΔDebt/Equity, Book/Market ← delta-driven
+  PC4: Rev Growth, ΔCurrent Ratio, P/E Ratio ← delta-driven
+  PC5: Inflation, GDP Growth, Book/Market
+  PC6: ROA, ΔGross Margin, ΔOp Margin ← delta-driven
+  PC7: Debt/Equity, Book/Market, GDP Growth
+  PC8: ΔCurrent Ratio, Current Ratio, ΔBook/Market ← delta-driven
+  PC9: ΔCurrent Ratio, ΔDebt/Equity, Current Ratio ← delta-driven
+  PC10: Inflation, GDP Growth, ΔBook/Market ← delta-driven
+
+=================================================================
+  UTILITIES [+MKTCAP]
+  N=1,697 | Outperformers=44.8% | Config: Sector + Market Cap Covariate
+  Levels kept: 11 | Delta features kept: 7/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5647  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5543  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0104 | > 0 = improved | IMPROVED      |
+| Accuracy          | 57.5%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0363  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0089  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 18.0%   | Higher better  | —             |
+| Specificity       | 89.4%   | Higher better  | —             |
+| PCA Components    | 11      | ≥80% variance  | —             |
+| Sig Components    | 1/11    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: Net Margin, Op Margin, ΔGross Margin ← delta-driven
+  PC2: P/E Ratio, ΔP/E Ratio, Asset Turnover ← delta-driven
+  PC3: Book/Market, ΔP/E Ratio, P/E Ratio ← delta-driven
+  PC4: Book/Market, Log MktCap, Current Ratio
+  PC5: GDP Growth, Inflation, Debt/Equity
+  PC6: ΔCurrent Ratio, ΔDebt/Equity, ΔROE ← delta-driven
+  PC7: ΔAsset Turnover, ΔBook/Market, ΔCurrent Ratio ← delta-driven
+  PC8: Debt/Equity, ΔDebt/Equity, Asset Turnover ← delta-driven
+  PC9: ΔBook/Market, NI Growth, GDP Growth ← delta-driven
+  PC10: ΔBook/Market, ΔAsset Turnover, ΔDebt/Equity ← delta-driven
+  PC11: Inflation, GDP Growth, ΔDebt/Equity ← delta-driven
+
+
+=================================================================
+  CONFIGURATION 4: SECTOR + CLUSTERING (K=2)
+=================================================================
+
+=================================================================
+  COMMUNICATION SERVICES — CLUSTER 0
+  N=297 | Outperformers=52.9% | Config: Sector + Clustering (k=2)
+  Levels kept: 11 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.6309  | ≥ 0.70 good    | Moderate        |
+| Baseline AUC      | 0.6133  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0176 | > 0 = improved | IMPROVED        |
+| Accuracy          | 59.6%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.2040  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0354  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 56.1%   | Higher better  | —               |
+| Specificity       | 63.6%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 1/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROA
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: Asset Turnover, Gross Margin, Op Margin
+  PC2: NI Growth, ΔROA, Book/Market ← delta-driven
+  PC3: ROE, ΔDebt/Equity, ΔAsset Turnover ← delta-driven
+  PC4: Inflation, Debt/Equity, GDP Growth
+  PC5: Debt/Equity, ΔGross Margin, ΔP/E Ratio ← delta-driven
+  PC6: ΔP/E Ratio, Current Ratio, Op Margin ← delta-driven
+  PC7: ΔBook/Market, Book/Market, ΔROE ← delta-driven
+  PC8: Current Ratio, Gross Margin, ΔGross Margin ← delta-driven
+  PC9: ΔCurrent Ratio, Inflation, Book/Market ← delta-driven
+  PC10: ΔDebt/Equity, ΔROE, ΔCurrent Ratio ← delta-driven
+  PC11: Op Margin, Book/Market, ΔDebt/Equity ← delta-driven
+
+=================================================================
+  COMMUNICATION SERVICES — CLUSTER 1
+  N=118 | Outperformers=55.9% | Config: Sector + Clustering (k=2)
+  Levels kept: 6 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.7038  | ≥ 0.70 good    | Strong        |
+| Baseline AUC      | 0.6249  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0789 | > 0 = improved | IMPROVED      |
+| Accuracy          | 65.3%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0165  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.1156  | ≥ 0.20 good    | Weak          |
+| Sensitivity       | 80.3%   | Higher better  | —             |
+| Specificity       | 46.2%   | Higher better  | —             |
+| PCA Components    | 8       | ≥80% variance  | —             |
+| Sig Components    | 1/8     | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROA
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: Current Ratio, Gross Margin, ΔP/E Ratio ← delta-driven
+  PC2: Book/Market, Asset Turnover, ΔROA ← delta-driven
+  PC3: ΔOp Margin, ΔGross Margin, ΔDebt/Equity ← delta-driven
+  PC4: ΔAsset Turnover, GDP Growth, ΔCurrent Ratio ← delta-driven
+  PC5: GDP Growth, ΔCurrent Ratio, ΔBook/Market ← delta-driven
+  PC6: ΔBook/Market, ΔDebt/Equity, ΔP/E Ratio ← delta-driven
+  PC7: Current Ratio, Inflation, Gross Margin
+  PC8: Current Ratio, ΔDebt/Equity, ΔBook/Market ← delta-driven
+
+=================================================================
+  CONSUMER DISCRETIONARY — CLUSTER 0
+  N=1,344 | Outperformers=52.6% | Config: Sector + Clustering (k=2)
+  Levels kept: 11 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5386  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5494  | Levels only    | —               |
+| AUC Change (Δ)    | -0.0108 | > 0 = improved | DECLINED        |
+| Accuracy          | 53.9%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.6298  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0053  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 97.0%   | Higher better  | —               |
+| Specificity       | 6.0%    | Higher better  | —               |
+| PCA Components    | 12      | ≥80% variance  | —               |
+| Sig Components    | 0/12    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROA
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔROA, NI Growth, ΔGross Margin ← delta-driven
+  PC2: ROE, GDP Growth, ΔGross Margin ← delta-driven
+  PC3: P/E Ratio, ΔP/E Ratio, ΔDebt/Equity ← delta-driven
+  PC4: ΔP/E Ratio, P/E Ratio, Gross Margin ← delta-driven
+  PC5: ΔROE, ΔDebt/Equity, Op Margin ← delta-driven
+  PC6: ΔBook/Market, Inflation, Book/Market ← delta-driven
+  PC7: ΔCurrent Ratio, ΔDebt/Equity, Current Ratio ← delta-driven
+  PC8: Debt/Equity, ΔAsset Turnover, ΔROE ← delta-driven
+  PC9: ΔBook/Market, Inflation, ΔCurrent Ratio ← delta-driven
+  PC10: ΔAsset Turnover, ΔGross Margin, Op Margin ← delta-driven
+  PC11: ΔAsset Turnover, Gross Margin, ΔBook/Market ← delta-driven
+  PC12: GDP Growth, Inflation, Book/Market
+
+=================================================================
+  CONSUMER DISCRETIONARY — CLUSTER 1
+  N=1,020 | Outperformers=55.5% | Config: Sector + Clustering (k=2)
+  Levels kept: 10 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5854  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5671  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0183 | > 0 = improved | IMPROVED        |
+| Accuracy          | 57.2%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.0870  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0127  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 62.2%   | Higher better  | —               |
+| Specificity       | 50.9%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 2/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: NI Growth, ΔNet Margin, ΔOp Margin ← delta-driven
+  PC2: Asset Turnover, Gross Margin, Book/Market
+  PC3: Op Margin, Debt/Equity, Book/Market
+  PC4: ΔBook/Market, ΔOp Margin, ΔAsset Turnover ← delta-driven
+  PC5: P/E Ratio, ΔP/E Ratio, ΔGross Margin ← delta-driven
+  PC6: Inflation, GDP Growth, ΔGross Margin ← delta-driven
+  PC7: ΔDebt/Equity, ΔAsset Turnover, ΔP/E Ratio ← delta-driven
+  PC8: ΔCurrent Ratio, Current Ratio, ΔP/E Ratio ← delta-driven
+  PC9: ΔCurrent Ratio, GDP Growth, ΔDebt/Equity ← delta-driven
+  PC10: ΔBook/Market, NI Growth, ΔCurrent Ratio ← delta-driven
+  PC11: Inflation, GDP Growth, ΔCurrent Ratio ← delta-driven
+
+=================================================================
+  CONSUMER STAPLES — CLUSTER 0
+  N=668 | Outperformers=45.7% | Config: Sector + Clustering (k=2)
+  Levels kept: 10 | Delta features kept: 6/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5879  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5806  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0073 | > 0 = improved | IMPROVED        |
+| Accuracy          | 57.0%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.2927  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0129  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 64.9%   | Higher better  | —               |
+| Specificity       | 50.4%   | Higher better  | —               |
+| PCA Components    | 10      | ≥80% variance  | —               |
+| Sig Components    | 1/10    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔNet Margin, Net Margin, NI Growth ← delta-driven
+  PC2: Book/Market, Op Margin, Debt/Equity
+  PC3: Rev Growth, ΔAsset Turnover, Op Margin ← delta-driven
+  PC4: Inflation, GDP Growth, ΔCurrent Ratio ← delta-driven
+  PC5: Debt/Equity, ROE, ΔBook/Market ← delta-driven
+  PC6: ΔCurrent Ratio, ΔP/E Ratio, GDP Growth ← delta-driven
+  PC7: ΔP/E Ratio, ΔBook/Market, Current Ratio ← delta-driven
+  PC8: ΔGross Margin, Debt/Equity, Op Margin ← delta-driven
+  PC9: ΔBook/Market, ΔP/E Ratio, Op Margin ← delta-driven
+  PC10: GDP Growth, Inflation, Current Ratio
+
+=================================================================
+  CONSUMER STAPLES — CLUSTER 1
+  N=323 | Outperformers=46.4% | Config: Sector + Clustering (k=2)
+  Levels kept: 9 | Delta features kept: 7/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.6079  | ≥ 0.70 good    | Moderate        |
+| Baseline AUC      | 0.5737  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0342 | > 0 = improved | IMPROVED        |
+| Accuracy          | 59.4%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.2466  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0283  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 36.0%   | Higher better  | —               |
+| Specificity       | 79.8%   | Higher better  | —               |
+| PCA Components    | 10      | ≥80% variance  | —               |
+| Sig Components    | 1/10    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: Gross Margin, Book/Market, Op Margin
+  PC2: ROA, P/E Ratio, ΔNet Margin ← delta-driven
+  PC3: ΔROE, ΔDebt/Equity, Debt/Equity ← delta-driven
+  PC4: ΔCurrent Ratio, GDP Growth, Rev Growth ← delta-driven
+  PC5: Inflation, ΔP/E Ratio, GDP Growth ← delta-driven
+  PC6: ΔGross Margin, ΔCurrent Ratio, ΔP/E Ratio ← delta-driven
+  PC7: Rev Growth, ΔGross Margin, Inflation ← delta-driven
+  PC8: ΔCurrent Ratio, GDP Growth, P/E Ratio ← delta-driven
+  PC9: ROA, Gross Margin, ΔGross Margin ← delta-driven
+  PC10: P/E Ratio, GDP Growth, Inflation
+
+=================================================================
+  ENERGY — CLUSTER 0
+  N=223 | Outperformers=54.7% | Config: Sector + Clustering (k=2)
+  Levels kept: 9 | Delta features kept: 7/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.6781  | ≥ 0.70 good    | Moderate      |
+| Baseline AUC      | 0.6616  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0165 | > 0 = improved | IMPROVED      |
+| Accuracy          | 64.1%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0099  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0706  | ≥ 0.20 good    | Weak          |
+| Sensitivity       | 84.4%   | Higher better  | —             |
+| Specificity       | 39.6%   | Higher better  | —             |
+| PCA Components    | 9       | ≥80% variance  | —             |
+| Sig Components    | 1/9     | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔROE, ΔGross Margin, Net Margin ← delta-driven
+  PC2: P/E Ratio, Current Ratio, ΔAsset Turnover ← delta-driven
+  PC3: GDP Growth, Inflation, ΔAsset Turnover ← delta-driven
+  PC4: Debt/Equity, Current Ratio, ΔP/E Ratio ← delta-driven
+  PC5: ΔBook/Market, GDP Growth, ΔCurrent Ratio ← delta-driven
+  PC6: Debt/Equity, NI Growth, ΔCurrent Ratio ← delta-driven
+  PC7: Asset Turnover, ΔCurrent Ratio, GDP Growth ← delta-driven
+  PC8: NI Growth, Asset Turnover, ΔCurrent Ratio ← delta-driven
+  PC9: ΔAsset Turnover, Debt/Equity, ΔCurrent Ratio ← delta-driven
+
+  Energy — Cluster 1: insufficient data (30 rows), skipping.
+
+=================================================================
+  FINANCIALS — CLUSTER 0
+  N=404 | Outperformers=58.9% | Config: Sector + Clustering (k=2)
+  Levels kept: 10 | Delta features kept: 7/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.6031  | ≥ 0.70 good    | Moderate        |
+| Baseline AUC      | 0.5877  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0154 | > 0 = improved | IMPROVED        |
+| Accuracy          | 61.1%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.2557  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0249  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 89.5%   | Higher better  | —               |
+| Specificity       | 20.5%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 1/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: NI Growth, ΔNet Margin, Rev Growth ← delta-driven
+  PC2: Current Ratio, ΔCurrent Ratio, ΔNet Margin ← delta-driven
+  PC3: Rev Growth, ΔAsset Turnover, ΔDebt/Equity ← delta-driven
+  PC4: Inflation, Book/Market, Op Margin
+  PC5: ΔBook/Market, ROE, ΔDebt/Equity ← delta-driven
+  PC6: GDP Growth, Inflation, ΔP/E Ratio ← delta-driven
+  PC7: ΔCurrent Ratio, ΔBook/Market, Book/Market ← delta-driven
+  PC8: ΔP/E Ratio, NI Growth, ΔDebt/Equity ← delta-driven
+  PC9: ROE, Book/Market, ΔCurrent Ratio ← delta-driven
+  PC10: ΔGross Margin, ΔDebt/Equity, ΔBook/Market ← delta-driven
+  PC11: ΔDebt/Equity, Inflation, ROE ← delta-driven
+
+=================================================================
+  FINANCIALS — CLUSTER 1
+  N=409 | Outperformers=54.0% | Config: Sector + Clustering (k=2)
+  Levels kept: 11 | Delta features kept: 7/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5885  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5699  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0186 | > 0 = improved | IMPROVED        |
+| Accuracy          | 58.7%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.4272  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0198  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 92.8%   | Higher better  | —               |
+| Specificity       | 18.6%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 0/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROA
+  ✓ ΔGross Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔROA, NI Growth, Net Margin ← delta-driven
+  PC2: P/E Ratio, ΔP/E Ratio, ΔCurrent Ratio ← delta-driven
+  PC3: Gross Margin, Op Margin, ΔP/E Ratio ← delta-driven
+  PC4: Debt/Equity, ΔDebt/Equity, Book/Market ← delta-driven
+  PC5: Rev Growth, GDP Growth, ΔAsset Turnover ← delta-driven
+  PC6: Inflation, GDP Growth, Net Margin
+  PC7: ΔCurrent Ratio, ΔBook/Market, ΔAsset Turnover ← delta-driven
+  PC8: Book/Market, ΔBook/Market, Current Ratio ← delta-driven
+  PC9: Current Ratio, GDP Growth, ΔCurrent Ratio ← delta-driven
+  PC10: ΔGross Margin, ΔBook/Market, Inflation ← delta-driven
+  PC11: GDP Growth, Inflation, Gross Margin
+
+=================================================================
+  HEALTH CARE — CLUSTER 0
+  N=397 | Outperformers=55.2% | Config: Sector + Clustering (k=2)
+  Levels kept: 10 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.6258  | ≥ 0.70 good    | Moderate      |
+| Baseline AUC      | 0.5910  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0348 | > 0 = improved | IMPROVED      |
+| Accuracy          | 58.7%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0233  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0379  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 90.4%   | Higher better  | —             |
+| Specificity       | 19.7%   | Higher better  | —             |
+| PCA Components    | 10      | ≥80% variance  | —             |
+| Sig Components    | 2/10    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔNet Margin, NI Growth, Book/Market ← delta-driven
+  PC2: ΔOp Margin, ΔAsset Turnover, Debt/Equity ← delta-driven
+  PC3: Debt/Equity, ΔDebt/Equity, ΔAsset Turnover ← delta-driven
+  PC4: P/E Ratio, Op Margin, ΔP/E Ratio ← delta-driven
+  PC5: Book/Market, NI Growth, Asset Turnover
+  PC6: Inflation, ΔDebt/Equity, Asset Turnover ← delta-driven
+  PC7: ΔCurrent Ratio, ΔP/E Ratio, Gross Margin ← delta-driven
+  PC8: ΔGross Margin, Op Margin, ΔBook/Market ← delta-driven
+  PC9: Op Margin, ΔGross Margin, ΔP/E Ratio ← delta-driven
+  PC10: GDP Growth, ΔBook/Market, ΔAsset Turnover ← delta-driven
+
+=================================================================
+  HEALTH CARE — CLUSTER 1
+  N=666 | Outperformers=50.5% | Config: Sector + Clustering (k=2)
+  Levels kept: 10 | Delta features kept: 9/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.6184  | ≥ 0.70 good    | Moderate      |
+| Baseline AUC      | 0.6049  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0135 | > 0 = improved | IMPROVED      |
+| Accuracy          | 60.8%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0200  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0245  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 64.6%   | Higher better  | —             |
+| Specificity       | 57.0%   | Higher better  | —             |
+| PCA Components    | 11      | ≥80% variance  | —             |
+| Sig Components    | 3/11    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔOp Margin, ΔNet Margin, NI Growth ← delta-driven
+  PC2: P/E Ratio, ΔP/E Ratio, ΔAsset Turnover ← delta-driven
+  PC3: ΔP/E Ratio, P/E Ratio, ΔDebt/Equity ← delta-driven
+  PC4: ROE, Book/Market, ROA
+  PC5: Current Ratio, ΔGross Margin, ΔOp Margin ← delta-driven
+  PC6: Book/Market, GDP Growth, Inflation
+  PC7: ΔCurrent Ratio, Asset Turnover, ΔGross Margin ← delta-driven
+  PC8: ΔDebt/Equity, Inflation, ΔCurrent Ratio ← delta-driven
+  PC9: ΔBook/Market, Asset Turnover, ΔGross Margin ← delta-driven
+  PC10: ΔBook/Market, ROE, ΔGross Margin ← delta-driven
+  PC11: NI Growth, Inflation, GDP Growth
+
+=================================================================
+  INDUSTRIALS — CLUSTER 0
+  N=1,806 | Outperformers=54.5% | Config: Sector + Clustering (k=2)
+  Levels kept: 11 | Delta features kept: 9/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5718  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5594  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0124 | > 0 = improved | IMPROVED      |
+| Accuracy          | 55.6%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0270  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0093  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 86.2%   | Higher better  | —             |
+| Specificity       | 19.1%   | Higher better  | —             |
+| PCA Components    | 12      | ≥80% variance  | —             |
+| Sig Components    | 2/12    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔNet Margin, ΔOp Margin, NI Growth ← delta-driven
+  PC2: Op Margin, Net Margin, Debt/Equity
+  PC3: Asset Turnover, P/E Ratio, Gross Margin
+  PC4: Book/Market, ΔROE, ΔDebt/Equity ← delta-driven
+  PC5: Book/Market, Op Margin, Inflation
+  PC6: Current Ratio, ΔP/E Ratio, ΔCurrent Ratio ← delta-driven
+  PC7: Current Ratio, Inflation, ΔDebt/Equity ← delta-driven
+  PC8: GDP Growth, Inflation, ΔP/E Ratio ← delta-driven
+  PC9: ΔCurrent Ratio, ΔAsset Turnover, Debt/Equity ← delta-driven
+  PC10: ΔBook/Market, ΔNet Margin, Inflation ← delta-driven
+  PC11: Gross Margin, Book/Market, ΔP/E Ratio ← delta-driven
+  PC12: ΔAsset Turnover, ΔGross Margin, Inflation ← delta-driven
+
+=================================================================
+  INDUSTRIALS — CLUSTER 1
+  N=1,898 | Outperformers=51.3% | Config: Sector + Clustering (k=2)
+  Levels kept: 12 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5587  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5522  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0065 | > 0 = improved | IMPROVED        |
+| Accuracy          | 53.8%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.1771  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0057  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 69.0%   | Higher better  | —               |
+| Specificity       | 37.9%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 1/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔNet Margin, Rev Growth, Gross Margin ← delta-driven
+  PC2: Op Margin, Gross Margin, Asset Turnover
+  PC3: ΔP/E Ratio, P/E Ratio, ROA ← delta-driven
+  PC4: ΔP/E Ratio, P/E Ratio, ROA ← delta-driven
+  PC5: ΔROE, ΔAsset Turnover, ΔNet Margin ← delta-driven
+  PC6: Book/Market, Inflation, ΔDebt/Equity ← delta-driven
+  PC7: ΔBook/Market, Inflation, Current Ratio ← delta-driven
+  PC8: Current Ratio, GDP Growth, Inflation
+  PC9: ΔBook/Market, ΔCurrent Ratio, ΔDebt/Equity ← delta-driven
+  PC10: ΔCurrent Ratio, Debt/Equity, ΔBook/Market ← delta-driven
+  PC11: ΔGross Margin, ΔCurrent Ratio, Current Ratio ← delta-driven
+
+=================================================================
+  INFORMATION TECHNOLOGY — CLUSTER 0
+  N=1,202 | Outperformers=54.2% | Config: Sector + Clustering (k=2)
+  Levels kept: 12 | Delta features kept: 7/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5691  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5393  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0298 | > 0 = improved | IMPROVED        |
+| Accuracy          | 55.8%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.4305  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0074  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 89.4%   | Higher better  | —               |
+| Specificity       | 16.0%   | Higher better  | —               |
+| PCA Components    | 12      | ≥80% variance  | —               |
+| Sig Components    | 0/12    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROA
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔROE, ROE, ΔROA ← delta-driven
+  PC2: Debt/Equity, ΔDebt/Equity, ΔROA ← delta-driven
+  PC3: P/E Ratio, Asset Turnover, Gross Margin
+  PC4: ΔP/E Ratio, Asset Turnover, P/E Ratio ← delta-driven
+  PC5: Inflation, GDP Growth, Current Ratio
+  PC6: Current Ratio, GDP Growth, Op Margin
+  PC7: Book/Market, Op Margin, NI Growth
+  PC8: ΔBook/Market, ΔCurrent Ratio, Rev Growth ← delta-driven
+  PC9: ΔBook/Market, ΔCurrent Ratio, Current Ratio ← delta-driven
+  PC10: ΔROE, Debt/Equity, ΔGross Margin ← delta-driven
+  PC11: ΔGross Margin, NI Growth, Book/Market ← delta-driven
+  PC12: Rev Growth, NI Growth, ΔCurrent Ratio ← delta-driven
+
+=================================================================
+  INFORMATION TECHNOLOGY — CLUSTER 1
+  N=934 | Outperformers=55.1% | Config: Sector + Clustering (k=2)
+  Levels kept: 11 | Delta features kept: 7/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.5765  | ≥ 0.70 good    | Near-Random     |
+| Baseline AUC      | 0.5684  | Levels only    | —               |
+| AUC Change (Δ)    | +0.0081 | > 0 = improved | IMPROVED        |
+| Accuracy          | 57.6%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.0652  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0146  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 84.9%   | Higher better  | —               |
+| Specificity       | 24.1%   | Higher better  | —               |
+| PCA Components    | 11      | ≥80% variance  | —               |
+| Sig Components    | 1/11    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: NI Growth, ΔNet Margin, Rev Growth ← delta-driven
+  PC2: Book/Market, P/E Ratio, Current Ratio
+  PC3: ΔDebt/Equity, Debt/Equity, ΔROE ← delta-driven
+  PC4: Gross Margin, Asset Turnover, ΔDebt/Equity ← delta-driven
+  PC5: GDP Growth, Inflation, ΔBook/Market ← delta-driven
+  PC6: ΔCurrent Ratio, ΔP/E Ratio, P/E Ratio ← delta-driven
+  PC7: Debt/Equity, Net Margin, ΔDebt/Equity ← delta-driven
+  PC8: GDP Growth, ΔBook/Market, Net Margin ← delta-driven
+  PC9: ΔP/E Ratio, ΔCurrent Ratio, Debt/Equity ← delta-driven
+  PC10: ΔBook/Market, P/E Ratio, Gross Margin ← delta-driven
+  PC11: P/E Ratio, ΔCurrent Ratio, ΔGross Margin ← delta-driven
+
+=================================================================
+  MATERIALS — CLUSTER 0
+  N=1,100 | Outperformers=49.0% | Config: Sector + Clustering (k=2)
+  Levels kept: 11 | Delta features kept: 9/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5732  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5724  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0008 | > 0 = improved | SIMILAR       |
+| Accuracy          | 54.6%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0199  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0148  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 78.8%   | Higher better  | —             |
+| Specificity       | 31.4%   | Higher better  | —             |
+| PCA Components    | 11      | ≥80% variance  | —             |
+| Sig Components    | 2/11    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔOp Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔOp Margin, Rev Growth, ΔGross Margin ← delta-driven
+  PC2: Op Margin, Debt/Equity, Current Ratio
+  PC3: ΔROE, ΔDebt/Equity, GDP Growth ← delta-driven
+  PC4: P/E Ratio, Gross Margin, ΔDebt/Equity ← delta-driven
+  PC5: ΔP/E Ratio, P/E Ratio, Book/Market ← delta-driven
+  PC6: Book/Market, GDP Growth, Inflation
+  PC7: GDP Growth, ΔBook/Market, ΔNet Margin ← delta-driven
+  PC8: ΔCurrent Ratio, ROA, Inflation ← delta-driven
+  PC9: ΔBook/Market, Current Ratio, Inflation ← delta-driven
+  PC10: ΔCurrent Ratio, Inflation, ΔGross Margin ← delta-driven
+  PC11: ΔBook/Market, GDP Growth, Gross Margin ← delta-driven
+
+=================================================================
+  MATERIALS — CLUSTER 1
+  N=1,571 | Outperformers=45.6% | Config: Sector + Clustering (k=2)
+  Levels kept: 12 | Delta features kept: 8/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5983  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5962  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0021 | > 0 = improved | SIMILAR       |
+| Accuracy          | 58.0%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0000  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0217  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 19.5%   | Higher better  | —             |
+| Specificity       | 90.3%   | Higher better  | —             |
+| PCA Components    | 11      | ≥80% variance  | —             |
+| Sig Components    | 6/11    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROA
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔROA, Rev Growth, ΔGross Margin ← delta-driven
+  PC2: Debt/Equity, ROE, Book/Market
+  PC3: P/E Ratio, ΔP/E Ratio, ΔAsset Turnover ← delta-driven
+  PC4: Gross Margin, Op Margin, ΔDebt/Equity ← delta-driven
+  PC5: Inflation, GDP Growth, ΔROA ← delta-driven
+  PC6: Asset Turnover, Book/Market, ΔROE ← delta-driven
+  PC7: ΔAsset Turnover, GDP Growth, Inflation ← delta-driven
+  PC8: ΔDebt/Equity, Current Ratio, ΔCurrent Ratio ← delta-driven
+  PC9: ΔBook/Market, Inflation, ROE ← delta-driven
+  PC10: ΔCurrent Ratio, ΔBook/Market, Current Ratio ← delta-driven
+  PC11: ΔCurrent Ratio, Current Ratio, Inflation ← delta-driven
+
+=================================================================
+  REAL ESTATE — CLUSTER 0
+  N=181 | Outperformers=48.6% | Config: Sector + Clustering (k=2)
+  Levels kept: 10 | Delta features kept: 7/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict         |
+|-------------------|---------|----------------|-----------------|
+| AUC (with deltas) | 0.6236  | ≥ 0.70 good    | Moderate        |
+| Baseline AUC      | 0.6319  | Levels only    | —               |
+| AUC Change (Δ)    | -0.0083 | > 0 = improved | DECLINED        |
+| Accuracy          | 58.6%   | ≥ 71.2% paper  | ✗ Below Paper   |
+| LR p-value        | 0.2701  | < 0.05         | NOT SIGNIFICANT |
+| McFadden R²       | 0.0488  | ≥ 0.20 good    | Very Weak       |
+| Sensitivity       | 73.9%   | Higher better  | —               |
+| Specificity       | 44.1%   | Higher better  | —               |
+| PCA Components    | 10      | ≥80% variance  | —               |
+| Sig Components    | 1/10    | > 0            | —               |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔROE
+  ✓ ΔGross Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: Asset Turnover, Debt/Equity, P/E Ratio
+  PC2: ROA, ΔROE, NI Growth ← delta-driven
+  PC3: ΔAsset Turnover, ΔBook/Market, ΔCurrent Ratio ← delta-driven
+  PC4: ΔP/E Ratio, P/E Ratio, ΔCurrent Ratio ← delta-driven
+  PC5: Gross Margin, ΔDebt/Equity, ΔBook/Market ← delta-driven
+  PC6: GDP Growth, Inflation, Rev Growth
+  PC7: Current Ratio, Inflation, ΔDebt/Equity ← delta-driven
+  PC8: ΔGross Margin, ΔROE, Rev Growth ← delta-driven
+  PC9: Gross Margin, ΔROE, Debt/Equity ← delta-driven
+  PC10: ΔCurrent Ratio, Inflation, ΔAsset Turnover ← delta-driven
+
+  Real Estate — Cluster 1: insufficient data (36 rows), skipping.
+
+=================================================================
+  UTILITIES — CLUSTER 0
+  N=891 | Outperformers=43.9% | Config: Sector + Clustering (k=2)
+  Levels kept: 11 | Delta features kept: 6/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5952  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5745  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0207 | > 0 = improved | IMPROVED      |
+| Accuracy          | 59.8%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0071  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0211  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 24.8%   | Higher better  | —             |
+| Specificity       | 87.2%   | Higher better  | —             |
+| PCA Components    | 11      | ≥80% variance  | —             |
+| Sig Components    | 2/11    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔP/E Ratio
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔNet Margin, NI Growth, Rev Growth ← delta-driven
+  PC2: Debt/Equity, Book/Market, Asset Turnover
+  PC3: Net Margin, Gross Margin, ΔNet Margin ← delta-driven
+  PC4: ΔP/E Ratio, P/E Ratio, Debt/Equity ← delta-driven
+  PC5: GDP Growth, Inflation, Net Margin
+  PC6: ΔCurrent Ratio, NI Growth, Book/Market ← delta-driven
+  PC7: ΔDebt/Equity, Gross Margin, ΔCurrent Ratio ← delta-driven
+  PC8: ΔBook/Market, ΔGross Margin, Book/Market ← delta-driven
+  PC9: ΔGross Margin, ΔBook/Market, ΔDebt/Equity ← delta-driven
+  PC10: ΔCurrent Ratio, Current Ratio, ΔDebt/Equity ← delta-driven
+  PC11: Inflation, Rev Growth, GDP Growth
+
+=================================================================
+  UTILITIES — CLUSTER 1
+  N=806 | Outperformers=45.8% | Config: Sector + Clustering (k=2)
+  Levels kept: 10 | Delta features kept: 6/10
+=================================================================
+
+── MODEL FIT ─────────────────────────────────────────────────
+| Metric            | Value   | Threshold      | Verdict       |
+|-------------------|---------|----------------|---------------|
+| AUC (with deltas) | 0.5912  | ≥ 0.70 good    | Near-Random   |
+| Baseline AUC      | 0.5670  | Levels only    | —             |
+| AUC Change (Δ)    | +0.0242 | > 0 = improved | IMPROVED      |
+| Accuracy          | 57.8%   | ≥ 71.2% paper  | ✗ Below Paper |
+| LR p-value        | 0.0373  | < 0.05         | SIGNIFICANT   |
+| McFadden R²       | 0.0173  | ≥ 0.20 good    | Very Weak     |
+| Sensitivity       | 30.9%   | Higher better  | —             |
+| Specificity       | 80.5%   | Higher better  | —             |
+| PCA Components    | 10      | ≥80% variance  | —             |
+| Sig Components    | 2/10    | > 0            | —             |
+
+── DELTA FEATURES SURVIVING VIF ─────────────────────────────
+  ✓ ΔGross Margin
+  ✓ ΔNet Margin
+  ✓ ΔAsset Turnover
+  ✓ ΔCurrent Ratio
+  ✓ ΔDebt/Equity
+  ✓ ΔBook/Market
+
+── TOP LOADINGS PER PCA COMPONENT ────────────────────────────
+  PC1: ΔNet Margin, NI Growth, ROE ← delta-driven
+  PC2: Asset Turnover, Debt/Equity, Book/Market
+  PC3: Current Ratio, ΔCurrent Ratio, P/E Ratio ← delta-driven
+  PC4: Op Margin, Current Ratio, Inflation
+  PC5: Inflation, GDP Growth, Op Margin
+  PC6: ΔAsset Turnover, ΔCurrent Ratio, Debt/Equity ← delta-driven
+  PC7: P/E Ratio, ΔCurrent Ratio, ΔAsset Turnover ← delta-driven
+  PC8: ΔCurrent Ratio, GDP Growth, Asset Turnover ← delta-driven
+  PC9: ΔBook/Market, GDP Growth, Inflation ← delta-driven
+  PC10: ΔAsset Turnover, GDP Growth, Inflation ← delta-driven
+
+
+=================================================================
+  GRAND SUMMARY — DELTA vs BASELINE AUC COMPARISON
+  All 4 configurations | Sorted by AUC Change (biggest improvement first)
+=================================================================
+|   Rank | Config                        | Group                              |    N |   Base AUC |   Delta AUC |    ΔAUC |   Acc% | Sig Comps   | Verdict   | Sig?   |
+|--------|-------------------------------|------------------------------------|------|------------|-------------|---------|--------|-------------|-----------|--------|
+|      1 | Sector + Clustering (k=2)     | Communication Services — Cluster 1 |  118 |     0.6249 |      0.7038 |  0.0789 |   65.3 | 1/8         | IMPROVED  | ✓      |
+|      2 | Sector + Clustering (k=2)     | Health Care — Cluster 0            |  397 |     0.591  |      0.6258 |  0.0348 |   58.7 | 2/10        | IMPROVED  | ✓      |
+|      3 | Sector + Clustering (k=2)     | Consumer Staples — Cluster 1       |  323 |     0.5737 |      0.6079 |  0.0342 |   59.4 | 1/10        | IMPROVED  | ✗      |
+|      4 | Sector + Clustering (k=2)     | Information Technology — Cluster 0 | 1202 |     0.5393 |      0.5691 |  0.0298 |   55.8 | 0/12        | IMPROVED  | ✗      |
+|      5 | Sector + Market Cap Covariate | Energy [+MktCap]                   |  253 |     0.6434 |      0.6727 |  0.0293 |   64   | 1/9         | IMPROVED  | ✓      |
+|      6 | Sector + Market Cap Covariate | Communication Services [+MktCap]   |  415 |     0.5904 |      0.6193 |  0.0289 |   60.5 | 1/11        | IMPROVED  | ✗      |
+|      7 | Sector + Clustering (k=2)     | Utilities — Cluster 1              |  806 |     0.567  |      0.5912 |  0.0242 |   57.8 | 2/10        | IMPROVED  | ✓      |
+|      8 | Sector GICS                   | Communication Services             |  415 |     0.5962 |      0.6197 |  0.0235 |   60.7 | 1/11        | IMPROVED  | ✗      |
+|      9 | Sector + Clustering (k=2)     | Utilities — Cluster 0              |  891 |     0.5745 |      0.5952 |  0.0207 |   59.8 | 2/11        | IMPROVED  | ✓      |
+|     10 | Sector + Clustering (k=2)     | Financials — Cluster 1             |  409 |     0.5699 |      0.5885 |  0.0186 |   58.7 | 0/11        | IMPROVED  | ✗      |
+|     11 | Sector + Clustering (k=2)     | Consumer Discretionary — Cluster 1 | 1020 |     0.5671 |      0.5854 |  0.0183 |   57.2 | 2/11        | IMPROVED  | ✗      |
+|     12 | Sector GICS                   | Financials                         |  813 |     0.5406 |      0.5584 |  0.0178 |   57.4 | 0/11        | IMPROVED  | ✗      |
+|     13 | Sector + Clustering (k=2)     | Communication Services — Cluster 0 |  297 |     0.6133 |      0.6309 |  0.0176 |   59.6 | 1/11        | IMPROVED  | ✗      |
+|     14 | Sector + Clustering (k=2)     | Energy — Cluster 0                 |  223 |     0.6616 |      0.6781 |  0.0165 |   64.1 | 1/9         | IMPROVED  | ✓      |
+|     15 | Sector GICS                   | Energy                             |  253 |     0.6085 |      0.6242 |  0.0157 |   60.5 | 3/9         | IMPROVED  | ✓      |
+|     16 | Sector + Clustering (k=2)     | Financials — Cluster 0             |  404 |     0.5877 |      0.6031 |  0.0154 |   61.1 | 1/11        | IMPROVED  | ✗      |
+|     17 | Sector + Market Cap Covariate | Industrials [+MktCap]              | 3704 |     0.5488 |      0.5628 |  0.014  |   54.8 | 4/12        | IMPROVED  | ✓      |
+|     18 | Sector + Clustering (k=2)     | Health Care — Cluster 1            |  666 |     0.6049 |      0.6184 |  0.0135 |   60.8 | 3/11        | IMPROVED  | ✓      |
+|     19 | Sector + Clustering (k=2)     | Industrials — Cluster 0            | 1806 |     0.5594 |      0.5718 |  0.0124 |   55.6 | 2/12        | IMPROVED  | ✓      |
+|     20 | Sector GICS                   | Utilities                          | 1697 |     0.5558 |      0.5672 |  0.0114 |   57.6 | 3/11        | IMPROVED  | ✓      |
+|     21 | Sector + Market Cap Covariate | Utilities [+MktCap]                | 1697 |     0.5543 |      0.5647 |  0.0104 |   57.5 | 1/11        | IMPROVED  | ✓      |
+|     22 | Sector GICS                   | Consumer Staples                   |  991 |     0.5522 |      0.5616 |  0.0094 |   55.4 | 1/11        | IMPROVED  | ✗      |
+|     23 | Sector + Clustering (k=2)     | Information Technology — Cluster 1 |  934 |     0.5684 |      0.5765 |  0.0081 |   57.6 | 1/11        | IMPROVED  | ✗      |
+|     24 | Sector + Clustering (k=2)     | Consumer Staples — Cluster 0       |  668 |     0.5806 |      0.5879 |  0.0073 |   57   | 1/10        | IMPROVED  | ✗      |
+|     25 | Sector + Clustering (k=2)     | Industrials — Cluster 1            | 1898 |     0.5522 |      0.5587 |  0.0065 |   53.8 | 1/11        | IMPROVED  | ✗      |
+|     26 | Sector + Market Cap Covariate | Financials [+MktCap]               |  813 |     0.5541 |      0.5605 |  0.0064 |   58.1 | 0/11        | IMPROVED  | ✗      |
+|     27 | Sector GICS                   | Consumer Discretionary             | 2364 |     0.5372 |      0.5426 |  0.0054 |   54.1 | 1/11        | IMPROVED  | ✗      |
+|     28 | Sector GICS                   | Real Estate                        |  217 |     0.6209 |      0.626  |  0.0051 |   59.9 | 0/10        | IMPROVED  | ✗      |
+|     29 | Sector GICS                   | Industrials                        | 3704 |     0.5491 |      0.5538 |  0.0047 |   53.6 | 2/11        | SIMILAR   | ✓      |
+|     30 | Sector + Market Cap Covariate | Information Technology [+MktCap]   | 2136 |     0.5447 |      0.5491 |  0.0044 |   55.1 | 0/12        | SIMILAR   | ✗      |
+|     31 | Sector + Market Cap Covariate | Consumer Discretionary [+MktCap]   | 2364 |     0.5523 |      0.5567 |  0.0044 |   54.9 | 2/12        | SIMILAR   | ✓      |
+|     32 | Market Cap Segmentation       | Small Cap                          | 5341 |     0.5322 |      0.5353 |  0.0031 |   54.5 | 3/12        | SIMILAR   | ✗      |
+|     33 | Market Cap Segmentation       | Large Cap                          | 5634 |     0.5547 |      0.5572 |  0.0025 |   54.2 | 4/11        | SIMILAR   | ✓      |
+|     34 | Sector + Clustering (k=2)     | Materials — Cluster 1              | 1571 |     0.5962 |      0.5983 |  0.0021 |   58   | 6/11        | SIMILAR   | ✓      |
+|     35 | Sector + Market Cap Covariate | Materials [+MktCap]                | 2671 |     0.5865 |      0.588  |  0.0015 |   56.3 | 5/11        | SIMILAR   | ✓      |
+|     36 | Sector GICS                   | Materials                          | 2671 |     0.5808 |      0.5818 |  0.001  |   56.3 | 5/11        | SIMILAR   | ✓      |
+|     37 | Sector + Clustering (k=2)     | Materials — Cluster 0              | 1100 |     0.5724 |      0.5732 |  0.0008 |   54.6 | 2/11        | SIMILAR   | ✓      |
+|     38 | Sector GICS                   | Information Technology             | 2136 |     0.5482 |      0.5483 |  0.0001 |   54.7 | 0/11        | SIMILAR   | ✗      |
+|     39 | Sector GICS                   | Health Care                        | 1063 |     0.5923 |      0.5883 | -0.004  |   56   | 1/11        | SIMILAR   | ✓      |
+|     40 | Market Cap Segmentation       | Mid Cap                            | 5614 |     0.5476 |      0.542  | -0.0056 |   52.8 | 2/12        | DECLINED  | ✓      |
+|     41 | Sector + Market Cap Covariate | Health Care [+MktCap]              | 1063 |     0.5913 |      0.5854 | -0.0059 |   56.4 | 2/11        | DECLINED  | ✓      |
+|     42 | Sector + Market Cap Covariate | Consumer Staples [+MktCap]         |  991 |     0.5783 |      0.5706 | -0.0077 |   56.2 | 1/11        | DECLINED  | ✗      |
+|     43 | Sector + Clustering (k=2)     | Real Estate — Cluster 0            |  181 |     0.6319 |      0.6236 | -0.0083 |   58.6 | 1/10        | DECLINED  | ✗      |
+|     44 | Sector + Clustering (k=2)     | Consumer Discretionary — Cluster 0 | 1344 |     0.5494 |      0.5386 | -0.0108 |   53.9 | 0/12        | DECLINED  | ✗      |
+|     45 | Sector + Market Cap Covariate | Real Estate [+MktCap]              |  217 |     0.6388 |      0.6255 | -0.0133 |   59.4 | 0/10        | DECLINED  | ✗      |
+
+── CONFIGURATION-LEVEL SUMMARY ───────────────────────────────
+|   Rank | Configuration                 |   Groups |   Base W.AUC |   Delta W.AUC |    ΔAUC | Improved   |
+|--------|-------------------------------|----------|--------------|---------------|---------|------------|
+|      1 | Sector + Clustering (k=2)     |       20 |       0.5713 |        0.5832 |  0.0119 | 16/20      |
+|      2 | Sector + Market Cap Covariate |       11 |       0.5641 |        0.5702 |  0.0062 | 5/11       |
+|      3 | Sector GICS                   |       11 |       0.5588 |        0.5641 |  0.0053 | 7/11       |
+|      4 | Market Cap Segmentation       |        3 |       0.5451 |        0.545  | -0      | 0/3        |
+
+── OVERALL VERDICT ───────────────────────────────────────────
+  Groups improved  (ΔAUC > +0.005) : 28/45
+  Groups similar   (|ΔAUC| ≤ 0.005): 11/45
+  Groups declined  (ΔAUC < -0.005) : 6/45
+  Average AUC change across all groups: +0.0112
+  Best improvement : Communication Services — Cluster 1 (+0.0789)
+  Worst decline    : Real Estate [+MktCap] (-0.0133)
+
+  Best delta AUC   : Communication Services — Cluster 1 (AUC=0.7038)
+
+  Methodology      : VIF≤2.5 → PCA≥80% → Logistic Regression
+  Feature set      : 14 levels + 10 QoQ delta features (24 total → VIF filtered)
+  Horizon          : Q[t] ratios+deltas → Q[t+1] outperformance (shift=-1)
+  Benchmark        : Ananthakumar & Sarkar (2017) — 71.2% accuracy
+=================================================================
+
+  Results saved to: results_delta.txt
