@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import warnings
+import sys
 import yfinance as yf
 from tabulate import tabulate
 from sklearn.metrics import roc_auc_score, confusion_matrix
@@ -11,6 +12,19 @@ from statsmodels.discrete.discrete_model import Logit
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 import statsmodels.api as sm
 warnings.filterwarnings('ignore')
+
+class Tee:
+    def __init__(self, filepath):
+        self.terminal = sys.stdout
+        self.log = open(filepath, 'w', encoding='utf-8')
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+    def flush(self):
+        self.terminal.flush()
+        self.log.flush()
+
+sys.stdout = Tee('results_validation_delta.txt')
 
 print("=" * 70)
 print("  TRUE OUT-OF-SAMPLE VALIDATION — WRDS + DELTA FEATURES")
@@ -543,5 +557,6 @@ else:
     print(f"  Rev/NI growth     : Q[t-1] → Q[t] change from Compustat")
     print("="*70)
 
-    df_all.to_csv('results_validation_delta.txt', sep='\t', index=False)
+    sys.stdout.log.close()
+    sys.stdout = sys.stdout.terminal
     print(f"\n  Results saved to: results_validation_delta.txt")

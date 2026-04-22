@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import warnings
+import sys
 from tabulate import tabulate
 from sklearn.metrics import roc_auc_score, roc_curve, confusion_matrix
 from sklearn.preprocessing import StandardScaler
@@ -10,6 +11,19 @@ from statsmodels.discrete.discrete_model import Logit
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 import statsmodels.api as sm
 warnings.filterwarnings('ignore')
+
+class Tee:
+    def __init__(self, filepath):
+        self.terminal = sys.stdout
+        self.log = open(filepath, 'w', encoding='utf-8')
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+    def flush(self):
+        self.terminal.flush()
+        self.log.flush()
+
+sys.stdout = Tee('results_advanced.txt')
 
 comp      = pd.read_csv('wrds_compustat_quarterly.csv', low_memory=False)
 crsp      = pd.read_csv('wrds_crsp_quarterly.csv', low_memory=False)
@@ -442,5 +456,6 @@ print(f"  Horizon       : Q[t] ratios → Q[t+1] outperformance (shift=-1)")
 print(f"  Benchmark     : Ananthakumar & Sarkar (2017) — 71.2% accuracy")
 print("="*65 + "\n")
 
-df_all.to_csv('results_advanced.txt', sep='\t', index=False)
+sys.stdout.log.close()
+sys.stdout = sys.stdout.terminal
 print("  Results saved to: results_advanced.txt")
