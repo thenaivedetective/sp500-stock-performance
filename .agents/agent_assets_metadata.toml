@@ -132,3 +132,9 @@ id = "tJdep8fnmjs72JMkA8b_T"
 uri = "file://Lana_Gidan_CV.pdf"
 type = "pdf"
 title = "Lana Gidan — Updated CV"
+
+[[outputs]]
+id = "7O1InP5R2IuFE5t_Ce1EQ"
+uri = "file://sp500_outperformer_project.zip"
+type = "unspecified"
+title = "S&P 500 Outperformer Project — All Files"
