@@ -1,0 +1,354 @@
+======================================================================
+  CONFIGURATION 0: GLOBAL POOLED MODEL — OUT-OF-SAMPLE VALIDATION
+  All S&P 500 companies, no segmentation
+  Training  : Q1 2010 – Q3 2024  (WRDS Compustat + CRSP)
+  Test Qtrs : Q1 2025, Q2 2025, Q3 2025, Q4 2025  (WRDS 2025)
+  Labels    : Q2–Q4 2025 + Q1 2026 outperformance  (WRDS CRSP 2025)
+  Forward-looking: Q[t] ratios → Q[t+1] outperformance (shift=-1)
+  Reference: Ananthakumar & Sarkar (2017) — benchmark 71.2% accuracy
+======================================================================
+
+[1/4] Loading WRDS training data (Q1 2010 – Q3 2024)...
+  Training rows : 20,812  (Q1 2010 – Q3 2024)
+
+[2/4] Loading WRDS 2025 data and computing test features...
+  2025 Compustat rows : 2,000
+  2025 CRSP rows      : 1,179
+
+  SPY return per label quarter:
+    Q2 2025: SPY +10.57%  |  N=334  |  outperform rate=31.1%
+    Q3 2025: SPY +7.79%  |  N=385  |  outperform rate=38.7%
+    Q4 2025: SPY +2.35%  |  N=387  |  outperform rate=41.1%
+    Q1 2026: SPY -4.63%  |  N=73  |  outperform rate=60.3%
+
+[3/4] Setting macro values for 2025 quarters...
+  2025Q1: GDP growth=0.0148  CPI inflation=0.0069
+  2025Q2: GDP growth=0.0201  CPI inflation=0.0052
+  2025Q3: GDP growth=0.0104  CPI inflation=0.0087
+  2025Q4: GDP growth=0.0060  CPI inflation=0.0055
+
+[4/4] Fitting preprocessing on training data and running global validation...
+
+======================================================================
+  TEST QUARTER: Q1 2025 Features → Q2 2025 Labels
+  Test N=334 | Outperformers=104/334 (31.1%) | SPY +10.57%
+======================================================================
+
+── CONFIGURATION 0: GLOBAL POOLED MODEL (all companies, no segmentation)
+
+======================================================================
+  GLOBAL MODEL  [All S&P 500 Companies]
+  Features: 2025Q1 | Labels: Q2 2025 | SPY = +10.57%
+  Train N=16,583 | Test N=334 | Test Outperformers=31.1%
+======================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────────
+| Metric        | Value   | Threshold          | Verdict       |
+|---------------|---------|--------------------|---------------|
+| Train AUC     | 0.5402  | In-sample          | —             |
+| Test AUC      | 0.5590  | Out-of-sample      | Weak          |
+| AUC Change    | +0.0188 | ≥ -0.02 = holds up | HOLDS UP      |
+| Test Accuracy | 53.6%   | ≥ 71.2% paper      | ✗ Below Paper |
+| Sensitivity   | 54.8%   | Higher better      | —             |
+| Specificity   | 53.0%   | Higher better      | —             |
+| Precision     | 34.5%   | Higher better      | —             |
+| LR p-value    | 0.0000  | < 0.05             | SIGNIFICANT   |
+| McFadden R²   | 0.0032  | Train fit          | —             |
+| PCA Comps     | 12      | ≥80% variance      | —             |
+| VIF Kept      | 20/24   | ≤2.5 cutoff        | —             |
+| Cutoff        | 0.50    | Optimised on train | —             |
+| Sig Comps     | 5/12    | p<0.05             | —             |
+
+── CONFUSION MATRIX (Test Set) ───────────────────────────────────
+  Cutoff = 0.50 | SPY Q2 2025 = +10.57%
+
+                                  Predicted: Under (0)   Predicted: Over (1)
+  Actual: Underperformer (0)      TN=122              FP=108
+  Actual: Outperformer  (1)       FN=47               TP=57
+
+  Sensitivity (Recall) : 54.8%  — of true outperformers, correctly called
+  Specificity          : 53.0%  — of true underperformers, correctly called
+  Precision            : 34.5%  — of predicted outperformers, truly so
+
+── PCA COMPONENT COEFFICIENTS (fitted on training data) ──────────
+| Component   |   Coeff |   Odds Ratio | 95% CI        |   Z-Stat |   p-Value | Significant?   |
+|-------------|---------|--------------|---------------|----------|-----------|----------------|
+| PC1         |  0.0488 |       1.05   | [1.030,1.070] |    4.976 |    0      | *** p<0.01     |
+| PC2         |  0.0013 |       1.0013 | [0.980,1.023] |    0.12  |    0.9047 | No             |
+| PC3         | -0.0272 |       0.9732 | [0.952,0.995] |   -2.377 |    0.0175 | **  p<0.05     |
+| PC4         | -0.0035 |       0.9965 | [0.973,1.021] |   -0.286 |    0.7749 | No             |
+| PC5         |  0.003  |       1.003  | [0.978,1.029] |    0.235 |    0.8143 | No             |
+| PC6         | -0.0708 |       0.9316 | [0.907,0.957] |   -5.11  |    0      | *** p<0.01     |
+| PC7         | -0.0429 |       0.9581 | [0.931,0.986] |   -2.969 |    0.003  | *** p<0.01     |
+| PC8         | -0.0171 |       0.9831 | [0.955,1.012] |   -1.173 |    0.2408 | No             |
+| PC9         |  0.011  |       1.0111 | [0.982,1.041] |    0.728 |    0.4667 | No             |
+| PC10        |  0.0352 |       1.0358 | [1.004,1.069] |    2.207 |    0.0273 | **  p<0.05     |
+| PC11        |  0.0175 |       1.0177 | [0.984,1.053] |    1.012 |    0.3114 | No             |
+| PC12        |  0.0089 |       1.009  | [0.975,1.044] |    0.508 |    0.6114 | No             |
+
+── PCA LOADINGS (Top contributor per component) ──────────────────
+  PC1: ΔNet Margin (+0.399), Rev Growth (+0.370), NI Growth (+0.358)
+  PC2: Gross Margin (+0.522), Op Margin (+0.457), Asset Turnover (-0.353)
+  PC3: Debt/Equity (+0.432), ROE (+0.422), Rev Growth (-0.367)
+  PC4: ΔP/E Ratio (+0.667), P/E Ratio (+0.661), Asset Turnover (+0.167)
+  PC5: ΔNet Margin (+0.389), NI Growth (+0.356), ΔAsset Turnover (-0.333)
+  PC6: Book/Market (+0.583), Asset Turnover (-0.575), Current Ratio (-0.367)
+  PC7: Inflation (+0.584), GDP Growth (+0.506), ΔAsset Turnover (-0.397)
+  PC8: ΔDebt/Equity (+0.561), ΔROE (+0.414), Debt/Equity (-0.391)
+  PC9: ΔCurrent Ratio (+0.606), Current Ratio (+0.497), ΔBook/Market (+0.309)
+  PC10: ΔBook/Market (+0.772), ΔCurrent Ratio (-0.451), ΔGross Margin (-0.209)
+  PC11: Current Ratio (+0.527), ΔCurrent Ratio (-0.427), ΔGross Margin (-0.397)
+  PC12: ΔGross Margin (+0.691), NI Growth (-0.354), Current Ratio (+0.322)
+
+======================================================================
+  TEST QUARTER: Q2 2025 Features → Q3 2025 Labels
+  Test N=385 | Outperformers=149/385 (38.7%) | SPY +7.79%
+======================================================================
+
+── CONFIGURATION 0: GLOBAL POOLED MODEL (all companies, no segmentation)
+
+======================================================================
+  GLOBAL MODEL  [All S&P 500 Companies]
+  Features: 2025Q2 | Labels: Q3 2025 | SPY = +7.79%
+  Train N=16,583 | Test N=385 | Test Outperformers=38.7%
+======================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────────
+| Metric        | Value   | Threshold          | Verdict       |
+|---------------|---------|--------------------|---------------|
+| Train AUC     | 0.5402  | In-sample          | —             |
+| Test AUC      | 0.5193  | Out-of-sample      | Weak          |
+| AUC Change    | -0.0209 | ≥ -0.02 = holds up | DEGRADES      |
+| Test Accuracy | 44.9%   | ≥ 71.2% paper      | ✗ Below Paper |
+| Sensitivity   | 74.5%   | Higher better      | —             |
+| Specificity   | 26.3%   | Higher better      | —             |
+| Precision     | 38.9%   | Higher better      | —             |
+| LR p-value    | 0.0000  | < 0.05             | SIGNIFICANT   |
+| McFadden R²   | 0.0032  | Train fit          | —             |
+| PCA Comps     | 12      | ≥80% variance      | —             |
+| VIF Kept      | 20/24   | ≤2.5 cutoff        | —             |
+| Cutoff        | 0.50    | Optimised on train | —             |
+| Sig Comps     | 5/12    | p<0.05             | —             |
+
+── CONFUSION MATRIX (Test Set) ───────────────────────────────────
+  Cutoff = 0.50 | SPY Q3 2025 = +7.79%
+
+                                  Predicted: Under (0)   Predicted: Over (1)
+  Actual: Underperformer (0)      TN=62               FP=174
+  Actual: Outperformer  (1)       FN=38               TP=111
+
+  Sensitivity (Recall) : 74.5%  — of true outperformers, correctly called
+  Specificity          : 26.3%  — of true underperformers, correctly called
+  Precision            : 38.9%  — of predicted outperformers, truly so
+
+── PCA COMPONENT COEFFICIENTS (fitted on training data) ──────────
+| Component   |   Coeff |   Odds Ratio | 95% CI        |   Z-Stat |   p-Value | Significant?   |
+|-------------|---------|--------------|---------------|----------|-----------|----------------|
+| PC1         |  0.0488 |       1.05   | [1.030,1.070] |    4.976 |    0      | *** p<0.01     |
+| PC2         |  0.0013 |       1.0013 | [0.980,1.023] |    0.12  |    0.9047 | No             |
+| PC3         | -0.0272 |       0.9732 | [0.952,0.995] |   -2.377 |    0.0175 | **  p<0.05     |
+| PC4         | -0.0035 |       0.9965 | [0.973,1.021] |   -0.286 |    0.7749 | No             |
+| PC5         |  0.003  |       1.003  | [0.978,1.029] |    0.235 |    0.8143 | No             |
+| PC6         | -0.0708 |       0.9316 | [0.907,0.957] |   -5.11  |    0      | *** p<0.01     |
+| PC7         | -0.0429 |       0.9581 | [0.931,0.986] |   -2.969 |    0.003  | *** p<0.01     |
+| PC8         | -0.0171 |       0.9831 | [0.955,1.012] |   -1.173 |    0.2408 | No             |
+| PC9         |  0.011  |       1.0111 | [0.982,1.041] |    0.728 |    0.4667 | No             |
+| PC10        |  0.0352 |       1.0358 | [1.004,1.069] |    2.207 |    0.0273 | **  p<0.05     |
+| PC11        |  0.0175 |       1.0177 | [0.984,1.053] |    1.012 |    0.3114 | No             |
+| PC12        |  0.0089 |       1.009  | [0.975,1.044] |    0.508 |    0.6114 | No             |
+
+── PCA LOADINGS (Top contributor per component) ──────────────────
+  PC1: ΔNet Margin (+0.399), Rev Growth (+0.370), NI Growth (+0.358)
+  PC2: Gross Margin (+0.522), Op Margin (+0.457), Asset Turnover (-0.353)
+  PC3: Debt/Equity (+0.432), ROE (+0.422), Rev Growth (-0.367)
+  PC4: ΔP/E Ratio (+0.667), P/E Ratio (+0.661), Asset Turnover (+0.167)
+  PC5: ΔNet Margin (+0.389), NI Growth (+0.356), ΔAsset Turnover (-0.333)
+  PC6: Book/Market (+0.583), Asset Turnover (-0.575), Current Ratio (-0.367)
+  PC7: Inflation (+0.584), GDP Growth (+0.506), ΔAsset Turnover (-0.397)
+  PC8: ΔDebt/Equity (+0.561), ΔROE (+0.414), Debt/Equity (-0.391)
+  PC9: ΔCurrent Ratio (+0.606), Current Ratio (+0.497), ΔBook/Market (+0.309)
+  PC10: ΔBook/Market (+0.772), ΔCurrent Ratio (-0.451), ΔGross Margin (-0.209)
+  PC11: Current Ratio (+0.527), ΔCurrent Ratio (-0.427), ΔGross Margin (-0.397)
+  PC12: ΔGross Margin (+0.691), NI Growth (-0.354), Current Ratio (+0.322)
+
+======================================================================
+  TEST QUARTER: Q3 2025 Features → Q4 2025 Labels
+  Test N=387 | Outperformers=159/387 (41.1%) | SPY +2.35%
+======================================================================
+
+── CONFIGURATION 0: GLOBAL POOLED MODEL (all companies, no segmentation)
+
+======================================================================
+  GLOBAL MODEL  [All S&P 500 Companies]
+  Features: 2025Q3 | Labels: Q4 2025 | SPY = +2.35%
+  Train N=16,583 | Test N=387 | Test Outperformers=41.1%
+======================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────────
+| Metric        | Value   | Threshold          | Verdict       |
+|---------------|---------|--------------------|---------------|
+| Train AUC     | 0.5402  | In-sample          | —             |
+| Test AUC      | 0.5581  | Out-of-sample      | Weak          |
+| AUC Change    | +0.0179 | ≥ -0.02 = holds up | HOLDS UP      |
+| Test Accuracy | 52.2%   | ≥ 71.2% paper      | ✗ Below Paper |
+| Sensitivity   | 66.7%   | Higher better      | —             |
+| Specificity   | 42.1%   | Higher better      | —             |
+| Precision     | 44.5%   | Higher better      | —             |
+| LR p-value    | 0.0000  | < 0.05             | SIGNIFICANT   |
+| McFadden R²   | 0.0032  | Train fit          | —             |
+| PCA Comps     | 12      | ≥80% variance      | —             |
+| VIF Kept      | 20/24   | ≤2.5 cutoff        | —             |
+| Cutoff        | 0.50    | Optimised on train | —             |
+| Sig Comps     | 5/12    | p<0.05             | —             |
+
+── CONFUSION MATRIX (Test Set) ───────────────────────────────────
+  Cutoff = 0.50 | SPY Q4 2025 = +2.35%
+
+                                  Predicted: Under (0)   Predicted: Over (1)
+  Actual: Underperformer (0)      TN=96               FP=132
+  Actual: Outperformer  (1)       FN=53               TP=106
+
+  Sensitivity (Recall) : 66.7%  — of true outperformers, correctly called
+  Specificity          : 42.1%  — of true underperformers, correctly called
+  Precision            : 44.5%  — of predicted outperformers, truly so
+
+── PCA COMPONENT COEFFICIENTS (fitted on training data) ──────────
+| Component   |   Coeff |   Odds Ratio | 95% CI        |   Z-Stat |   p-Value | Significant?   |
+|-------------|---------|--------------|---------------|----------|-----------|----------------|
+| PC1         |  0.0488 |       1.05   | [1.030,1.070] |    4.976 |    0      | *** p<0.01     |
+| PC2         |  0.0013 |       1.0013 | [0.980,1.023] |    0.12  |    0.9047 | No             |
+| PC3         | -0.0272 |       0.9732 | [0.952,0.995] |   -2.377 |    0.0175 | **  p<0.05     |
+| PC4         | -0.0035 |       0.9965 | [0.973,1.021] |   -0.286 |    0.7749 | No             |
+| PC5         |  0.003  |       1.003  | [0.978,1.029] |    0.235 |    0.8143 | No             |
+| PC6         | -0.0708 |       0.9316 | [0.907,0.957] |   -5.11  |    0      | *** p<0.01     |
+| PC7         | -0.0429 |       0.9581 | [0.931,0.986] |   -2.969 |    0.003  | *** p<0.01     |
+| PC8         | -0.0171 |       0.9831 | [0.955,1.012] |   -1.173 |    0.2408 | No             |
+| PC9         |  0.011  |       1.0111 | [0.982,1.041] |    0.728 |    0.4667 | No             |
+| PC10        |  0.0352 |       1.0358 | [1.004,1.069] |    2.207 |    0.0273 | **  p<0.05     |
+| PC11        |  0.0175 |       1.0177 | [0.984,1.053] |    1.012 |    0.3114 | No             |
+| PC12        |  0.0089 |       1.009  | [0.975,1.044] |    0.508 |    0.6114 | No             |
+
+── PCA LOADINGS (Top contributor per component) ──────────────────
+  PC1: ΔNet Margin (+0.399), Rev Growth (+0.370), NI Growth (+0.358)
+  PC2: Gross Margin (+0.522), Op Margin (+0.457), Asset Turnover (-0.353)
+  PC3: Debt/Equity (+0.432), ROE (+0.422), Rev Growth (-0.367)
+  PC4: ΔP/E Ratio (+0.667), P/E Ratio (+0.661), Asset Turnover (+0.167)
+  PC5: ΔNet Margin (+0.389), NI Growth (+0.356), ΔAsset Turnover (-0.333)
+  PC6: Book/Market (+0.583), Asset Turnover (-0.575), Current Ratio (-0.367)
+  PC7: Inflation (+0.584), GDP Growth (+0.506), ΔAsset Turnover (-0.397)
+  PC8: ΔDebt/Equity (+0.561), ΔROE (+0.414), Debt/Equity (-0.391)
+  PC9: ΔCurrent Ratio (+0.606), Current Ratio (+0.497), ΔBook/Market (+0.309)
+  PC10: ΔBook/Market (+0.772), ΔCurrent Ratio (-0.451), ΔGross Margin (-0.209)
+  PC11: Current Ratio (+0.527), ΔCurrent Ratio (-0.427), ΔGross Margin (-0.397)
+  PC12: ΔGross Margin (+0.691), NI Growth (-0.354), Current Ratio (+0.322)
+
+======================================================================
+  TEST QUARTER: Q4 2025 Features → Q1 2026 Labels
+  Test N=73 | Outperformers=44/73 (60.3%) | SPY -4.63%
+======================================================================
+
+── CONFIGURATION 0: GLOBAL POOLED MODEL (all companies, no segmentation)
+
+======================================================================
+  GLOBAL MODEL  [All S&P 500 Companies]
+  Features: 2025Q4 | Labels: Q1 2026 | SPY = -4.63%
+  Train N=16,583 | Test N=73 | Test Outperformers=60.3%
+======================================================================
+
+── VALIDATION METRICS ────────────────────────────────────────────
+| Metric        | Value   | Threshold          | Verdict       |
+|---------------|---------|--------------------|---------------|
+| Train AUC     | 0.5402  | In-sample          | —             |
+| Test AUC      | 0.4412  | Out-of-sample      | Weak          |
+| AUC Change    | -0.0990 | ≥ -0.02 = holds up | DEGRADES      |
+| Test Accuracy | 49.3%   | ≥ 71.2% paper      | ✗ Below Paper |
+| Sensitivity   | 72.7%   | Higher better      | —             |
+| Specificity   | 13.8%   | Higher better      | —             |
+| Precision     | 56.1%   | Higher better      | —             |
+| LR p-value    | 0.0000  | < 0.05             | SIGNIFICANT   |
+| McFadden R²   | 0.0032  | Train fit          | —             |
+| PCA Comps     | 12      | ≥80% variance      | —             |
+| VIF Kept      | 20/24   | ≤2.5 cutoff        | —             |
+| Cutoff        | 0.50    | Optimised on train | —             |
+| Sig Comps     | 5/12    | p<0.05             | —             |
+
+── CONFUSION MATRIX (Test Set) ───────────────────────────────────
+  Cutoff = 0.50 | SPY Q1 2026 = -4.63%
+
+                                  Predicted: Under (0)   Predicted: Over (1)
+  Actual: Underperformer (0)      TN=4                FP=25
+  Actual: Outperformer  (1)       FN=12               TP=32
+
+  Sensitivity (Recall) : 72.7%  — of true outperformers, correctly called
+  Specificity          : 13.8%  — of true underperformers, correctly called
+  Precision            : 56.1%  — of predicted outperformers, truly so
+
+── PCA COMPONENT COEFFICIENTS (fitted on training data) ──────────
+| Component   |   Coeff |   Odds Ratio | 95% CI        |   Z-Stat |   p-Value | Significant?   |
+|-------------|---------|--------------|---------------|----------|-----------|----------------|
+| PC1         |  0.0488 |       1.05   | [1.030,1.070] |    4.976 |    0      | *** p<0.01     |
+| PC2         |  0.0013 |       1.0013 | [0.980,1.023] |    0.12  |    0.9047 | No             |
+| PC3         | -0.0272 |       0.9732 | [0.952,0.995] |   -2.377 |    0.0175 | **  p<0.05     |
+| PC4         | -0.0035 |       0.9965 | [0.973,1.021] |   -0.286 |    0.7749 | No             |
+| PC5         |  0.003  |       1.003  | [0.978,1.029] |    0.235 |    0.8143 | No             |
+| PC6         | -0.0708 |       0.9316 | [0.907,0.957] |   -5.11  |    0      | *** p<0.01     |
+| PC7         | -0.0429 |       0.9581 | [0.931,0.986] |   -2.969 |    0.003  | *** p<0.01     |
+| PC8         | -0.0171 |       0.9831 | [0.955,1.012] |   -1.173 |    0.2408 | No             |
+| PC9         |  0.011  |       1.0111 | [0.982,1.041] |    0.728 |    0.4667 | No             |
+| PC10        |  0.0352 |       1.0358 | [1.004,1.069] |    2.207 |    0.0273 | **  p<0.05     |
+| PC11        |  0.0175 |       1.0177 | [0.984,1.053] |    1.012 |    0.3114 | No             |
+| PC12        |  0.0089 |       1.009  | [0.975,1.044] |    0.508 |    0.6114 | No             |
+
+── PCA LOADINGS (Top contributor per component) ──────────────────
+  PC1: ΔNet Margin (+0.399), Rev Growth (+0.370), NI Growth (+0.358)
+  PC2: Gross Margin (+0.522), Op Margin (+0.457), Asset Turnover (-0.353)
+  PC3: Debt/Equity (+0.432), ROE (+0.422), Rev Growth (-0.367)
+  PC4: ΔP/E Ratio (+0.667), P/E Ratio (+0.661), Asset Turnover (+0.167)
+  PC5: ΔNet Margin (+0.389), NI Growth (+0.356), ΔAsset Turnover (-0.333)
+  PC6: Book/Market (+0.583), Asset Turnover (-0.575), Current Ratio (-0.367)
+  PC7: Inflation (+0.584), GDP Growth (+0.506), ΔAsset Turnover (-0.397)
+  PC8: ΔDebt/Equity (+0.561), ΔROE (+0.414), Debt/Equity (-0.391)
+  PC9: ΔCurrent Ratio (+0.606), Current Ratio (+0.497), ΔBook/Market (+0.309)
+  PC10: ΔBook/Market (+0.772), ΔCurrent Ratio (-0.451), ΔGross Margin (-0.209)
+  PC11: Current Ratio (+0.527), ΔCurrent Ratio (-0.427), ΔGross Margin (-0.397)
+  PC12: ΔGross Margin (+0.691), NI Growth (-0.354), Current Ratio (+0.322)
+
+======================================================================
+  CONFIGURATION 0: GLOBAL MODEL — SUMMARY ACROSS ALL TEST QUARTERS
+======================================================================
+| Metric                          | Value   |
+|---------------------------------|---------|
+| Total quarters tested           | 4       |
+| AUC holds up (ΔAUC ≥ -0.02)     | 2/4     |
+| Beats paper benchmark (≥ 71.2%) | 0/4     |
+| LR significant (p < 0.05)       | 4/4     |
+| Average Train AUC               | 0.5402  |
+| Average Test AUC                | 0.5194  |
+| Average AUC Change              | -0.0208 |
+
+── PER-QUARTER BREAKDOWN ─────────────────────────────────────────
+| Quarter                           | SPY     |   N |   Train AUC |   Test AUC |    ΔAUC | Holds Up   | Accuracy   | Beats Paper   | LR Sig   |
+|-----------------------------------|---------|-----|-------------|------------|---------|------------|------------|---------------|----------|
+| Q1 2025 Features → Q2 2025 Labels | +10.57% | 334 |      0.5402 |     0.559  |  0.0188 | YES        | 53.6%      | NO            | YES      |
+| Q2 2025 Features → Q3 2025 Labels | +7.79%  | 385 |      0.5402 |     0.5193 | -0.0209 | NO         | 44.9%      | NO            | YES      |
+| Q3 2025 Features → Q4 2025 Labels | +2.35%  | 387 |      0.5402 |     0.5581 |  0.0179 | YES        | 52.2%      | NO            | YES      |
+| Q4 2025 Features → Q1 2026 Labels | -4.63%  |  73 |      0.5402 |     0.4412 | -0.099  | NO         | 49.3%      | NO            | YES      |
+
+── CONFUSION MATRIX SUMMARY ──────────────────────────────────────
+| Quarter                           |   N |   TN |   FP |   FN |   TP | Sensitivity   | Specificity   | Precision   | Accuracy   |
+|-----------------------------------|-----|------|------|------|------|---------------|---------------|-------------|------------|
+| Q1 2025 Features → Q2 2025 Labels | 334 |  122 |  108 |   47 |   57 | 54.8%         | 53.0%         | 34.5%       | 53.6%      |
+| Q2 2025 Features → Q3 2025 Labels | 385 |   62 |  174 |   38 |  111 | 74.5%         | 26.3%         | 38.9%       | 44.9%      |
+| Q3 2025 Features → Q4 2025 Labels | 387 |   96 |  132 |   53 |  106 | 66.7%         | 42.1%         | 44.5%       | 52.2%      |
+| Q4 2025 Features → Q1 2026 Labels |  73 |    4 |   25 |   12 |   32 | 72.7%         | 13.8%         | 56.1%       | 49.3%      |
+
+── SIGNIFICANCE ASSESSMENT ───────────────────────────────────────
+  Quarters where LR model is statistically significant : 4/4
+  Quarters where AUC holds up out-of-sample            : 2/4
+  Quarters where accuracy beats 71.2% benchmark        : 0/4
+
+  Global model average test AUC = 0.5194 → NEAR-RANDOM — model does not discriminate well globally
+
+======================================================================
+  Results saved to: results_validation_global.txt
+======================================================================
