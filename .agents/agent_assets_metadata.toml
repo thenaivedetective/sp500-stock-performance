@@ -144,3 +144,9 @@ id = "sAWs8YgFvKgLdi_CDcBzk"
 uri = "file://cetnew_q14_4_lana_gidan.zip"
 type = "unspecified"
 title = "Q14.4 CCA — CETNEW Data (Lana Gidan)"
+
+[[outputs]]
+id = "JSJCr6UKnsSiQ5gPSqTg0"
+uri = "file://cca_analysis_lana_gidan.zip"
+type = "unspecified"
+title = "CCA Analysis — Both Datasets (Lana Gidan)"
