@@ -138,3 +138,9 @@ id = "7O1InP5R2IuFE5t_Ce1EQ"
 uri = "file://sp500_outperformer_project.zip"
 type = "unspecified"
 title = "S&P 500 Outperformer Project — All Files (Delta Consistent)"
+
+[[outputs]]
+id = "sAWs8YgFvKgLdi_CDcBzk"
+uri = "file://cetnew_q14_4_lana_gidan.zip"
+type = "unspecified"
+title = "Q14.4 CCA — CETNEW Data (Lana Gidan)"
