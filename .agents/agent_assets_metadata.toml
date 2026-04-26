@@ -150,3 +150,39 @@ id = "JSJCr6UKnsSiQ5gPSqTg0"
 uri = "file://cca_analysis_lana_gidan.zip"
 type = "unspecified"
 title = "Full Package — CCA + 2025 Stock Predictions (Lana Gidan)"
+
+[[outputs]]
+id = "J7U6DK4Cif261cy_1Cm0K"
+uri = "file://comms_services_predictions_2025.csv"
+type = "table"
+title = "Communication Services — Stock Predictions 2025"
+
+[[outputs]]
+id = "JLlW7t2xHR6teuIUrba_W"
+uri = "file://comms_services_portfolio_vs_spy_2025.csv"
+type = "table"
+title = "Communication Services — Portfolio vs SPY 2025"
+
+[[outputs]]
+id = "YkfvIkD0vuSA2p2TLP5Ej"
+uri = "file://sector_predictions_2025.csv"
+type = "table"
+title = "All Sectors — Stock Predictions 2025"
+
+[[outputs]]
+id = "U0dfL4F8mmNM_5TSDUG18"
+uri = "file://portfolio_vs_spy_2025.csv"
+type = "table"
+title = "All Sectors — Portfolio vs SPY 2025"
+
+[[outputs]]
+id = "aAQ18dLDb0L_bhRTm8G4l"
+uri = "file://predictions_2025.csv"
+type = "table"
+title = "Global Model — All Stock Predictions 2025"
+
+[[outputs]]
+id = "wSQjfaxfNVhAop7Vpmbv9"
+uri = "file://all_files_lana_gidan.zip"
+type = "unspecified"
+title = "All Files — Lana Gidan (Complete Package)"
