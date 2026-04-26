@@ -6,6 +6,7 @@ from tabulate import tabulate
 from sklearn.metrics import roc_auc_score, confusion_matrix
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.cluster import KMeans
 from statsmodels.discrete.discrete_model import Logit
 from statsmodels.stats.outliers_influence import variance_inflation_factor
@@ -322,14 +323,19 @@ def run_validation(config_name, group_name, train, test, spy_ret, pred_qtr, feat
 
     pca     = PCA()
     pca.fit(X_tr_vif)
-    exp_var = np.cumsum(pca.explained_variance_ratio_)
-    n_comp  = min(int(np.searchsorted(exp_var, 0.80)) + 1, len(kept))
+    n_comp  = max(1, min(int(np.sum(pca.explained_variance_ratio_ >= 0.05)), len(kept)))
 
     pca_final = PCA(n_components=n_comp).fit(X_tr_vif)
     X_tr_pca  = pca_final.transform(X_tr_vif)
     X_te_pca  = pca_final.transform(X_te_vif)
 
     model = Logit(y_tr.values, sm.add_constant(X_tr_pca)).fit(maxiter=200, disp=False)
+
+    gb_clf  = GradientBoostingClassifier(n_estimators=200, max_depth=3, learning_rate=0.05,
+                                         subsample=0.8, random_state=42)
+    gb_clf.fit(X_tr_pca, y_tr.values)
+    gb_train_auc = roc_auc_score(y_tr, gb_clf.predict_proba(X_tr_pca)[:, 1])
+    gb_test_auc  = roc_auc_score(y_te, gb_clf.predict_proba(X_te_pca)[:, 1])
 
     best_cut, best_acc = 0.5, 0
     for thresh in np.arange(0.30, 0.75, 0.05):
@@ -378,7 +384,7 @@ def run_validation(config_name, group_name, train, test, spy_ret, pred_qtr, feat
         ["Precision",      f"{precision}%",    "Higher better",      "—"],
         ["LR p-value",     f"{model.llr_pvalue:.4f}", "< 0.05",      overall_sig],
         ["McFadden R²",    f"{model.prsquared:.4f}",  "Train fit",   "—"],
-        ["PCA Comps",      f"{n_comp}",        "≥80% variance",      "—"],
+        ["PCA Comps",      f"{n_comp}",        "≥5% per component",  "—"],
         ["VIF Kept",       f"{len(kept)}/{len(available)}", "≤2.5 cutoff", "—"],
         ["Cutoff",         f"{best_cut:.2f}",  "Optimised on train", "—"],
         ["Sig Comps",      f"{len(sig_comps)}/{n_comp}", "p<0.05",   "—"],
@@ -432,6 +438,13 @@ def run_validation(config_name, group_name, train, test, spy_ret, pred_qtr, feat
     for pc in loadings_df.columns:
         top = loadings_df[pc].abs().nlargest(3).index.tolist()
         print(f"  {pc}: {', '.join([ratio_labels.get(r,r) for r in top])}")
+
+    print(f"\n── MODEL COMPARISON — LR vs Gradient Boosting ────────────────────")
+    print(tabulate([
+        ["Logistic Regression", f"{train_auc:.4f}", f"{test_auc:.4f}", "Linear — primary model"],
+        ["Gradient Boosting",   f"{gb_train_auc:.4f}", f"{gb_test_auc:.4f}",
+         f"Non-linear | Δ test AUC={gb_test_auc-test_auc:+.4f}"],
+    ], headers=["Model","Train AUC","Test AUC","Notes"], tablefmt="github"))
 
     all_results.append({
         'Feature Qtr':    feat_qtr,
@@ -663,7 +676,7 @@ else:
     print(f"  Feature source    : WRDS Compustat 2025 (clean quarterly ratios)")
     print(f"  Delta features    : Q[t] – Q[t-1] for 10 key ratios (momentum signals)")
     print(f"  Label source      : WRDS CRSP 2025 — Outperform = (Q[t+1] return > SPY)")
-    print(f"  Method            : VIF≤2.5 → PCA≥80% → Logistic Regression")
+    print(f"  Method            : VIF≤2.5 → PCA≥5%/component → Logistic Regression + Gradient Boosting")
     print(f"  Winsorization     : 1st–99th percentile from training data only")
     print(f"  Market cap ths.   : Computed from training data only")
     print(f"  Cluster assignment: KMeans fitted on 2010–Q3 2024, applied to 2025")

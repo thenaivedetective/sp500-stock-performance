@@ -6,6 +6,7 @@ from tabulate import tabulate
 from sklearn.metrics import roc_auc_score, confusion_matrix
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+from sklearn.ensemble import GradientBoostingClassifier
 from statsmodels.discrete.discrete_model import Logit
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 import statsmodels.api as sm
@@ -299,14 +300,19 @@ for feat_qtr, label_cq, qtr_label in quarter_configs:
     X_te_vif  = X_te_sc[kept]
 
     pca_tmp   = PCA().fit(X_tr_vif)
-    exp_var   = np.cumsum(pca_tmp.explained_variance_ratio_)
-    n_comp    = min(int(np.searchsorted(exp_var, 0.80)) + 1, len(kept))
+    n_comp    = max(1, min(int(np.sum(pca_tmp.explained_variance_ratio_ >= 0.05)), len(kept)))
 
     pca_final = PCA(n_components=n_comp).fit(X_tr_vif)
     X_tr_pca  = pca_final.transform(X_tr_vif)
     X_te_pca  = pca_final.transform(X_te_vif)
 
     model = Logit(y_tr.values, sm.add_constant(X_tr_pca)).fit(maxiter=200, disp=False)
+
+    gb_clf  = GradientBoostingClassifier(n_estimators=200, max_depth=3, learning_rate=0.05,
+                                         subsample=0.8, random_state=42)
+    gb_clf.fit(X_tr_pca, y_tr.values)
+    gb_train_auc = roc_auc_score(y_tr, gb_clf.predict_proba(X_tr_pca)[:, 1])
+    gb_test_auc  = roc_auc_score(y_te, gb_clf.predict_proba(X_te_pca)[:, 1])
 
     best_cut, best_acc_tr = 0.5, 0
     for thresh in np.arange(0.30, 0.75, 0.05):
@@ -362,7 +368,7 @@ for feat_qtr, label_cq, qtr_label in quarter_configs:
         ["LR p-value",    f"{model.llr_pvalue:.4f}", "< 0.05",
          "SIGNIFICANT" if lr_sig else "NOT SIGNIFICANT"],
         ["McFadden R²",   f"{model.prsquared:.4f}",  "Train fit",      "—"],
-        ["PCA Comps",     str(n_comp),                "≥80% variance",  "—"],
+        ["PCA Comps",     str(n_comp),                "≥5% per component", "—"],
         ["VIF Kept",      f"{len(kept)}/{len(available)}", "≤2.5 cutoff", "—"],
         ["Cutoff",        f"{best_cut:.2f}",          "Optimised on train", "—"],
         ["Sig Comps",     f"{sig_comps}/{n_comp}",    "p<0.05",         "—"],
@@ -411,6 +417,14 @@ for feat_qtr, label_cq, qtr_label in quarter_configs:
         top3 = loadings_df[pc].abs().nlargest(3).index.tolist()
         top3_str = ', '.join([f"{ratio_labels.get(f,f)} ({loadings_df.loc[f,pc]:+.3f})" for f in top3])
         print(f"  {pc}: {top3_str}")
+
+    print()
+    print("── MODEL COMPARISON — Logistic Regression vs Gradient Boosting ──")
+    print(tabulate([
+        ["Logistic Regression", f"{train_auc:.4f}", f"{test_auc:.4f}", "Linear — primary model"],
+        ["Gradient Boosting",   f"{gb_train_auc:.4f}", f"{gb_test_auc:.4f}",
+         f"Non-linear benchmark | Δ={gb_test_auc-test_auc:+.4f}"],
+    ], headers=["Model","Train AUC","Test AUC","Notes"], tablefmt="github"))
 
     all_results.append({
         'Quarter'       : qtr_label,

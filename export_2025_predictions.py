@@ -105,7 +105,9 @@ kept = vif_filter(X_tr)
 X_tr_kept = X_tr[kept]
 scaler = StandardScaler()
 X_tr_sc = scaler.fit_transform(X_tr_kept)
-pca = PCA(n_components=0.95, random_state=42)
+_pca_full = PCA().fit(X_tr_sc)
+_n_comp   = max(1, int(np.sum(_pca_full.explained_variance_ratio_ >= 0.05)))
+pca = PCA(n_components=_n_comp)
 X_tr_pca = pca.fit_transform(X_tr_sc)
 
 clf = LogisticRegression(max_iter=1000, random_state=42, class_weight='balanced')

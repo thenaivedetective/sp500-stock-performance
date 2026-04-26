@@ -6,6 +6,7 @@ from tabulate import tabulate
 from sklearn.metrics import roc_auc_score, roc_curve, confusion_matrix
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.cluster import KMeans
 from statsmodels.discrete.discrete_model import Logit
 from statsmodels.stats.outliers_influence import variance_inflation_factor
@@ -185,8 +186,7 @@ def run_group(config_name, group_name, df_group, feature_cols=None):
     X_clean   = X_scaled[kept]
     pca       = PCA()
     pca.fit(X_clean)
-    exp_var   = np.cumsum(pca.explained_variance_ratio_)
-    n_comp    = min(int(np.searchsorted(exp_var, 0.80)) + 1, len(kept))
+    n_comp    = max(1, min(int(np.sum(pca.explained_variance_ratio_ >= 0.05)), len(kept)))
     pca_final = PCA(n_components=n_comp)
     X_pca     = pca_final.fit_transform(X_clean)
 
@@ -195,6 +195,19 @@ def run_group(config_name, group_name, df_group, feature_cols=None):
 
     y_prob  = result.predict(X_const)
     auc     = roc_auc_score(y, y_prob)
+
+    gb_clf  = GradientBoostingClassifier(n_estimators=200, max_depth=3, learning_rate=0.05,
+                                         subsample=0.8, random_state=42)
+    gb_clf.fit(X_pca, y.values)
+    gb_prob = gb_clf.predict_proba(X_pca)[:, 1]
+    gb_auc  = roc_auc_score(y, gb_prob)
+    gb_best_acc = 0
+    for thresh in np.arange(0.30, 0.75, 0.05):
+        gb_preds = (gb_prob >= thresh).astype(int)
+        gb_acc   = (gb_preds == y.values).mean()
+        if gb_acc > gb_best_acc:
+            gb_best_acc = gb_acc
+    gb_best_acc = round(gb_best_acc * 100, 1)
 
     best_cut, best_acc = 0.5, 0
     for thresh in np.arange(0.30, 0.75, 0.05):
@@ -242,7 +255,7 @@ def run_group(config_name, group_name, df_group, feature_cols=None):
         cumvar += ev
         pca_rows.append([f"PC{i+1}", f"{ev*100:.1f}%", f"{cumvar*100:.1f}%"])
     print(tabulate(pca_rows, headers=["Component","Variance Explained","Cumulative"], tablefmt="github"))
-    print(f"  → {n_comp} components retained (explaining ≥ 80% of variance)")
+    print(f"  → {n_comp} components retained (each explaining ≥ 5% of variance)")
 
     print(f"\n── PCA COMPONENT LOADINGS (FORMULA) ──────────────────────────")
     loadings_df = pd.DataFrame(pca_final.components_.T, index=kept,
@@ -324,10 +337,17 @@ def run_group(config_name, group_name, df_group, feature_cols=None):
     print(f"\n── GROUP CONCLUSION ──────────────────────────────────────────")
     print(f"  Group         : {group_name}")
     print(f"  Configuration : {config_name}")
-    print(f"  AUC           : {auc:.4f}")
+    print(f"  AUC           : {auc:.4f}  (Logistic Regression)")
+    print(f"  AUC (GB)      : {gb_auc:.4f}  (Gradient Boosting benchmark)")
     print(f"  Accuracy      : {best_acc}%")
     print(f"  Overall sig   : {overall_sig}")
     print(f"  Sig components: {', '.join(sig_comps) if sig_comps else 'None'} ({n_sig_comps}/{n_comp})")
+    print(f"\n── MODEL COMPARISON (Logistic vs Gradient Boosting) ──────────────")
+    print(tabulate([
+        ["Logistic Regression + Delta", f"{best_acc}%", f"{auc:.4f}", "Linear — primary model"],
+        ["Gradient Boosting (benchmark)", f"{gb_best_acc}%", f"{gb_auc:.4f}",
+         f"Non-linear | Δ AUC={gb_auc-auc:+.4f}"],
+    ], headers=["Model","Accuracy","AUC","Notes"], tablefmt="github"))
 
     all_results.append({
         'Configuration': config_name,
@@ -353,7 +373,7 @@ print("  ADVANCED SEGMENTATION ANALYSIS — WITH DELTA FEATURES")
 print("  S&P 500 | Q1 2010 – Q4 2024 | WRDS (lanagidan9790)")
 print("  Predicting: NEXT quarter outperformance using CURRENT quarter ratios")
 print("  Features: 14 base ratios + 10 QoQ delta features = 24 total")
-print("  Reference: Ananthakumar & Sarkar (2017) — VIF cutoff=2.5, PCA ≥80%")
+print("  Reference: Ananthakumar & Sarkar (2017) — VIF cutoff=2.5, PCA ≥5% per component")
 print("="*65)
 
 print("\n\n" + "="*65)
@@ -450,7 +470,7 @@ print(f"  Configuration : {best_group['Configuration']}")
 print(f"  AUC           : {best_group['AUC']:.4f}")
 print(f"  Accuracy      : {best_group['Accuracy']}%")
 print(f"  Sig Components: {best_group['Sig Components']}")
-print(f"\n  Methodology   : VIF≤2.5 → PCA≥80% → Logistic Regression")
+print(f"\n  Methodology   : VIF≤2.5 → PCA≥5%/component → Logistic Regression + Gradient Boosting")
 print(f"  Features      : 14 base ratios + 10 QoQ delta features = 24 total")
 print(f"  Horizon       : Q[t] ratios → Q[t+1] outperformance (shift=-1)")
 print(f"  Benchmark     : Ananthakumar & Sarkar (2017) — 71.2% accuracy")

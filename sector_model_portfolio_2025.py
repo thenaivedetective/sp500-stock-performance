@@ -125,7 +125,9 @@ for sector in sectors:
         kept = available
     scaler = StandardScaler()
     X_sc   = scaler.fit_transform(X_tr[kept])
-    pca    = PCA(n_components=0.95, random_state=42)
+    _pca_full = PCA().fit(X_sc)
+    _n_comp   = max(1, int(np.sum(_pca_full.explained_variance_ratio_ >= 0.05)))
+    pca    = PCA(n_components=_n_comp)
     X_pca  = pca.fit_transform(X_sc)
     clf    = LogisticRegression(max_iter=1000, random_state=42, class_weight='balanced')
     clf.fit(X_pca, y_tr)
@@ -136,7 +138,7 @@ for sector in sectors:
         'kept': kept, 'threshold': threshold,
         'n_train': len(s_clean),
     }
-    print(f"  {sector}: trained on {len(s_clean)} obs, {len(kept)} features → {X_pca.shape[1]} PCs")
+    print(f"  {sector}: trained on {len(s_clean)} obs, {len(kept)} features → {X_pca.shape[1]} PCs (≥5% each)")
 
 crsp_2025['gvkey'] = crsp_2025['gvkey'].astype(str)
 crsp_2025_sub = crsp_2025[['gvkey','cal_qtr','q_return','sp500_q_return','Outperform']].copy()

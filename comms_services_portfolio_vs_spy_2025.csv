@@ -1,4 +1,4 @@
 Quarter,N_Stocks,N_Predicted_Outperformers,N_Predicted_Underperformers,Accuracy_Pct,Model_Portfolio_Return_Pct,SPY_Return_Pct,Alpha_vs_SPY_Pct,Beat_SPY
-2025-Q2,12,5,7,33.33,17.1774,10.5687,6.6086,True
-2025-Q3,12,6,6,50.0,15.573,7.7923,7.7807,True
+2025-Q2,12,4,8,41.67,12.3075,10.5687,1.7388,True
+2025-Q3,12,8,4,50.0,12.8737,7.7923,5.0814,True
 2025-Q4,1,1,0,100.0,-21.7963,2.3479,-24.1442,False

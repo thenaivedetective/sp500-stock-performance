@@ -1,0 +1,29 @@
+
+
+Another thing the  that we need to address she asked whether we checked if the relationships in our data are actually linear, or non-linear. Logistic regression assumes a linear relationship between each predictor and the log-odds of outperforming. She's right that we never verified that assumption.
+
+So I ran the tests. Here's what we found:
+
+THE PROBLEM — Non-linearity exists in our data:
+
+1. Box-Tidwell test (the formal linearity test for logistic regression):
+   → Adding non-linear terms improved AUC from 0.5449 → 0.5557 (+0.011)
+   → This confirms the linear assumption is being violated
+
+2. One feature (d_gross_margin) has a non-monotonic relationship with the target — meaning the outperformance rate doesn't move in one direction as the variable increases. Logistic regression can't capture that.
+
+3. Most importantly — when I ran non-linear models as a benchmark:
+   • Logistic Regression (our current):   AUC = 0.5449
+   • Random Forest (non-linear):          AUC = 0.5864  (+0.04)
+   • Gradient Boosting (non-linear):      AUC = 0.6123  (+0.07)
+
+The non-linear models are substantially better. That gap of +0.07 AUC is not noise — it means there are curved and interaction relationships in the data that logistic regression literally cannot see.
+
+
+We have two options:
+
+Option A (minimal fix — easiest): Add a sentence acknowledging the limitation. Say our model assumes linearity, we tested it with Box-Tidwell, found mild violations, and note that non-linear models like Gradient Boosting (AUC = 0.61) outperform our logistic regression — suggesting future work should explore non-linear approaches. This is honest and the professor will respect it.
+
+Option B (stronger fix): Add Gradient Boosting as a comparison model in the paper. Run it, report AUC = 0.61, and show the table: Logistic (0.54) → Logistic + Delta (0.56) → Gradient Boosting (0.61). This directly responds to her question and actually improves our results.
+
+sorry to spam you guys im just summarizing what she said
