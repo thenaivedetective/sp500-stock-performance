@@ -196,7 +196,7 @@ def run_group(config_name, group_name, df_group, feature_cols=None):
     y_prob  = result.predict(X_const)
     auc     = roc_auc_score(y, y_prob)
 
-    gb_clf  = GradientBoostingClassifier(n_estimators=200, max_depth=3, learning_rate=0.05,
+    gb_clf  = GradientBoostingClassifier(n_estimators=50, max_depth=2, learning_rate=0.1,
                                          subsample=0.8, random_state=42)
     gb_clf.fit(X_pca, y.values)
     gb_prob = gb_clf.predict_proba(X_pca)[:, 1]

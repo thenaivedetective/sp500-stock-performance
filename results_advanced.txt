@@ -155,7 +155,7 @@
   Group         : Large Cap
   Configuration : Market Cap Segmentation
   AUC           : 0.5578  (Logistic Regression)
-  AUC (GB)      : 0.7498  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.6255  (Gradient Boosting benchmark)
   Accuracy      : 54.3%
   Overall sig   : SIGNIFICANT
   Sig components: PC1, PC4, PC5, PC7 (4/9)
@@ -164,7 +164,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 54.3%      | 0.5578 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 67.5%      | 0.7498 | Non-linear | Δ AUC=+0.1920 |
+| Gradient Boosting (benchmark) | 58.1%      | 0.6255 | Non-linear | Δ AUC=+0.0678 |
 
 =================================================================
   MID CAP
@@ -301,7 +301,7 @@
   Group         : Mid Cap
   Configuration : Market Cap Segmentation
   AUC           : 0.5420  (Logistic Regression)
-  AUC (GB)      : 0.7621  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.6193  (Gradient Boosting benchmark)
   Accuracy      : 53.2%
   Overall sig   : SIGNIFICANT
   Sig components: PC1, PC5 (2/9)
@@ -310,7 +310,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 53.2%      | 0.542  | Linear — primary model     |
-| Gradient Boosting (benchmark) | 69.3%      | 0.7621 | Non-linear | Δ AUC=+0.2201 |
+| Gradient Boosting (benchmark) | 58.0%      | 0.6193 | Non-linear | Δ AUC=+0.0773 |
 
 =================================================================
   SMALL CAP
@@ -444,7 +444,7 @@
   Group         : Small Cap
   Configuration : Market Cap Segmentation
   AUC           : 0.5350  (Logistic Regression)
-  AUC (GB)      : 0.7549  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.6326  (Gradient Boosting benchmark)
   Accuracy      : 54.5%
   Overall sig   : SIGNIFICANT
   Sig components: PC1, PC3, PC5 (3/8)
@@ -453,7 +453,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 54.5%      | 0.535  | Linear — primary model     |
-| Gradient Boosting (benchmark) | 67.2%      | 0.7549 | Non-linear | Δ AUC=+0.2199 |
+| Gradient Boosting (benchmark) | 58.2%      | 0.6326 | Non-linear | Δ AUC=+0.0976 |
 
 
 =================================================================
@@ -608,7 +608,7 @@
   Group         : Communication Services
   Configuration : Sector GICS
   AUC           : 0.6059  (Logistic Regression)
-  AUC (GB)      : 0.9741  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.8260  (Gradient Boosting benchmark)
   Accuracy      : 59.5%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC5 (1/8)
@@ -617,7 +617,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 59.5%      | 0.6059 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 89.9%      | 0.9741 | Non-linear | Δ AUC=+0.3682 |
+| Gradient Boosting (benchmark) | 75.9%      | 0.826  | Non-linear | Δ AUC=+0.2201 |
 
 =================================================================
   CONSUMER DISCRETIONARY
@@ -753,7 +753,7 @@
   Group         : Consumer Discretionary
   Configuration : Sector GICS
   AUC           : 0.5305  (Logistic Regression)
-  AUC (GB)      : 0.8594  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.6895  (Gradient Boosting benchmark)
   Accuracy      : 54.1%
   Overall sig   : NOT SIGNIFICANT
   Sig components: None (0/9)
@@ -762,7 +762,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 54.1%      | 0.5305 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 77.1%      | 0.8594 | Non-linear | Δ AUC=+0.3289 |
+| Gradient Boosting (benchmark) | 62.5%      | 0.6895 | Non-linear | Δ AUC=+0.1591 |
 
 =================================================================
   CONSUMER STAPLES
@@ -897,16 +897,16 @@
   Group         : Consumer Staples
   Configuration : Sector GICS
   AUC           : 0.5510  (Logistic Regression)
-  AUC (GB)      : 0.9680  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7945  (Gradient Boosting benchmark)
   Accuracy      : 55.7%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC5 (1/9)
 
 ── MODEL COMPARISON (Logistic vs Gradient Boosting) ──────────────
-| Model                         | Accuracy   |   AUC | Notes                      |
-|-------------------------------|------------|-------|----------------------------|
-| Logistic Regression + Delta   | 55.7%      | 0.551 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 90.1%      | 0.968 | Non-linear | Δ AUC=+0.4170 |
+| Model                         | Accuracy   |    AUC | Notes                      |
+|-------------------------------|------------|--------|----------------------------|
+| Logistic Regression + Delta   | 55.7%      | 0.551  | Linear — primary model     |
+| Gradient Boosting (benchmark) | 72.0%      | 0.7945 | Non-linear | Δ AUC=+0.2435 |
 
 =================================================================
   ENERGY
@@ -1036,7 +1036,7 @@
   Group         : Energy
   Configuration : Sector GICS
   AUC           : 0.6036  (Logistic Regression)
-  AUC (GB)      : 0.9997  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.9252  (Gradient Boosting benchmark)
   Accuracy      : 61.7%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC1 (1/8)
@@ -1045,7 +1045,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 61.7%      | 0.6036 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 98.8%      | 0.9997 | Non-linear | Δ AUC=+0.3960 |
+| Gradient Boosting (benchmark) | 83.4%      | 0.9252 | Non-linear | Δ AUC=+0.3215 |
 
 =================================================================
   FINANCIALS
@@ -1180,7 +1180,7 @@
   Group         : Financials
   Configuration : Sector GICS
   AUC           : 0.5481  (Logistic Regression)
-  AUC (GB)      : 0.9721  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7890  (Gradient Boosting benchmark)
   Accuracy      : 57.1%
   Overall sig   : NOT SIGNIFICANT
   Sig components: None (0/9)
@@ -1189,7 +1189,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 57.1%      | 0.5481 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 91.3%      | 0.9721 | Non-linear | Δ AUC=+0.4240 |
+| Gradient Boosting (benchmark) | 71.2%      | 0.789  | Non-linear | Δ AUC=+0.2409 |
 
 =================================================================
   HEALTH CARE
@@ -1325,7 +1325,7 @@
   Group         : Health Care
   Configuration : Sector GICS
   AUC           : 0.5856  (Logistic Regression)
-  AUC (GB)      : 0.9478  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7586  (Gradient Boosting benchmark)
   Accuracy      : 56.4%
   Overall sig   : SIGNIFICANT
   Sig components: PC8 (1/9)
@@ -1334,7 +1334,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 56.4%      | 0.5856 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 87.3%      | 0.9478 | Non-linear | Δ AUC=+0.3621 |
+| Gradient Boosting (benchmark) | 68.3%      | 0.7586 | Non-linear | Δ AUC=+0.1729 |
 
 =================================================================
   INDUSTRIALS
@@ -1470,7 +1470,7 @@
   Group         : Industrials
   Configuration : Sector GICS
   AUC           : 0.5546  (Logistic Regression)
-  AUC (GB)      : 0.8066  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.6465  (Gradient Boosting benchmark)
   Accuracy      : 53.7%
   Overall sig   : SIGNIFICANT
   Sig components: PC1, PC5 (2/9)
@@ -1479,7 +1479,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 53.7%      | 0.5546 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 72.4%      | 0.8066 | Non-linear | Δ AUC=+0.2520 |
+| Gradient Boosting (benchmark) | 60.1%      | 0.6465 | Non-linear | Δ AUC=+0.0919 |
 
 =================================================================
   INFORMATION TECHNOLOGY
@@ -1614,7 +1614,7 @@
   Group         : Information Technology
   Configuration : Sector GICS
   AUC           : 0.5437  (Logistic Regression)
-  AUC (GB)      : 0.8741  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.6926  (Gradient Boosting benchmark)
   Accuracy      : 54.9%
   Overall sig   : NOT SIGNIFICANT
   Sig components: None (0/9)
@@ -1623,7 +1623,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 54.9%      | 0.5437 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 78.6%      | 0.8741 | Non-linear | Δ AUC=+0.3305 |
+| Gradient Boosting (benchmark) | 63.6%      | 0.6926 | Non-linear | Δ AUC=+0.1489 |
 
 =================================================================
   MATERIALS
@@ -1759,7 +1759,7 @@
   Group         : Materials
   Configuration : Sector GICS
   AUC           : 0.5766  (Logistic Regression)
-  AUC (GB)      : 0.8396  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.6820  (Gradient Boosting benchmark)
   Accuracy      : 56.3%
   Overall sig   : SIGNIFICANT
   Sig components: PC1, PC6, PC7, PC8 (4/9)
@@ -1768,7 +1768,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 56.3%      | 0.5766 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 74.8%      | 0.8396 | Non-linear | Δ AUC=+0.2631 |
+| Gradient Boosting (benchmark) | 61.9%      | 0.682  | Non-linear | Δ AUC=+0.1054 |
 
 =================================================================
   REAL ESTATE
@@ -1903,7 +1903,7 @@
   Group         : Real Estate
   Configuration : Sector GICS
   AUC           : 0.6259  (Logistic Regression)
-  AUC (GB)      : 0.9970  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.9161  (Gradient Boosting benchmark)
   Accuracy      : 59.9%
   Overall sig   : NOT SIGNIFICANT
   Sig components: None (0/9)
@@ -1912,7 +1912,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 59.9%      | 0.6259 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 96.8%      | 0.997  | Non-linear | Δ AUC=+0.3711 |
+| Gradient Boosting (benchmark) | 83.9%      | 0.9161 | Non-linear | Δ AUC=+0.2903 |
 
 =================================================================
   UTILITIES
@@ -2043,7 +2043,7 @@
   Group         : Utilities
   Configuration : Sector GICS
   AUC           : 0.5468  (Logistic Regression)
-  AUC (GB)      : 0.9125  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7434  (Gradient Boosting benchmark)
   Accuracy      : 56.3%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC5 (1/8)
@@ -2052,7 +2052,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 56.3%      | 0.5468 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 82.7%      | 0.9125 | Non-linear | Δ AUC=+0.3658 |
+| Gradient Boosting (benchmark) | 67.6%      | 0.7434 | Non-linear | Δ AUC=+0.1967 |
 
 
 =================================================================
@@ -2193,7 +2193,7 @@
   Group         : Communication Services [+MktCap]
   Configuration : Sector + Market Cap Covariate
   AUC           : 0.6023  (Logistic Regression)
-  AUC (GB)      : 0.9777  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.8332  (Gradient Boosting benchmark)
   Accuracy      : 59.0%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC5 (1/8)
@@ -2202,7 +2202,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 59.0%      | 0.6023 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 91.3%      | 0.9777 | Non-linear | Δ AUC=+0.3754 |
+| Gradient Boosting (benchmark) | 75.2%      | 0.8332 | Non-linear | Δ AUC=+0.2308 |
 
 =================================================================
   CONSUMER DISCRETIONARY [+MKTCAP]
@@ -2340,7 +2340,7 @@
   Group         : Consumer Discretionary [+MktCap]
   Configuration : Sector + Market Cap Covariate
   AUC           : 0.5457  (Logistic Regression)
-  AUC (GB)      : 0.8499  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.6842  (Gradient Boosting benchmark)
   Accuracy      : 54.2%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC5 (1/9)
@@ -2349,7 +2349,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 54.2%      | 0.5457 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 76.3%      | 0.8499 | Non-linear | Δ AUC=+0.3041 |
+| Gradient Boosting (benchmark) | 62.1%      | 0.6842 | Non-linear | Δ AUC=+0.1385 |
 
 =================================================================
   CONSUMER STAPLES [+MKTCAP]
@@ -2483,7 +2483,7 @@
   Group         : Consumer Staples [+MktCap]
   Configuration : Sector + Market Cap Covariate
   AUC           : 0.5594  (Logistic Regression)
-  AUC (GB)      : 0.9563  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7672  (Gradient Boosting benchmark)
   Accuracy      : 55.5%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC5 (1/8)
@@ -2492,7 +2492,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 55.5%      | 0.5594 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 87.6%      | 0.9563 | Non-linear | Δ AUC=+0.3969 |
+| Gradient Boosting (benchmark) | 69.6%      | 0.7672 | Non-linear | Δ AUC=+0.2078 |
 
 =================================================================
   ENERGY [+MKTCAP]
@@ -2624,7 +2624,7 @@
   Group         : Energy [+MktCap]
   Configuration : Sector + Market Cap Covariate
   AUC           : 0.6638  (Logistic Regression)
-  AUC (GB)      : 0.9995  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.9189  (Gradient Boosting benchmark)
   Accuracy      : 64.4%
   Overall sig   : SIGNIFICANT
   Sig components: PC4 (1/8)
@@ -2633,7 +2633,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 64.4%      | 0.6638 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 98.8%      | 0.9995 | Non-linear | Δ AUC=+0.3357 |
+| Gradient Boosting (benchmark) | 82.6%      | 0.9189 | Non-linear | Δ AUC=+0.2551 |
 
 =================================================================
   FINANCIALS [+MKTCAP]
@@ -2770,7 +2770,7 @@
   Group         : Financials [+MktCap]
   Configuration : Sector + Market Cap Covariate
   AUC           : 0.5470  (Logistic Regression)
-  AUC (GB)      : 0.9737  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.8027  (Gradient Boosting benchmark)
   Accuracy      : 57.6%
   Overall sig   : NOT SIGNIFICANT
   Sig components: None (0/9)
@@ -2779,7 +2779,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 57.6%      | 0.547  | Linear — primary model     |
-| Gradient Boosting (benchmark) | 91.5%      | 0.9737 | Non-linear | Δ AUC=+0.4267 |
+| Gradient Boosting (benchmark) | 71.2%      | 0.8027 | Non-linear | Δ AUC=+0.2556 |
 
 =================================================================
   HEALTH CARE [+MKTCAP]
@@ -2917,7 +2917,7 @@
   Group         : Health Care [+MktCap]
   Configuration : Sector + Market Cap Covariate
   AUC           : 0.5694  (Logistic Regression)
-  AUC (GB)      : 0.9515  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7552  (Gradient Boosting benchmark)
   Accuracy      : 54.0%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC6 (1/9)
@@ -2926,7 +2926,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 54.0%      | 0.5694 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 88.4%      | 0.9515 | Non-linear | Δ AUC=+0.3820 |
+| Gradient Boosting (benchmark) | 68.0%      | 0.7552 | Non-linear | Δ AUC=+0.1858 |
 
 =================================================================
   INDUSTRIALS [+MKTCAP]
@@ -3064,7 +3064,7 @@
   Group         : Industrials [+MktCap]
   Configuration : Sector + Market Cap Covariate
   AUC           : 0.5588  (Logistic Regression)
-  AUC (GB)      : 0.8027  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.6510  (Gradient Boosting benchmark)
   Accuracy      : 53.6%
   Overall sig   : SIGNIFICANT
   Sig components: PC1, PC2, PC5, PC6 (4/9)
@@ -3073,7 +3073,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 53.6%      | 0.5588 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 71.6%      | 0.8027 | Non-linear | Δ AUC=+0.2439 |
+| Gradient Boosting (benchmark) | 59.9%      | 0.651  | Non-linear | Δ AUC=+0.0922 |
 
 =================================================================
   INFORMATION TECHNOLOGY [+MKTCAP]
@@ -3210,7 +3210,7 @@
   Group         : Information Technology [+MktCap]
   Configuration : Sector + Market Cap Covariate
   AUC           : 0.5418  (Logistic Regression)
-  AUC (GB)      : 0.8734  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7022  (Gradient Boosting benchmark)
   Accuracy      : 54.9%
   Overall sig   : NOT SIGNIFICANT
   Sig components: None (0/9)
@@ -3219,7 +3219,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 54.9%      | 0.5418 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 77.3%      | 0.8734 | Non-linear | Δ AUC=+0.3316 |
+| Gradient Boosting (benchmark) | 64.2%      | 0.7022 | Non-linear | Δ AUC=+0.1604 |
 
 =================================================================
   MATERIALS [+MKTCAP]
@@ -3354,7 +3354,7 @@
   Group         : Materials [+MktCap]
   Configuration : Sector + Market Cap Covariate
   AUC           : 0.5833  (Logistic Regression)
-  AUC (GB)      : 0.8418  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.6861  (Gradient Boosting benchmark)
   Accuracy      : 55.9%
   Overall sig   : SIGNIFICANT
   Sig components: PC1, PC5, PC6, PC7 (4/8)
@@ -3363,7 +3363,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 55.9%      | 0.5833 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 75.7%      | 0.8418 | Non-linear | Δ AUC=+0.2585 |
+| Gradient Boosting (benchmark) | 62.6%      | 0.6861 | Non-linear | Δ AUC=+0.1028 |
 
 =================================================================
   REAL ESTATE [+MKTCAP]
@@ -3498,7 +3498,7 @@
   Group         : Real Estate [+MktCap]
   Configuration : Sector + Market Cap Covariate
   AUC           : 0.6324  (Logistic Regression)
-  AUC (GB)      : 0.9978  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.9379  (Gradient Boosting benchmark)
   Accuracy      : 61.8%
   Overall sig   : NOT SIGNIFICANT
   Sig components: None (0/9)
@@ -3507,7 +3507,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 61.8%      | 0.6324 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 96.8%      | 0.9978 | Non-linear | Δ AUC=+0.3654 |
+| Gradient Boosting (benchmark) | 84.8%      | 0.9379 | Non-linear | Δ AUC=+0.3054 |
 
 =================================================================
   UTILITIES [+MKTCAP]
@@ -3640,7 +3640,7 @@
   Group         : Utilities [+MktCap]
   Configuration : Sector + Market Cap Covariate
   AUC           : 0.5466  (Logistic Regression)
-  AUC (GB)      : 0.9033  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7329  (Gradient Boosting benchmark)
   Accuracy      : 56.5%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC5 (1/8)
@@ -3649,7 +3649,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 56.5%      | 0.5466 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 81.3%      | 0.9033 | Non-linear | Δ AUC=+0.3566 |
+| Gradient Boosting (benchmark) | 66.8%      | 0.7329 | Non-linear | Δ AUC=+0.1863 |
 
 
 =================================================================
@@ -3784,7 +3784,7 @@
   Group         : Communication Services — Cluster 0
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.6902  (Logistic Regression)
-  AUC (GB)      : 0.9280  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.9084  (Gradient Boosting benchmark)
   Accuracy      : 63.9%
   Overall sig   : SIGNIFICANT
   Sig components: PC2, PC7 (2/8)
@@ -3793,7 +3793,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 63.9%      | 0.6902 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 81.1%      | 0.928  | Non-linear | Δ AUC=+0.2377 |
+| Gradient Boosting (benchmark) | 80.3%      | 0.9084 | Non-linear | Δ AUC=+0.2181 |
 
 =================================================================
   COMMUNICATION SERVICES — CLUSTER 1
@@ -3927,7 +3927,7 @@
   Group         : Communication Services — Cluster 1
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.6099  (Logistic Regression)
-  AUC (GB)      : 0.9978  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.9034  (Gradient Boosting benchmark)
   Accuracy      : 58.0%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC8 (1/8)
@@ -3936,7 +3936,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 58.0%      | 0.6099 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 97.6%      | 0.9978 | Non-linear | Δ AUC=+0.3879 |
+| Gradient Boosting (benchmark) | 84.0%      | 0.9034 | Non-linear | Δ AUC=+0.2935 |
 
 =================================================================
   CONSUMER DISCRETIONARY — CLUSTER 0
@@ -4071,7 +4071,7 @@
   Group         : Consumer Discretionary — Cluster 0
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.5856  (Logistic Regression)
-  AUC (GB)      : 0.9446  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7478  (Gradient Boosting benchmark)
   Accuracy      : 58.2%
   Overall sig   : SIGNIFICANT
   Sig components: PC5, PC6, PC9 (3/9)
@@ -4080,7 +4080,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 58.2%      | 0.5856 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 86.8%      | 0.9446 | Non-linear | Δ AUC=+0.3590 |
+| Gradient Boosting (benchmark) | 67.4%      | 0.7478 | Non-linear | Δ AUC=+0.1622 |
 
 =================================================================
   CONSUMER DISCRETIONARY — CLUSTER 1
@@ -4216,7 +4216,7 @@
   Group         : Consumer Discretionary — Cluster 1
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.5514  (Logistic Regression)
-  AUC (GB)      : 0.9348  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7597  (Gradient Boosting benchmark)
   Accuracy      : 55.2%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC3 (1/9)
@@ -4225,7 +4225,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 55.2%      | 0.5514 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 85.9%      | 0.9348 | Non-linear | Δ AUC=+0.3834 |
+| Gradient Boosting (benchmark) | 68.2%      | 0.7597 | Non-linear | Δ AUC=+0.2083 |
 
 =================================================================
   CONSUMER STAPLES — CLUSTER 0
@@ -4358,7 +4358,7 @@
   Group         : Consumer Staples — Cluster 0
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.5741  (Logistic Regression)
-  AUC (GB)      : 0.9964  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.8749  (Gradient Boosting benchmark)
   Accuracy      : 56.2%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC5 (1/8)
@@ -4367,7 +4367,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 56.2%      | 0.5741 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 96.7%      | 0.9964 | Non-linear | Δ AUC=+0.4223 |
+| Gradient Boosting (benchmark) | 78.3%      | 0.8749 | Non-linear | Δ AUC=+0.3008 |
 
 =================================================================
   CONSUMER STAPLES — CLUSTER 1
@@ -4503,7 +4503,7 @@
   Group         : Consumer Staples — Cluster 1
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.5739  (Logistic Regression)
-  AUC (GB)      : 0.9898  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.8220  (Gradient Boosting benchmark)
   Accuracy      : 56.6%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC10 (1/10)
@@ -4512,7 +4512,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 56.6%      | 0.5739 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 94.9%      | 0.9898 | Non-linear | Δ AUC=+0.4159 |
+| Gradient Boosting (benchmark) | 74.6%      | 0.822  | Non-linear | Δ AUC=+0.2481 |
 
 =================================================================
   ENERGY — CLUSTER 0
@@ -4643,7 +4643,7 @@
   Group         : Energy — Cluster 0
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.6316  (Logistic Regression)
-  AUC (GB)      : 0.9996  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.9536  (Gradient Boosting benchmark)
   Accuracy      : 59.7%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC3 (1/9)
@@ -4652,7 +4652,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 59.7%      | 0.6316 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 98.6%      | 0.9996 | Non-linear | Δ AUC=+0.3680 |
+| Gradient Boosting (benchmark) | 88.2%      | 0.9536 | Non-linear | Δ AUC=+0.3219 |
 
   Energy — Cluster 1: insufficient data (32 rows), skipping.
 
@@ -4791,7 +4791,7 @@
   Group         : Financials — Cluster 0
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.5618  (Logistic Regression)
-  AUC (GB)      : 0.9979  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.8750  (Gradient Boosting benchmark)
   Accuracy      : 57.5%
   Overall sig   : NOT SIGNIFICANT
   Sig components: None (0/10)
@@ -4800,7 +4800,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 57.5%      | 0.5618 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 97.5%      | 0.9979 | Non-linear | Δ AUC=+0.4361 |
+| Gradient Boosting (benchmark) | 79.3%      | 0.875  | Non-linear | Δ AUC=+0.3132 |
 
 =================================================================
   FINANCIALS — CLUSTER 1
@@ -4932,7 +4932,7 @@
   Group         : Financials — Cluster 1
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.5807  (Logistic Regression)
-  AUC (GB)      : 0.9982  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.8860  (Gradient Boosting benchmark)
   Accuracy      : 59.8%
   Overall sig   : NOT SIGNIFICANT
   Sig components: None (0/8)
@@ -4941,7 +4941,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 59.8%      | 0.5807 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 97.5%      | 0.9982 | Non-linear | Δ AUC=+0.4176 |
+| Gradient Boosting (benchmark) | 81.1%      | 0.886  | Non-linear | Δ AUC=+0.3054 |
 
 =================================================================
   HEALTH CARE — CLUSTER 0
@@ -5073,7 +5073,7 @@
   Group         : Health Care — Cluster 0
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.6006  (Logistic Regression)
-  AUC (GB)      : 0.9998  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.8929  (Gradient Boosting benchmark)
   Accuracy      : 59.0%
   Overall sig   : NOT SIGNIFICANT
   Sig components: None (0/8)
@@ -5082,7 +5082,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 59.0%      | 0.6006 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 99.3%      | 0.9998 | Non-linear | Δ AUC=+0.3992 |
+| Gradient Boosting (benchmark) | 79.2%      | 0.8929 | Non-linear | Δ AUC=+0.2923 |
 
 =================================================================
   HEALTH CARE — CLUSTER 1
@@ -5216,7 +5216,7 @@
   Group         : Health Care — Cluster 1
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.6028  (Logistic Regression)
-  AUC (GB)      : 0.9757  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.8204  (Gradient Boosting benchmark)
   Accuracy      : 57.4%
   Overall sig   : SIGNIFICANT
   Sig components: PC2, PC3, PC6, PC7 (4/8)
@@ -5225,7 +5225,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 57.4%      | 0.6028 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 91.1%      | 0.9757 | Non-linear | Δ AUC=+0.3728 |
+| Gradient Boosting (benchmark) | 74.5%      | 0.8204 | Non-linear | Δ AUC=+0.2176 |
 
 =================================================================
   INDUSTRIALS — CLUSTER 0
@@ -5361,7 +5361,7 @@
   Group         : Industrials — Cluster 0
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.5431  (Logistic Regression)
-  AUC (GB)      : 0.8978  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7209  (Gradient Boosting benchmark)
   Accuracy      : 54.9%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC3 (1/9)
@@ -5370,7 +5370,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 54.9%      | 0.5431 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 80.4%      | 0.8978 | Non-linear | Δ AUC=+0.3547 |
+| Gradient Boosting (benchmark) | 64.9%      | 0.7209 | Non-linear | Δ AUC=+0.1778 |
 
 =================================================================
   INDUSTRIALS — CLUSTER 1
@@ -5505,7 +5505,7 @@
   Group         : Industrials — Cluster 1
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.5501  (Logistic Regression)
-  AUC (GB)      : 0.8944  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7062  (Gradient Boosting benchmark)
   Accuracy      : 52.9%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC8 (1/9)
@@ -5514,7 +5514,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 52.9%      | 0.5501 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 79.9%      | 0.8944 | Non-linear | Δ AUC=+0.3442 |
+| Gradient Boosting (benchmark) | 64.9%      | 0.7062 | Non-linear | Δ AUC=+0.1561 |
 
 =================================================================
   INFORMATION TECHNOLOGY — CLUSTER 0
@@ -5653,7 +5653,7 @@
   Group         : Information Technology — Cluster 0
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.5607  (Logistic Regression)
-  AUC (GB)      : 0.9449  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7701  (Gradient Boosting benchmark)
   Accuracy      : 54.5%
   Overall sig   : NOT SIGNIFICANT
   Sig components: None (0/10)
@@ -5662,7 +5662,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 54.5%      | 0.5607 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 86.1%      | 0.9449 | Non-linear | Δ AUC=+0.3842 |
+| Gradient Boosting (benchmark) | 69.6%      | 0.7701 | Non-linear | Δ AUC=+0.2094 |
 
 =================================================================
   INFORMATION TECHNOLOGY — CLUSTER 1
@@ -5797,7 +5797,7 @@
   Group         : Information Technology — Cluster 1
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.5633  (Logistic Regression)
-  AUC (GB)      : 0.9654  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7642  (Gradient Boosting benchmark)
   Accuracy      : 57.1%
   Overall sig   : NOT SIGNIFICANT
   Sig components: PC1 (1/9)
@@ -5806,7 +5806,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 57.1%      | 0.5633 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 89.0%      | 0.9654 | Non-linear | Δ AUC=+0.4021 |
+| Gradient Boosting (benchmark) | 69.4%      | 0.7642 | Non-linear | Δ AUC=+0.2009 |
 
 =================================================================
   MATERIALS — CLUSTER 0
@@ -5941,7 +5941,7 @@
   Group         : Materials — Cluster 0
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.5679  (Logistic Regression)
-  AUC (GB)      : 0.9395  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7609  (Gradient Boosting benchmark)
   Accuracy      : 55.0%
   Overall sig   : SIGNIFICANT
   Sig components: PC1, PC3, PC7 (3/9)
@@ -5950,7 +5950,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 55.0%      | 0.5679 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 85.5%      | 0.9395 | Non-linear | Δ AUC=+0.3716 |
+| Gradient Boosting (benchmark) | 68.0%      | 0.7609 | Non-linear | Δ AUC=+0.1930 |
 
 =================================================================
   MATERIALS — CLUSTER 1
@@ -6085,7 +6085,7 @@
   Group         : Materials — Cluster 1
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.5963  (Logistic Regression)
-  AUC (GB)      : 0.9067  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.7444  (Gradient Boosting benchmark)
   Accuracy      : 59.1%
   Overall sig   : SIGNIFICANT
   Sig components: PC1, PC4, PC8 (3/9)
@@ -6094,7 +6094,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 59.1%      | 0.5963 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 82.0%      | 0.9067 | Non-linear | Δ AUC=+0.3105 |
+| Gradient Boosting (benchmark) | 67.8%      | 0.7444 | Non-linear | Δ AUC=+0.1481 |
 
   Real Estate — Cluster 0: insufficient data (82 rows), skipping.
 
@@ -6229,7 +6229,7 @@
   Group         : Real Estate — Cluster 1
   Configuration : Sector + Clustering (k=2)
   AUC           : 0.6358  (Logistic Regression)
-  AUC (GB)      : 0.9990  (Gradient Boosting benchmark)
+  AUC (GB)      : 0.9764  (Gradient Boosting benchmark)
   Accuracy      : 60.7%
   Overall sig   : NOT SIGNIFICANT
   Sig components: None (0/9)
@@ -6238,7 +6238,7 @@
 | Model                         | Accuracy   |    AUC | Notes                      |
 |-------------------------------|------------|--------|----------------------------|
 | Logistic Regression + Delta   | 60.7%      | 0.6358 | Linear — primary model     |
-| Gradient Boosting (benchmark) | 97.8%      | 0.999  | Non-linear | Δ AUC=+0.3633 |
+| Gradient Boosting (benchmark) | 92.6%      | 0.9764 | Non-linear | Δ AUC=+0.3406 |
 
 =================================================================
   UTILITIES — CLUSTER 0
@@ -6289,3 +6289,322 @@
 | PC7         | 5.9%                 | 61.0%        |
 | PC8         | 5.4%                 | 66.5%        |
 | PC9         | 5.1%                 | 71.6%        |
+  → 9 components retained (each explaining ≥ 5% of variance)
+
+── PCA COMPONENT LOADINGS (FORMULA) ──────────────────────────
+| Predictor                  |     PC1 |     PC2 |     PC3 |     PC4 |     PC5 |     PC6 |     PC7 |     PC8 |     PC9 |
+|----------------------------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+| Operating Margin           | -0.4719 |  0.1418 |  0.0833 | -0.1406 |  0.1324 |  0.2787 |  0.1632 | -0.0197 |  0.3348 |
+| Net Profit Margin          | -0.3357 |  0.3305 |  0.2058 |  0.0083 |  0.2187 |  0.2995 | -0.0867 | -0.2684 | -0.1174 |
+| Asset Turnover             |  0.4789 | -0.1283 | -0.1395 |  0.055  |  0.0877 |  0.0703 | -0.0759 | -0.312  |  0.204  |
+| Current Ratio              |  0.2428 |  0.103  | -0.3831 |  0.3579 | -0.0708 |  0.226  |  0.0442 | -0.0838 |  0.042  |
+| Debt-to-Equity             |  0.3963 |  0.1303 |  0.2008 | -0.2234 |  0.0464 |  0.107  |  0.1141 |  0.3599 |  0.229  |
+| Revenue Growth (QoQ)       | -0.0403 |  0.0263 | -0.394  |  0.0681 |  0.3653 | -0.1322 |  0.123  | -0.1154 |  0.0584 |
+| Net Income Growth (QoQ)    |  0.0615 |  0.3877 | -0.0033 |  0.2144 | -0.0648 | -0.3436 |  0.1246 | -0.2107 | -0.0863 |
+| P/E Ratio                  | -0.016  | -0.1148 |  0.4168 |  0.403  | -0.1424 |  0.0453 |  0.25   |  0.0453 |  0.0513 |
+| Book-to-Market             | -0.2718 |  0.1187 | -0.3631 |  0.1562 | -0.2405 | -0.2924 |  0.0523 |  0.3797 | -0.2561 |
+| GDP Growth (Quarterly)     | -0.0085 | -0.0305 | -0.0062 |  0.1527 |  0.5762 | -0.1907 |  0.1587 |  0.2546 |  0.0316 |
+| CPI Inflation (Quarterly)  |  0.0594 | -0.0196 |  0.1423 |  0.2332 |  0.5533 | -0.1236 |  0.0651 |  0.0716 | -0.0779 |
+| ΔROE (QoQ)                 |  0.3284 |  0.468  |  0.0933 | -0.1982 |  0.0368 |  0.0779 |  0.0587 |  0.158  | -0.0395 |
+| ΔGross Profit Margin (QoQ) | -0.0917 |  0.2381 | -0.2093 | -0.1495 | -0.1409 | -0.1818 |  0.4516 | -0.0037 |  0.5619 |
+| ΔNet Margin (QoQ)          |  0.0909 |  0.5688 |  0.0879 | -0.0074 | -0.0005 | -0.1011 | -0.1398 | -0.1586 | -0.2421 |
+| ΔCurrent Ratio (QoQ)       | -0.0095 |  0.0944 | -0.2645 |  0.3353 | -0.0085 |  0.5545 |  0.1326 | -0.0614 | -0.0144 |
+| ΔDebt-to-Equity (QoQ)      |  0.0968 | -0.0847 | -0.0334 | -0.2019 | -0.0126 |  0.2678 |  0.6156 |  0.1486 | -0.5263 |
+| ΔP/E Ratio (QoQ)           |  0.0334 |  0.059  |  0.3406 |  0.5006 | -0.2074 | -0.0661 |  0.1384 |  0.0969 |  0.1514 |
+| ΔBook-to-Market (QoQ)      | -0.0314 |  0.1678 | -0.1256 |  0.1359 |  0.0364 |  0.2397 | -0.4209 |  0.5783 |  0.127  |
+
+  Top 3 loadings per component:
+  PC1: Asset Turnover, Operating Margin, Debt-to-Equity
+  PC2: ΔNet Margin (QoQ), ΔROE (QoQ), Net Income Growth (QoQ)
+  PC3: P/E Ratio, Revenue Growth (QoQ), Current Ratio
+  PC4: ΔP/E Ratio (QoQ), P/E Ratio, Current Ratio
+  PC5: GDP Growth (Quarterly), CPI Inflation (Quarterly), Revenue Growth (QoQ)
+  PC6: ΔCurrent Ratio (QoQ), Net Income Growth (QoQ), Net Profit Margin
+  PC7: ΔDebt-to-Equity (QoQ), ΔGross Profit Margin (QoQ), ΔBook-to-Market (QoQ)
+  PC8: ΔBook-to-Market (QoQ), Book-to-Market, Debt-to-Equity
+  PC9: ΔGross Profit Margin (QoQ), ΔDebt-to-Equity (QoQ), Operating Margin
+
+── OPTIMAL PROBABILITY CUTOFF ────────────────────────────────
+|   Cutoff | Accuracy   | Sensitivity   | Specificity   |          |
+|----------|------------|---------------|---------------|----------|
+|     0.3  | 44.5%      | 99.8%         | 0.9%          |          |
+|     0.35 | 45.2%      | 94.4%         | 6.3%          |          |
+|     0.4  | 51.5%      | 80.6%         | 28.5%         |          |
+|     0.45 | 54.0%      | 46.0%         | 60.4%         |          |
+|     0.5  | 58.0%      | 19.4%         | 88.4%         | ← CHOSEN |
+|     0.55 | 57.3%      | 6.7%          | 97.2%         |          |
+|     0.6  | 56.5%      | 2.7%          | 98.9%         |          |
+|     0.65 | 56.0%      | 0.2%          | 100.0%        |          |
+|     0.7  | 55.9%      | 0.0%          | 100.0%        |          |
+
+── MODEL FIT & OVERALL SIGNIFICANCE ─────────────────────────
+| Metric             | Value   | Threshold       | Verdict         |
+|--------------------|---------|-----------------|-----------------|
+| LR p-value         | 0.0782  | < 0.05          | NOT SIGNIFICANT |
+| LR Statistic       | 15.50   | Higher better   | —               |
+| McFadden Pseudo R² | 0.0111  | ≥ 0.20 good     | Very Weak       |
+| AUC                | 0.5646  | ≥ 0.70 good     | Near-Random     |
+| Probability Cutoff | 0.5     | Trial & Error   | Chosen          |
+| Overall Accuracy   | 58.0%   | ≥ 71.2% (paper) | ✗ Below Paper   |
+| Sensitivity        | 19.4%   | Higher better   | —               |
+| Specificity        | 88.4%   | Higher better   | —               |
+
+── CONFUSION MATRIX ──────────────────────────────────────────
+  Cutoff = 0.5
+
+                                  Pred: Under (0)   Pred: Over (1)
+  Actual: Underperformer (0)      TN=502           FP=66
+  Actual: Outperformer  (1)       FN=361           TP=87
+
+── PCA COMPONENT COEFFICIENTS & SIGNIFICANCE ─────────────────
+| Component   |   Coeff |   Odds Ratio | 95% CI        |   Z-Stat |   p-Value | Significant?   |
+|-------------|---------|--------------|---------------|----------|-----------|----------------|
+| PC1         |  0.128  |       1.1366 | [1.044,1.237] |    2.968 |    0.003  | *** p<0.01     |
+| PC2         | -0.0489 |       0.9523 | [0.873,1.039] |   -1.097 |    0.2725 | No             |
+| PC3         |  0.0228 |       1.0231 | [0.930,1.126] |    0.467 |    0.6404 | No             |
+| PC4         |  0.058  |       1.0598 | [0.954,1.177] |    1.087 |    0.2769 | No             |
+| PC5         |  0.0508 |       1.0521 | [0.945,1.172] |    0.923 |    0.356  | No             |
+| PC6         | -0.0692 |       0.9331 | [0.832,1.047] |   -1.179 |    0.2384 | No             |
+| PC7         |  0.0056 |       1.0057 | [0.891,1.135] |    0.091 |    0.9272 | No             |
+| PC8         | -0.0453 |       0.9557 | [0.842,1.085] |   -0.702 |    0.4824 | No             |
+| PC9         | -0.0761 |       0.9267 | [0.814,1.055] |   -1.147 |    0.2512 | No             |
+
+── GROUP CONCLUSION ──────────────────────────────────────────
+  Group         : Utilities — Cluster 0
+  Configuration : Sector + Clustering (k=2)
+  AUC           : 0.5646  (Logistic Regression)
+  AUC (GB)      : 0.7792  (Gradient Boosting benchmark)
+  Accuracy      : 58.0%
+  Overall sig   : NOT SIGNIFICANT
+  Sig components: PC1 (1/9)
+
+── MODEL COMPARISON (Logistic vs Gradient Boosting) ──────────────
+| Model                         | Accuracy   |    AUC | Notes                      |
+|-------------------------------|------------|--------|----------------------------|
+| Logistic Regression + Delta   | 58.0%      | 0.5646 | Linear — primary model     |
+| Gradient Boosting (benchmark) | 70.4%      | 0.7792 | Non-linear | Δ AUC=+0.2146 |
+
+=================================================================
+  UTILITIES — CLUSTER 1
+  N=681 | Next-Q Outperformers=45.8%
+  Predicting: Q[t] ratios → Q[t+1] outperformance
+=================================================================
+
+── VIF — ALL PREDICTORS (cutoff = 2.5) ───────────────────────
+| Predictor                  |   Initial VIF | Final VIF   | Decision   |
+|----------------------------|---------------|-------------|------------|
+| Return on Assets (ROA)     |         14.33 | removed     | ✗ Removed  |
+| Return on Equity (ROE)     |          9.12 | 2.01        | ✓ Kept     |
+| Gross Profit Margin        |          6.39 | removed     | ✗ Removed  |
+| Operating Margin           |          5.55 | 1.74        | ✓ Kept     |
+| Net Profit Margin          |         12.54 | removed     | ✗ Removed  |
+| Asset Turnover             |          2.77 | 1.63        | ✓ Kept     |
+| Current Ratio              |          1.52 | 1.40        | ✓ Kept     |
+| Debt-to-Equity             |          3.3  | 1.56        | ✓ Kept     |
+| Revenue Growth (QoQ)       |          4.79 | removed     | ✗ Removed  |
+| Net Income Growth (QoQ)    |          4.14 | removed     | ✗ Removed  |
+| P/E Ratio                  |          6.06 | removed     | ✗ Removed  |
+| Book-to-Market             |          1.68 | 1.49        | ✓ Kept     |
+| GDP Growth (Quarterly)     |          1.18 | 1.14        | ✓ Kept     |
+| CPI Inflation (Quarterly)  |          1.23 | 1.19        | ✓ Kept     |
+| ΔROA (QoQ)                 |         14.27 | removed     | ✗ Removed  |
+| ΔROE (QoQ)                 |         10.94 | removed     | ✗ Removed  |
+| ΔGross Profit Margin (QoQ) |         16.94 | 1.46        | ✓ Kept     |
+| ΔOperating Margin (QoQ)    |         20.04 | removed     | ✗ Removed  |
+| ΔNet Margin (QoQ)          |         10    | 1.40        | ✓ Kept     |
+| ΔAsset Turnover (QoQ)      |          3.57 | 1.08        | ✓ Kept     |
+| ΔCurrent Ratio (QoQ)       |          1.13 | 1.11        | ✓ Kept     |
+| ΔDebt-to-Equity (QoQ)      |          2.5  | 1.74        | ✓ Kept     |
+| ΔP/E Ratio (QoQ)           |          5.87 | 1.04        | ✓ Kept     |
+| ΔBook-to-Market (QoQ)      |          1.25 | 1.19        | ✓ Kept     |
+  All kept predictors have Final VIF ≤ 2.5  ✓
+
+  Predictors kept (15): Return on Equity (ROE), Operating Margin, Asset Turnover, Current Ratio, Debt-to-Equity, Book-to-Market, GDP Growth (Quarterly), CPI Inflation (Quarterly), ΔGross Profit Margin (QoQ), ΔNet Margin (QoQ), ΔAsset Turnover (QoQ), ΔCurrent Ratio (QoQ), ΔDebt-to-Equity (QoQ), ΔP/E Ratio (QoQ), ΔBook-to-Market (QoQ)
+
+── PCA — EXPLAINED VARIANCE ──────────────────────────────────
+| Component   | Variance Explained   | Cumulative   |
+|-------------|----------------------|--------------|
+| PC1         | 17.5%                | 17.5%        |
+| PC2         | 11.2%                | 28.8%        |
+| PC3         | 10.0%                | 38.8%        |
+| PC4         | 8.5%                 | 47.4%        |
+| PC5         | 8.3%                 | 55.7%        |
+| PC6         | 6.8%                 | 62.5%        |
+| PC7         | 6.6%                 | 69.1%        |
+| PC8         | 5.9%                 | 74.9%        |
+| PC9         | 5.4%                 | 80.3%        |
+| PC10        | 5.0%                 | 85.3%        |
+  → 10 components retained (each explaining ≥ 5% of variance)
+
+── PCA COMPONENT LOADINGS (FORMULA) ──────────────────────────
+| Predictor                  |     PC1 |     PC2 |     PC3 |     PC4 |     PC5 |     PC6 |     PC7 |     PC8 |     PC9 |    PC10 |
+|----------------------------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+| Return on Equity (ROE)     |  0.4671 |  0.0495 |  0.086  | -0.33   | -0.0514 | -0.0756 |  0.1274 |  0.1898 | -0.0526 |  0.0988 |
+| Operating Margin           |  0.3072 |  0.1723 | -0.4882 |  0.1972 |  0.2191 |  0.0604 |  0.079  | -0.0657 | -0.2027 |  0.0434 |
+| Asset Turnover             | -0.2518 |  0.3506 |  0.2743 | -0.381  | -0.1126 | -0.0865 |  0.2486 | -0.0073 | -0.0862 | -0.4024 |
+| Current Ratio              | -0.1344 |  0.2768 |  0.5174 |  0.1066 |  0.2993 |  0.0964 | -0.0159 | -0.0338 | -0.3175 | -0.0031 |
+| Debt-to-Equity             | -0.3706 |  0.3331 | -0.2147 | -0.1139 |  0.0046 | -0.036  | -0.1855 | -0.167  |  0.1571 |  0.1317 |
+| Book-to-Market             |  0.1692 | -0.1807 |  0.4529 |  0.4416 |  0.1087 |  0.0094 | -0.0611 | -0.4356 | -0.0353 |  0.1359 |
+| GDP Growth (Quarterly)     | -0.0768 | -0.2731 | -0.0298 | -0.4075 |  0.4448 |  0.1587 | -0.0289 | -0.3352 | -0.2296 | -0.1508 |
+| CPI Inflation (Quarterly)  | -0.0787 | -0.325  | -0.0521 | -0.371  |  0.4769 | -0.1189 | -0.1367 |  0.0476 |  0.1075 |  0.2524 |
+| ΔGross Profit Margin (QoQ) |  0.2067 |  0.474  | -0.2566 |  0.0331 |  0.2171 |  0.0208 | -0.016  | -0.2203 | -0.3421 | -0.0756 |
+| ΔNet Margin (QoQ)          |  0.2666 |  0.2704 |  0.2098 | -0.3551 | -0.1982 | -0.0046 |  0.0044 | -0.1947 |  0.051  |  0.641  |
+| ΔAsset Turnover (QoQ)      | -0.1486 | -0.0611 | -0.0942 |  0.095  |  0.1204 | -0.2307 |  0.8587 | -0.2569 |  0.1688 |  0.1474 |
+| ΔCurrent Ratio (QoQ)       | -0.0214 |  0.259  |  0.1322 |  0.1555 |  0.4977 |  0.2422 |  0.1357 |  0.5589 |  0.2856 |  0.1543 |
+| ΔDebt-to-Equity (QoQ)      | -0.4464 |  0.1572 | -0.1288 |  0.0912 | -0.0456 |  0.1821 | -0.1601 | -0.2039 |  0.1146 |  0.326  |
+| ΔP/E Ratio (QoQ)           |  0.0235 | -0.1285 | -0.0357 | -0.1108 | -0.1947 |  0.8839 |  0.2435 | -0.0549 | -0.0165 | -0.001  |
+| ΔBook-to-Market (QoQ)      |  0.303  |  0.1864 |  0.0498 | -0.0556 |  0.1463 |  0.0801 | -0.1296 | -0.3417 |  0.7174 | -0.3684 |
+
+  Top 3 loadings per component:
+  PC1: Return on Equity (ROE), ΔDebt-to-Equity (QoQ), Debt-to-Equity
+  PC2: ΔGross Profit Margin (QoQ), Asset Turnover, Debt-to-Equity
+  PC3: Current Ratio, Operating Margin, Book-to-Market
+  PC4: Book-to-Market, GDP Growth (Quarterly), Asset Turnover
+  PC5: ΔCurrent Ratio (QoQ), CPI Inflation (Quarterly), GDP Growth (Quarterly)
+  PC6: ΔP/E Ratio (QoQ), ΔCurrent Ratio (QoQ), ΔAsset Turnover (QoQ)
+  PC7: ΔAsset Turnover (QoQ), Asset Turnover, ΔP/E Ratio (QoQ)
+  PC8: ΔCurrent Ratio (QoQ), Book-to-Market, ΔBook-to-Market (QoQ)
+  PC9: ΔBook-to-Market (QoQ), ΔGross Profit Margin (QoQ), Current Ratio
+  PC10: ΔNet Margin (QoQ), Asset Turnover, ΔBook-to-Market (QoQ)
+
+── OPTIMAL PROBABILITY CUTOFF ────────────────────────────────
+|   Cutoff | Accuracy   | Sensitivity   | Specificity   |          |
+|----------|------------|---------------|---------------|----------|
+|     0.3  | 46.5%      | 99.0%         | 2.2%          |          |
+|     0.35 | 48.8%      | 95.5%         | 9.2%          |          |
+|     0.4  | 54.2%      | 87.2%         | 26.3%         |          |
+|     0.45 | 59.8%      | 62.2%         | 57.7%         | ← CHOSEN |
+|     0.5  | 56.4%      | 30.1%         | 78.6%         |          |
+|     0.55 | 55.8%      | 13.5%         | 91.6%         |          |
+|     0.6  | 55.5%      | 6.4%          | 97.0%         |          |
+|     0.65 | 54.6%      | 2.9%          | 98.4%         |          |
+|     0.7  | 54.5%      | 1.6%          | 99.2%         |          |
+
+── MODEL FIT & OVERALL SIGNIFICANCE ─────────────────────────
+| Metric             | Value   | Threshold       | Verdict         |
+|--------------------|---------|-----------------|-----------------|
+| LR p-value         | 0.0522  | < 0.05          | NOT SIGNIFICANT |
+| LR Statistic       | 18.17   | Higher better   | —               |
+| McFadden Pseudo R² | 0.0193  | ≥ 0.20 good     | Very Weak       |
+| AUC                | 0.6090  | ≥ 0.70 good     | Moderate        |
+| Probability Cutoff | 0.45    | Trial & Error   | Chosen          |
+| Overall Accuracy   | 59.8%   | ≥ 71.2% (paper) | ✗ Below Paper   |
+| Sensitivity        | 62.2%   | Higher better   | —               |
+| Specificity        | 57.7%   | Higher better   | —               |
+
+── CONFUSION MATRIX ──────────────────────────────────────────
+  Cutoff = 0.45
+
+                                  Pred: Under (0)   Pred: Over (1)
+  Actual: Underperformer (0)      TN=213           FP=156
+  Actual: Outperformer  (1)       FN=118           TP=194
+
+── PCA COMPONENT COEFFICIENTS & SIGNIFICANCE ─────────────────
+| Component   |   Coeff |   Odds Ratio | 95% CI        |   Z-Stat |   p-Value | Significant?   |
+|-------------|---------|--------------|---------------|----------|-----------|----------------|
+| PC1         | -0.0121 |       0.988  | [0.897,1.088] |   -0.246 |    0.8059 | No             |
+| PC2         |  0.0197 |       1.0199 | [0.906,1.148] |    0.325 |    0.745  | No             |
+| PC3         |  0.0445 |       1.0455 | [0.922,1.185] |    0.697 |    0.4861 | No             |
+| PC4         | -0.006  |       0.994  | [0.867,1.140] |   -0.086 |    0.9318 | No             |
+| PC5         |  0.1689 |       1.184  | [1.030,1.361] |    2.371 |    0.0177 | **  p<0.05     |
+| PC6         | -0.0648 |       0.9373 | [0.803,1.093] |   -0.824 |    0.4097 | No             |
+| PC7         | -0.0463 |       0.9548 | [0.817,1.115] |   -0.583 |    0.5598 | No             |
+| PC8         | -0.1333 |       0.8752 | [0.736,1.040] |   -1.512 |    0.1305 | No             |
+| PC9         |  0.2631 |       1.3009 | [1.085,1.560] |    2.842 |    0.0045 | *** p<0.01     |
+| PC10        | -0.0305 |       0.9699 | [0.809,1.163] |   -0.329 |    0.7422 | No             |
+
+── GROUP CONCLUSION ──────────────────────────────────────────
+  Group         : Utilities — Cluster 1
+  Configuration : Sector + Clustering (k=2)
+  AUC           : 0.6090  (Logistic Regression)
+  AUC (GB)      : 0.8415  (Gradient Boosting benchmark)
+  Accuracy      : 59.8%
+  Overall sig   : NOT SIGNIFICANT
+  Sig components: PC5, PC9 (2/10)
+
+── MODEL COMPARISON (Logistic vs Gradient Boosting) ──────────────
+| Model                         | Accuracy   |    AUC | Notes                      |
+|-------------------------------|------------|--------|----------------------------|
+| Logistic Regression + Delta   | 59.8%      | 0.609  | Linear — primary model     |
+| Gradient Boosting (benchmark) | 76.9%      | 0.8415 | Non-linear | Δ AUC=+0.2325 |
+
+
+=================================================================
+  GRAND COMPARISON — ALL GROUPS ACROSS ALL CONFIGURATIONS
+  Sorted by AUC (highest predictive power first)
+  Predicting: Q[t] ratios → Q[t+1] outperformance (forward-looking)
+=================================================================
+|   Rank | Configuration                 | Group                              |    N |    AUC |   Acc% |   LR p-val | Sig Comps   | Sig?   |
+|--------|-------------------------------|------------------------------------|------|--------|--------|------------|-------------|--------|
+|      1 | Sector + Clustering (k=2)     | Communication Services — Cluster 0 |  122 | 0.6902 |   63.9 |     0.0385 | 2/8         | ✓      |
+|      2 | Sector + Market Cap Covariate | Energy [+MktCap]                   |  253 | 0.6638 |   64.4 |     0.0061 | 1/8         | ✓      |
+|      3 | Sector + Clustering (k=2)     | Real Estate — Cluster 1            |  135 | 0.6358 |   60.7 |     0.473  | 0/9         | ✗      |
+|      4 | Sector + Market Cap Covariate | Real Estate [+MktCap]              |  217 | 0.6324 |   61.8 |     0.353  | 0/9         | ✗      |
+|      5 | Sector + Clustering (k=2)     | Energy — Cluster 0                 |  221 | 0.6316 |   59.7 |     0.1156 | 1/9         | ✗      |
+|      6 | Sector GICS                   | Real Estate                        |  217 | 0.6259 |   59.9 |     0.5479 | 0/9         | ✗      |
+|      7 | Sector + Clustering (k=2)     | Communication Services — Cluster 1 |  293 | 0.6099 |   58   |     0.1319 | 1/8         | ✗      |
+|      8 | Sector + Clustering (k=2)     | Utilities — Cluster 1              |  681 | 0.609  |   59.8 |     0.0522 | 2/10        | ✗      |
+|      9 | Sector GICS                   | Communication Services             |  415 | 0.6059 |   59.5 |     0.122  | 1/8         | ✗      |
+|     10 | Sector GICS                   | Energy                             |  253 | 0.6036 |   61.7 |     0.1008 | 1/8         | ✗      |
+|     11 | Sector + Clustering (k=2)     | Health Care — Cluster 1            |  756 | 0.6028 |   57.4 |     0.0012 | 4/8         | ✓      |
+|     12 | Sector + Market Cap Covariate | Communication Services [+MktCap]   |  415 | 0.6023 |   59   |     0.1368 | 1/8         | ✗      |
+|     13 | Sector + Clustering (k=2)     | Health Care — Cluster 0            |  307 | 0.6006 |   59   |     0.1622 | 0/8         | ✗      |
+|     14 | Sector + Clustering (k=2)     | Materials — Cluster 1              | 1388 | 0.5963 |   59.1 |     0      | 3/9         | ✓      |
+|     15 | Sector GICS                   | Health Care                        | 1063 | 0.5856 |   56.4 |     0.0074 | 1/9         | ✓      |
+|     16 | Sector + Clustering (k=2)     | Consumer Discretionary — Cluster 0 | 1077 | 0.5856 |   58.2 |     0.0021 | 3/9         | ✓      |
+|     17 | Sector + Market Cap Covariate | Materials [+MktCap]                | 2671 | 0.5833 |   55.9 |     0      | 4/8         | ✓      |
+|     18 | Sector + Clustering (k=2)     | Financials — Cluster 1             |  408 | 0.5807 |   59.8 |     0.5507 | 0/8         | ✗      |
+|     19 | Sector GICS                   | Materials                          | 2671 | 0.5766 |   56.3 |     0      | 4/9         | ✓      |
+|     20 | Sector + Clustering (k=2)     | Consumer Staples — Cluster 0       |  397 | 0.5741 |   56.2 |     0.0846 | 1/8         | ✗      |
+|     21 | Sector + Clustering (k=2)     | Consumer Staples — Cluster 1       |  594 | 0.5739 |   56.6 |     0.4587 | 1/10        | ✗      |
+|     22 | Sector + Market Cap Covariate | Health Care [+MktCap]              | 1063 | 0.5694 |   54   |     0.0612 | 1/9         | ✗      |
+|     23 | Sector + Clustering (k=2)     | Materials — Cluster 0              | 1283 | 0.5679 |   55   |     0.007  | 3/9         | ✓      |
+|     24 | Sector + Clustering (k=2)     | Utilities — Cluster 0              | 1016 | 0.5646 |   58   |     0.0782 | 1/9         | ✗      |
+|     25 | Sector + Clustering (k=2)     | Information Technology — Cluster 1 |  902 | 0.5633 |   57.1 |     0.2398 | 1/9         | ✗      |
+|     26 | Sector + Clustering (k=2)     | Financials — Cluster 0             |  405 | 0.5618 |   57.5 |     0.7255 | 0/10        | ✗      |
+|     27 | Sector + Clustering (k=2)     | Information Technology — Cluster 0 | 1234 | 0.5607 |   54.5 |     0.7373 | 0/10        | ✗      |
+|     28 | Sector + Market Cap Covariate | Consumer Staples [+MktCap]         |  991 | 0.5594 |   55.5 |     0.0909 | 1/8         | ✗      |
+|     29 | Sector + Market Cap Covariate | Industrials [+MktCap]              | 3704 | 0.5588 |   53.6 |     0.0015 | 4/9         | ✓      |
+|     30 | Market Cap Segmentation       | Large Cap                          | 5634 | 0.5578 |   54.3 |     0      | 4/9         | ✓      |
+|     31 | Sector GICS                   | Industrials                        | 3704 | 0.5546 |   53.7 |     0.0018 | 2/9         | ✓      |
+|     32 | Sector + Clustering (k=2)     | Consumer Discretionary — Cluster 1 | 1287 | 0.5514 |   55.2 |     0.1218 | 1/9         | ✗      |
+|     33 | Sector GICS                   | Consumer Staples                   |  991 | 0.551  |   55.7 |     0.2043 | 1/9         | ✗      |
+|     34 | Sector + Clustering (k=2)     | Industrials — Cluster 1            | 1905 | 0.5501 |   52.9 |     0.1493 | 1/9         | ✗      |
+|     35 | Sector GICS                   | Financials                         |  813 | 0.5481 |   57.1 |     0.4482 | 0/9         | ✗      |
+|     36 | Sector + Market Cap Covariate | Financials [+MktCap]               |  813 | 0.547  |   57.6 |     0.4847 | 0/9         | ✗      |
+|     37 | Sector GICS                   | Utilities                          | 1697 | 0.5468 |   56.3 |     0.1176 | 1/8         | ✗      |
+|     38 | Sector + Market Cap Covariate | Utilities [+MktCap]                | 1697 | 0.5466 |   56.5 |     0.0821 | 1/8         | ✗      |
+|     39 | Sector + Market Cap Covariate | Consumer Discretionary [+MktCap]   | 2364 | 0.5457 |   54.2 |     0.0829 | 1/9         | ✗      |
+|     40 | Sector GICS                   | Information Technology             | 2136 | 0.5437 |   54.9 |     0.3    | 0/9         | ✗      |
+|     41 | Sector + Clustering (k=2)     | Industrials — Cluster 0            | 1799 | 0.5431 |   54.9 |     0.3067 | 1/9         | ✗      |
+|     42 | Market Cap Segmentation       | Mid Cap                            | 5614 | 0.542  |   53.2 |     0.0005 | 2/9         | ✓      |
+|     43 | Sector + Market Cap Covariate | Information Technology [+MktCap]   | 2136 | 0.5418 |   54.9 |     0.3387 | 0/9         | ✗      |
+|     44 | Market Cap Segmentation       | Small Cap                          | 5341 | 0.535  |   54.5 |     0.0177 | 3/8         | ✓      |
+|     45 | Sector GICS                   | Consumer Discretionary             | 2364 | 0.5305 |   54.1 |     0.7557 | 0/9         | ✗      |
+
+── CONFIGURATION-LEVEL SUMMARY ───────────────────────────────
+|   Rank | Configuration                 |   Groups |   W.AUC | Sig Groups   |   Avg Acc% |
+|--------|-------------------------------|----------|---------|--------------|------------|
+|      1 | Sector + Clustering (k=2)     |       20 |  0.572  | 5/20         |       57.7 |
+|      2 | Sector + Market Cap Covariate |       11 |  0.5613 | 3/11         |       57   |
+|      3 | Sector GICS                   |       11 |  0.557  | 3/11         |       56.9 |
+|      4 | Market Cap Segmentation       |        3 |  0.5451 | 3/3          |       54   |
+
+=================================================================
+  WINNER CONFIGURATION: Sector + Clustering (k=2)
+  Weighted AUC across all groups : 0.5720
+  Significant groups             : 5/20
+  Average Accuracy               : 57.7%
+
+  BEST INDIVIDUAL GROUP: Communication Services — Cluster 0
+  Configuration : Sector + Clustering (k=2)
+  AUC           : 0.6902
+  Accuracy      : 63.9%
+  Sig Components: 2/8
+
+  Methodology   : VIF≤2.5 → PCA≥5%/component → Logistic Regression + Gradient Boosting
+  Features      : 14 base ratios + 10 QoQ delta features = 24 total
+  Horizon       : Q[t] ratios → Q[t+1] outperformance (shift=-1)
+  Benchmark     : Ananthakumar & Sarkar (2017) — 71.2% accuracy
+=================================================================
+
