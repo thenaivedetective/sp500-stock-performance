@@ -186,3 +186,15 @@ id = "wSQjfaxfNVhAop7Vpmbv9"
 uri = "file://all_files_lana_gidan.zip"
 type = "unspecified"
 title = "all_files_lana_gidan.zip — Project Only (Updated)"
+
+[[outputs]]
+id = "hpHizD8amvqB1I7NUXA6D"
+uri = "file://SP500_Outperformer_Prediction.pptx"
+type = "slides"
+title = "S&P 500 Outperformer Prediction — Presentation (PPTX)"
+
+[[outputs]]
+id = "4WCgcea3ti5cq4nkR6ypD"
+uri = "file://SP500_Outperformer_Prediction.pdf"
+type = "pdf"
+title = "S&P 500 Outperformer Prediction — Presentation (PDF)"
