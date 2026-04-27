@@ -123,11 +123,8 @@ comp_2025_raw = comp_2025[stack_cols_25].copy()
 comp_2025_raw['gvkey'] = comp_2025_raw['gvkey'].astype(str)
 
 crsp_2025['gvkey'] = crsp_2025['gvkey'].astype(str)
-crsp_2025_sub = crsp_2025[['gvkey','cal_qtr','q_return','sp500_q_return','Outperform']].copy()
-crsp_2025_sub = crsp_2025_sub.rename(columns={
-    'q_return': 'actual_return',
-    'sp500_q_return': 'spy_return'
-})
+crsp_2025_sub = crsp_2025[['gvkey','cal_qtr','q_return','sp500_q_return',
+                             'following_q_return','following_sp500_q_return','Outperform']].copy()
 
 comp_2025_raw['lag_revtq'] = np.nan
 comp_2025_raw['lag_niq']   = np.nan
@@ -160,6 +157,40 @@ for col in ratio_cols:
 
 all_preds = []
 
+comp_q4_2024 = merged[merged['cal_quarter'] == '2024Q4'].copy()
+crsp_q1_2025 = crsp_2025_sub[crsp_2025_sub['cal_qtr'] == 1][['gvkey','q_return','sp500_q_return']].copy()
+crsp_q1_2025['outperformer_next'] = (crsp_q1_2025['q_return'] > crsp_q1_2025['sp500_q_return']).astype(int)
+crsp_q1_2025 = crsp_q1_2025.rename(columns={'q_return': 'actual_return', 'sp500_q_return': 'spy_return'})
+
+if not comp_q4_2024.empty and not crsp_q1_2025.empty:
+    comp_q4_2024_feat = comp_q4_2024.drop(columns=['outperformer_next'], errors='ignore')
+    test_q4 = comp_q4_2024_feat.merge(
+        crsp_q1_2025[['gvkey','outperformer_next','actual_return','spy_return']],
+        on='gvkey', how='inner'
+    )
+    if not test_q4.empty:
+        for col in ratio_cols:
+            if col in test_q4.columns:
+                if col in winsor_bounds:
+                    lo, hi = winsor_bounds[col]
+                    test_q4[col] = test_q4[col].clip(lo, hi)
+                test_q4[col] = test_q4[col].fillna(train_medians.get(col, 0))
+        test_avail = [c for c in kept if c in test_q4.columns]
+        if len(test_avail) == len(kept):
+            X_te_sc  = scaler.transform(test_q4[kept])
+            X_te_pca = pca.transform(X_te_sc)
+            probs    = clf.predict_proba(X_te_pca)[:, 1]
+            preds    = (probs >= threshold).astype(int)
+            out = test_q4[['gvkey','tic','conm','sector_name','outperformer_next','actual_return','spy_return']].copy()
+            out['feature_quarter'] = "2024 Q4"
+            out['label_quarter']   = "2025 Q1"
+            out['prob_outperform'] = probs.round(4)
+            out['predicted']       = preds
+            out['predicted_label'] = out['predicted'].map({1: 'Outperformer', 0: 'Underperformer'})
+            out['actual_label']    = out['outperformer_next'].map({1: 'Outperformer', 0: 'Underperformer'})
+            out['correct']         = (out['predicted'] == out['outperformer_next']).astype(int)
+            all_preds.append(out)
+
 test_quarters = [
     (1, 2),
     (2, 3),
@@ -169,7 +200,12 @@ test_quarters = [
 for feat_qtr, label_qtr in test_quarters:
     comp_test = comp_2025_raw[comp_2025_raw['quarter'] == feat_qtr].copy()
     crsp_sub = crsp_2025_sub[crsp_2025_sub['cal_qtr'] == label_qtr].copy()
-    crsp_sub = crsp_sub.rename(columns={'Outperform': 'outperformer_next'})
+    crsp_sub = crsp_sub[['gvkey','following_q_return','following_sp500_q_return','Outperform']].copy()
+    crsp_sub = crsp_sub.rename(columns={
+        'Outperform': 'outperformer_next',
+        'following_q_return': 'actual_return',
+        'following_sp500_q_return': 'spy_return'
+    })
     if crsp_sub.empty:
         continue
 
@@ -217,7 +253,7 @@ if all_preds:
     final.to_csv('predictions_2025.csv', index=False)
     print(f"Saved {len(final)} predictions to predictions_2025.csv")
 
-    for q in final['Label_Quarter'].unique():
+    for q in sorted(final['Label_Quarter'].unique()):
         sub = final[final['Label_Quarter'] == q]
         acc = sub['Correct'].mean() * 100
         print(f"\n  {q}: {len(sub)} stocks | Accuracy = {acc:.1f}%")

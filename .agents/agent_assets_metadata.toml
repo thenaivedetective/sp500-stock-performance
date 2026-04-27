@@ -179,7 +179,7 @@ title = "All Sectors — Portfolio vs SPY 2025"
 id = "aAQ18dLDb0L_bhRTm8G4l"
 uri = "file://predictions_2025.csv"
 type = "table"
-title = "Global Model — All Stock Predictions 2025"
+title = "predictions_2025.csv — All 4 Quarters of 2025"
 
 [[outputs]]
 id = "wSQjfaxfNVhAop7Vpmbv9"
