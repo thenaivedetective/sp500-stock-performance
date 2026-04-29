@@ -198,3 +198,51 @@ id = "4WCgcea3ti5cq4nkR6ypD"
 uri = "file://SP500_Outperformer_Prediction.pdf"
 type = "pdf"
 title = "S&P 500 Outperformer Prediction — Presentation (PDF)"
+
+[[outputs]]
+id = "oCvygVLfECDR2DsRCZp_V"
+uri = "file://viz/01_roc_curve.png"
+type = "image"
+title = "ROC Curve — LR vs Gradient Boosting"
+
+[[outputs]]
+id = "CXk1wPaBw1iRjSv3V7mlb"
+uri = "file://viz/02_pca_scree.png"
+type = "image"
+title = "PCA Scree Plot — 9 Components Retained"
+
+[[outputs]]
+id = "F_AH7865tJR9Iu0SP-qVd"
+uri = "file://viz/03_vif_chart.png"
+type = "image"
+title = "VIF Analysis — All 24 Features"
+
+[[outputs]]
+id = "r5wJSZ6QpLXLUmPoZjnF3"
+uri = "file://viz/04_sector_results.png"
+type = "image"
+title = "Sector Segmentation Results — Accuracy & AUC"
+
+[[outputs]]
+id = "3QNbH6AP6StvbpjE-JENK"
+uri = "file://viz/05_portfolio_vs_spy.png"
+type = "image"
+title = "2025 Portfolio vs S&P 500 (SPY)"
+
+[[outputs]]
+id = "_pvGnU75BAlq3UNsHSAXg"
+uri = "file://viz/06_confusion_matrix.png"
+type = "image"
+title = "Confusion Matrix — Global Logistic Regression"
+
+[[outputs]]
+id = "nVg2cKcW7O4T8XdGldFC4"
+uri = "file://viz/07_accuracy_trend_2025.png"
+type = "image"
+title = "2025 Quarterly Accuracy Trend"
+
+[[outputs]]
+id = "8wukzDBiOvSgdZkVASQHG"
+uri = "file://viz/08_correlation_heatmap.png"
+type = "image"
+title = "Feature Correlation Matrix — 12 Base Ratios"
