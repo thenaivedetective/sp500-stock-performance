@@ -246,3 +246,9 @@ id = "8wukzDBiOvSgdZkVASQHG"
 uri = "file://viz/08_correlation_heatmap.png"
 type = "image"
 title = "Feature Correlation Matrix — 12 Base Ratios"
+
+[[outputs]]
+id = "BgobtkAYC7GEM2EGsmJAi"
+uri = "file://Final_Presentation_Fixed.pptx"
+type = "slides"
+title = "Final Presentation — Fixed (Calibri fonts, all recordings intact)"
