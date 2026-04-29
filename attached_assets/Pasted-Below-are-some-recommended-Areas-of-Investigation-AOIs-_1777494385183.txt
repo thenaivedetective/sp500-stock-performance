@@ -1,0 +1,55 @@
+Below are some recommended Areas of Investigation (AOIs) for each of the two responses. Please use these AOIs to assist in your evaluation of each response.
+
+## Response 1 AOIs
+**Correctness**
+- Verify the thermal conductivity value for concrete; many textbooks (e.g., Giancoli) use k ≈ 0.84 W/m·K, and the standard textbook answer for this exact problem is typically around 4.1×10⁶ J. Check whether 0.80 is the appropriate value for the source textbook.
+- Verify the arithmetic at k = 0.80: (0.80)(22.57)(9.0/0.15)(3600) ≈ 3.9×10⁶ J — confirm this, and also check the k=1.0 (≈4.87×10⁶ J) and k=1.3 (≈6.33×10⁶ J) computations.
+- The area is stated as "2.3–2.6×10¹ m²" which is an odd range; the actual product 3.7×6.1 = 22.57 m², so verify this notation isn't misleading.
+
+**Clarity**
+- The final summary gives a range of answers across multiple k values without committing to one, which may obscure the intended single numerical answer; verify whether a definitive value is expected.
+- The unit statement "1 kW ≈ 1 kWh per hour" and "≈ 3.3 kBTU" conversions should be checked for correctness and relevance.
+
+---
+*Note: The prompt does not specify k, so reviewer should confirm which conductivity value the source problem intends.*
+
+## Response 2 AOIs
+**Correctness**
+- Verify the thermal conductivity value used for concrete; textbooks vary (values from ~0.8 to ~1.7 W/m·K are cited), and the answer depends strongly on this choice — check which value the source textbook (likely Giancoli) expects.
+- Check the area calculation: (3.7)(6.1) = 22.57 m², which the response rounds to 22.6 — this is fine, but confirm the final numeric answers (e.g., 1.35×10³ W and 4.9×10⁶ J) follow consistently.
+- Verify the calorie conversion: 4.9 MJ ≈ 1.17×10⁶ cal ≈ 1170 kcal, which does not match the stated "9–10×10² kcal."
+
+**Completeness**
+- The response presents a range of answers rather than committing to one, so verify whether the expected textbook answer is a single definite value.
+
+</output>
+
+Use the following dimensions to conduct your evaluation and determine the preferred ("Chosen") response.
+
+1. Correctness
+Usually the most important factor. The response should be factually accurate and logically sound, especially in expert domains where mistakes are critical.
+- Math: valid proof, sound steps, correct result  
+- Medicine: accurate diagnosis, appropriate treatment, contraindications addressed  
+- Chemistry: correct mechanism, products, and stereochemistry  
+- Law: sound reasoning and correct application of legal principles  
+
+A correct response should beat a polished but incorrect one.
+
+2. Completeness
+The response should fully address the prompt, not just part of it.
+- Covers all parts of a multi-part question  
+- Includes key caveats or edge cases  
+- Acknowledges uncertainty where relevant  
+
+3. Clarity and Communication
+The response should be easy to follow and appropriately structured.
+- Explains reasoning clearly, ideally step by step  
+- Uses a logical structure  
+- Stays concise without unnecessary filler  
+
+4. Helpfulness / Context Awareness
+The response should match the implied sophistication level of the prompt and the likely purpose of the question.
+- Adapts depth and complexity to the user’s apparent level
+- Uses explanations, assumptions, and terminology that fit the likely context
+- Avoids overcomplicating simple questions or oversimplifying advanced ones
+- Answers in a way that is useful for the likely goal of the prompt
