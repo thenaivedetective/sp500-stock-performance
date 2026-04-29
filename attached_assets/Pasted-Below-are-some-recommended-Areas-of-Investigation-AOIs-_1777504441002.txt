@@ -1,0 +1,23 @@
+Below are some recommended Areas of Investigation (AOIs) for each of the two responses. Please use these AOIs to assist in your evaluation of each response.
+
+## Response 1 AOIs
+**Correctness**
+- Verify the algebraic simplification in equation (2): the step from $\frac{\pi}{4}(R^2-a^2)^2$ with $a=R-h$ to $\frac{\pi}{4}h^2(2R-h)^2$ relies on factoring $(R-a)(R+a)=h(2R-h)$ — worth checking the sign/factor manipulation.
+- Check the shallow-cap limit claim: the response states $\bar z = R - 2h/3 + O(h^2)$ and compares to "a paraboloid"; confirm this asymptotic expansion and the implied distance $2h/3$ below the pole.
+- Verify the auxiliary results $d = h(4R-h)/[4(3R-h)]$ (distance from flat face) and $h(8R-3h)/[4(3R-h)]$ (distance from vertex), which are not required by the prompt but are asserted.
+
+**Clarity**
+- The symbol $\rho$ is overloaded: it denotes both the mass density and the radius of the cross-sectional disc ($\rho(z)=\sqrt{R^2-z^2}$), which could confuse the reader.
+- The volume computation appears twice (once in the aligned block and again in equation (1) with different intermediate forms); verify the two expressions $\frac{\pi}{3}(R-a)^2(2R+a)$ and $\frac{\pi h^2}{3}(3R-h)$ are consistently derived rather than redundantly restated.
+
+## Response 2 AOIs
+**Correctness**
+- Verify the claim that "the distance measured from the pole z=R is h−s = 3h²/[4(3R−h)]"; recomputing R − z̄ yields h(8R−3h)/[4(3R−h)], which does not match the stated expression (and fails the hemisphere check h=R, where the distance from the pole should be 5R/8, not 3R/8).
+- Confirm the sign/orientation statement "R−h ≤ z̄ ≤ R" as a general bound; for small h this is fine, but the reviewer should check it holds for all 0 ≤ h ≤ 2R (e.g., near h=2R where z̄ → 0 but R−h → −R).
+
+**Completeness**
+- The problem asks only for the distance above the sphere's center; the extensive auxiliary material (distance from flat face, distance from pole, hemisphere/limit checks) goes beyond the prompt and should be verified as correct if retained.
+
+**Clarity**
+- In the denominator calculation, the factor π is carried into V in equation (1) but the text earlier said "the denominator (up to the common factor π)"; the bookkeeping of where π is included vs. factored out could be checked for internal consistency.
+

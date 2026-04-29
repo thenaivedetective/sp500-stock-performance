@@ -1,0 +1,115 @@
+The mass has the axis of the cap for symmetry axis.  Put the origin at the
+centre $O$ of the whole sphere and the $z$–axis along the symmetry
+axis, the pole of the cap being at $z=R$.  The plane of the cut is the
+plane
+
+$$
+z=a =R-h\qquad(0<h\le 2R)
+$$
+
+so that the cap is the solid
+
+$$
+a\le z\le R,\qquad 0\le r\le\sqrt{R^{2}-z^{2}}
+$$
+
+in the cylindrical coordinates $(r,\theta ,z)$.  For a homogeneous
+body of (volume) density $\rho$ the $z$–coordinate of the centroid is
+
+$$
+\bar z=\frac{\displaystyle\int_{V}z\,dV}{\displaystyle\int_{V}dV},
+\qquad dV=r\,dr\,d\theta \,dz,
+$$
+
+the density $\rho$ cancelling.  A slice $z=$ const. is a circular disc
+of radius $\rho(z)=\sqrt{R^{2}-z^{2}}$ and area $\pi\rho^{2}=
+\pi(R^{2}-z^{2})$; hence
+
+$$
+dV=\pi\,(R^{2}-z^{2})\,dz,\qquad a\le z\le R .
+$$
+
+The volume of the cap is
+
+\begin{align*}
+V&=\int_{a}^{R}\pi(R^{2}-z^{2})\,dz
+   =\pi\Bigl[R^{2}z-\frac{z^{3}}{3}\Bigr]_{a}^{R} \\
+  &=\frac{\pi}{3}\Bigl[\,2R^{3}-3R^{2}a+a^{3}\Bigr]
+   =\frac{\pi}{3}(R-a)^{2}(2R+a).
+\end{align*}
+
+With $R-a=h$ and $2R+a=3R-h$,
+
+$$
+V=\int_{V}dV
+   =\pi\int_{R-h}^{R}(R^{2}-z^{2})\,dz
+   =\pi h^{2}\!\left(R-\frac{h}{3}\right)
+   =\frac{\pi h^{2}}{3}\,(3R-h)\tag{1}
+$$
+
+(the ordinary formula for a spherical segment).  The first moment about the
+plane $z=0$ is
+
+\begin{align*}
+M_{xy}&=\int_{V}z\,dV
+      =\pi\int_{a}^{R}z\,(R^{2}-z^{2})\,dz
+      =\pi\Bigl[\frac{R^{2}z^{2}}{2}-\frac{z^{4}}{4}\Bigr]_{a}^{R} \\
+     &=\frac{\pi}{4}\Bigl(R^{2}-a^{2}\Bigr)^{2}
+      =\frac{\pi}{4}\bigl[(R-a)(R+a)\bigr]^{2}.
+\end{align*}
+
+For $R-a=h$ and $R+a=2R-h$,
+
+$$
+M_{xy}= \pi\int_{R-h}^{R}z(R^{2}-z^{2})\,dz
+     =\frac{\pi}{4}\,h^{2}(2R-h)^{2}\tag{2}
+$$
+
+directed along the axis toward the pole.  Because the body is uniform,
+its centre of mass coincides with its centroid; from (1)–(2)
+
+$$
+\bar z=\frac{M_{xy}}{V}
+      =\frac{\displaystyle \frac{\pi}{4}h^{2}(2R-h)^{2}}
+             {\displaystyle\frac{\pi}{3}h^{2}(3R-h)}
+      =\frac{3}{4}\,\frac{(2R-h)^{2}}{\,3R-h\,},\qquad a\le\bar z\le R,
+$$
+
+and $\bar x=\bar y=0$ by symmetry.  $\bar z$ is measured from the
+centre $O$ of the original sphere toward the pole of the cap; hence the
+mass-centre of the solid cap lies on the axis a distance
+
+$$
+\,z_{c}= \frac{3(2R-h)^{2}}{4(3R-h)}\,
+$$
+
+above (i.e. on the cap side of) the centre of the complete sphere.
+The distance is reckoned positive toward the spherical surface; with
+the usual sign convention $O$ is the origin and the flat face of the cap
+is the plane $z=R-h$.
+
+The distance measured from the flat face $z=R-h$ is
+
+$$
+d=\bar z-(R-h)=\frac{h(4R-h)}{4(3R-h)}\;,
+$$
+
+and from the vertex $z=R$ it is $R-\bar z=h(8R-3h)/[4(3R-h)]$.
+In particular, for a hemisphere $h=R$,
+
+$$
+\bar z=\frac{3R}{8},\qquad d=\frac{3R}{8},
+$$
+
+the familiar centroid of a solid hemisphere $3R/8$ above its diametral
+plane; for $h\to2R$ the cap becomes the whole sphere, $\bar z\to0$,
+and for a very shallow cap $h\ll R$, $\bar z=R-2h/3+O(h^{2})$, i.e. the
+centroid is a distance $2h/3$ below the pole and $h/3$ above the base,
+as for a paraboloid.  If $\rho$ is the (constant) mass density, the
+mass of the cap is $M=\rho V=\rho\pi h^{2}(3R-h)/3$, and its axial first
+moment is $M\bar z=\rho M_{xy}$, so that $\bar z$ is indeed the
+mass-weighted mean height.  The density $\rho$ cancels, so the result
+is independent of the material and depends only on the geometry $R$ and
+$h$. ∎
+
+

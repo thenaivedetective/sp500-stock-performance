@@ -1,0 +1,106 @@
+Take the origin $O$ at the centre of the sphere and the $z$--axis along the
+axis of symmetry of the cap, the pole of the cap being at $z=R$.
+If the plane that cuts off the cap is at a distance $R-h$ from $O$ the
+cap is the set  
+
+\[
+R-h\le z\le R ,\qquad x^{2}+y^{2}\le R^{2}-z^{2},
+\]
+
+the constant (volume) density being $\rho$.  By symmetry the centre of
+mass lies on the $z$--axis,
+$\bar x=\bar y=0$ and with $M$ the mass of the cap
+
+\begin{equation*}
+\bar z=\frac1M\int_{\rm cap}z\,dm
+     =\frac{\displaystyle\int_{R-h}^{R}z\,\big[\,\pi(R^{2}-z^{2})dz\big]}
+            {\displaystyle\int_{R-h}^{R}\pi(R^{2}-z^{2})dz}\;,
+\end{equation*}
+
+the element of volume at height $z$ being the circular disc of radius
+$r(z)=\sqrt{R^{2}-z^{2}}$ and thickness $dz$,
+$dV=\pi r^{2}dz=\pi(R^{2}-z^{2})dz$.
+The density $\rho$ cancels.  Put $a=R-h$.
+
+The volume, i.e. the denominator (up to the common factor $\pi$), is
+
+\begin{equation*}
+\begin{aligned}
+V &=\pi\int_{a}^{R}\!\!(R^{2}-z^{2})dz
+   =\pi\Bigl[R^{2}(R-a)-\frac{R^{3}-a^{3}}3\Bigr]
+   =\pi\Bigl[\frac{2R^{3}}3-R^{2}a+\frac{a^{3}}3\Bigr].
+\end{aligned}
+\end{equation*}
+
+Since $a=R-h$,
+
+\begin{equation*}
+R^{2}a=R^{2}(R-h), \qquad 
+\frac{a^{3}}3=\frac{(R-h)^{3}}3 ,
+\end{equation*}
+
+and
+
+\begin{equation*}
+V=\pi\Bigl[\frac{2R^{3}}3-R^{3}+R^{2}h+\frac{R^{3}-3R^{2}h+3Rh^{2}-h^{3}}3\Bigr]
+   =\frac{\pi h^{2}}{3}\,(3R-h), \tag{1}
+\end{equation*}
+
+the familiar volume of a spherical cap.
+
+The first moment about the plane $z=0$ is, with the common factor $\pi$,
+
+\begin{equation*}
+\begin{aligned}
+\mathcal M &=\int_{a}^{R}z(R^{2}-z^{2})dz
+          =\frac{R^{2}}2\,(R^{2}-a^{2})-\frac14\,(R^{4}-a^{4})   \\
+         &=\frac14\,(R^{2}-a^{2})^{2}.
+\end{aligned}
+\end{equation*}
+
+Now $R^{2}-a^{2}=R^{2}-(R-h)^{2}=2Rh-h^{2}=h(2R-h)$; hence
+
+\begin{equation*}
+\int_{\rm cap}z\,dV =\pi\mathcal M
+   =\frac{\pi}{4}\,h^{2}(2R-h)^{2}, \tag{2}
+\end{equation*}
+
+and for the uniform cap
+
+\begin{equation*}
+\bar z =\frac{\rho\int z\,dV}{\rho V}
+       =\frac{\,\dfrac{\pi}{4}h^{2}(2R-h)^{2}\,}
+              {\,\dfrac{\pi}{3}h^{2}(3R-h)\,}
+       =\frac{3}{4}\,\frac{(2R-h)^{2}}{\,3R-h\,},
+\qquad R-h\le\bar z\le R,
+\end{equation*}
+
+measured from the centre $O$ towards the pole of the cap; the positive
+sign is taken on the side of the cap.  In ordinary units the mass is
+$M=\rho V=\rho\pi h^{2}(3R-h)/3$ and the moment about $O$ is
+$M\bar z=\rho\pi h^{2}(2R-h)^{2}/4$.
+
+If $s$ denotes the distance of the centroid from the flat face $z=R-h$,
+$s=\bar z-(R-h)$,
+
+\[
+s=\frac{3(2R-h)^{2}}{4(3R-h)}-R+h
+  =\frac{h\,(4R-h)}{4(3R-h)},
+\]
+
+and the distance measured from the pole $z=R$ is $h-s=
+3h^{2}/[\,4(3R-h)\,]$.  In particular, for a hemisphere $h=R$,
+
+\[
+\bar z=\frac{3R}{8},\qquad s=\frac{3R}{8},
+\]
+
+the usual $3R/8$ of a solid hemisphere from its diametral plane (and
+from the sphere’s centre); for a vanishingly small cap $h\to0$,
+$\bar z\to R$, the centroid tends to the pole; for the whole sphere
+$h=2R$, $\bar z=0$, as it must.  The density being uniform, the centre
+of mass coincides with the centroid; finally replacing the geometric
+volume $V$ by the mass $M=\rho V$ changes nothing in the ratio, so the
+result holds for a homogeneous solid spherical cap. ∎
+
+
