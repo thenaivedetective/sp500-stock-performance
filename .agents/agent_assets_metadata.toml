@@ -252,3 +252,9 @@ id = "BgobtkAYC7GEM2EGsmJAi"
 uri = "file://Final_Presentation_Fixed.pptx"
 type = "slides"
 title = "Final Presentation — Fixed (Calibri fonts, all recordings intact)"
+
+[[outputs]]
+id = "194_g8SIkh0o20Z3Wm-TL"
+uri = "file://SP500_OutperformerPrediction_LanaGidan_FullProject.zip"
+type = "unspecified"
+title = "SP500_OutperformerPrediction_LanaGidan_FullProject.zip — Complete Project (153.7 MB)"
