@@ -258,3 +258,9 @@ id = "194_g8SIkh0o20Z3Wm-TL"
 uri = "file://SP500_OutperformerPrediction_LanaGidan_FullProject.zip"
 type = "unspecified"
 title = "SP500_OutperformerPrediction_LanaGidan_FullProject.zip — Complete Project (153.7 MB)"
+
+[[outputs]]
+id = "_MZuq5NIcVDT5TK6XOGMe"
+uri = "file://SP500_Technical_Report_LanaGidan.docx"
+type = "word_document"
+title = "SP500_Technical_Report_LanaGidan.docx — Full Technical Report (Word)"
