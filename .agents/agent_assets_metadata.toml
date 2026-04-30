@@ -264,3 +264,9 @@ id = "_MZuq5NIcVDT5TK6XOGMe"
 uri = "file://SP500_Technical_Report_LanaGidan.docx"
 type = "word_document"
 title = "SP500_Technical_Report_LanaGidan.docx — Full Technical Report (Word)"
+
+[[outputs]]
+id = "Ta4voKpp4nH8VdJVmvFcl"
+uri = "file://Final_Presentation_Projector.pptx"
+type = "slides"
+title = "Final_Presentation_Projector.pptx — Projector-Ready (Audio Fixed)"
