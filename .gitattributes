@@ -6,3 +6,5 @@ Final_Presentation_Fixed.pptx filter=lfs diff=lfs merge=lfs -text
 attached_assets/Final_Presentation_with_matt_and_shahd_1777455767861.pptx filter=lfs diff=lfs merge=lfs -text
 SP500_OutperformerPrediction_LanaGidan_FullProject.zip filter=lfs diff=lfs merge=lfs -text
 Final_Presentation_Projector.pptx filter=lfs diff=lfs merge=lfs -text
+Final_Presentation_AutoPlay.pptx filter=lfs diff=lfs merge=lfs -text
+attached_assets/Final_Presentation_Fixed_MGLGST_1777593284137.pptx filter=lfs diff=lfs merge=lfs -text
