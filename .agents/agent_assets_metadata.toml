@@ -276,3 +276,9 @@ id = "KzxEpKkNMuQ8fgBmEC3Dp"
 uri = "file://Final_Presentation_AutoPlay.pptx"
 type = "slides"
 title = "Final_Presentation_AutoPlay.pptx — Auto-Play + Auto-Advance (211.8 MB)"
+
+[[outputs]]
+id = "vP_eZcxccvEhmbztNf0KL"
+uri = "file://Final_Presentation_Video.mp4"
+type = "video"
+title = "Final_Presentation_Video.mp4 — 14.8 MB · ~13 min · 1280×720 HD"
