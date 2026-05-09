@@ -8,3 +8,4 @@ SP500_OutperformerPrediction_LanaGidan_FullProject.zip filter=lfs diff=lfs merge
 Final_Presentation_Projector.pptx filter=lfs diff=lfs merge=lfs -text
 Final_Presentation_AutoPlay.pptx filter=lfs diff=lfs merge=lfs -text
 attached_assets/Final_Presentation_Fixed_MGLGST_1777593284137.pptx filter=lfs diff=lfs merge=lfs -text
+Project_Complete.zip filter=lfs diff=lfs merge=lfs -text

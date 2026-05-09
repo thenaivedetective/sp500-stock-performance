@@ -282,3 +282,9 @@ id = "vP_eZcxccvEhmbztNf0KL"
 uri = "file://Final_Presentation_Video.mp4"
 type = "video"
 title = "Final_Presentation_Video.mp4 — 24 MB · 11 min 24 sec · 1280×720 HD"
+
+[[outputs]]
+id = "JyT4B56X5MV-iAniOYOmB"
+uri = "file://Project_Complete.zip"
+type = "unspecified"
+title = "Project_Complete.zip — 227.5 MB (all deliverables + code + results)"
