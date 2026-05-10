@@ -288,3 +288,9 @@ id = "JyT4B56X5MV-iAniOYOmB"
 uri = "file://Project_Complete.zip"
 type = "unspecified"
 title = "Project_Complete.zip — 227.5 MB (all deliverables + code + results)"
+
+[[outputs]]
+id = "U6Cg9CbtPozne0UJTDk8t"
+uri = "file://UsingLogisticRegressionToDetermineEquityAlpha_FIXED.docx"
+type = "word_document"
+title = "UsingLogisticRegressionToDetermineEquityAlpha_FIXED.docx"
