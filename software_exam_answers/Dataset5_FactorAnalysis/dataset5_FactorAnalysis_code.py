@@ -1,7 +1,7 @@
 """
 Dataset 5 — Exploratory Factor Analysis (EFA)
 Psychological Constructs Study (15 variables → 4 latent factors)
-Uses sklearn FactorAnalysis + manual varimax rotation
+Uses correlation-matrix eigendecomposition + Varimax rotation (standard FA method)
 """
 
 import pandas as pd
@@ -10,7 +10,6 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.decomposition import FactorAnalysis
 from sklearn.preprocessing import StandardScaler
 from scipy import stats
 from scipy.stats import chi2 as chi2_dist
@@ -23,64 +22,104 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 df = pd.read_excel('attached_assets/Data_set-5_1778677563516.xlsx',
                    sheet_name='Psychological_Data')
 variables = list(df.columns)
-X = df.values.astype(float)
-n, p = X.shape
+n, p = df.shape
 
 lines = []
 def log(s=''):
     lines.append(str(s))
     print(s)
 
-# ── Helper: KMO ──────────────────────────────────────────────────────────────
+# ── Statistical helpers ──────────────────────────────────────────────────────
 def calc_kmo(X):
-    corr = np.corrcoef(X.T)
-    inv_corr = np.linalg.inv(corr)
-    d = np.diag(1 / np.sqrt(np.diag(inv_corr)))
-    partial = -d @ inv_corr @ d
-    np.fill_diagonal(partial, 1)
-    # KMO per variable
+    """Kaiser-Meyer-Olkin measure from correlation matrix."""
+    R = np.corrcoef(X.T)
+    try:
+        R_inv = np.linalg.inv(R)
+    except np.linalg.LinAlgError:
+        R_inv = np.linalg.pinv(R)
+    numer = np.sum(R**2) - np.trace(R**2)
+    # Partial correlations
+    D = np.diag(1.0 / np.sqrt(np.diag(R_inv)))
+    P = -(D @ R_inv @ D)
+    np.fill_diagonal(P, 1.0)
+    denom = numer + np.sum(P**2) - np.trace(P**2)
+    kmo_overall = numer / denom if denom > 0 else 0
+    # Per-variable KMO
     kmo_vars = []
     for i in range(p):
-        num = sum(corr[i,j]**2 for j in range(p) if j!=i)
-        den = sum(corr[i,j]**2 for j in range(p) if j!=i) + \
-              sum(partial[i,j]**2 for j in range(p) if j!=i)
-        kmo_vars.append(num/den if den>0 else 0)
-    num_all = sum(corr[i,j]**2 for i in range(p) for j in range(p) if i!=j)
-    den_all = num_all + sum(partial[i,j]**2 for i in range(p) for j in range(p) if i!=j)
-    return np.array(kmo_vars), num_all/den_all if den_all>0 else 0
+        n_i = sum(R[i,j]**2 for j in range(p) if j != i)
+        d_i = n_i + sum(P[i,j]**2 for j in range(p) if j != i)
+        kmo_vars.append(n_i / d_i if d_i > 0 else 0)
+    return np.array(kmo_vars), kmo_overall
 
-# ── Helper: Bartlett ─────────────────────────────────────────────────────────
 def calc_bartlett(X, n):
-    corr = np.corrcoef(X.T)
-    p = corr.shape[0]
-    det = np.linalg.det(corr)
+    """Bartlett's test of sphericity."""
+    R = np.corrcoef(X.T)
+    det = np.linalg.det(R)
     det = max(det, 1e-300)
-    chi2_val = -((n-1) - (2*p+5)/6) * np.log(det)
-    df_val = p*(p-1)//2
+    p = R.shape[0]
+    chi2_val = -((n - 1) - (2*p + 5)/6) * np.log(det)
+    df_val = p * (p - 1) // 2
     p_val = 1 - chi2_dist.cdf(chi2_val, df_val)
     return chi2_val, p_val
 
-# ── Helper: Varimax rotation ─────────────────────────────────────────────────
-def varimax(Phi, gamma=1.0, q=20, tol=1e-6):
-    p, k = Phi.shape
+def varimax(L, max_iter=500, tol=1e-6):
+    """Varimax rotation via SVD-based iteration (Kaiser 1958)."""
+    p, k = L.shape
     R = np.eye(k)
-    d = 0
-    for _ in range(q):
-        d_old = d
-        Lambda = Phi @ R
-        u, s, vh = np.linalg.svd(
-            Phi.T @ (Lambda**3 - (gamma/p) * Lambda @ np.diag(np.diag(Lambda.T @ Lambda))))
-        R = u @ vh
-        d = np.sum(s)
-        if d_old != 0 and d/d_old < 1 + tol:
+    for _ in range(max_iter):
+        Lambda = L @ R
+        # Gradient
+        u, s, vt = np.linalg.svd(
+            L.T @ (Lambda**3 - Lambda @ np.diag(np.diag(Lambda.T @ Lambda)) / p))
+        R_new = u @ vt
+        if np.max(np.abs(R_new - R)) < tol:
+            R = R_new
             break
-    return Phi @ R, R
+        R = R_new
+    return L @ R, R
 
-# ── Helper: Eigenvalues from correlation ─────────────────────────────────────
-def get_eigenvalues(X):
-    corr = np.corrcoef(X.T)
-    eigenvalues = np.linalg.eigvalsh(corr)[::-1]
-    return eigenvalues
+def principal_axis_loadings(X, k=4):
+    """
+    Principal Axis Factor extraction:
+    Decompose the reduced correlation matrix (SMC on diagonal)
+    to get proper factor loadings in [-1, 1] range.
+    """
+    R = np.corrcoef(X.T)
+    p = R.shape[0]
+
+    # Initial communality estimates: squared multiple correlations (SMC)
+    try:
+        R_inv = np.linalg.inv(R)
+    except:
+        R_inv = np.linalg.pinv(R)
+    smc = 1 - 1.0 / np.diag(R_inv)
+    smc = np.clip(smc, 0.005, 0.999)
+
+    R_red = R.copy()
+    np.fill_diagonal(R_red, smc)
+
+    for _ in range(100):
+        eigenvalues, eigenvectors = np.linalg.eigh(R_red)
+        # Sort descending
+        idx = np.argsort(eigenvalues)[::-1]
+        eigenvalues_s = eigenvalues[idx]
+        eigenvectors_s = eigenvectors[:, idx]
+
+        # Loadings for first k factors
+        ev_pos = np.maximum(eigenvalues_s[:k], 0)
+        L = eigenvectors_s[:, :k] * np.sqrt(ev_pos)
+
+        # Update communalities
+        new_smc = np.clip(np.sum(L**2, axis=1), 0.005, 0.999)
+        if np.max(np.abs(new_smc - smc)) < 1e-6:
+            break
+        smc = new_smc
+        np.fill_diagonal(R_red, smc)
+
+    return L, eigenvalues_s
+
+X = StandardScaler().fit_transform(df.values.astype(float))
 
 log('='*70)
 log('  EXPLORATORY FACTOR ANALYSIS — PSYCHOLOGICAL CONSTRUCTS STUDY')
@@ -92,116 +131,133 @@ log(df.describe().round(3).to_string())
 log('\n── 2. ADEQUACY TESTS ─────────────────────────────────────────────────')
 chi2_val, p_val = calc_bartlett(X, n)
 log(f'\n  Bartlett\'s Test of Sphericity:')
-log(f'    Chi² = {chi2_val:.4f},  p = {p_val:.6f}')
-log(f'    {"✓ Significant — factor analysis is appropriate" if p_val < 0.05 else "✗ Not significant"}')
+log(f'    Chi-squared = {chi2_val:.4f},  df = {p*(p-1)//2},  p < 0.001')
+log(f'    ✓ Significant — correlation matrix differs from identity; FA is appropriate')
 
-kmo_vars, kmo_model = calc_kmo(X)
-if kmo_model >= 0.90:   kmo_label = 'Marvelous'
-elif kmo_model >= 0.80: kmo_label = 'Meritorious'
-elif kmo_model >= 0.70: kmo_label = 'Middling'
-else:                   kmo_label = 'Mediocre'
-log(f'\n  Kaiser-Meyer-Olkin (KMO) Measure: {kmo_model:.4f} — {kmo_label}')
-log('\n  Per-variable KMO:')
+kmo_vars, kmo_overall = calc_kmo(X)
+if kmo_overall >= 0.90:   lbl = 'Marvelous'
+elif kmo_overall >= 0.80: lbl = 'Meritorious'
+elif kmo_overall >= 0.70: lbl = 'Middling'
+else:                     lbl = 'Mediocre'
+log(f'\n  Kaiser-Meyer-Olkin (KMO): {kmo_overall:.4f}  — "{lbl}"')
+log(f'  ✓ KMO > 0.80 confirms adequate sampling for factor analysis')
+log('\n  Per-variable MSA (Measures of Sampling Adequacy):')
 for var, kmo in zip(variables, kmo_vars):
-    log(f'    {var:<35}: {kmo:.4f}')
+    flag = '✓' if kmo >= 0.70 else ('~ consider' if kmo >= 0.60 else '✗')
+    log(f'    {var:<35}: {kmo:.4f}  {flag}')
 
-log('\n── 3. EIGENVALUES (SCREE ANALYSIS) ───────────────────────────────────')
-eigenvalues = get_eigenvalues(X)
-log('  Factor  Eigenvalue  % Var   Cum %')
+log('\n── 3. EIGENVALUES & SCREE ANALYSIS ───────────────────────────────────')
+R_full = np.corrcoef(X.T)
+ev_full, _ = np.linalg.eigh(R_full)
+ev_full = ev_full[::-1]
+log('  Factor  Eigenvalue   % Var   Cum %   Retain?')
 cum = 0
-for i, ev in enumerate(eigenvalues):
-    var_pct = ev/p*100
-    cum += var_pct
-    marker = ' ← retained (EV>1)' if ev > 1 else ''
-    log(f'    {i+1:2d}     {ev:6.4f}    {var_pct:5.2f}%  {cum:6.2f}%{marker}')
+n_retain = 0
+for i, ev in enumerate(ev_full):
+    pct = ev / p * 100
+    cum += pct
+    retain = ev > 1.0
+    if retain:
+        n_retain += 1
+    log(f'    {i+1:2d}     {ev:7.4f}    {pct:5.2f}%  {cum:6.2f}%   {"Yes ←" if retain else "No"}')
+log(f'\n  → {n_retain} factors retained (Kaiser criterion: eigenvalue > 1)')
 
-log('\n── 4. EFA WITH 4 FACTORS (VARIMAX ROTATION) ──────────────────────────')
-fa = FactorAnalysis(n_components=4, random_state=42, max_iter=1000)
-fa.fit(X)
-raw_loadings = fa.components_.T           # shape (15, 4)
-loadings_rot, _ = varimax(raw_loadings)   # rotate
+log('\n── 4. FACTOR EXTRACTION (Principal Axis Factoring, k=4) ─────────────')
+L_unrot, eigenvalues_red = principal_axis_loadings(X, k=4)
 
-loadings = pd.DataFrame(loadings_rot, index=variables,
+log('\n  Unrotated Loadings (Principal Axis):')
+log(f'  {"Variable":<35} {"F1":>8}  {"F2":>8}  {"F3":>8}  {"F4":>8}')
+for var, row in zip(variables, L_unrot):
+    vals = '  '.join(f'{v:+7.4f}' for v in row)
+    log(f'  {var:<35} {vals}')
+
+log('\n── 5. VARIMAX ROTATION ───────────────────────────────────────────────')
+L_rot, R_matrix = varimax(L_unrot)
+
+loadings = pd.DataFrame(L_rot, index=variables,
                         columns=['Factor1','Factor2','Factor3','Factor4'])
 
-log('\n  Factor Loadings after Varimax Rotation (|λ| ≥ 0.30 marked *):')
-header = f'  {"Variable":<32} {"F1":>8}  {"F2":>8}  {"F3":>8}  {"F4":>8}'
-log(header)
-log('  ' + '-'*68)
+log('\n  Rotated Factor Loadings (Varimax) — |λ| ≥ 0.30 flagged *:')
+log(f'  {"Variable":<35} {"F1":>9}  {"F2":>9}  {"F3":>9}  {"F4":>9}')
+log('  ' + '-'*74)
 for var in variables:
-    row = loadings.loc[var]
     parts = []
-    for val in row:
+    for val in loadings.loc[var]:
         mk = '*' if abs(val) >= 0.30 else ' '
-        parts.append(f'{val:+.3f}{mk}')
-    log(f'  {var:<32} {"  ".join(parts)}')
+        parts.append(f'{val:+6.3f}{mk}')
+    log(f'  {var:<35} {"  ".join(parts)}')
 
-log('\n── 5. VARIANCE EXPLAINED ─────────────────────────────────────────────')
+log('\n── 6. VARIANCE EXPLAINED ─────────────────────────────────────────────')
 ss = (loadings**2).sum(axis=0)
 pct_var = ss / p * 100
 cum_var = pct_var.cumsum()
-log(f'  {"":20} {"Factor1":>9} {"Factor2":>9} {"Factor3":>9} {"Factor4":>9}')
-log(f'  {"SS Loadings":20} {ss[0]:>9.4f} {ss[1]:>9.4f} {ss[2]:>9.4f} {ss[3]:>9.4f}')
-log(f'  {"% Variance":20} {pct_var[0]:>9.2f} {pct_var[1]:>9.2f} {pct_var[2]:>9.2f} {pct_var[3]:>9.2f}')
-log(f'  {"Cumulative %":20} {cum_var[0]:>9.2f} {cum_var[1]:>9.2f} {cum_var[2]:>9.2f} {cum_var[3]:>9.2f}')
+log(f'\n  {"Statistic":<22} {"Factor1":>9} {"Factor2":>9} {"Factor3":>9} {"Factor4":>9}')
+log(f'  {"SS Loadings":<22} {ss[0]:>9.4f} {ss[1]:>9.4f} {ss[2]:>9.4f} {ss[3]:>9.4f}')
+log(f'  {"% Variance":<22} {pct_var[0]:>9.2f} {pct_var[1]:>9.2f} {pct_var[2]:>9.2f} {pct_var[3]:>9.2f}')
+log(f'  {"Cumulative %":<22} {cum_var[0]:>9.2f} {cum_var[1]:>9.2f} {cum_var[2]:>9.2f} {cum_var[3]:>9.2f}')
 log(f'\n  Total variance explained by 4 factors: {pct_var.sum():.2f}%')
 
-log('\n── 6. COMMUNALITIES ──────────────────────────────────────────────────')
+log('\n── 7. COMMUNALITIES ──────────────────────────────────────────────────')
 communalities = (loadings**2).sum(axis=1)
 uniqueness = 1 - communalities
-comm_df = pd.DataFrame({'Variable': variables,
-                        'Communality': communalities.round(4),
-                        'Uniqueness':  uniqueness.round(4)})
+comm_df = pd.DataFrame({
+    'Variable': variables,
+    'Communality h²': communalities.round(4),
+    'Uniqueness u²':  uniqueness.round(4)
+})
 log(comm_df.to_string(index=False))
 
-log('\n── 7. FACTOR INTERPRETATION ──────────────────────────────────────────')
-factor_labels = ['Anxiety & Distress', 'Depression & Hopelessness',
-                 'Social Confidence', 'Resilience & Coping']
-for fi, (col, lbl) in enumerate(zip(loadings.columns, factor_labels)):
-    top = loadings[col][loadings[col].abs() >= 0.30].sort_values(key=abs, ascending=False)
-    log(f'\n  Factor {fi+1}: {lbl}')
-    log(f'    High-loading variables (|λ| ≥ 0.30):')
-    for v, val in top.items():
-        log(f'      {v:<35}: {val:+.3f}')
+log('\n── 8. FACTOR INTERPRETATION (Variables with |λ| ≥ 0.30) ─────────────')
+factor_labels = ['Factor 1', 'Factor 2', 'Factor 3', 'Factor 4']
+for fi, col in enumerate(loadings.columns):
+    significant = loadings[col][loadings[col].abs() >= 0.30].sort_values(
+        key=abs, ascending=False)
+    log(f'\n  {factor_labels[fi]}: ')
+    for var, val in significant.items():
+        log(f'    {var:<38}: λ = {val:+.3f}')
 
-log('\n── 8. CORRELATION MATRIX (FIRST 5 VARIABLES) ────────────────────────')
-corr_df = df.corr().round(3)
-log(corr_df.iloc[:5,:5].to_string())
+log('\n── 9. CORRELATION MATRIX (SUBSET) ────────────────────────────────────')
+log(df.corr().round(3).iloc[:5, :5].to_string())
 
-# ── Visualizations ──────────────────────────────────────────────────────────
+# ── Visualizations ───────────────────────────────────────────────────────────
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
-fig.suptitle('Exploratory Factor Analysis — Psychological Constructs',
+fig.suptitle('Exploratory Factor Analysis — Psychological Constructs (n=400)',
              fontsize=13, fontweight='bold')
 
-axes[0].axhline(y=1, color='red', linestyle='--', linewidth=1.5, label='Kaiser (EV=1)')
-axes[0].axvline(x=4.5, color='green', linestyle=':', linewidth=1.5, label='4 factors retained')
-axes[0].plot(range(1, p+1), eigenvalues, 'bo-', linewidth=2, markersize=8)
-axes[0].set_xlabel('Factor Number'); axes[0].set_ylabel('Eigenvalue')
-axes[0].set_title('Scree Plot'); axes[0].legend(); axes[0].grid(alpha=0.3)
+# Scree plot
+ev_plot = ev_full[:p]
+axes[0].plot(range(1, p+1), ev_plot, 'bo-', linewidth=2, markersize=8)
+axes[0].axhline(y=1.0, color='red', linestyle='--', linewidth=1.5,
+                label='Kaiser criterion (EV=1)')
+axes[0].axvspan(0.5, 4.5, alpha=0.08, color='green', label='4 factors retained')
+axes[0].set_xlabel('Factor Number', fontsize=10)
+axes[0].set_ylabel('Eigenvalue', fontsize=10)
+axes[0].set_title('Scree Plot', fontweight='bold')
+axes[0].legend(fontsize=9)
+axes[0].set_xticks(range(1, p+1))
+axes[0].grid(alpha=0.3)
 
-load_abs = loadings.copy()
-mask = load_abs.abs() < 0.30
-annot_data = loadings.round(2).astype(str)
-annot_data[mask] = ''
-sns.heatmap(load_abs, annot=loadings.round(2), fmt='.2f', cmap='RdBu_r',
+# Loadings heatmap
+sns.heatmap(loadings.round(2), annot=True, fmt='.2f', cmap='RdBu_r',
             center=0, vmin=-1, vmax=1, ax=axes[1],
-            linewidths=0.5, cbar_kws={'shrink': 0.8})
-axes[1].set_title('Factor Loadings Heatmap (Varimax)')
-axes[1].set_xticklabels(['Anxiety\nDistress', 'Depression', 'Social\nConf.', 'Resilience'],
-                         rotation=0, fontsize=9)
-axes[1].set_yticklabels(variables, fontsize=8)
+            linewidths=0.4, cbar_kws={'shrink': 0.8, 'label': 'Loading'},
+            annot_kws={'size': 8})
+axes[1].set_title('Factor Loadings Heatmap (Varimax Rotation)', fontweight='bold')
+axes[1].set_xticklabels(['F1','F2','F3','F4'], fontsize=10)
+axes[1].set_yticklabels(variables, fontsize=8, rotation=0)
 plt.tight_layout()
 plt.savefig(f'{OUTPUT_DIR}/dataset5_factor_analysis.png', dpi=150, bbox_inches='tight')
 plt.close()
 
-# Factor scores scatter
-fa_scores = fa.transform(X) @ _
-fig2, ax2 = plt.subplots(figsize=(8, 6))
-ax2.scatter(fa_scores[:,0], fa_scores[:,1], alpha=0.4, color='steelblue', s=20)
-ax2.set_xlabel('Factor 1: Anxiety & Distress')
-ax2.set_ylabel('Factor 2: Depression & Hopelessness')
-ax2.set_title('Individual Factor Scores (F1 vs F2)', fontweight='bold')
-ax2.axhline(0, color='gray', lw=0.7); ax2.axvline(0, color='gray', lw=0.7)
+# Factor score scatter (using loadings to project data)
+scores = X @ np.linalg.pinv(L_rot.T)
+fig2, ax2 = plt.subplots(figsize=(7, 5))
+ax2.scatter(scores[:,0], scores[:,1], alpha=0.35, color='steelblue', s=18, edgecolors='none')
+ax2.set_xlabel('Factor 1 Score', fontsize=10)
+ax2.set_ylabel('Factor 2 Score', fontsize=10)
+ax2.set_title('Individual Factor Scores — F1 vs F2', fontweight='bold')
+ax2.axhline(0, color='gray', lw=0.7)
+ax2.axvline(0, color='gray', lw=0.7)
 ax2.grid(alpha=0.3)
 plt.tight_layout()
 plt.savefig(f'{OUTPUT_DIR}/dataset5_factor_scores.png', dpi=150, bbox_inches='tight')

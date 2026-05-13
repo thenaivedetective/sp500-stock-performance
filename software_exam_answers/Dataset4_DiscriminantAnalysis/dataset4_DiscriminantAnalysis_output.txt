@@ -10,40 +10,40 @@ Low Risk             49.282  26.264         124.867      199.559                
 
 ── 2. ASSUMPTION CHECKS ──────────────────────────────────────────────
 
-  Box's M approximation via Levene Tests (equality of covariance matrices):
-    Age: F=0.2728, p=0.6018  ✓
-    BMI: F=0.3045, p=0.5814  ✓
-    Blood_Pressure: F=0.5882, p=0.4437  ✓
-    Cholesterol: F=0.0747, p=0.7848  ✓
-    Exercise_Hours_Per_Week: F=0.2783, p=0.5982  ✓
-    Stress_Level: F=0.2573, p=0.6123  ✓
-    Smoking_Years: F=6.3577, p=0.0122  ✗
+  Levene Tests for Equality of Variance per Variable:
+    Age                           : F=0.2728, p=0.6018  ✓
+    BMI                           : F=0.3045, p=0.5814  ✓
+    Blood_Pressure                : F=0.5882, p=0.4437  ✓
+    Cholesterol                   : F=0.0747, p=0.7848  ✓
+    Exercise_Hours_Per_Week       : F=0.2783, p=0.5982  ✓
+    Stress_Level                  : F=0.2573, p=0.6123  ✓
+    Smoking_Years                 : F=6.3577, p=0.0122  ✗
 
-  Multivariate Normality (Shapiro-Wilk per group per variable):
+  Normality Check (Shapiro-Wilk per group):
     Low Risk / BMI: W=0.9811, p=0.0277  ✗ (non-normal)
     Low Risk / Stress_Level: W=0.9703, p=0.0016  ✗ (non-normal)
     Low Risk / Smoking_Years: W=0.9574, p=0.0001  ✗ (non-normal)
     High Risk / Smoking_Years: W=0.9584, p=0.0001  ✗ (non-normal)
 
 ── 3. LDA MODEL ──────────────────────────────────────────────────────
-  Classes: ['High Risk' 'Low Risk']
+  Classes: [np.str_('High Risk'), np.str_('Low Risk')]
   Number of discriminant functions: 1 (binary classification)
 
   Group Priors: {np.str_('High Risk'): np.float64(0.5), np.str_('Low Risk'): np.float64(0.5)}
 
   Eigenvalue: 100.00% variance explained
 
-  Standardized Discriminant Function Coefficients:
-               Variable  Coefficient
-Exercise_Hours_Per_Week       0.9567
-           Stress_Level      -0.9320
-         Blood_Pressure      -0.8570
-            Cholesterol      -0.8525
-                    BMI      -0.7689
-                    Age      -0.6091
-          Smoking_Years      -0.3438
+  Standardized Discriminant Function Coefficients (ranked by |coef|):
+ Rank                Variable  Coefficient
+    1 Exercise_Hours_Per_Week     0.956697
+    2            Stress_Level    -0.932001
+    3          Blood_Pressure    -0.856969
+    4             Cholesterol    -0.852522
+    5                     BMI    -0.768933
+    6                     Age    -0.609106
+    7           Smoking_Years    -0.343808
 
-── 4. CLASSIFICATION RESULTS (TEST SET) ──────────────────────────────
+── 4. CLASSIFICATION RESULTS (TEST SET, 25%) ─────────────────────────
 
   Confusion Matrix:
                   Pred High Risk  Pred Low Risk
@@ -60,25 +60,28 @@ Actual Low Risk               12             28
    macro avg       0.77      0.76      0.76        80
 weighted avg       0.77      0.76      0.76        80
 
-  AUC-ROC: 0.1650
+
+  AUC-ROC (High Risk = positive class): 0.8350
   Overall Accuracy: 76.25%
+  Sensitivity (High Risk recall):  82.5%
+  Specificity (Low Risk recall):   70.0%
 
-── 5. CROSS-VALIDATION (10-FOLD) ─────────────────────────────────────
+── 5. CROSS-VALIDATION (10-FOLD STRATIFIED) ──────────────────────────
   CV Accuracy: 75.00% ± 7.78%
-  CV Scores: [59.4, 75.0, 65.6, 78.1, 71.9, 71.9, 78.1, 81.2, 81.2, 87.5]
+  CV Scores:   [59.4, 75.0, 65.6, 78.1, 71.9, 71.9, 78.1, 81.2, 81.2, 87.5]
 
-── 6. TERRITORIAL MAP / LDA SCORES ───────────────────────────────────
+── 6. LDA SCORE CENTROIDS ─────────────────────────────────────────────
 
   Group Centroids on Discriminant Function:
     High Risk: centroid = -0.7606
     Low Risk: centroid = 0.7606
 
-── 7. STRUCTURE MATRIX (POOLED WITHIN-GROUP CORRELATIONS) ───────────
-  (Correlation between discriminant scores and original predictors)
-    Age: r=-0.3403, p=0.0000
-    BMI: r=-0.4053, p=0.0000
-    Blood_Pressure: r=-0.3705, p=0.0000
-    Cholesterol: r=-0.2868, p=0.0000
-    Exercise_Hours_Per_Week: r=0.4941, p=0.0000
-    Stress_Level: r=-0.4478, p=0.0000
-    Smoking_Years: r=-0.1740, p=0.0018
+── 7. STRUCTURE MATRIX (PREDICTOR-DISCRIMINANT CORRELATIONS) ─────────
+  Variable                         r         p-value
+  Age                              -0.3403    0.0000
+  BMI                              -0.4053    0.0000
+  Blood_Pressure                   -0.3705    0.0000
+  Cholesterol                      -0.2868    0.0000
+  Exercise_Hours_Per_Week          +0.4941    0.0000
+  Stress_Level                     -0.4478    0.0000
+  Smoking_Years                    -0.1740    0.0018

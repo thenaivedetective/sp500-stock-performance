@@ -16,152 +16,150 @@ max         85.810          79.140             75.180         82.940        76.6
 ── 2. ADEQUACY TESTS ─────────────────────────────────────────────────
 
   Bartlett's Test of Sphericity:
-    Chi² = 5630.2771,  p = 0.000000
-    ✓ Significant — factor analysis is appropriate
+    Chi-squared = 5630.2771,  df = 105,  p < 0.001
+    ✓ Significant — correlation matrix differs from identity; FA is appropriate
 
-  Kaiser-Meyer-Olkin (KMO) Measure: 0.8447 — Meritorious
+  Kaiser-Meyer-Olkin (KMO): 0.8447  — "Meritorious"
+  ✓ KMO > 0.80 confirms adequate sampling for factor analysis
 
-  Per-variable KMO:
-    Worry_Level                        : 0.7346
-    Panic_Symptoms                     : 0.7401
-    Sleep_Disturbance                  : 0.8619
-    Sadness_Score                      : 0.8480
-    Hopelessness                       : 0.7978
-    Fatigue_Level                      : 0.8784
-    Public_Speaking_Confidence         : 0.7965
-    Social_Interaction                 : 0.8266
-    Assertiveness                      : 0.8479
-    Impulse_Control                    : 0.8235
-    Stress_Tolerance                   : 0.8409
-    Emotional_Awareness                : 0.8757
-    Self_Esteem                        : 0.9100
-    Life_Satisfaction                  : 0.9250
-    Coping_Ability                     : 0.9419
+  Per-variable MSA (Measures of Sampling Adequacy):
+    Worry_Level                        : 0.7346  ✓
+    Panic_Symptoms                     : 0.7401  ✓
+    Sleep_Disturbance                  : 0.8619  ✓
+    Sadness_Score                      : 0.8480  ✓
+    Hopelessness                       : 0.7978  ✓
+    Fatigue_Level                      : 0.8784  ✓
+    Public_Speaking_Confidence         : 0.7965  ✓
+    Social_Interaction                 : 0.8266  ✓
+    Assertiveness                      : 0.8479  ✓
+    Impulse_Control                    : 0.8235  ✓
+    Stress_Tolerance                   : 0.8409  ✓
+    Emotional_Awareness                : 0.8757  ✓
+    Self_Esteem                        : 0.9100  ✓
+    Life_Satisfaction                  : 0.9250  ✓
+    Coping_Ability                     : 0.9419  ✓
 
-── 3. EIGENVALUES (SCREE ANALYSIS) ───────────────────────────────────
-  Factor  Eigenvalue  % Var   Cum %
-     1     4.6806    31.20%   31.20% ← retained (EV>1)
-     2     3.6368    24.25%   55.45% ← retained (EV>1)
-     3     2.5106    16.74%   72.19% ← retained (EV>1)
-     4     2.0238    13.49%   85.68% ← retained (EV>1)
-     5     0.3489     2.33%   88.01%
-     6     0.3260     2.17%   90.18%
-     7     0.2517     1.68%   91.86%
-     8     0.2156     1.44%   93.29%
-     9     0.1746     1.16%   94.46%
-    10     0.1646     1.10%   95.56%
-    11     0.1632     1.09%   96.64%
-    12     0.1565     1.04%   97.69%
-    13     0.1244     0.83%   98.52%
-    14     0.1131     0.75%   99.27%
-    15     0.1094     0.73%  100.00%
+── 3. EIGENVALUES & SCREE ANALYSIS ───────────────────────────────────
+  Factor  Eigenvalue   % Var   Cum %   Retain?
+     1      4.6806    31.20%   31.20%   Yes ←
+     2      3.6368    24.25%   55.45%   Yes ←
+     3      2.5106    16.74%   72.19%   Yes ←
+     4      2.0238    13.49%   85.68%   Yes ←
+     5      0.3489     2.33%   88.01%   No
+     6      0.3260     2.17%   90.18%   No
+     7      0.2517     1.68%   91.86%   No
+     8      0.2156     1.44%   93.29%   No
+     9      0.1746     1.16%   94.46%   No
+    10      0.1646     1.10%   95.56%   No
+    11      0.1632     1.09%   96.64%   No
+    12      0.1565     1.04%   97.69%   No
+    13      0.1244     0.83%   98.52%   No
+    14      0.1131     0.75%   99.27%   No
+    15      0.1094     0.73%  100.00%   No
 
-── 4. EFA WITH 4 FACTORS (VARIMAX ROTATION) ──────────────────────────
+  → 4 factors retained (Kaiser criterion: eigenvalue > 1)
 
-  Factor Loadings after Varimax Rotation (|λ| ≥ 0.30 marked *):
-  Variable                               F1        F2        F3        F4
-  --------------------------------------------------------------------
-  Worry_Level                      -0.046   -0.072   -10.872*  +0.575*
-  Panic_Symptoms                   -0.226   +0.485*  -9.488*  +0.248 
-  Sleep_Disturbance                -4.082*  +0.282   -6.626*  +0.650*
-  Sadness_Score                    -10.619*  +0.857*  -0.267   -0.325*
-  Hopelessness                     -10.181*  +0.676*  -0.136   +0.027 
-  Fatigue_Level                    -7.192*  +0.585*  -2.765*  -0.049 
-  Public_Speaking_Confidence       -0.915*  +9.952*  -0.037   -0.625*
-  Social_Interaction               -0.527*  +8.661*  -0.112   -0.286 
-  Assertiveness                    -0.653*  +8.161*  -0.348*  -1.853*
-  Impulse_Control                  +0.062   +0.490*  -0.365*  -9.847*
-  Stress_Tolerance                 +0.278   +0.105   +2.323*  -8.548*
-  Emotional_Awareness              -0.506*  +2.190*  -0.416*  -7.737*
-  Self_Esteem                      +4.637*  +4.549*  -0.839*  -3.501*
-  Life_Satisfaction                +5.474*  +3.274*  -0.401*  -4.403*
-  Coping_Ability                   -0.068   +2.270*  +3.014*  -5.935*
+── 4. FACTOR EXTRACTION (Principal Axis Factoring, k=4) ─────────────
 
-── 5. VARIANCE EXPLAINED ─────────────────────────────────────────────
-                         Factor1   Factor2   Factor3   Factor4
-  SS Loadings           338.2155  284.1207  275.6285  301.5772
-  % Variance             2254.77   1894.14   1837.52   2010.51
-  Cumulative %           2254.77   4148.91   5986.43   7996.95
+  Unrotated Loadings (Principal Axis):
+  Variable                                  F1        F2        F3        F4
+  Worry_Level                         -0.2963  -0.4179  +0.6629  -0.4416
+  Panic_Symptoms                      -0.2554  -0.4536  +0.6404  -0.4117
+  Sleep_Disturbance                   -0.4403  -0.6681  +0.2848  -0.2856
+  Sadness_Score                       -0.3378  -0.6909  -0.5082  +0.0687
+  Hopelessness                        -0.3682  -0.6880  -0.5166  +0.0864
+  Fatigue_Level                       -0.3977  -0.7528  -0.2444  -0.0727
+  Public_Speaking_Confidence          +0.4708  -0.5535  +0.2185  +0.5446
+  Social_Interaction                  +0.4565  -0.5187  +0.2460  +0.5466
+  Assertiveness                       +0.5430  -0.5633  +0.1975  +0.4140
+  Impulse_Control                     +0.6700  -0.2417  -0.2376  -0.5473
+  Stress_Tolerance                    +0.7054  -0.0736  -0.4163  -0.4127
+  Emotional_Awareness                 +0.6969  -0.3791  -0.1838  -0.3907
+  Self_Esteem                         +0.7187  -0.0342  +0.4036  +0.0053
+  Life_Satisfaction                   +0.7430  +0.1039  +0.3345  -0.1178
+  Coping_Ability                      +0.6927  -0.1318  -0.3664  -0.0758
 
-  Total variance explained by 4 factors: 7996.95%
+── 5. VARIMAX ROTATION ───────────────────────────────────────────────
 
-── 6. COMMUNALITIES ──────────────────────────────────────────────────
-                  Variable  Communality  Uniqueness
-               Worry_Level     118.5310   -117.5310
-            Panic_Symptoms      90.3611    -89.3611
-         Sleep_Disturbance      61.0651    -60.0651
-             Sadness_Score     113.6783   -112.6783
-              Hopelessness     104.1359   -103.1359
-             Fatigue_Level      59.7114    -58.7114
-Public_Speaking_Confidence     100.2771    -99.2771
-        Social_Interaction      75.3811    -74.3811
-             Assertiveness      70.5850    -69.5850
-           Impulse_Control      97.3304    -96.3304
-          Stress_Tolerance      78.5604    -77.5604
-       Emotional_Awareness      65.0844    -64.0844
-               Self_Esteem      55.1487    -54.1487
-         Life_Satisfaction      60.2309    -59.2309
-            Coping_Ability      49.4611    -48.4611
+  Rotated Factor Loadings (Varimax) — |λ| ≥ 0.30 flagged *:
+  Variable                                   F1         F2         F3         F4
+  --------------------------------------------------------------------------
+  Worry_Level                         -0.066   +0.003   +0.945*  -0.004 
+  Panic_Symptoms                      -0.039   -0.018   +0.920*  +0.047 
+  Sleep_Disturbance                   -0.080   -0.461*  +0.763*  +0.041 
+  Sadness_Score                       +0.043   -0.919*  +0.029   +0.087 
+  Hopelessness                        +0.014   -0.936*  +0.021   +0.079 
+  Fatigue_Level                       +0.014   -0.824*  +0.324*  +0.081 
+  Public_Speaking_Confidence          +0.069   -0.072   +0.005   +0.929*
+  Social_Interaction                  +0.041   -0.039   +0.010   +0.913*
+  Assertiveness                       +0.206   -0.051   +0.042   +0.881*
+  Impulse_Control                     +0.927*  +0.023   +0.050   +0.040 
+  Stress_Tolerance                    +0.891*  +0.039   -0.226   -0.000 
+  Emotional_Awareness                 +0.868*  -0.036   +0.064   +0.239 
+  Self_Esteem                         +0.382*  +0.529*  +0.097   +0.495*
+  Life_Satisfaction                   +0.462*  +0.600*  +0.042   +0.336*
+  Coping_Ability                      +0.681*  +0.004   -0.332*  +0.250 
 
-── 7. FACTOR INTERPRETATION ──────────────────────────────────────────
+── 6. VARIANCE EXPLAINED ─────────────────────────────────────────────
 
-  Factor 1: Anxiety & Distress
-    High-loading variables (|λ| ≥ 0.30):
-      Sadness_Score                      : -10.619
-      Hopelessness                       : -10.181
-      Fatigue_Level                      : -7.192
-      Life_Satisfaction                  : +5.474
-      Self_Esteem                        : +4.637
-      Sleep_Disturbance                  : -4.082
-      Public_Speaking_Confidence         : -0.915
-      Assertiveness                      : -0.653
-      Social_Interaction                 : -0.527
-      Emotional_Awareness                : -0.506
+  Statistic                Factor1   Factor2   Factor3   Factor4
+  SS Loadings               3.2930    3.2648    2.6086    2.9753
+  % Variance                 21.95     21.77     17.39     19.84
+  Cumulative %               21.95     43.72     61.11     80.94
 
-  Factor 2: Depression & Hopelessness
-    High-loading variables (|λ| ≥ 0.30):
-      Public_Speaking_Confidence         : +9.952
-      Social_Interaction                 : +8.661
-      Assertiveness                      : +8.161
-      Self_Esteem                        : +4.549
-      Life_Satisfaction                  : +3.274
-      Coping_Ability                     : +2.270
-      Emotional_Awareness                : +2.190
-      Sadness_Score                      : +0.857
-      Hopelessness                       : +0.676
-      Fatigue_Level                      : +0.585
-      Impulse_Control                    : +0.490
-      Panic_Symptoms                     : +0.485
+  Total variance explained by 4 factors: 80.94%
 
-  Factor 3: Social Confidence
-    High-loading variables (|λ| ≥ 0.30):
-      Worry_Level                        : -10.872
-      Panic_Symptoms                     : -9.488
-      Sleep_Disturbance                  : -6.626
-      Coping_Ability                     : +3.014
-      Fatigue_Level                      : -2.765
-      Stress_Tolerance                   : +2.323
-      Self_Esteem                        : -0.839
-      Emotional_Awareness                : -0.416
-      Life_Satisfaction                  : -0.401
-      Impulse_Control                    : -0.365
-      Assertiveness                      : -0.348
+── 7. COMMUNALITIES ──────────────────────────────────────────────────
+                  Variable  Communality h²  Uniqueness u²
+               Worry_Level          0.8968         0.1032
+            Panic_Symptoms          0.8505         0.1495
+         Sleep_Disturbance          0.8029         0.1971
+             Sadness_Score          0.8545         0.1455
+              Hopelessness          0.8833         0.1167
+             Fatigue_Level          0.7898         0.2102
+Public_Speaking_Confidence          0.8723         0.1277
+        Social_Interaction          0.8368         0.1632
+             Assertiveness          0.8225         0.1775
+           Impulse_Control          0.8633         0.1367
+          Stress_Tolerance          0.8467         0.1533
+       Emotional_Awareness          0.8158         0.1842
+               Self_Esteem          0.6807         0.3193
+         Life_Satisfaction          0.6886         0.3114
+            Coping_Ability          0.6373         0.3627
 
-  Factor 4: Resilience & Coping
-    High-loading variables (|λ| ≥ 0.30):
-      Impulse_Control                    : -9.847
-      Stress_Tolerance                   : -8.548
-      Emotional_Awareness                : -7.737
-      Coping_Ability                     : -5.935
-      Life_Satisfaction                  : -4.403
-      Self_Esteem                        : -3.501
-      Assertiveness                      : -1.853
-      Sleep_Disturbance                  : +0.650
-      Public_Speaking_Confidence         : -0.625
-      Worry_Level                        : +0.575
-      Sadness_Score                      : -0.325
+── 8. FACTOR INTERPRETATION (Variables with |λ| ≥ 0.30) ─────────────
 
-── 8. CORRELATION MATRIX (FIRST 5 VARIABLES) ────────────────────────
+  Factor 1: 
+    Impulse_Control                       : λ = +0.927
+    Stress_Tolerance                      : λ = +0.891
+    Emotional_Awareness                   : λ = +0.868
+    Coping_Ability                        : λ = +0.681
+    Life_Satisfaction                     : λ = +0.462
+    Self_Esteem                           : λ = +0.382
+
+  Factor 2: 
+    Hopelessness                          : λ = -0.936
+    Sadness_Score                         : λ = -0.919
+    Fatigue_Level                         : λ = -0.824
+    Life_Satisfaction                     : λ = +0.600
+    Self_Esteem                           : λ = +0.529
+    Sleep_Disturbance                     : λ = -0.461
+
+  Factor 3: 
+    Worry_Level                           : λ = +0.945
+    Panic_Symptoms                        : λ = +0.920
+    Sleep_Disturbance                     : λ = +0.763
+    Coping_Ability                        : λ = -0.332
+    Fatigue_Level                         : λ = +0.324
+
+  Factor 4: 
+    Public_Speaking_Confidence            : λ = +0.929
+    Social_Interaction                    : λ = +0.913
+    Assertiveness                         : λ = +0.881
+    Self_Esteem                           : λ = +0.495
+    Life_Satisfaction                     : λ = +0.336
+
+── 9. CORRELATION MATRIX (SUBSET) ────────────────────────────────────
                    Worry_Level  Panic_Symptoms  Sleep_Disturbance  Sadness_Score  Hopelessness
 Worry_Level              1.000           0.872              0.722          0.024         0.017
 Panic_Symptoms           0.872           1.000              0.721          0.047         0.023
