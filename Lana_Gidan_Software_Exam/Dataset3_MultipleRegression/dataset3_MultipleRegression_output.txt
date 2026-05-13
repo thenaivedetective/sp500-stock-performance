@@ -1,0 +1,114 @@
+======================================================================
+  MULTIPLE LINEAR REGRESSION — STUDENT ACADEMIC PERFORMANCE STUDY
+======================================================================
+
+── 1. DESCRIPTIVE STATISTICS ─────────────────────────────────────────
+       Study_Hours  Attendance_Rate  Sleep_Hours  Stress_Level  Practice_Tests  Final_Exam_Score
+count      150.000          150.000      150.000       150.000         150.000           150.000
+mean         8.108           79.564        6.916         5.547           3.400            67.034
+std          3.627           12.181        1.705         2.597           2.329            13.470
+min          1.040           60.220        4.020         1.000           0.000            40.000
+25%          5.440           68.388        5.623         3.305           1.000            57.515
+50%          8.275           79.080        6.595         5.700           3.000            67.855
+75%         10.840           90.735        8.312         7.675           5.750            76.042
+max         14.940           99.840        9.920         9.990           7.000            98.000
+
+── 2. CORRELATION MATRIX ─────────────────────────────────────────────
+                  Study_Hours  Attendance_Rate  Sleep_Hours  Stress_Level  Practice_Tests  Final_Exam_Score
+Study_Hours             1.000           -0.046       -0.023        -0.058          -0.041             0.667
+Attendance_Rate        -0.046            1.000        0.109        -0.003          -0.145             0.086
+Sleep_Hours            -0.023            0.109        1.000        -0.024           0.003            -0.248
+Stress_Level           -0.058           -0.003       -0.024         1.000           0.094            -0.327
+Practice_Tests         -0.041           -0.145        0.003         0.094           1.000             0.230
+Final_Exam_Score        0.667            0.086       -0.248        -0.327           0.230             1.000
+
+── 3. MODEL SPECIFICATION ────────────────────────────────────────────
+  Model: Final_Exam_Score ~ Study_Hours + Attendance_Rate + Sleep_Hours
+         + Sleep_Hours² + Stress_Level + Practice_Tests
+  Note: Sleep_Hours included as quadratic term per dataset documentation
+
+── 4. REGRESSION RESULTS ─────────────────────────────────────────────
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:       Final_Exam_Score   R-squared:                       0.703
+Model:                            OLS   Adj. R-squared:                  0.690
+Method:                 Least Squares   F-statistic:                     56.33
+Date:                Wed, 13 May 2026   Prob (F-statistic):           2.88e-35
+Time:                        13:10:29   Log-Likelihood:                -511.44
+No. Observations:                 150   AIC:                             1037.
+Df Residuals:                     143   BIC:                             1058.
+Df Model:                           6                                         
+Covariance Type:            nonrobust                                         
+===================================================================================
+                      coef    std err          t      P>|t|      [0.025      0.975]
+-----------------------------------------------------------------------------------
+Intercept          46.8026     12.181      3.842      0.000      22.725      70.880
+Study_Hours         2.4649      0.170     14.465      0.000       2.128       2.802
+Attendance_Rate     0.2108      0.051      4.100      0.000       0.109       0.312
+Sleep_Hours        -1.8095      3.277     -0.552      0.582      -8.288       4.669
+Sleep_Hours_Sq     -0.0185      0.231     -0.080      0.936      -0.474       0.437
+Stress_Level       -1.6767      0.238     -7.042      0.000      -2.147      -1.206
+Practice_Tests      1.8318      0.269      6.810      0.000       1.300       2.363
+==============================================================================
+Omnibus:                        1.571   Durbin-Watson:                   1.957
+Prob(Omnibus):                  0.456   Jarque-Bera (JB):                1.564
+Skew:                           0.170   Prob(JB):                        0.457
+Kurtosis:                       2.633   Cond. No.                     1.98e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.98e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+
+── 5. MODEL FIT STATISTICS ───────────────────────────────────────────
+  R²:                    0.7027
+  Adjusted R²:           0.6902
+  F-statistic:           56.3283
+  F p-value:             0.000000
+  AIC:                   1036.87
+  BIC:                   1057.95
+  RMSE:                  7.4972
+
+── 6. COEFFICIENT INTERPRETATION ────────────────────────────────────
+                 Coefficient  Std Error   t-stat  p-value  95% CI Lower  95% CI Upper
+Intercept            46.8026    12.1808   3.8423   0.0002       22.7250       70.8803
+Study_Hours           2.4649     0.1704  14.4646   0.0000        2.1280        2.8017
+Attendance_Rate       0.2108     0.0514   4.0996   0.0001        0.1092        0.3125
+Sleep_Hours          -1.8095     3.2772  -0.5521   0.5817       -8.2876        4.6686
+Sleep_Hours_Sq       -0.0185     0.2306  -0.0804   0.9360       -0.4745        0.4374
+Stress_Level         -1.6767     0.2381  -7.0421   0.0000       -2.1474       -1.2061
+Practice_Tests        1.8318     0.2690   6.8095   0.0000        1.3000        2.3635
+
+  Standardized Coefficients (Beta):
+    Study_Hours: β = 0.6638
+    Attendance_Rate: β = 0.1907
+    Sleep_Hours: β = -0.2290
+    Sleep_Hours_Sq: β = -0.0334
+    Stress_Level: β = -0.3233
+    Practice_Tests: β = 0.3167
+
+── 7. VIF (MULTICOLLINEARITY CHECK) ──────────────────────────────────
+       Variable    VIF
+    Study_Hours  1.013
+Attendance_Rate  1.040
+    Sleep_Hours 82.724
+ Sleep_Hours_Sq 82.883
+   Stress_Level  1.014
+ Practice_Tests  1.040
+  Note: Sleep_Hours and Sleep_Hours_Sq expected to correlate — intrinsic to polynomial terms
+
+── 8. ASSUMPTION DIAGNOSTICS ─────────────────────────────────────────
+
+  Shapiro-Wilk (normality of residuals): W=0.9933, p=0.7144
+  ✓ Residuals are normal
+
+  Breusch-Pagan (homoscedasticity): LM=6.4824, p=0.3714
+  ✓ Homoscedastic
+
+  Durbin-Watson (autocorrelation): 1.9571  (ideal ≈ 2.0)
+
+── 9. MODEL COMPARISON: WITHOUT vs WITH QUADRATIC TERM ──────────────
+  Without Sleep²: R²=0.7027, AIC=1034.88
+  With Sleep²:    R²=0.7027, AIC=1036.87
+  → Quadratic term does not improve model fit (ΔAIC=-1.99)
