@@ -294,3 +294,9 @@ id = "U6Cg9CbtPozne0UJTDk8t"
 uri = "file://UsingLogisticRegressionToDetermineEquityAlpha_FIXED.docx"
 type = "word_document"
 title = "UsingLogisticRegressionToDetermineEquityAlpha_FIXED.docx"
+
+[[outputs]]
+id = "6mp3-NKgq_-DsafMZyxJD"
+uri = "file://software_exam_answers.zip"
+type = "unspecified"
+title = "software_exam_answers.zip — Multivariate Analysis Exam (5 Datasets)"
