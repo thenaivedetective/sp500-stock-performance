@@ -1,0 +1,167 @@
+========================================================================
+  CLUSTER ANALYSIS + CANONICAL CORRELATION — MANUFACTURING STUDY
+  n = 240 plants | 7 operational variables
+========================================================================
+
+════════════════════════════════════════════════════════════════════════
+  PART A — CLUSTER ANALYSIS (K-Means + Hierarchical)
+════════════════════════════════════════════════════════════════════════
+
+── A1. RESEARCH QUESTION ─────────────────────────────────────────────
+  Can manufacturing plants be segmented into meaningful operational
+  profiles based on their efficiency, quality, and cost metrics,
+  without using any pre-existing plant type labels?
+
+── A2. DESCRIPTIVE STATISTICS ───────────────────────────────────────
+       Production_Speed  Defect_Rate  Energy_Consumption  Labor_Cost  Machine_Downtime  Maintenance_Cost  Inventory_Turnover
+count           240.000      240.000             240.000     240.000           240.000           240.000             240.000
+mean             72.970        4.172              75.628      61.765             7.481            63.597               8.963
+std              15.031        2.695              16.731      19.656             4.779            19.715               3.849
+min              44.660        0.100              46.790      25.640             0.490            26.130               2.680
+25%              59.052        1.840              60.555      44.385             3.630            47.738               5.475
+50%              72.250        3.295              75.290      60.240             5.585            60.505               8.460
+75%              86.408        6.270              90.512      77.125            10.322            78.748              12.570
+max             101.000       11.730             105.820     102.920            20.790           111.520              16.790
+
+── A3. OPTIMAL k — ELBOW + SILHOUETTE ───────────────────────────────
+     k      Inertia   Silhouette   Davies-Bouldin
+  ------------------------------------------------
+     2        768.8       0.5172           0.8735
+     3        332.8       0.6198           0.5328
+     4        191.4       0.6096           0.5674
+     5        174.3       0.5053           1.1090
+     6        163.0       0.5042           1.0829
+     7        153.2       0.3856           1.4300
+
+  → Optimal k = 3 (highest silhouette = 0.6198)
+
+── A4. K-MEANS CLUSTERING ────────────────────────────────────────────
+  Final k = 3 | Silhouette = 0.6198 | Davies-Bouldin = 0.5328
+
+  Cluster sizes:
+    Cluster 0: n = 60
+    Cluster 1: n = 120
+    Cluster 2: n = 60
+
+── A5. CLUSTER PROFILES (MEANS) ─────────────────────────────────────
+
+  Feature                           Cl 0          Cl 1          Cl 2
+  --------------------------------------------------------------------------------
+  Production_Speed                57.461        86.805        60.809
+  Defect_Rate                      7.647         1.816         5.407
+  Energy_Consumption              92.723        77.085        55.618
+  Labor_Cost                      69.933        45.188        86.752
+  Machine_Downtime                14.309         3.734         8.148
+  Maintenance_Cost                89.584        62.468        39.868
+  Inventory_Turnover               4.963        12.475         5.940
+
+  Plant Type overlap with known labels:
+Plant_Type      Aging_Facility  High_Automation  Labor_Intensive  Lean_Manufacturing
+KMeans_Cluster                                                                      
+0                           60                0                0                   0
+1                            0               60                0                  60
+2                            0                0               60                   0
+
+  Cluster interpretation:
+    Cluster 0: Aging Facility (high defects, high downtime)
+    Cluster 1: High Automation (fast, precise, high energy)
+    Cluster 2: Labor-Intensive (slow, high labor cost)
+
+── A6. HIERARCHICAL CLUSTERING (Ward Linkage) ───────────────────────
+  Hierarchical Silhouette = 0.6198  |  K-Means = 0.6198
+  Agreement between methods: 25.0% identical assignments
+
+════════════════════════════════════════════════════════════════════════
+  PART B — CANONICAL CORRELATION ANALYSIS (CCA)
+  Efficiency Set vs Quality/Cost Set
+════════════════════════════════════════════════════════════════════════
+
+── B1. RESEARCH QUESTION ─────────────────────────────────────────────
+  What is the strength and structure of the multivariate relationship
+  between production efficiency metrics (speed, energy, inventory) and
+  quality/cost outcome metrics (defects, labor, downtime, maintenance)?
+  CCA finds the linear combinations of each set that are maximally correlated.
+
+── B2. VARIABLE SETS ────────────────────────────────────────────────
+  Set 1 — Efficiency Inputs (p = 3):
+    • Production_Speed
+    • Energy_Consumption
+    • Inventory_Turnover
+  Set 2 — Quality/Cost Outputs (q = 4):
+    • Defect_Rate
+    • Labor_Cost
+    • Machine_Downtime
+    • Maintenance_Cost
+
+── B3. CANONICAL CORRELATIONS ────────────────────────────────────────
+  Root     Canonical r         r²    Wilks λ         χ²     df          p  Sig
+  --------------------------------------------------------------------------------
+  1             1.0000     1.0000     0.0000        inf     12     0.0000  ***
+  2             0.7707     0.5939     0.0000        inf      6     0.0000  ***
+  3             0.4367     0.1907     0.0000        inf      2     0.0000  ***
+
+── B4. CANONICAL WEIGHTS (STANDARDIZED) ─────────────────────────────
+  Contribution of each variable to the canonical variate.
+  Larger |weight| = stronger contribution to the canonical dimension.
+
+  Set 1 — Efficiency Variables (weights for each canonical root):
+  Variable                             Root1       Root2       Root3
+  ------------------------------------------------------------
+  Production_Speed                   +4.0289     -0.1470     +0.0947
+  Energy_Consumption                 -1.2543     -0.9452     -0.0484
+  Inventory_Turnover                 -3.9956     +0.0117     +0.6811
+
+  Set 2 — Quality/Cost Variables (weights for each canonical root):
+  Variable                             Root1       Root2       Root3
+  ------------------------------------------------------------
+  Defect_Rate                        +4.2906     +0.4076     +0.1636
+  Labor_Cost                         -6.8082     +1.1069     +0.3314
+  Machine_Downtime                   +2.8591     -1.3661     -1.3219
+  Maintenance_Cost                   -5.4548     +0.1861     +0.5976
+
+── B5. STRUCTURE COEFFICIENTS (CANONICAL LOADINGS) ─────────────────
+  Correlation of each variable with its own canonical variate.
+  More stable than weights when variables are intercorrelated.
+
+  Set 1 — Efficiency Structure Coefficients:
+  Variable                             Root1       Root2       Root3
+  ------------------------------------------------------------
+  Production_Speed                   +0.3054     -0.2545     +0.8181
+  Energy_Consumption                 -0.0873     -0.9901     -0.1772
+  Inventory_Turnover                 -0.2661     +0.0329     +0.9969
+
+  Set 2 — Quality/Cost Structure Coefficients:
+  Variable                             Root1       Root2       Root3
+  ------------------------------------------------------------
+  Defect_Rate                        +0.0921     +0.1057     -0.6057
+  Labor_Cost                         -0.2026     +0.5861     -0.5205
+  Machine_Downtime                   +0.0788     -0.3508     -0.8797
+  Maintenance_Cost                   -0.2106     -0.6490     -0.0931
+
+── B6. INTERPRETATION ────────────────────────────────────────────────
+  Root 1: r_c = 1.0000, r²_c = 1.0000 (100.0% shared variance)
+  Number of significant canonical roots: 3
+
+  The first canonical root captures 100.0% of the
+  shared variance between the efficiency set and the quality/cost set.
+  This quantifies how strongly the two multivariate domains co-vary:
+  plants that score high on efficiency tend to show a corresponding
+  signature in quality and cost metrics — and CCA identifies the
+  exact linear combination that maximizes this relationship.
+
+── B7. BETWEEN-SET CORRELATIONS ─────────────────────────────────────
+  Pearson r between each pair of cross-set variables (bivariate preview):
+  Efficiency Var                Quality/Cost Var                    r          p
+  ------------------------------------------------------------------------------
+  Production_Speed              Defect_Rate                   -0.8308     0.0000
+  Production_Speed              Labor_Cost                    -0.8379     0.0000
+  Production_Speed              Machine_Downtime              -0.7470     0.0000
+  Production_Speed              Maintenance_Cost              -0.0714     0.2706
+  Energy_Consumption            Defect_Rate                   +0.0966     0.1357
+  Energy_Consumption            Labor_Cost                    -0.4633     0.0000
+  Energy_Consumption            Machine_Downtime              +0.3329     0.0000
+  Energy_Consumption            Maintenance_Cost              +0.8401     0.0000
+  Inventory_Turnover            Defect_Rate                   -0.7974     0.0000
+  Inventory_Turnover            Labor_Cost                    -0.6518     0.0000
+  Inventory_Turnover            Machine_Downtime              -0.7813     0.0000
+  Inventory_Turnover            Maintenance_Cost              -0.2124     0.0009

@@ -1,397 +1,165 @@
-======================================================================
-  LINEAR DISCRIMINANT ANALYSIS — HEART DISEASE RISK CLASSIFICATION
-  n = 320  |  Binary: High Risk vs Low Risk  |  7 Predictors
-======================================================================
+========================================================================
+  LDA DOMAIN COMPARISON — HEART DISEASE RISK CLASSIFICATION
+  n = 320 | Lifestyle vs Clinical Biomarkers vs Combined
+  Target: High Risk / Low Risk
+========================================================================
 
-── 1. DESCRIPTIVE STATISTICS BY GROUP ────────────────────────────────
+── 1. RESEARCH QUESTION ──────────────────────────────────────────────
+  Which domain of risk factors provides greater discriminating power:
+    Domain A (Lifestyle): Exercise_Hours_Per_Week, Stress_Level, Smoking_Years
+    Domain B (Clinical):  Age, BMI, Blood_Pressure, Cholesterol
+  Three separate LDA models are built and compared to answer this:
+    Model 1: Lifestyle predictors only
+    Model 2: Clinical biomarkers only
+    Model 3: Full model (all 7 predictors)
+  Additionally, LDA is compared to Logistic Regression on the full model.
 
-  Variable                        High Risk M    HR SD   Low Risk M    LR SD  Diff (HR-LR)
+── 2. DESCRIPTIVE STATISTICS BY GROUP ───────────────────────────────
+
+  Variable                        High Risk M    HR SD   Low Risk M    LR SD       Diff
   -------------------------------------------------------------------------------------
-  Age                                  53.613    9.321       49.282    9.599        +4.331
-  BMI                                  28.371    4.434       26.264    4.704        +2.107
-  Blood_Pressure                      133.122   14.452      124.867   15.113        +8.254
-  Cholesterol                         211.047   34.872      199.559   34.147       +11.488
-  Exercise_Hours_Per_Week               3.139    1.346        3.979    1.327        -0.839
-  Stress_Level                          5.473    1.692        4.592    1.929        +0.881
-  Smoking_Years                         8.717    5.849        7.121    4.900        +1.596
+  Exercise_Hours_Per_Week               3.139    1.346        3.979    1.327     -0.839
+  Stress_Level                          5.473    1.692        4.592    1.929     +0.881
+  Smoking_Years                         8.717    5.849        7.121    4.900     +1.596
+  Age                                  53.613    9.321       49.282    9.599     +4.331
+  BMI                                  28.371    4.434       26.264    4.704     +2.107
+  Blood_Pressure                      133.122   14.452      124.867   15.113     +8.254
+  Cholesterol                         211.047   34.872      199.559   34.147    +11.488
 
-  Class balance: High Risk n=160, Low Risk n=160 (perfectly balanced 50/50)
-
-── 2. ASSUMPTION CHECKS ──────────────────────────────────────────────
-
-  A) Levene Test — Homogeneity of Variance per Predictor:
-     (LDA assumes equal covariance matrices across groups)
-  Variable                              F    p-value  Result
-  ------------------------------------------------------------
-  Age                              0.2728     0.6018  ✓ Equal variances
-  BMI                              0.3045     0.5814  ✓ Equal variances
-  Blood_Pressure                   0.5882     0.4437  ✓ Equal variances
-  Cholesterol                      0.0747     0.7848  ✓ Equal variances
-  Exercise_Hours_Per_Week          0.2783     0.5982  ✓ Equal variances
-  Stress_Level                     0.2573     0.6123  ✓ Equal variances
-  Smoking_Years                    6.3577     0.0122  ✗ Minor violation (robust at n=320)
-
-  B) Shapiro-Wilk Normality (reporting violations only):
-    High Risk / Smoking_Years                W=0.9584, p=0.0001  ✗ non-normal (LDA robust at n=160/group)
-    Low Risk / BMI                          W=0.9811, p=0.0277  ✗ non-normal (LDA robust at n=160/group)
-    Low Risk / Stress_Level                 W=0.9703, p=0.0016  ✗ non-normal (LDA robust at n=160/group)
-    Low Risk / Smoking_Years                W=0.9574, p=0.0001  ✗ non-normal (LDA robust at n=160/group)
-    All other variable-group combinations: p > 0.05 ✓
-
-  C) Sample size: n=320, 160 per group, n/p ratio = 45.7  (≥5 required) ✓
-
-  D) Multicollinearity check (predictor intercorrelations):
-  Variable Pair                                             r  Flag
-  -----------------------------------------------------------------
-  Age vs BMI                                           0.0287  ✓ Acceptable
-  Age vs Blood_Pressure                                0.0512  ✓ Acceptable
-  Age vs Cholesterol                                  -0.1026  ✓ Acceptable
-  Age vs Exercise_Hours_Per_Week                      -0.0887  ✓ Acceptable
-  Age vs Stress_Level                                  0.0273  ✓ Acceptable
-  Age vs Smoking_Years                                -0.0191  ✓ Acceptable
-  BMI vs Blood_Pressure                                0.0452  ✓ Acceptable
-  BMI vs Cholesterol                                  -0.0376  ✓ Acceptable
-  BMI vs Exercise_Hours_Per_Week                      -0.0473  ✓ Acceptable
-  BMI vs Stress_Level                                 -0.0139  ✓ Acceptable
-  BMI vs Smoking_Years                                -0.0064  ✓ Acceptable
-  Blood_Pressure vs Cholesterol                       -0.0533  ✓ Acceptable
-  Blood_Pressure vs Exercise_Hours_Per_Week            0.0431  ✓ Acceptable
-  Blood_Pressure vs Stress_Level                      -0.0926  ✓ Acceptable
-  Blood_Pressure vs Smoking_Years                      0.0074  ✓ Acceptable
-  Cholesterol vs Exercise_Hours_Per_Week               0.0918  ✓ Acceptable
-  Cholesterol vs Stress_Level                         -0.0095  ✓ Acceptable
-  Cholesterol vs Smoking_Years                        -0.1053  ✓ Acceptable
-  Exercise_Hours_Per_Week vs Stress_Level             -0.0482  ✓ Acceptable
-  Exercise_Hours_Per_Week vs Smoking_Years            -0.0779  ✓ Acceptable
-  Stress_Level vs Smoking_Years                        0.0376  ✓ Acceptable
+  t-tests per variable (High Risk vs Low Risk):
+  Variable                              t          p    Cohen's d  Sig
+  ----------------------------------------------------------------------
+  Exercise_Hours_Per_Week         -5.6156     0.0000      -0.6278  ***
+  Stress_Level                    +4.3438     0.0000      +0.4857  ***
+  Smoking_Years                   +2.6462     0.0085      +0.2958  **
+  Age                             +4.0940     0.0001      +0.4577  ***
+  BMI                             +4.1225     0.0000      +0.4609  ***
+  Blood_Pressure                  +4.9931     0.0000      +0.5582  ***
+  Cholesterol                     +2.9772     0.0031      +0.3329  **
 
 ── 3. DATA PREPARATION ───────────────────────────────────────────────
-  Training set: n = 240 (75%)  |  Test set: n = 80 (25%)
-  Stratified split: preserves 50/50 class balance in both sets
+  Train: n=240 (75%)  |  Test: n=80 (25%)
+  All predictors z-score standardized for comparability
 
-  Standardization (z-score) applied — required for comparing coefficients:
-  Variable                         Training Mean   Training SD  z-formula
-  --------------------------------------------------------------------------------
-  Age                                    50.9842        9.3762  z = (x − 50.984) / 9.376
-  BMI                                    27.3088        4.8888  z = (x − 27.309) / 4.889
-  Blood_Pressure                        128.5696       14.5696  z = (x − 128.570) / 14.570
-  Cholesterol                           204.8037       35.3885  z = (x − 204.804) / 35.389
-  Exercise_Hours_Per_Week                 3.5313        1.4779  z = (x − 3.531) / 1.478
-  Stress_Level                            5.0200        1.8664  z = (x − 5.020) / 1.866
-  Smoking_Years                           7.8838        5.5815  z = (x − 7.884) / 5.581
+── 4. MODEL 1 — LIFESTYLE DOMAIN LDA ───────────────────────────────
+  Predictors: ['Exercise_Hours_Per_Week', 'Stress_Level', 'Smoking_Years']
+  Standardized coefficients:
+    Exercise_Hours_Per_Week                +0.7093
+    Stress_Level                           -0.6381
+    Smoking_Years                          -0.2407
 
-── 4. LDA MODEL FIT ──────────────────────────────────────────────────
-  Discriminant functions: 1 (binary classification always yields exactly 1)
-  Variance explained:     100.00%
+  Performance:
+    Accuracy   = 62.50%
+    AUC-ROC    = 0.6681
+    Sensitivity= 62.50%
+    Specificity= 62.50%
+    CV Accuracy= 64.69% ± 9.59%
 
-  Class priors (proportion used in classification):
-    High Risk: 0.5000 (50.0%)
-    Low Risk: 0.5000 (50.0%)
+── 5. MODEL 2 — CLINICAL BIOMARKER DOMAIN LDA ───────────────────────
+  Predictors: ['Age', 'BMI', 'Blood_Pressure', 'Cholesterol']
+  Standardized coefficients:
+    Age                                    -0.5985
+    BMI                                    -0.6141
+    Blood_Pressure                         -0.5560
+    Cholesterol                            -0.5846
 
-  Group centroids (mean of each z-scored predictor per group):
-  Variable                          High Risk     Low Risk   Difference
-  --------------------------------------------------------------------
-  Age                                  0.2478      -0.2478      +0.4956
-  BMI                                  0.2628      -0.2628      +0.5255
-  Blood_Pressure                       0.2361      -0.2361      +0.4722
-  Cholesterol                          0.1961      -0.1961      +0.3922
-  Exercise_Hours_Per_Week             -0.3099       0.3099      -0.6197
-  Stress_Level                         0.2840      -0.2840      +0.5679
-  Smoking_Years                        0.1276      -0.1276      +0.2552
+  Performance:
+    Accuracy   = 67.50%
+    AUC-ROC    = 0.7244
+    Sensitivity= 77.50%
+    Specificity= 57.50%
+    CV Accuracy= 66.88% ± 8.17%
 
-── 5. STANDARDIZED DISCRIMINANT FUNCTION COEFFICIENTS ───────────────
-  Based on z-scored predictors. Use to rank RELATIVE IMPORTANCE.
-  Larger |value| = stronger discriminator. Sign shows direction.
+── 6. MODEL 3 — FULL COMBINED LDA ───────────────────────────────────
+  Standardized coefficients (ranked by |coef|):
+    1. Exercise_Hours_Per_Week                +0.9567
+    2. Stress_Level                           -0.9320
+    3. Blood_Pressure                         -0.8570
+    4. Cholesterol                            -0.8525
+    5. BMI                                    -0.7689
+    6. Age                                    -0.6091
+    7. Smoking_Years                          -0.3438
 
-  Intercept (constant): +0.000000
-
-  Rank   Variable                         Coefficient  Direction toward High Risk
-  ------------------------------------------------------------------------------
-  1      Exercise_Hours_Per_Week            +0.956697  Less exercise → High Risk
-  2      Stress_Level                       -0.932001  Higher → High Risk
-  3      Blood_Pressure                     -0.856969  Higher → High Risk
-  4      Cholesterol                        -0.852522  Higher → High Risk
-  5      BMI                                -0.768933  Higher → High Risk
-  6      Age                                -0.609106  Higher → High Risk
-  7      Smoking_Years                      -0.343808  Higher → High Risk
-
-── 6. RAW (UNSTANDARDIZED) DISCRIMINANT FUNCTION COEFFICIENTS ────────
-  In original measurement units. Use to COMPUTE D FOR A REAL PATIENT.
-  D changes by [coefficient] for each one-unit increase in that variable.
-
-  Intercept (constant): +20.809843
-
-  Variable                         Raw Coefficient  Unit change interpretation
-  ----------------------------------------------------------------------------------
-  Age                                    -0.064963  D changes -0.064963 per 1 year older
-  BMI                                    -0.157286  D changes -0.157286 per 1 BMI unit
-  Blood_Pressure                         -0.058819  D changes -0.058819 per 1 mmHg
-  Cholesterol                            -0.024090  D changes -0.024090 per 1 mg/dL
-  Exercise_Hours_Per_Week                +0.647354  D changes +0.647354 per 1 hr/week more exercise
-  Stress_Level                           -0.499347  D changes -0.499347 per 1 unit increase (1–10 scale)
-  Smoking_Years                          -0.061598  D changes -0.061598 per 1 additional year of smoking
-
-── 7. DISCRIMINANT FUNCTION FORMULAS ────────────────────────────────
-
-  ╔══════════════════════════════════════════════════════════════════════╗
-  ║   FORMULA A — STANDARDIZED DISCRIMINANT FUNCTION                   ║
-  ║   Purpose: compare relative importance of each clinical variable    ║
-  ║   Input:   z-scored predictors  [z = (value − mean) / SD]          ║
-  ╚══════════════════════════════════════════════════════════════════════╝
-
+  STANDARDIZED FORMULA:
   D = (+0.0000)
+      + (+0.956697) × z_Exercise_Hours_Per_Week
+      + (-0.932001) × z_Stress_Level
+      + (-0.343808) × z_Smoking_Years
       + (-0.609106) × z_Age
       + (-0.768933) × z_BMI
       + (-0.856969) × z_Blood_Pressure
       + (-0.852522) × z_Cholesterol
-      + (+0.956697) × z_Exercise_Hours_Per_Week
-      + (-0.932001) × z_Stress_Level
-      + (-0.343808) × z_Smoking_Years
 
-  Ranked by importance (largest |coefficient| first):
-    1. (+0.9567) × z_Exercise_Hours_Per_Week
-    2. (-0.9320) × z_Stress_Level
-    3. (-0.8570) × z_Blood_Pressure
-    4. (-0.8525) × z_Cholesterol
-    5. (-0.7689) × z_BMI
-    6. (-0.6091) × z_Age
-    7. (-0.3438) × z_Smoking_Years
-
-  DECISION RULE:
-    D < 0  →  HIGH RISK ⚠
-    D > 0  →  LOW RISK  ✓
-    D = 0  →  Decision boundary (maximum uncertainty)
-
-    High Risk centroid: D = -0.7901  (group sits on negative side)
-    Low Risk  centroid: D = 0.7177  (group sits on positive side)
-    Separation:          1.5078 standardized units
-
-  ╔══════════════════════════════════════════════════════════════════════╗
-  ║   FORMULA B — RAW / UNSTANDARDIZED DISCRIMINANT FUNCTION           ║
-  ║   Purpose: classify a real patient using their actual measurements  ║
-  ║   Input:   actual values in original clinical units                 ║
-  ╚══════════════════════════════════════════════════════════════════════╝
-
+  RAW FORMULA:
   D = (+20.809843)
+      + (+0.647354) × Exercise_Hours_Per_Week
+      + (-0.499347) × Stress_Level
+      + (-0.061598) × Smoking_Years
       + (-0.064963) × Age
       + (-0.157286) × BMI
       + (-0.058819) × Blood_Pressure
       + (-0.024090) × Cholesterol
-      + (+0.647354) × Exercise_Hours_Per_Week
-      + (-0.499347) × Stress_Level
-      + (-0.061598) × Smoking_Years
 
-  DECISION RULE: same as above — D < 0 = HIGH RISK, D > 0 = LOW RISK
+  Decision rule: D < 0 → HIGH RISK ⚠   |   D > 0 → LOW RISK ✓
 
-  ╔══════════════════════════════════════════════════════════════════════╗
-  ║   WORKED EXAMPLE — Raw Formula Applied to a Hypothetical Patient   ║
-  ╚══════════════════════════════════════════════════════════════════════╝
+  Performance:
+    Accuracy   = 76.25%
+    AUC-ROC    = 0.8350
+    Sensitivity= 82.50%
+    Specificity= 70.00%
+    CV Accuracy= 75.00% ± 7.78%
 
-  Patient profile:
-    Age = 55 yr  |  BMI = 29.0  |  Blood Pressure = 135 mmHg
-    Cholesterol = 215 mg/dL  |  Exercise = 3.0 hrs/week
-    Stress Level = 6.0  |  Smoking Years = 9
+── 7. DOMAIN COMPARISON ─────────────────────────────────────────────
 
-  Calculation step by step:
-  D = (+20.809843)  [constant]
-      + (-0.064963) × 55      = -3.5730   [Age]
-      + (-0.157286) × 29.0    = -4.5613   [BMI]
-      + (-0.058819) × 135     = -7.9405   [Blood_Pressure]
-      + (-0.024090) × 215     = -5.1794   [Cholesterol]
-      + (+0.647354) × 3.0     = +1.9421   [Exercise_Hours_Per_Week]
-      + (-0.499347) × 6.0     = -2.9961   [Stress_Level]
-      + (-0.061598) × 9       = -0.5544   [Smoking_Years]
-
-  D = -2.0528
-  Result: D < 0 → Patient classified as: HIGH RISK ⚠
-
-  z-Score reference table (for Formula A):
-  Variable                         Sample Mean   Sample SD  z-score formula
-  ---------------------------------------------------------------------------
-  Age                                   50.984       9.376  z = (x − 50.984) / 9.376
-  BMI                                   27.309       4.889  z = (x − 27.309) / 4.889
-  Blood_Pressure                       128.570      14.570  z = (x − 128.570) / 14.570
-  Cholesterol                          204.804      35.389  z = (x − 204.804) / 35.389
-  Exercise_Hours_Per_Week                3.531       1.478  z = (x − 3.531) / 1.478
-  Stress_Level                           5.020       1.866  z = (x − 5.020) / 1.866
-  Smoking_Years                          7.884       5.581  z = (x − 7.884) / 5.581
-
-── 8. CLASSIFICATION RESULTS (TEST SET n=80) ────────────────────────
-
-  Confusion Matrix:
-  ──────────────────────────────────────────────────────
-                       │ Pred High Risk │ Pred Low Risk  │
-  ──────────────────────────────────────────────────────
-  Actual High Risk     │     33 (TP)      │     7 (FN)      │
-  Actual Low Risk      │     12 (FP)      │    28 (TN)      │
-  ──────────────────────────────────────────────────────
-
-  TP = 33  High Risk patients CORRECTLY flagged as High Risk
-  TN = 28  Low Risk patients CORRECTLY cleared as Low Risk
-  FP = 12  Low Risk patients WRONGLY flagged as High Risk
-  FN = 7   High Risk patients MISSED — most dangerous clinical error
-
-  Performance Metrics (with formulas):
-    Accuracy    = (TP+TN)/(TP+TN+FP+FN) = (33+28)/80 = 76.25%
-    Sensitivity = TP/(TP+FN) = 33/(33+7) = 82.50%  (High Risk detection rate)
-    Specificity = TN/(TN+FP) = 28/(28+12) = 70.00%  (Low Risk correct clearance rate)
-    Precision   = TP/(TP+FP) = 33/(33+12) = 73.33%  (of all flagged High Risk, % correct)
-    F1 Score    = 2×(Precision×Sensitivity)/(Precision+Sensitivity) = 0.7765
-    AUC-ROC     = 0.8350  (probability of correctly ranking a random High Risk above a random Low Risk)
-
-  Interpretation:
-    - 76.2% accuracy: the model correctly classifies 3 in 4 patients.
-    - Sensitivity 82.5%: of 40 truly High Risk patients, 33 are correctly identified.
-    - Specificity 70.0%: of 40 truly Low Risk patients, 28 are correctly cleared.
-    - AUC 0.8350: good discrimination (>0.80 threshold). The model has 83.5% chance
-      of correctly ranking a random High Risk patient above a Low Risk patient.
-    - The 7 false negatives are the primary clinical concern.
-      These patients are told they are Low Risk but are actually High Risk.
-
-  Detailed Classification Report:
-              precision    recall  f1-score   support
-
-   High Risk       0.73      0.82      0.78        40
-    Low Risk       0.80      0.70      0.75        40
-
-    accuracy                           0.76        80
-   macro avg       0.77      0.76      0.76        80
-weighted avg       0.77      0.76      0.76        80
-
-
-── 9. CROSS-VALIDATION (10-FOLD STRATIFIED) ──────────────────────────
-  LDA CV Accuracy: 75.00% ± 7.78%
-  Per-fold scores: ['59.4%', '75.0%', '65.6%', '78.1%', '71.9%', '71.9%', '78.1%', '81.2%', '81.2%', '87.5%']
-  Min fold: 59.4%  |  Max: 87.5%
-  The consistent scores across all 10 folds confirm the model generalizes.
-
-── 10. STRUCTURE MATRIX ─────────────────────────────────────────────
-  Pearson r between each predictor and the discriminant score D.
-  Threshold |r| ≥ 0.30 = practically significant contribution.
-
-  Rank   Variable                              r      p-value  Strength
+  Metric                    Lifestyle     Clinical   Full Model  Best Domain
   ----------------------------------------------------------------------
-  1      Exercise_Hours_Per_Week         +0.4726       0.0000 ***  Strong
-  2      Stress_Level                    -0.4485       0.0000 ***  Strong
-  3      Blood_Pressure                  -0.3973       0.0000 ***  Moderate
-  4      BMI                             -0.3933       0.0000 ***  Moderate
-  5      Age                             -0.3526       0.0000 ***  Moderate
-  6      Cholesterol                     -0.2851       0.0000 ***  Moderate
-  7      Smoking_Years                   -0.1700       0.0023 **  Weak
+  Accuracy                     62.50%       67.50%       76.25%  Full ✓
+  AUC-ROC                      0.6681       0.7244       0.8350  Full ✓
+  Sensitivity                  62.50%       77.50%       82.50%  Full ✓
+  Specificity                  62.50%       57.50%       70.00%  Full ✓
+  F1 Score                     0.6250       0.7045       0.7765  Full ✓
+  CV Accuracy                  64.69%       66.88%       75.00%  Full ✓
 
-── 11. LDA vs. BINARY LOGISTIC REGRESSION ────────────────────────────
-  Both methods trained and evaluated on identical train/test splits.
+  Domain wins: Lifestyle=0, Clinical=0, Full=6
 
-  Logistic Regression Confusion Matrix:
-  ──────────────────────────────────────────────────────
-                       │ Pred High Risk │ Pred Low Risk  │
-  ──────────────────────────────────────────────────────
-  Actual High Risk     │     33 (TP)      │     7 (FN)      │
-  Actual Low Risk      │     12 (FP)      │    28 (TN)      │
-  ──────────────────────────────────────────────────────
+  → Full domain provides greatest discriminating power overall
 
-  HEAD-TO-HEAD PERFORMANCE COMPARISON:
-  Metric                                  LDA    Logistic Reg      Diff  Winner
-  ----------------------------------------------------------------------------------
-  Accuracy (Test Set)                  76.25%          76.25%    +0.00%  Tie
-  AUC-ROC                              0.8350          0.8337   +0.0013  LDA ✓
-  Sensitivity (High Risk)              82.50%          82.50%    +0.00%  Tie
-  Specificity (Low Risk)               70.00%          70.00%    +0.00%  Tie
-  F1 Score (High Risk)                 0.7765          0.7765   +0.0000  Tie
-  CV Accuracy (10-fold)                75.00%          75.00%    +0.00%  Tie
-  CV Std Dev (stability)               0.0778          0.0726   +0.0052  LR ✓
+── 8. CONFUSION MATRICES (ALL THREE MODELS) ─────────────────────────
 
-  Logistic Regression Coefficients (for reference):
-  Intercept: +0.0424
+  Lifestyle Model:
+    TP=25, FN=15, FP=15, TN=25
+    Accuracy = (25+25)/80 = 62.50%
+    FN (missed High Risk) = 15  ← most dangerous error
 
-  Variable                           LR Coeff   Odds Ratio  Direction
-  ---------------------------------------------------------------------------
-  Stress_Level                        -0.9148       0.4006  Lowers High Risk odds
-  Exercise_Hours_Per_Week             +0.9137       2.4935  Raises High Risk odds
-  Cholesterol                         -0.8258       0.4379  Lowers High Risk odds
-  Blood_Pressure                      -0.8004       0.4491  Lowers High Risk odds
-  BMI                                 -0.7208       0.4864  Lowers High Risk odds
-  Age                                 -0.5682       0.5665  Lowers High Risk odds
-  Smoking_Years                       -0.3710       0.6901  Lowers High Risk odds
+  Clinical Model:
+    TP=31, FN=9, FP=17, TN=23
+    Accuracy = (31+23)/80 = 67.50%
+    FN (missed High Risk) = 9  ← most dangerous error
 
-  WHY LDA IS MORE APPROPRIATE THAN LOGISTIC REGRESSION FOR THIS DATASET:
+  Full Model:
+    TP=33, FN=7, FP=12, TN=28
+    Accuracy = (33+28)/80 = 76.25%
+    FN (missed High Risk) = 7  ← most dangerous error
 
-  1. SUPERIOR PERFORMANCE: LDA outperforms LR across all metrics.
-     Accuracy: LDA 76.25% vs LR 76.25%
-     AUC-ROC:  LDA 0.8350  vs LR 0.8337
-     CV:       LDA 75.00% vs LR 75.00%
+── 9. FULL MODEL — LOGISTIC REGRESSION COMPARISON ───────────────────
 
-  2. ASSUMPTIONS MET: LDA assumes continuous, roughly normal predictors
-     with equal covariance matrices. All 7 predictors are continuous
-     clinical measurements. 6/7 Levene tests pass. Major predictors
-     (Age, Blood Pressure, Cholesterol) are normally distributed.
-     When LDA assumptions hold, it is statistically MORE EFFICIENT
-     than logistic regression — lower variance, better use of the
-     covariance structure between predictors.
+  Metric                     Full LDA   Logistic Reg  Winner
+  ------------------------------------------------------------
+  Accuracy                     76.25%         76.25%  Tie
+  AUC-ROC                      0.8350         0.8337  LDA ✓
+  Sensitivity                  82.50%         82.50%  Tie
+  Specificity                  70.00%         70.00%  Tie
+  F1 Score                     0.7765         0.7765  Tie
+  CV Accuracy                  75.00%         75.00%  Tie
 
-  3. PERFECT CLASS BALANCE: LDA is optimally efficient at 50/50 splits.
-     Logistic regression handles class imbalance better, but here
-     both groups have exactly 160 patients — no imbalance advantage for LR.
+── 10. STRUCTURE MATRIX (FULL MODEL) ────────────────────────────────
 
-  4. RICHER INTERPRETABILITY: LDA produces a discriminant function with
-     standardized coefficients that directly rank variables by importance.
-     The formula has a clear geometric interpretation: the D-score is the
-     signed distance from the decision boundary. LR produces log-odds,
-     which are less intuitive for clinical ranking.
-
-  5. DISCRIMINANT SCORE: LDA assigns each patient a D-score — a
-     continuous measure of risk distance. Patients with D = −2.5 are
-     at much higher risk than D = −0.1, even though both are "High Risk".
-     This gradient is clinically useful for prioritizing interventions.
-
-  6. WHEN LR WOULD BE PREFERRED (none apply here):
-     - Severely imbalanced classes → not the case (50/50)
-     - Heavily non-normal or categorical predictors → not the case
-     - Primary goal is probability calibration → not stated
-     - Predictor violations too severe → Levene passes for 6/7 variables
-
-── 12. COMPLETE RESULTS SUMMARY ─────────────────────────────────────
-
-  ┌─────────────────────────────────────────────────────────────────────┐
-  │         STANDARDIZED DISCRIMINANT FUNCTION (Formula A)             │
-  │                 D = f(z-scored predictors)                         │
-  ├─────────────────────────────────────────────────────────────────────┤
-  │ D = (+0.0000)                                                  │
-  │     + (-0.609106) × z_Age                                   │
-  │     + (-0.768933) × z_BMI                                   │
-  │     + (-0.856969) × z_Blood_Pressure                        │
-  │     + (-0.852522) × z_Cholesterol                           │
-  │     + (+0.956697) × z_Exercise_Hours_Per_Week               │
-  │     + (-0.932001) × z_Stress_Level                          │
-  │     + (-0.343808) × z_Smoking_Years                         │
-  └─────────────────────────────────────────────────────────────────────┘
-
-  ┌─────────────────────────────────────────────────────────────────────┐
-  │         RAW DISCRIMINANT FUNCTION (Formula B)                      │
-  │             D = f(actual patient values)                           │
-  ├─────────────────────────────────────────────────────────────────────┤
-  │ D = (+20.809843)                                              │
-  │     + (-0.064963) × Age                                  │
-  │     + (-0.157286) × BMI                                  │
-  │     + (-0.058819) × Blood_Pressure                       │
-  │     + (-0.024090) × Cholesterol                          │
-  │     + (+0.647354) × Exercise_Hours_Per_Week              │
-  │     + (-0.499347) × Stress_Level                         │
-  │     + (-0.061598) × Smoking_Years                        │
-  └─────────────────────────────────────────────────────────────────────┘
-
-  DECISION RULE:  D < 0  →  HIGH RISK ⚠   |   D > 0  →  LOW RISK ✓
-
-  PERFORMANCE SUMMARY:
-    Accuracy:    76.25%          CV Accuracy: 75.00% ± 7.78%
-    AUC-ROC:     0.8350          Sensitivity: 82.50%
-    F1 Score:    0.7765          Specificity: 70.00%
-
-  TOP DISCRIMINATORS (Structure Matrix):
-    1. Exercise_Hours_Per_Week      r = +0.4726  ***
-    2. Stress_Level                 r = -0.4485  ***
-    3. Blood_Pressure               r = -0.3973  ***
-    4. BMI                          r = -0.3933  ***
-    5. Age                          r = -0.3526  ***
-    6. Cholesterol                  r = -0.2851  **
-    7. Smoking_Years                r = -0.1700  **
+  Rank   Variable                              r          p  Domain     Strength
+  ------------------------------------------------------------------------
+  1      Exercise_Hours_Per_Week         +0.4726     0.0000  Lifestyle  Strong ***
+  2      Stress_Level                    -0.4485     0.0000  Lifestyle  Strong ***
+  3      Blood_Pressure                  -0.3973     0.0000  Clinical   Moderate ***
+  4      BMI                             -0.3933     0.0000  Clinical   Moderate ***
+  5      Age                             -0.3526     0.0000  Clinical   Moderate ***
+  6      Cholesterol                     -0.2851     0.0000  Clinical   Moderate ***
+  7      Smoking_Years                   -0.1700     0.0023  Lifestyle  Weak **

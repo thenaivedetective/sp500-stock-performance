@@ -1,0 +1,212 @@
+========================================================================
+  COMBINED MANCOVA + TWO-WAY MANOVA — CARDIOVASCULAR HEALTH STUDY
+  n = 240 | DVs: Cardio_Fitness, Mental_Health, Energy_Level
+  IVs: Exercise_Level (3 levels) × Smoking_Status (2 levels)
+  Covariate (MANCOVA only): BMI
+========================================================================
+
+════════════════════════════════════════════════════════════════════════
+  PART A — MANCOVA (Multivariate Analysis of Covariance)
+  Controlling for BMI as a continuous covariate
+════════════════════════════════════════════════════════════════════════
+
+── A1. RESEARCH QUESTION ─────────────────────────────────────────────
+  After statistically removing the shared variance attributable to BMI,
+  do exercise level and smoking status significantly affect the combined
+  multivariate outcome of cardiovascular fitness, mental health, and
+  energy level? Does smoking and exercise interact?
+
+── A2. COVARIATE VALIDITY — BMI ──────────────────────────────────────
+  For MANCOVA to be valid, BMI must correlate significantly with
+  at least one DV, and its relationship with DVs must be linear.
+
+  DV                     r with BMI      p-value  Verdict
+  ----------------------------------------------------------
+  Cardio_Fitness            -0.1313       0.0421  ✓ Significant — valid covariate
+  Mental_Health             -0.0478       0.4610  ✗ Not significant
+  Energy_Level              -0.0662       0.3069  ✗ Not significant
+
+  Homogeneity of regression slopes (BMI effect must not differ by group):
+  DV                          F          p  Verdict
+  -------------------------------------------------------
+  Cardio_Fitness        150.070     0.2862  ✓ Slopes parallel
+  Mental_Health         106.431     0.3280  ✓ Slopes parallel
+  Energy_Level          165.231     0.3431  ✓ Slopes parallel
+
+── A3. DESCRIPTIVE STATISTICS ────────────────────────────────────────
+
+  DVs by Exercise Level:
+  Exercise Level      Cardio_Fitness     Mental_Health      Energy_Level
+  ----------------------------------------------------------------------
+  Low                         43.741            52.365            43.948
+  Moderate                    57.751            67.523            58.434
+  High                        69.613            73.490            71.910
+
+  DVs by Smoking Status:
+  Non-Smoker                  60.866            66.709            61.128
+  Smoker                      53.203            62.210            55.066
+
+  BMI means by group:
+Exercise_Level  Smoking_Status
+Low             Non-Smoker        26.05100
+                Smoker            25.87875
+Moderate        Non-Smoker        26.55500
+                Smoker            26.79225
+High            Non-Smoker        25.82425
+                Smoker            25.75075
+
+── A4. MANCOVA — ADJUSTED MEANS (After Removing BMI Effect) ──────────
+
+  Adjusted means at grand mean BMI = 26.142:
+  Exercise Level      Cardio_Fitness     Mental_Health      Energy_Level
+  ----------------------------------------------------------------------
+  Low                         43.656            52.317            43.906
+  Moderate                    57.991            67.598            58.513
+  High                        69.516            73.473            71.853
+
+── A5. MANCOVA OMNIBUS TEST ──────────────────────────────────────────
+
+  Effect                          Wilks λ          F   df1    df2          p  Sig  η²
+  ------------------------------------------------------------------------------------------
+  Exercise_Level (adj)             0.1736   109.6681     6    470     0.0000  ***  0.826
+  Smoking_Status (adj)             0.8835    10.3699     3    236     0.0000  ***  0.116
+
+── A6. UNIVARIATE FOLLOW-UP ANCOVAs ──────────────────────────────────
+  Testing each DV separately, controlling for BMI.
+
+  Effect                       DV                          F          p       η²  Sig
+  --------------------------------------------------------------------------------
+  Exercise_Level               Cardio_Fitness       302.5457     0.0000   0.7090  ***
+  Smoking_Status               Cardio_Fitness        24.8393     0.0000   0.0932  ***
+  Exercise_Level               Mental_Health        295.7617     0.0000   0.7128  ***
+  Smoking_Status               Mental_Health         11.3550     0.0009   0.0456  ***
+  Exercise_Level               Energy_Level         409.8549     0.0000   0.7744  ***
+  Smoking_Status               Energy_Level          13.7570     0.0003   0.0546  ***
+
+── A7. POST-HOC TUKEY HSD (MANCOVA-adjusted) ─────────────────────────
+  Pairwise comparisons for Exercise_Level on each DV:
+
+  DV: Cardio_Fitness
+    Multiple Comparison of Means - Tukey HSD, FWER=0.05  
+=======================================================
+group1  group2  meandiff p-adj  lower    upper   reject
+-------------------------------------------------------
+  High      Low -25.7956   0.0 -28.2693 -23.3218   True
+  High Moderate -11.4788   0.0 -13.9526  -9.0051   True
+   Low Moderate  14.3167   0.0   11.843  16.7905   True
+-------------------------------------------------------
+
+  DV: Mental_Health
+    Multiple Comparison of Means - Tukey HSD, FWER=0.05  
+=======================================================
+group1  group2  meandiff p-adj  lower    upper   reject
+-------------------------------------------------------
+  High      Low -21.1009   0.0 -23.2094 -18.9924   True
+  High Moderate    -5.85   0.0  -7.9586  -3.7415   True
+   Low Moderate  15.2509   0.0  13.1424  17.3594   True
+-------------------------------------------------------
+
+  DV: Energy_Level
+    Multiple Comparison of Means - Tukey HSD, FWER=0.05  
+=======================================================
+group1  group2  meandiff p-adj  lower    upper   reject
+-------------------------------------------------------
+  High      Low  -27.922   0.0 -30.2196 -25.6244   True
+  High Moderate  -13.276   0.0 -15.5736 -10.9784   True
+   Low Moderate   14.646   0.0  12.3484  16.9435   True
+-------------------------------------------------------
+
+════════════════════════════════════════════════════════════════════════
+  PART B — TWO-WAY MANOVA (without covariate)
+  Raw DVs without BMI adjustment
+════════════════════════════════════════════════════════════════════════
+
+── B1. RESEARCH QUESTION ─────────────────────────────────────────────
+  Do exercise level, smoking status, and their interaction significantly
+  affect the joint multivariate outcome profile WITHOUT removing BMI?
+  This serves as a baseline comparison for the MANCOVA.
+
+── B2. ASSUMPTION CHECKS ─────────────────────────────────────────────
+
+  Box's M — Homogeneity of Covariance Matrices:
+  (No direct Box's M in Python; Levene per DV used as proxy)
+  DV                     Exercise F   Exercise p    Smoking F    Smoking p
+  ------------------------------------------------------------------------
+  Cardio_Fitness             0.2279       0.7963       0.0214       0.8839
+  Mental_Health              0.4133       0.6619       0.3063       0.5805
+  Energy_Level               0.5309       0.5888       0.0213       0.8841
+
+  Multivariate Normality (Shapiro-Wilk per DV per group):
+    ✗ Cardio_Fitness / Low: W=0.9510, p=0.0039
+    ✗ Cardio_Fitness / High: W=0.9686, p=0.0460
+    ✗ Energy_Level / Low: W=0.9647, p=0.0262
+
+── B3. TWO-WAY MANOVA OMNIBUS RESULTS ───────────────────────────────
+
+  Effect                            Wilks λ          F   df1    df2          p  Sig  η²_m
+  --------------------------------------------------------------------------------------------
+  Exercise_Level                     0.2371    81.4823     6    464     0.0000  ***  0.763
+  Smoking_Status                     0.8688    11.6770     3    232     0.0000  ***  0.131
+  Exercise × Smoking (interaction)     0.9863     0.5335     6    464     0.7829  n.s.  0.014
+
+── B4. UNIVARIATE FOLLOW-UP ANOVAs ───────────────────────────────────
+  Effect                       DV                          F          p       η²  Sig
+  --------------------------------------------------------------------------------
+  Exercise_Level               Cardio_Fitness       423.9270     0.0000   0.7099  ***
+  Smoking_Status               Cardio_Fitness       111.3142     0.0000   0.0932  ***
+  Exercise×Smoking             Cardio_Fitness         0.6014     0.5489   0.0010  n.s.
+  Exercise_Level               Mental_Health        346.7311     0.0000   0.7127  ***
+  Smoking_Status               Mental_Health         44.3790     0.0000   0.0456  ***
+  Exercise×Smoking             Mental_Health          0.6003     0.5495   0.0012  n.s.
+  Exercise_Level               Energy_Level         532.2496     0.0000   0.7748  ***
+  Smoking_Status               Energy_Level          75.0306     0.0000   0.0546  ***
+  Exercise×Smoking             Energy_Level           0.2075     0.8127   0.0003  n.s.
+
+── B5. GROUP MEANS (RAW, UNADJUSTED) ────────────────────────────────
+  Exercise     Smoking           Cardio_Fitness     Mental_Health      Energy_Level
+  ------------------------------------------------------------------------------
+  Low          Smoker                    40.175            50.016            41.232  (n=40)
+  Low          Non-Smoker                47.306            54.715            46.663  (n=40)
+  Moderate     Smoker                    53.356            64.879            55.281  (n=40)
+  Moderate     Non-Smoker                62.145            70.167            61.587  (n=40)
+  High         Smoker                    66.079            71.735            68.684  (n=40)
+  High         Non-Smoker                73.148            75.245            75.135  (n=40)
+
+════════════════════════════════════════════════════════════════════════
+  PART C — MANCOVA vs TWO-WAY MANOVA: HEAD-TO-HEAD COMPARISON
+  What changes when BMI is statistically controlled?
+════════════════════════════════════════════════════════════════════════
+
+── C1. WILKS λ COMPARISON ────────────────────────────────────────────
+
+  Effect                           MANOVA λ    MANCOVA λ       Δλ  Interpretation
+  ----------------------------------------------------------------------------------
+  Exercise_Level                     0.2371       0.1736  -0.0635  Controlling BMI STRENGTHENS the effect
+  Smoking_Status                     0.8688       0.8835  +0.0147  Controlling BMI WEAKENS the effect
+
+── C2. SIGNIFICANCE COMPARISON ───────────────────────────────────────
+
+  Effect                         MANOVA sig   MANCOVA sig  Same conclusion?
+  ------------------------------------------------------------------------
+  Exercise_Level                 *** p<.001    *** p<.001  YES ✓
+  Smoking_Status                 *** p<.001    *** p<.001  YES ✓
+
+  C3. INTERPRETATION OF DIFFERENCES:
+  ─────────────────────────────────────────────────────────────────────
+  When Wilks' λ DECREASES from MANOVA → MANCOVA (λ gets smaller):
+    → The effect becomes STRONGER after controlling for BMI
+    → BMI was SUPPRESSING the true group difference
+    → The groups actually differ MORE on the DVs than raw means suggest
+
+  When Wilks' λ INCREASES from MANOVA → MANCOVA (λ gets larger):
+    → The effect becomes WEAKER after controlling for BMI
+    → Part of what appeared to be a group difference was actually
+      due to BMI differences between groups
+    → MANCOVA provides a "fairer" comparison by equating groups on BMI
+
+  RECOMMENDATION: MANCOVA is preferred here because:
+    (1) BMI correlates significantly with at least one DV
+    (2) Homogeneity of regression slopes holds (parallel slopes)
+    (3) MANCOVA removes confounding BMI variance, yielding purer estimates
+    (4) Adjusted means represent what group differences would look like
+        if all participants had the same BMI (grand mean = 26.14)

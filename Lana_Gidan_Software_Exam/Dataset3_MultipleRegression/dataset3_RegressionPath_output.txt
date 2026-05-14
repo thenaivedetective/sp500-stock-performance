@@ -1,0 +1,241 @@
+========================================================================
+  MULTIPLE REGRESSION + PATH ANALYSIS — ACADEMIC PERFORMANCE STUDY
+  n = 150 students | DV: Final_Exam_Score
+========================================================================
+
+════════════════════════════════════════════════════════════════════════
+  PART A — MULTIPLE LINEAR REGRESSION
+════════════════════════════════════════════════════════════════════════
+
+── A1. RESEARCH QUESTION ─────────────────────────────────────────────
+  Which academic behaviors (study hours, attendance, sleep, stress,
+  practice tests) independently and collectively predict final exam
+  performance, and what is the unique contribution of each?
+
+── A2. DESCRIPTIVE STATISTICS & CORRELATIONS ────────────────────────
+       Study_Hours  Attendance_Rate  Sleep_Hours  Stress_Level  Practice_Tests  Final_Exam_Score
+count      150.000          150.000      150.000       150.000         150.000           150.000
+mean         8.108           79.564        6.916         5.547           3.400            67.034
+std          3.627           12.181        1.705         2.597           2.329            13.470
+min          1.040           60.220        4.020         1.000           0.000            40.000
+25%          5.440           68.388        5.623         3.305           1.000            57.515
+50%          8.275           79.080        6.595         5.700           3.000            67.855
+75%         10.840           90.735        8.312         7.675           5.750            76.042
+max         14.940           99.840        9.920         9.990           7.000            98.000
+
+  Bivariate correlations with Final_Exam_Score:
+  Variable                         r          p  Direction
+  -------------------------------------------------------
+  Study_Hours                +0.6670     0.0000  Positive — more → better
+  Attendance_Rate            +0.0864     0.2932  Positive — more → better
+  Sleep_Hours                -0.2477     0.0022  Negative — more → worse
+  Stress_Level               -0.3266     0.0000  Negative — more → worse
+  Practice_Tests             +0.2303     0.0046  Positive — more → better
+
+── A3. MODEL SPECIFICATION ───────────────────────────────────────────
+  Model: Final_Exam_Score ~ Study_Hours + Attendance_Rate + Sleep_Hours
+         + Sleep_Hours² + Stress_Level + Practice_Tests
+  Note: Sleep included as quadratic term — U-shaped relationship
+        (too little AND too much sleep both hurt performance)
+
+── A4. REGRESSION RESULTS ────────────────────────────────────────────
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:       Final_Exam_Score   R-squared:                       0.703
+Model:                            OLS   Adj. R-squared:                  0.690
+Method:                 Least Squares   F-statistic:                     56.33
+Date:                Thu, 14 May 2026   Prob (F-statistic):           2.88e-35
+Time:                        00:40:43   Log-Likelihood:                -511.44
+No. Observations:                 150   AIC:                             1037.
+Df Residuals:                     143   BIC:                             1058.
+Df Model:                           6                                         
+Covariance Type:            nonrobust                                         
+===================================================================================
+                      coef    std err          t      P>|t|      [0.025      0.975]
+-----------------------------------------------------------------------------------
+Intercept          46.8026     12.181      3.842      0.000      22.725      70.880
+Study_Hours         2.4649      0.170     14.465      0.000       2.128       2.802
+Attendance_Rate     0.2108      0.051      4.100      0.000       0.109       0.312
+Sleep_Hours        -1.8095      3.277     -0.552      0.582      -8.288       4.669
+Sleep_Sq           -0.0185      0.231     -0.080      0.936      -0.474       0.437
+Stress_Level       -1.6767      0.238     -7.042      0.000      -2.147      -1.206
+Practice_Tests      1.8318      0.269      6.810      0.000       1.300       2.363
+==============================================================================
+Omnibus:                        1.571   Durbin-Watson:                   1.957
+Prob(Omnibus):                  0.456   Jarque-Bera (JB):                1.564
+Skew:                           0.170   Prob(JB):                        0.457
+Kurtosis:                       2.633   Cond. No.                     1.98e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.98e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+
+── A5. MODEL FIT ─────────────────────────────────────────────────────
+  R²         = 0.7027  (70.3% of variance explained)
+  Adj R²     = 0.6902
+  F(6, 143) = 56.3283, p = 2.8792e-35
+  AIC        = 1036.87
+  BIC        = 1057.95
+  N          = 150
+
+── A6. COEFFICIENT INTERPRETATION ───────────────────────────────────
+  Intercept: 46.8026 — predicted score when all predictors = 0
+  Study_Hours:     +2.465 per hour (p < 0.001) *** — strongest positive predictor
+    Going from 4 hrs to 12 hrs study = +19.7 exam points
+  Attendance_Rate: +0.211 per % (p < 0.001) ***
+    Every 10% more attendance = +2.1 exam points
+  Sleep_Hours:     -1.810 (linear term) (p = 0.5817) n.s.
+  Sleep_Hours²:    -0.019 (quadratic term) (p = 0.9360) n.s.
+    Optimal sleep hours = -48.78 hrs (peak of quadratic curve)
+  Stress_Level:    -1.677 per unit (p < 0.001) ***
+    Each stress unit increase = -1.677 points (performance cost of stress)
+  Practice_Tests:  +1.832 per test (p < 0.001) ***
+    Each additional practice test = +1.8 exam points
+
+── A7. STANDARDIZED BETA COEFFICIENTS ───────────────────────────────
+  All variables z-scored — directly compare predictor importance:
+
+  Rank   Variable                       Std β          p  Relative Importance
+  ----------------------------------------------------------------------
+  1      Study_Hours                  +0.6638     0.0000  ***
+  2      Stress_Level                 -0.3233     0.0000  ***
+  3      Practice_Tests               +0.3167     0.0000  ***
+  4      Sleep_Hours                  -0.2290     0.5817  n.s.
+  5      Attendance_Rate              +0.1907     0.0001  ***
+  6      Sleep_Sq                     -0.0334     0.9360  n.s.
+
+── A8. VIF — MULTICOLLINEARITY ───────────────────────────────────────
+  Variable                         VIF  Verdict
+  --------------------------------------------------
+  Study_Hours                     1.01  ✓ Acceptable
+  Attendance_Rate                 1.04  ✓ Acceptable
+  Sleep_Hours                    82.72  ⚠ High (expected for polynomial pair)
+  Sleep_Sq                       82.88  ⚠ High (expected for polynomial pair)
+  Stress_Level                    1.01  ✓ Acceptable
+  Practice_Tests                  1.04  ✓ Acceptable
+  Note: VIF inflated for Sleep_Hours/Sleep_Sq by construction (polynomial pair)
+
+── A9. ASSUMPTION DIAGNOSTICS ────────────────────────────────────────
+  Test                                      Stat          p  Verdict
+  -----------------------------------------------------------------
+  Shapiro-Wilk (normality of residuals)     0.9933     0.7144  ✓ Normal
+  Breusch-Pagan (homoscedasticity)        6.4824     0.3714  ✓ Homoscedastic
+  Durbin-Watson (autocorrelation)         1.9571          —  ✓ No autocorrelation (1.5-2.5)
+
+════════════════════════════════════════════════════════════════════════
+  PART B — PATH ANALYSIS (Mediation Model)
+  Mediator: Stress_Level
+════════════════════════════════════════════════════════════════════════
+
+── B1. RESEARCH QUESTION ─────────────────────────────────────────────
+  Does Stress_Level mediate the relationship between academic behaviors
+  and exam performance? Specifically:
+    a) Does high Study_Hours reduce Stress_Level?
+    b) Does reduced Stress_Level then improve Final_Exam_Score?
+    c) Is there a significant indirect effect of Study_Hours on
+       Exam_Score that operates THROUGH Stress_Level?
+  This path model decomposes total effects into direct + indirect components.
+
+── B2. PATH DIAGRAM DESCRIPTION ─────────────────────────────────────
+
+  Path Model Structure (Baron & Kenny, 1986):
+
+  Study_Hours ──── path a ────► Stress_Level
+        │                              │
+        │         path c' (direct)     │ path b
+        └──────────────────────────────►──► Final_Exam_Score
+                                       ▲
+  Practice_Tests ──────────────────────┘ (also modeled)
+  Attendance_Rate ─────────────────────┘ (direct paths only)
+
+  Definitions:
+    Path a  = effect of Study_Hours on Stress_Level (the IV → Mediator path)
+    Path b  = effect of Stress_Level on Exam_Score, controlling for Study_Hours
+    Path c  = total effect of Study_Hours on Exam_Score (without mediator)
+    Path c' = direct effect of Study_Hours on Exam_Score (controlling for Stress)
+    Indirect effect = a × b (the mediated portion of Study_Hours → Score)
+
+
+── B3. PATH EQUATIONS ────────────────────────────────────────────────
+
+  ══ Predictor: Study_Hours ══
+  Path c  (total effect):    Study_Hours → Final_Exam_Score
+    Coef = +2.4770, p = 0.0000  sig ***
+
+  Path a  (IV → mediator):   Study_Hours → Stress_Level
+    Coef = -0.0419, p = 0.4773  n.s.
+
+  Path b  (mediator → DV):   Stress_Level → Final_Exam_Score (controlling for Study_Hours)
+    Coef = -1.4967, p = 0.0000  sig ***
+
+  Path c' (direct effect):   Study_Hours → Final_Exam_Score (controlling for Stress_Level)
+    Coef = +2.4143, p = 0.0000  sig ***
+
+  Indirect Effect (a × b):   +0.0627
+    Sobel Z = 0.7056, p = 0.4804  n.s.
+    Bootstrap 95% CI [-0.1036, +0.2424]  Not significant — CI includes 0
+
+  Effect decomposition:
+    Total effect c:      +2.4770
+    Direct effect c':   +2.4143
+    Indirect a×b:        +0.0627  (2.5% of total effect)
+
+  Mediation type: Partial mediation
+
+  ══ Predictor: Attendance_Rate ══
+  Path c  (total effect):    Attendance_Rate → Final_Exam_Score
+    Coef = +0.0955, p = 0.2932  n.s.
+
+  Path a  (IV → mediator):   Attendance_Rate → Stress_Level
+    Coef = -0.0007, p = 0.9695  n.s.
+
+  Path b  (mediator → DV):   Stress_Level → Final_Exam_Score (controlling for Attendance_Rate)
+    Coef = -1.6925, p = 0.0000  sig ***
+
+  Path c' (direct effect):   Attendance_Rate → Final_Exam_Score (controlling for Stress_Level)
+    Coef = +0.0944, p = 0.2734  n.s.
+
+  Indirect Effect (a × b):   +0.0011
+    Sobel Z = 0.0383, p = 0.9695  n.s.
+    Bootstrap 95% CI [-0.0534, +0.0690]  Not significant — CI includes 0
+
+  Effect decomposition:
+    Total effect c:      +0.0955
+    Direct effect c':   +0.0944
+    Indirect a×b:        +0.0011  (1.2% of total effect)
+
+  Mediation type: No mediation
+
+  ══ Predictor: Practice_Tests ══
+  Path c  (total effect):    Practice_Tests → Final_Exam_Score
+    Coef = +1.3320, p = 0.0046  sig **
+
+  Path a  (IV → mediator):   Practice_Tests → Stress_Level
+    Coef = +0.1046, p = 0.2535  n.s.
+
+  Path b  (mediator → DV):   Stress_Level → Final_Exam_Score (controlling for Practice_Tests)
+    Coef = -1.8219, p = 0.0000  sig ***
+
+  Path c' (direct effect):   Practice_Tests → Final_Exam_Score (controlling for Stress_Level)
+    Coef = +1.5226, p = 0.0006  sig ***
+
+  Indirect Effect (a × b):   -0.1906
+    Sobel Z = -1.1133, p = 0.2656  n.s.
+    Bootstrap 95% CI [-0.5032, +0.1061]  Not significant — CI includes 0
+
+  Effect decomposition:
+    Total effect c:      +1.3320
+    Direct effect c':   +1.5226
+    Indirect a×b:        -0.1906  (-14.3% of total effect)
+
+  Mediation type: Partial mediation
+
+── B4. PATH ANALYSIS SUMMARY ─────────────────────────────────────────
+
+  Predictor               Total c    Direct c'   Indirect ab   % Mediated    Sobel p  Conclusion
+  -----------------------------------------------------------------------------------------------
+  Study_Hours             +2.4770      +2.4143       +0.0627          2.5%     0.4804  Partial mediation
+  Attendance_Rate         +0.0955      +0.0944       +0.0011          1.2%     0.9695  No mediation
+  Practice_Tests          +1.3320      +1.5226       -0.1906        -14.3%     0.2656  Partial mediation
