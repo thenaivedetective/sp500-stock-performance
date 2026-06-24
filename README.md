@@ -136,6 +136,4 @@ Reference: Ananthakumar, U., & Sarkar, S. (2017). *Using Logistic Regression to 
 
 ---
 
-## Author
 
-**Lana Gidan** — MS Industrial & Systems Engineering, Binghamton University
